@@ -1,3 +1,11 @@
-var s = function(){
-	var s = "ae";
-}
+define([
+        "./main",
+], function( clouda ) {
+    
+    //deal with clouda.device
+    clouda.device.geolocation = {};
+    
+    
+    
+    return clouda.device;
+});
