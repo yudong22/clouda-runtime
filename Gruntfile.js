@@ -3,17 +3,30 @@ module.exports = function(grunt) {
     // Project configuration.
     grunt.initConfig({
         pkg : grunt.file.readJSON('package.json'),
+        concat: {
+            options: {
+              separator: '',
+              stripBanners: true,
+              banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
+                '<%= grunt.template.today("yyyy-mm-dd") %> */\n',
+            },
+            dist: {
+                src: ['src/intro.js', 'src/device/*.js','src/mbaas/*.js', 'src/outro.js'],
+                dest: 'dist/built.js',
+            },
+        },
         uglify : {
             options : {
-                banner : '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+                // banner : '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
             },
+           
             build : {
-                src : 'src/*.js',
+                src : ['dist/built.js'],
                 dest : 'build/<%= pkg.name %>.min.js'
             }
         },
         jshint: {
-          files: ['Gruntfile.js', 'src/*.js'],
+          files: ['Gruntfile.js', 'src/device/*.js','src/mbaas/*.js','dist/built.js'],
           options: {
             // options here to override JSHint defaults
             globals: {
@@ -24,35 +37,40 @@ module.exports = function(grunt) {
             }
           }   
         },  
-		requirejs: {
-          compile: {
-            options: {
-              baseUrl: "src",
-              almond:false,
-              removeCombined:true,
-              wrap:true,
-              name: "main", // a module name
-              //dir: 'build', // an output directory
-              // modules: [
-                            // {
-                                    // name: "main"
-                            // }
-              // ],
-              out: 'build/app.min.js',
-              // include: ['main'],
-              optimize: 'uglify',
-              normalizeDirDefines: 'all'
-            }
-          }
-        }
+		// requirejs: {
+          // compile: {
+            // options: {
+              // baseUrl: "src",
+              // almond:false,
+              // removeCombined:true,
+              // //wrap:true,
+              // wrap: {
+                // startFile: "src/intro.js",
+                // endFile: "src/outro.js"
+              // },
+              // name: "main", // a module name
+              // //dir: 'build', // an output directory
+              // // modules: [
+                            // // {
+                                    // // name: "main"
+                            // // }
+              // // ],
+              // out: 'build/app.min.js',
+              // // include: ['main'],
+              // optimize: 'uglify',
+              // normalizeDirDefines: 'all'
+            // }
+          // }
+        // }
     });
 
 
-		grunt.loadNpmTasks('grunt-contrib-requirejs');
-        grunt.loadNpmTasks('grunt-contrib-jshint');
+		// grunt.loadNpmTasks('grunt-contrib-requirejs');
+		grunt.loadNpmTasks('grunt-contrib-concat');
+		grunt.loadNpmTasks('grunt-contrib-jshint');
 		grunt.loadNpmTasks('grunt-contrib-uglify');
 		
-		grunt.registerTask('default', ['requirejs','jshint']); 
+		grunt.registerTask('default', ['concat','uglify','jshint']); 
 		grunt.registerTask('production', 'lint requirejs less copy');
 
 
