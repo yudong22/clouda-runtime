@@ -1,6 +1,26 @@
+#wrap {
+	position: relative;
+	overflow: hidden;
+}
+
+#demoList{
+	width: 100%;
+	position: absolute;
+	visibility: hidden;
+}
+
+#demoList.show {
+	visibility: visible;
+	-webkit-transition: visibility 0.3s;
+}
+
 #demoList li{
 	height: 3em;
 	line-height: 3em;
-	border-bottom: 1px solid #555;
+	border-bottom: 1px solid  #c8c8c8;
 	padding-left: 1.5em;
+}
+
+#demoList li:hover{
+	background: #f9f9f9;
 }
