@@ -1,0 +1,6 @@
+#demoList li{
+	height: 3em;
+	line-height: 3em;
+	border-bottom: 1px solid #555;
+	padding-left: 1.5em;
+}
