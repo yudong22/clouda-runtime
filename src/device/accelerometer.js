@@ -8,7 +8,7 @@ define("device",function(module) {
     
     for(var i=0,len=boot.length;i<len;i++){
         try{
-            it[boot[i]] = device.accelerometer[boot[i]];
+            it[boot[i]] = new delegateClass("device","accelerometer",boot[i]);
         }catch(e){
             it[boot[i]] = this.error;
         }
