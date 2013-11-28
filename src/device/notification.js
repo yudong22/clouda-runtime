@@ -7,11 +7,7 @@ define("device",function(module) {
     var boot = ['alert','confirm','prompt','beep','vibrate'];
     
     for(var i=0,len=boot.length;i<len;i++){
-        try{
-            it[boot[i]] = device.notification[boot[i]];
-        }catch(e){
-            it[boot[i]] = this.error;
-        }
+        it[boot[i]] = new delegateClass("device","notification",boot[i]);
     }
     
     return module;

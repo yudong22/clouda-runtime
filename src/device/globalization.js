@@ -9,11 +9,7 @@ define("device",function(module) {
     'stringToDate','stringToNumber'];
     
     for(var i=0,len=boot.length;i<len;i++){
-        try{
-            it[boot[i]] = device.globalization[boot[i]];
-        }catch(e){
-            it[boot[i]] = this.error;
-        }
+        it[boot[i]] = new delegateClass("device","globalization",boot[i]);
     }
     
     return module;

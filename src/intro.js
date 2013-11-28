@@ -39,7 +39,7 @@
         var _this = this;
         execDelegate(this.module,function(module){
             try{
-                module[_this.submodule][_this.func].call(_this,arguments);
+                module[_this.submodule][_this.func].call(_this,args);
             }catch(e){
                 _this.error(_this.module+"."+_this.submodule+"."+_this.func);
             }

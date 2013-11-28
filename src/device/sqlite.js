@@ -7,11 +7,7 @@ define("device",function(module) {
     var boot = ['openDatabase'];
     
     for(var i=0,len=boot.length;i<len;i++){
-        try{
-            it[boot[i]] = device.sqlite[boot[i]];
-        }catch(e){
-            it[boot[i]] = this.error;
-        }
+        it[boot[i]] = new delegateClass("device","sqlite",boot[i]);
     }
     
     return module;

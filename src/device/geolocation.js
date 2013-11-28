@@ -7,11 +7,7 @@ define("device",function(module) {
     var boot = ['clearWatch','getCurrentPosition','watchPosition'];
     
     for(var i=0,len=boot.length;i<len;i++){
-        try{
-            it[boot[i]] = device.geolocation[boot[i]];
-        }catch(e){
-            it[boot[i]] = this.error;
-        }
+        it[boot[i]] = new delegateClass("device","geolocation",boot[i]);
     }
     //TODO deviceOrientation 合并于此
     

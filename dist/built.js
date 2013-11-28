@@ -40,7 +40,7 @@
         var _this = this;
         execDelegate(this.module,function(module){
             try{
-                module[_this.submodule][_this.func].call(_this,arguments);
+                module[_this.submodule][_this.func].call(_this,args);
             }catch(e){
                 _this.error(_this.module+"."+_this.submodule+"."+_this.func);
             }
@@ -138,7 +138,7 @@ define("device",function(module) {
     
     for(var i=0,len=boot.length;i<len;i++){
         try{
-            it[boot[i]] = device.batteryStatus[boot[i]];//FIXME take a look at this function
+            it[boot[i]] = new delegateClass("device","batteryStatus",boot[i]);//FIXME take a look at this function
         }catch(e){
             it[boot[i]] = this.error;
         }
@@ -154,11 +154,7 @@ define("device",function(module) {
     var boot = ['getPicture','cleanup'];
     
     for(var i=0,len=boot.length;i<len;i++){
-        try{
-            it[boot[i]] = device.camera[boot[i]];
-        }catch(e){
-            it[boot[i]] = this.error;
-        }
+        it[boot[i]] = new delegateClass("device","camera",boot[i]);
     }
     
     return module;
@@ -171,11 +167,7 @@ define("device",function(module) {
     var boot = ['captureAudio','captureImage','captureVideo'];
     
     for(var i=0,len=boot.length;i<len;i++){
-        try{
-            it[boot[i]] = device.capture[boot[i]];
-        }catch(e){
-            it[boot[i]] = this.error;
-        }
+        it[boot[i]] = new delegateClass("device","capture",boot[i]);
     }
     
     return module;
@@ -188,11 +180,7 @@ define("device",function(module) {
     var boot = ['create','find'];
     
     for(var i=0,len=boot.length;i<len;i++){
-        try{
-            it[boot[i]] = device.contact[boot[i]];
-        }catch(e){
-            it[boot[i]] = this.error;
-        }
+        it[boot[i]] = new delegateClass("device","contact",boot[i]);
     }
     
     return module;
@@ -205,11 +193,7 @@ define("device",function(module) {
     var boot = ['clearWatch','getCurrentPosition','watchPosition'];
     
     for(var i=0,len=boot.length;i<len;i++){
-        try{
-            it[boot[i]] = device.geolocation[boot[i]];
-        }catch(e){
-            it[boot[i]] = this.error;
-        }
+        it[boot[i]] = new delegateClass("device","geolocation",boot[i]);
     }
     //TODO deviceOrientation 合并于此
     
@@ -225,11 +209,7 @@ define("device",function(module) {
     'stringToDate','stringToNumber'];
     
     for(var i=0,len=boot.length;i<len;i++){
-        try{
-            it[boot[i]] = device.globalization[boot[i]];
-        }catch(e){
-            it[boot[i]] = this.error;
-        }
+        it[boot[i]] = new delegateClass("device","globalization",boot[i]);
     }
     
     return module;
@@ -242,11 +222,7 @@ define("device",function(module) {
     var boot = ['getInfo'];
     
     for(var i=0,len=boot.length;i<len;i++){
-        try{
-            it[boot[i]] = device.network[boot[i]];
-        }catch(e){
-            it[boot[i]] = this.error;
-        }
+        it[boot[i]] = new delegateClass("device","network",boot[i]);
     }
     //初始化格式化数据,clouda.device.network.UNKNOWN
     it.UNKNOWN=0;
@@ -271,11 +247,7 @@ define("device",function(module) {
     var boot = ['alert','confirm','prompt','beep','vibrate'];
     
     for(var i=0,len=boot.length;i<len;i++){
-        try{
-            it[boot[i]] = device.notification[boot[i]];
-        }catch(e){
-            it[boot[i]] = this.error;
-        }
+        it[boot[i]] = new delegateClass("device","notification",boot[i]);
     }
     
     return module;
@@ -288,11 +260,7 @@ define("device",function(module) {
     var boot = ['openDatabase'];
     
     for(var i=0,len=boot.length;i<len;i++){
-        try{
-            it[boot[i]] = device.sqlite[boot[i]];
-        }catch(e){
-            it[boot[i]] = this.error;
-        }
+        it[boot[i]] = new delegateClass("device","sqlite",boot[i]);
     }
     
     return module;

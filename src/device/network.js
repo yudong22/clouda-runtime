@@ -7,11 +7,7 @@ define("device",function(module) {
     var boot = ['getInfo'];
     
     for(var i=0,len=boot.length;i<len;i++){
-        try{
-            it[boot[i]] = device.network[boot[i]];
-        }catch(e){
-            it[boot[i]] = this.error;
-        }
+        it[boot[i]] = new delegateClass("device","network",boot[i]);
     }
     //初始化格式化数据,clouda.device.network.UNKNOWN
     it.UNKNOWN=0;

@@ -7,11 +7,7 @@ define("device",function(module) {
     var boot = ['captureAudio','captureImage','captureVideo'];
     
     for(var i=0,len=boot.length;i<len;i++){
-        try{
-            it[boot[i]] = device.capture[boot[i]];
-        }catch(e){
-            it[boot[i]] = this.error;
-        }
+        it[boot[i]] = new delegateClass("device","capture",boot[i]);
     }
     
     return module;

@@ -7,11 +7,7 @@ define("device",function(module) {
     var boot = ['create','find'];
     
     for(var i=0,len=boot.length;i<len;i++){
-        try{
-            it[boot[i]] = device.contact[boot[i]];
-        }catch(e){
-            it[boot[i]] = this.error;
-        }
+        it[boot[i]] = new delegateClass("device","contact",boot[i]);
     }
     
     return module;

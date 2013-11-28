@@ -8,7 +8,7 @@ define("device",function(module) {
     
     for(var i=0,len=boot.length;i<len;i++){
         try{
-            it[boot[i]] = device.batteryStatus[boot[i]];//FIXME take a look at this function
+            it[boot[i]] = new delegateClass("device","batteryStatus",boot[i]);//FIXME take a look at this function
         }catch(e){
             it[boot[i]] = this.error;
         }

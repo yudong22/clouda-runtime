@@ -7,11 +7,7 @@ define("device",function(module) {
     var boot = ['getPicture','cleanup'];
     
     for(var i=0,len=boot.length;i<len;i++){
-        try{
-            it[boot[i]] = device.camera[boot[i]];
-        }catch(e){
-            it[boot[i]] = this.error;
-        }
+        it[boot[i]] = new delegateClass("device","camera",boot[i]);
     }
     
     return module;
