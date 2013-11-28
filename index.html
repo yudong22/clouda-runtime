@@ -11,10 +11,12 @@
     </head>
     <body>
         <h1>Sumeru Runtime</h1>
-        
-        
-        
-        <button onclick="clouda.device.notification.alert('hello world');">alert</button>
+        <button onclick="clouda.device.notification.alert('hello world',{onSuccess:function(){},title:'hello~',buttonName:'Okay'});">alert hello world</button>
+        <br/><button onclick="clouda.device.notification.confirm('hello world',{onFail:function(){alert('error!');}});">confirm</button>
+        <br/><button onclick="clouda.device.notification.beep(1000);">beep 1s</button>
+        <br/><button onclick="clouda.device.notification.prompt('hello world',{defaultText:'110'});">prompt</button>
+        <br/><button onclick="clouda.device.notification.vibrate(1000);">vibrate 1s</button>
+        <br/>
         
     </body>
 </html>

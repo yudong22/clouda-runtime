@@ -10,58 +10,77 @@
     clouda.lightapp = function(ak){
         clouda.lightapp.ak = ak;
     };
-    clouda.lightapp.error = function(){
+    //定义错误格式
+    var ErrCode = {
+        /*SUCCESS*/
+        SUCCESS:0,
+        
+        AK_UNDEFINED:1,
+        RT_UNDEFINED:2,
+        RT_GETERROR:5,
+       
+        EXEC_ERROR:3,
+        USER_CANCEL:4,
+        
+        
+    };
+    var errorMessage = {
+      0:"成功",
+      1:"错误，您需要在调用api前设置ak。 clouda.lightapp(your_ak_here);",
+      2:"接口的运行环境不存在。",
+      3:"执行接口出错。",
+      4:"用户取消",
+      5:"接口的运行环境准备中出错。",
+    };
+    var runtimeError  = function(errno){
         try{
             throw new Error();
         }catch(e){
             var stackStr = (e.stack.split('\n'));
-            console.log("Call lightapp api Error! " + stackStr[2].replace(/\s*/,""));
+            console.error(errorMessage[errno] ," " + stackStr[2].replace(/\s*/,""));
         }
     };
-    //定义错误格式
-    // clouda.__noSuchMethod__ = function(){
-        // alert('no such method');
-        // console.log(arguments);
-    // };
-    //__defineGetter__
+    
     var delegateClass = function(module,submodule,func){
         this.module = module;
         this.submodule = submodule;
         this.func = func;
         return (function(that){
             return function(){
-                that.run.apply(that, arguments);
+                that.exec.apply(that, arguments);
             };
         })(this);
     };
-    delegateClass.prototype.run = function(){
+    delegateClass.prototype.exec = function(){
         var args = arguments;
         var _this = this;
-        execDelegate(this.module,function(module){
+        execDelegate.call(this,this.module,function(module){
             try{
                 module[_this.submodule][_this.func].apply(_this,args);
             }catch(e){
-                _this.error(_this.module+"."+_this.submodule+"."+_this.func);
+                if (args.length && typeof args[args.length-1] === 'object' ){//检查 onFail
+                    if (typeof args[args.length-1].onFail === 'function'){
+                        args[args.length-1].onFail(ErrCode.EXEC_ERROR);
+                    }
+                }
+                if(module){
+                    _this.error(ErrCode.EXEC_ERROR);
+                }
             }
             
         });
     };
-    delegateClass.prototype.error = function(err){
-        try{
-            throw new Error();
-        }catch(e){
-            var stackStr = (e.stack.split('\n'));
-            console.log(err ," Error! " + stackStr[2].replace(/\s*/,""));
-        }
-    };
+    clouda.lightapp.error = delegateClass.prototype.error = runtimeError;
+    
     
     var regPlugins = {};
     var execDelegate = function(pluginName,callback){
         if (!clouda.lightapp.ak) {
+            this.error(ErrCode.AK_UNDEFINED);
             console.error("错误，'"+pluginName+"' clouda.lightapp(your_ak_here);");
             return false;
         }
-        
+        var _this = this;
         if (!pluginName) {
             return false;
         }
@@ -71,23 +90,28 @@
             return callback(regPlugins[pluginName]);//此处是同步的逻辑
         }
         //在结果返回前，使用代理模式
-        regPlugins[pluginName] = null;
+        try{
+            nuwa.pm.bindAk(clouda.lightapp.ak);
+            
+            nuwa.pm.absorb(pluginName,function(inst){
+                inst.on('error',function(err){
+                    _this.error(ErrCode.RT_GETERROR);
+                    callback(null);
+                });
+                inst.on('progress',function(err){
+                    
+                });
+                inst.on('complete',function(err){
+                    regPlugins[pluginName] = nuwa.require(pluginName);
+                    callback(regPlugins[pluginName]);
+                });
+            });
+            
+        }catch(e){
+            _this.error(ErrCode.RT_UNDEFINED);
+            callback(null);
+        }
         
-        //此处使用require
-        nuwa.pm.bindAk(clouda.lightapp.ak);
-        
-        nuwa.pm.absorb(pluginName,function(inst){
-            inst.on('error',function(err){
-                callback(null);
-            });
-            inst.on('progress',function(err){
-                
-            });
-            inst.on('complete',function(err){
-                regPlugins[pluginName] = nuwa.require(pluginName);
-                callback(regPlugins[pluginName]);
-            });
-        });
         return false;
     };
     /**
