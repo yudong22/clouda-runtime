@@ -1,4 +1,4 @@
-/*! clouda-runtime - v0.1.0 - 2013-11-27 */
+/*! clouda-runtime - v0.1.0 - 2013-11-28 */
 (function(window){
     // for client js only
     if (typeof window !== 'object')return ;
@@ -29,6 +29,11 @@
         this.module = module;
         this.submodule = submodule;
         this.func = func;
+        return (function(that){
+            return function(){
+                that.run.apply(that, arguments);
+            };
+        })(this);
     };
     delegateClass.prototype.run = function(){
         var args = arguments;

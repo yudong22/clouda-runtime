@@ -28,6 +28,11 @@
         this.module = module;
         this.submodule = submodule;
         this.func = func;
+        return (function(that){
+            return function(){
+                that.run.apply(that, arguments);
+            };
+        })(this);
     };
     delegateClass.prototype.run = function(){
         var args = arguments;
