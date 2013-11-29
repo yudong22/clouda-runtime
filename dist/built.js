@@ -16,12 +16,21 @@
         /*SUCCESS*/
         SUCCESS:0,
         
+        //RUNTIME ERROR
         AK_UNDEFINED:1,
         RT_UNDEFINED:2,
         RT_GETERROR:5,
        
         EXEC_ERROR:3,
         USER_CANCEL:4,
+        
+        //API ERROR
+        ACC_GET_ERR:6,
+        LOC_GET_ERR:7,
+        CAP_GET_ERR:8,
+        CONTACT_FIND_ERR:9,
+        GLO_ERR:10,
+        REACH_ERR:11,
         
         
     };
@@ -32,6 +41,8 @@
       3:"执行接口出错。",
       4:"用户取消",
       5:"接口的运行环境准备中出错。",
+      6:"accelerometer 接口返回错误",
+      7:"geolocation 接口返回错误",
     };
     var runtimeError  = function(errno){
         try{
@@ -138,129 +149,742 @@
 define("device",function(module) {
     var lightapp = this;
     //定义 accelerometer 空间，clouda.device.accelerometer 
+     /**
+     * @object accelerometer
+     * @memberof clouda.device
+     * @instance
+     * @namespace clouda.device.accelerometer
+     */
     var it = module.accelerometer = {};
     
     //需要device的accelerometer模块
-    var boot = ['clearWatch','getCurrentAcceleration','watchAcceleration'];
+    // var boot = ['clearWatch','getCurrentAcceleration','watchAcceleration'];
     
-    for(var i=0,len=boot.length;i<len;i++){
-        try{
-            it[boot[i]] = new delegateClass("device","accelerometer",boot[i]);
-        }catch(e){
-            it[boot[i]] = this.error;
-        }
-    }
+    var getCurrentAcceleration = new delegateClass("device","accelerometer","getCurrentAcceleration");
+    var watchAcceleration = new delegateClass("device","accelerometer","watchAcceleration");
+    var clearWatch = new delegateClass("device","accelerometer","clearWatch");
     
-    return module;
+    
+    /**
+     * 获取当前加速度，接收成功和失败的回调
+     *
+     * @function getCurrentAcceleration
+     * @memberof clouda.device.accelerometer
+     * @instance
+     *
+     * @param {{}} options 由onSuccess 和 onFail组成
+     * @param {function} options.onSuccess 成功的回调
+     * @param {function} [options.onFail] 失败的回调
+     * @returns null
+     * 
+     */
+    it.getCurrentAcceleration = function(options){
+        getCurrentAcceleration(options.onSuccess,function(){
+            if (options && typeof options.onFail == 'function'){
+                options.onFail(ErrCode.ACC_GET_ERR);
+            }else{
+                lightapp.error(ErrCode.ACC_GET_ERR);
+            }
+        },options);
+    };
+    
+    /**
+     * 已一定的频率，获取当前加速度，接收成功，失败的回调和间隔
+     *
+     * @function listen
+     * @memberof clouda.device.accelerometer
+     * @instance
+     *
+     * @param {{}} options 由onSuccess 和 onFail组成
+     * @param {function} options.onSuccess 成功的回调 
+     * @param {function} [options.onFail] 失败的回调
+     * @param {number} [options.frequency] 检查的间隔，默认10000 ms
+     * @returns null
+     * 
+     */
+    var start_id;
+    it.listen = function(options){
+        start_id = watchAcceleration(options.onSuccess,function(){
+            if (options && typeof options.onFail == 'function'){
+                options.onFail(ErrCode.ACC_GET_ERR);
+            }else{
+                lightapp.error(ErrCode.ACC_GET_ERR);
+            }
+            
+        },options);
+    };
+    /**
+     * 终止获取回调
+     *
+     * @function stop
+     * @memberof clouda.device.accelerometer
+     * @instance
+     *
+     * @param {{}} options 由onSuccess 和 onFail组成
+     * @param {function} options.onSuccess 
+     * @param {function} [options.onFail] 失败的回调
+     * @returns null
+     * 
+     */
+    it.stop = function() {
+        clearWatch(start_id);
+    };
+    return it;
 });define("device",function(module) {
     var lightapp = this;
     //定义 battery 空间，clouda.device.battery 支持退化
     var it = module.battery = {};
     
-    //需要device的battery模块
-    var boot = ['start','stop'];
+    /**
+     * @object battery
+     * @memberof clouda.device
+     * @instance
+     * @namespace clouda.device.battery
+     */
     
-    for(var i=0,len=boot.length;i<len;i++){
-        try{
-            it[boot[i]] = new delegateClass("device","batteryStatus",boot[i]);//FIXME take a look at this function
-        }catch(e){
-            it[boot[i]] = this.error;
-        }
-    }
+    var start = new delegateClass("device","batteryStatus","start");
+    var stop = new delegateClass("device","batteryStatus","stop");
     
-    return module;
-});define("device",function(module) {
-    var lightapp = this;
-    //定义 camera 空间，clouda.device.camera 支持退化
-    var it = module.camera = {};
+    var start_id;
+    /**
+     * 已一定的频率获取电池状态
+     *
+     * @function listen
+     * @memberof clouda.device.battery
+     * @instance
+     *
+     * @param {{}} options 由onSuccess 和 onFail组成
+     * @param {function} options.onSuccess 成功的回调
+     * @param {function} [options.onFail] 失败的回调
+     * @returns null
+     * 
+     */
+    it.listen = function(){
+        start_id = start(options.onSuccess,function(){
+            if (options && typeof options.onFail == 'function'){
+                options.onFail(ErrCode.ACC_GET_ERR);
+            }
+            
+        },options);
+    };
+    /**
+     * 停止获取电池状态
+     *
+     * @function stop
+     * @memberof clouda.device.battery
+     * @instance
+     *
+     * @param {{}} options 由onSuccess 和 onFail组成
+     * @param {function} options.onSuccess 成功的回调
+     * @param {function} [options.onFail] 失败的回调
+     * @returns null
+     * 
+     */
+    it.stop = function(){
+        stop(options.onSuccess,function(){
+            if (options && typeof options.onFail == 'function'){
+                options.onFail(ErrCode.ACC_GET_ERR);
+            }
+            
+        },options);
+    };
     
-    //需要device的camera模块
-    var boot = ['getPicture','cleanup'];
-    
-    for(var i=0,len=boot.length;i<len;i++){
-        it[boot[i]] = new delegateClass("device","camera",boot[i]);
-    }
-    
-    return module;
+    return it;
 });define("device",function(module) {
     var lightapp = this;
     //定义 capture 空间，clouda.device.capture 
     var it = module.capture = {};
     
-    //需要device的capture模块
-    var boot = ['captureAudio','captureImage','captureVideo'];
+    /**
+     * @object capture
+     * @memberof clouda.device
+     * @instance
+     * @namespace clouda.device.capture
+     */
     
-    for(var i=0,len=boot.length;i<len;i++){
-        it[boot[i]] = new delegateClass("device","capture",boot[i]);
-    }
+    var captureAudio = new delegateClass("device","capture","captureAudio");
+    var captureImage = new delegateClass("device","capture","captureImage");
+    var captureVideo = new delegateClass("device","capture","captureVideo");
     
-    return module;
+    
+    /**
+     * Launch audio recorder application for recording audio clip(s).
+     *
+     * @function captureAudio
+     * @memberof clouda.device.capture
+     * @instance
+     *
+     * @param {{}} options
+     * @param {Function} options.onSuccess
+     * @param {Function} options.onFail
+     * @param {int} [options.limit=1]
+     * @param {int} [options.duration=0]
+     *
+     *
+     */
+    it.captureAudio = function(options){
+        captureAudio(options.onSuccess,function(){
+            if (options && typeof options.onFail == 'function'){
+                options.onFail(ErrCode.CAP_GET_ERR);
+            }else{
+                lightapp.error(ErrCode.CAP_GET_ERR);
+            }
+        },options);
+    };
+    
+    
+    /**
+     *
+     * Launch camera application for taking image(s).
+     *
+     * @param {{}} options
+     * @param {Function} options.onSuccess
+     * @param {Function} options.onFail
+     * @param {int} [options.limit=1]
+     * @function captureImage
+     * @memberof clouda.device.capture
+     * @instance
+     */
+     it.captureImage = function(options){
+        captureImage(options.onSuccess,function(){
+            if (options && typeof options.onFail == 'function'){
+                options.onFail(ErrCode.CAP_GET_ERR);
+            }else{
+                lightapp.error(ErrCode.CAP_GET_ERR);
+            }
+        },options);
+     };
+    
+    
+    /**
+     * Launch device camera application for recording video(s).
+     *
+     * @function captureVideo
+     * @memberof clouda.device.capture
+     * @instance
+     * @param {{}} options
+     * @param {Function} options.onSuccess
+     * @param {Function} options.onFail
+     * @param {int} [options.limit=1]
+     * @param {int} [options.duration=0]
+     */
+     it.captureVideo = function(options){
+        captureVideo(options.onSuccess,function(){
+            if (options && typeof options.onFail == 'function'){
+                options.onFail(ErrCode.CAP_GET_ERR);
+            }else{
+                lightapp.error(ErrCode.CAP_GET_ERR);
+            }
+        },options);
+     };
+    
 });define("device",function(module) {
     var lightapp = this;
     //定义 contact 空间，clouda.device.contact 支持退化
     var it = module.contact = {};
     
-    //需要device的contact模块
-    var boot = ['create','find'];
+    /**
+     * @object contact
+     * @memberof clouda.device
+     * @instance
+     * @namespace clouda.device.contact
+     */
     
-    for(var i=0,len=boot.length;i<len;i++){
-        it[boot[i]] = new delegateClass("device","contact",boot[i]);
-    }
+    var create = new delegateClass("device","contact","create");
+    var find =new delegateClass("device","contact","find");
     
-    return module;
+    
+    /**
+     * Returns an array of Contacts matching the search criteria.
+     *
+     * @function find
+     * @memberof clouda.device.contact
+     * @instance
+     *
+     * @param fields that should be searched
+     * @param {{}} options
+     * @param {Function} options.onSuccess
+     * @param {Function} options.onFail
+     * @return null
+     */
+    it.find = function(fields,options){
+        find(fields,options.onSuccess,function(){
+            if (options && typeof options.onFail == 'function'){
+                options.onFail(ErrCode.CONTACT_FIND_ERR);
+            }else{
+                lightapp.error(ErrCode.CONTACT_FIND_ERR);
+            }
+        },options);
+    };
+    
 });define("device",function(module) {
     var lightapp = this;
     //定义 geolocation 空间，clouda.device.geolocation 支持退化
     var it = module.geolocation = {};
     
-    //需要device的geolocation模块
-    var boot = ['clearWatch','getCurrentPosition','watchPosition'];
+    /**
+     * @object geolocation
+     * @memberof clouda.device
+     * @instance
+     * @namespace clouda.device.geolocation
+     */
     
-    for(var i=0,len=boot.length;i<len;i++){
-        it[boot[i]] = new delegateClass("device","geolocation",boot[i]);
-    }
-    //TODO deviceOrientation 合并于此
+    var getCurrentPosition = new delegateClass("device","geolocation","getCurrentPosition");
+    var watchPosition = new delegateClass("device","geolocation","watchPosition");
+    var clearWatch = new delegateClass("device","geolocation","clearWatch");
+    
+    /**
+     * 获取当前地理位置，接收成功和失败的回调
+     *
+     * @function getCurrentPosition
+     * @memberof clouda.device.geolocation
+     * @instance
+     *
+     * @param {{}} options 由onSuccess 和 onFail组成
+     * @param {function} options.onSuccess 成功的回调
+     * @param {function} [options.onFail] 失败的回调
+     * @param {boolen} [options.enableHighAccuracy] 高精度
+     * @returns null
+     * 
+     */
+    it.getCurrentPosition = function(options){
+        getCurrentPosition(options.onSuccess,function(){
+            if (options && typeof options.onFail == 'function'){
+                options.onFail(ErrCode.LOC_GET_ERR);
+            }
+        },options);
+    };
+    
+    /**
+     * 已一定的频率，获取当前加速度，接收成功，失败的回调和间隔
+     *
+     * @function listen
+     * @memberof clouda.device.geolocation
+     * @instance
+     *
+     * @param {{}} options 由onSuccess 和 onFail组成
+     * @param {function} options.onSuccess 成功的回调 
+     * @param {function} [options.onFail] 失败的回调
+     * @param {boolen} [options.enableHighAccuracy] 高精度
+     * @returns null
+     * 
+     */
+    var start_id;
+    it.listen = function(){
+        start_id = watchPosition(options.onSuccess,function(){
+            if (options && typeof options.onFail == 'function'){
+                options.onFail(ErrCode.LOC_GET_ERR);
+            }
+            
+        },options);
+    };
+    
+    /**
+     * 终止获取回调
+     *
+     * @function stop
+     * @memberof clouda.device.geolocation
+     * @instance
+     *
+     * @param {{}} options 由onSuccess 和 onFail组成
+     * @param {function} options.onSuccess 
+     * @param {function} [options.onFail] 失败的回调
+     * @returns null
+     * 
+     */
+    it.stop = function(){
+        clearWatch(start_id);
+    };
     
     return module;
 });define("device",function(module) {
     var lightapp = this;
     //定义 globalization 空间，clouda.device.globalization 
     var it = module.globalization = {};
+    /**
+     * @object globalization
+     * @memberof clouda.device
+     * @instance
+     * @namespace clouda.device.globalization
+     */
     
-    //需要device的globalization模块
-    var boot = ['dateToString','getCurrencyPattern','getDateNames','getDatePattern','getFirstDayOfWeek',
-    'getLocaleName','getNumberPattern','getPreferredLanguage','isDayLightSavingsTime','numberToString',
-    'stringToDate','stringToNumber'];
+     var boot = ['dateToString','getCurrencyPattern','getDateNames','getDatePattern','getFirstDayOfWeek',
+        'getLocaleName','getNumberPattern','getPreferredLanguage','isDayLightSavingsTime','numberToString',
+        'stringToDate','stringToNumber'];
+     var toolKit={};
+     for(var i=0,len=boot.length;i<len;i++){
+         toolKit[boot[i]] = new delegateClass("device","globalization",boot[i]);
+     }
     
-    for(var i=0,len=boot.length;i<len;i++){
-        it[boot[i]] = new delegateClass("device","globalization",boot[i]);
-    }
+    
+    /**
+     *
+     * @function getPreferredLanguage
+     * @memberof clouda.device.globalization
+     * @instance
+     *
+     * @param {{}} options
+     * @param {Function} options.onSuccess
+     * @param {Function} options.onFail
+     */
+     it.getPreferredLanguage = function (options) {
+        toolKit.getPreferredLanguage(options.onSuccess,function(){
+            if (options && typeof options.onFail == 'function'){
+                options.onFail(ErrCode.GLO_ERR);
+            }else{
+                lightapp.error(ErrCode.GLO_ERR);
+            }
+        },options);
+     };
+    /**
+     *
+     * @function getLocaleName
+     * @memberof clouda.device.globalization
+     * @instance
+     *
+     * @param {{}} options
+     * @param {Function} options.onSuccess
+     * @param {Function} options.onFail
+     */
+    it.getLocaleName = function (options) {
+        toolKit.getLocaleName(options.onSuccess,function(){
+            if (options && typeof options.onFail == 'function'){
+                options.onFail(ErrCode.GLO_ERR);
+            }else{
+                lightapp.error(ErrCode.GLO_ERR);
+            }
+        },options);
+    };
+    /**
+     * @function dateToString
+     * @memberof clouda.device.globalization
+     * @instance
+     *
+     * @param {Date} date
+     * @param {{}} options
+     * @param {Function} options.onSuccess
+     * @param {Function} options.onFail
+     */
+    it.dateToString = function (date, options) {
+        toolKit.dateToString(date,options.onSuccess,function(){
+            if (options && typeof options.onFail == 'function'){
+                options.onFail(ErrCode.GLO_ERR);
+            }else{
+                lightapp.error(ErrCode.GLO_ERR);
+            }
+        },options);
+    };
+    /**
+     * @function stringToDate
+     * @memberof clouda.device.globalization
+     * @instance
+     *
+     * @param {string} dateString
+     * @param {{}} options
+     * @param {Function} options.onSuccess
+     * @param {Function} options.onFail
+     */
+    it.stringToDate = function (dateString, options) {
+        toolKit.stringToDate(dateString,options.onSuccess,function(){
+            if (options && typeof options.onFail == 'function'){
+                options.onFail(ErrCode.GLO_ERR);
+            }else{
+                lightapp.error(ErrCode.GLO_ERR);
+            }
+        },options);
+    };
+    /**
+     *
+     * @function getDatePattern
+     * @memberof clouda.device.globalization
+     * @instance
+     *
+     * @param {{}} options
+     * @param {Function} options.onSuccess
+     * @param {Function} options.onFail
+     */
+    it.getDatePattern = function (options) {
+        toolKit.getDatePattern(options.onSuccess,function(){
+            if (options && typeof options.onFail == 'function'){
+                options.onFail(ErrCode.GLO_ERR);
+            }else{
+                lightapp.error(ErrCode.GLO_ERR);
+            }
+        },options);
+    };
+    /**
+     *
+     * @function getDateNames
+     * @memberof clouda.device.globalization
+     * @instance
+     *
+     * @param {{}} options
+     * @param {Function} options.onSuccess
+     * @param {Function} options.onFail
+     */
+    it.getDateNames = function (options) {
+        toolKit.getDateNames(options.onSuccess,function(){
+            if (options && typeof options.onFail == 'function'){
+                options.onFail(ErrCode.GLO_ERR);
+            }else{
+                lightapp.error(ErrCode.GLO_ERR);
+            }
+        },options);
+    };
+    /**
+     * @function isDayLightSavingsTime
+     * @memberof clouda.device.globalization
+     * @instance
+     *
+     * @param {Date} date
+     * @param {{}} options
+     * @param {Function} options.onSuccess
+     * @param {Function} options.onFail
+     */
+    it.isDayLightSavingsTime = function (date, options) {
+        toolKit.isDayLightSavingsTime(date,options.onSuccess,function(){
+            if (options && typeof options.onFail == 'function'){
+                options.onFail(ErrCode.GLO_ERR);
+            }else{
+                lightapp.error(ErrCode.GLO_ERR);
+            }
+        },options);
+    };
+    /**
+     *
+     * @function getFirstDayOfWeek
+     * @memberof clouda.device.globalization
+     * @instance
+     *
+     * @param {{}} options
+     * @param {Function} options.onSuccess
+     * @param {Function} options.onFail
+     */
+    it.getFirstDayOfWeek = function (options) {
+        toolKit.getFirstDayOfWeek(options.onSuccess,function(){
+            if (options && typeof options.onFail == 'function'){
+                options.onFail(ErrCode.GLO_ERR);
+            }else{
+                lightapp.error(ErrCode.GLO_ERR);
+            }
+        },options);
+    };
+    /**
+     *
+     * @function numberToString
+     * @memberof clouda.device.globalization
+     * @instance
+     *
+     * @param {int} number
+     * @param {{}} options
+     * @param {Function} options.onSuccess
+     * @param {Function} options.onFail
+     */
+    it.numberToString = function (number, options) {
+        toolKit.numberToString(options.onSuccess,function(){
+            if (options && typeof options.onFail == 'function'){
+                options.onFail(ErrCode.GLO_ERR);
+            }else{
+                lightapp.error(ErrCode.GLO_ERR);
+            }
+        },options);
+    };
+    /**
+     * @function stringToNumber
+     * @memberof clouda.device.globalization
+     * @instance
+     *
+     * @param {string} numberString
+     * @param {{}} options
+     * @param {Function} options.onSuccess
+     * @param {Function} options.onFail
+     */
+    it.stringToNumber = function (numberString, options) {
+        toolKit.stringToNumber(numberString,options.onSuccess,function(){
+            if (options && typeof options.onFail == 'function'){
+                options.onFail(ErrCode.GLO_ERR);
+            }else{
+                lightapp.error(ErrCode.GLO_ERR);
+            }
+        },options);
+    };
+    /**
+     *
+     * @function getNumberPattern
+     * @memberof clouda.device.globalization
+     * @instance
+     *
+     * @param {{}} options
+     * @param {Function} options.onSuccess
+     * @param {Function} options.onFail
+     */
+    it.getNumberPattern = function (options) {
+        toolKit.getNumberPattern(options.onSuccess,function(){
+            if (options && typeof options.onFail == 'function'){
+                options.onFail(ErrCode.GLO_ERR);
+            }else{
+                lightapp.error(ErrCode.GLO_ERR);
+            }
+        },options);
+    };
+    /**
+     * @function getCurrencyPattern
+     * @memberof clouda.device.globalization
+     * @instance
+     *
+     * @param {string} currencyCode
+     * @param {{}} options
+     * @param {Function} options.onSuccess
+     * @param {Function} options.onFail
+     */
+    it.getCurrencyPattern = function (currencyCode, options) {
+        toolKit.getCurrencyPattern(currencyCode,options.onSuccess,function(){
+            if (options && typeof options.onFail == 'function'){
+                options.onFail(ErrCode.GLO_ERR);
+            }else{
+                lightapp.error(ErrCode.GLO_ERR);
+            }
+        },options);
+    };
     
     return module;
 });define("device",function(module) {
     var lightapp = this;
-    //定义 network 空间，clouda.device.network 支持退化
-    var it = module.network = {};
+    //定义 camera 空间，clouda.device.media 支持退化
+    var it = module.media = {};
+    /**
+     * @object camera
+     * @memberof clouda.device
+     * @instance
+     * @namespace clouda.device.media
+     */
+    //需要device的camera模块
     
-    //需要device的network模块
-    var boot = ['getInfo'];
+     it.DestinationType = {
+        DATA_URL : 0,      // Return image as base64-encoded string
+        FILE_URI : 1,      // Return image file URI
+        NATIVE_URI : 2     // Return image native URI (e.g., assets-library:// on iOS or content:// on Android)
+     };
+     it.EncodingType = {
+        JPEG : 0,               // Return JPEG encoded image
+        PNG : 1                 // Return PNG encoded image
+     };
+     it.MediaType = {
+        PICTURE: 0,    // allow selection of still pictures only. DEFAULT. Will return format specified via DestinationType
+        VIDEO: 1,      // allow selection of video only, WILL ALWAYS RETURN FILE_URI
+        ALLMEDIA : 2   // allow selection from all media types
+     };
+     it.PictureSourceType = {
+        PHOTOLIBRARY : 0,
+        CAMERA : 1
+     };
+     it.Direction = {
+        BACK : 0,      // Use the back-facing camera
+        FRONT : 1      // Use the front-facing camera
+    };
+    var getPicture = new delegateClass("device","camera","getPicture");
+    // var cleanup = new delegateClass("device","camera","cleanup");
+    var captureAudio = new delegateClass("device","capture","captureAudio");
+    // var captureImage = new delegateClass("device","capture","captureImage");
+    var captureVideo = new delegateClass("device","capture","captureVideo");
     
-    for(var i=0,len=boot.length;i<len;i++){
-        it[boot[i]] = new delegateClass("device","network",boot[i]);
-    }
-    //初始化格式化数据,clouda.device.network.UNKNOWN
-    it.UNKNOWN=0;
-    it.ETHERNET=1;
-    it.WIFI=2;
-    it.CELL_2G=3;
-    it.CELL_3G=4;
-    it.CELL_4G=5;
-    it.CELL=6;
-    it.NONE=7;
-    //clouda.device.network.UNKNOWN
-    it.status = it.UNKNOWN;
-    //TODO 应该提供监听方法
     
+    /**
+     * 启动canema，读取手机图库
+     *
+     * @function getPicture
+     * @memberof clouda.device.media
+     * @instance
+     *
+     * @param {string} msg 提示文字
+     * @param {{}} options 可定义
+     * @param {function} options.onSuccess 成功
+     * @param {function} options.onFail 失败
+     * @param {number} [options.quality] 
+     * @param {number} [options.destinationType]
+     * @param {number} [options.sourceType] 
+     * @param {number} [options.mediaType]
+     * @param {number} [options.mediaDirection]
+     * @param {number} [options.encodingType]
+     * @param {boolen} [options.saveToPhotoAlbum] 
+     * @returns null
+     * 
+     */
+    
+    it.captureImage = function(options){
+        getPicture(options.onSuccess,function(){
+            if (options && typeof options.onFail == 'function'){
+                options.onFail(ErrCode.REACH_ERR);
+            }else{
+                lightapp.error(ErrCode.REACH_ERR);
+            }
+        },options);
+        // getPicture(options.onSuccess,options.onFail,options);
+    };
+    //没有终止
+    
+    
+    /**
+     * Launch audio recorder application for recording audio clip(s).
+     *
+     * @function captureAudio
+     * @memberof clouda.device.media
+     * @instance
+     *
+     * @param {{}} options
+     * @param {Function} options.onSuccess
+     * @param {Function} options.onFail
+     * @param {int} [options.limit=1]
+     * @param {int} [options.duration=0]
+     *
+     *
+     */
+    it.captureAudio = function(options){
+        captureAudio(options.onSuccess,function(){
+            if (options && typeof options.onFail == 'function'){
+                options.onFail(ErrCode.CAP_GET_ERR);
+            }else{
+                lightapp.error(ErrCode.CAP_GET_ERR);
+            }
+        },options);
+    };
+    
+    
+    /**
+     * Launch device camera application for recording video(s).
+     *
+     * @function captureVideo
+     * @memberof clouda.device.media
+     * @instance
+     * @param {{}} options
+     * @param {Function} options.onSuccess
+     * @param {Function} options.onFail
+     * @param {int} [options.limit=1]
+     * @param {int} [options.duration=0]
+     */
+     it.captureVideo = function(options){
+        captureVideo(options.onSuccess,function(){
+            if (options && typeof options.onFail == 'function'){
+                options.onFail(ErrCode.CAP_GET_ERR);
+            }else{
+                lightapp.error(ErrCode.CAP_GET_ERR);
+            }
+        },options);
+     };
+     
+     /**
+     * js控制关闭摄像头应用
+     *
+     * @function terminateCapture
+     * @memberof clouda.device.media
+     * @instance
+     * @param {{}} options
+     * @param {Function} options.onSuccess
+     * @param {Function} options.onFail
+     */
+     it.terminateCapture = function(options){
+        console.error("开发中");
+     };
     return module;
 });define("device",function(module) {
     /**
@@ -316,7 +940,7 @@ define("device",function(module) {
      */
     it.confirm = function(msg,options){
         if (typeof options === 'object'){
-            return confirm(msg,options.onSuccess,options.title,options.buttonLabels,options);
+            return confirm.apply(this,msg,options.onSuccess,options.title,options.buttonLabels,options);
         }
         return confirm(msg);
     };
@@ -370,15 +994,77 @@ define("device",function(module) {
     return module;
 });define("device",function(module) {
     var lightapp = this;
+    //定义 network 空间，clouda.device.reachability 使用nuwa.network 
+    var it = module.reachability = {};
+    
+    /**
+     * @object reachability
+     * @memberof clouda.device
+     * @instance
+     * @namespace clouda.device.reachability
+     */
+    
+    it.ConnectionType = {
+        UNKNOWN:0,
+        ETHERNET:1,
+        WIFI:2,
+        CELL_2G:3,
+        CELL_3G:4,
+        CELL_4G:5,
+        CELL:6,
+        NONE:7
+    };
+    
+    // it.status = it.ConnectionType.UNKNOWN;
+    //TODO 应该提供监听方法
+    
+    var getInfo = new delegateClass("device","network","getInfo");
+    
+    /**
+     * Launch device camera application for recording video(s).
+     *
+     * @function getStatus
+     * @memberof clouda.device.reachability
+     * @instance
+     * @param {{}} options
+     * @param {Function} options.onSuccess
+     * @param {Function} options.onFail
+     */
+     it.get = function(options){
+        getInfo(options.onSuccess,function(){
+            if (options && typeof options.onFail == 'function'){
+                options.onFail(ErrCode.REACH_ERR);
+            }else{
+                lightapp.error(ErrCode.REACH_ERR);
+            }
+        },options);
+     };
+    
+    
+    return module;
+});define("device",function(module) {
+    var lightapp = this;
     //定义 sqlite 空间，clouda.device.sqlite 
     var it = module.sqlite = {};
     
-    //需要device的sqlite模块
-    var boot = ['openDatabase'];
+    /**
+     * @object sqlite 使用sqllit接口未封装
+     * @memberof clouda.device
+     * @instance
+     * @namespace clouda.device.sqlite
+     */
     
-    for(var i=0,len=boot.length;i<len;i++){
-        it[boot[i]] = new delegateClass("device","sqlite",boot[i]);
-    }
+    // var openDatabase = new delegateClass("device","sqlite","openDatabase");
+//     
+    // it.openDatabase = function(options){
+        // openDatabase(options.onSuccess,function(){
+            // if (options && typeof options.onFail == 'function'){
+                // options.onFail(ErrCode.REACH_ERR);
+            // }else{
+                // lightapp.error(ErrCode.REACH_ERR);
+            // }
+        // },options);
+     // };
     
     return module;
 });define("touch",function(module, clouda) {
@@ -487,7 +1173,7 @@ define("device",function(module) {
                 detail: detail
             };
 
-            if (CustomEvent) {
+            if (typeof CustomEvent !== 'undefined') {
                 e = new CustomEvent(evt, opt);
                 if (el) {
                     el.dispatchEvent(e);
@@ -922,8 +1608,7 @@ define("device",function(module) {
                     }
 
                     if (Math.abs(rotation) > config.minRotationAngle) {
-                        var rotationEv = _utils.deepCopy(eventObj),
-                        eventType;
+                        var rotationEv = _utils.deepCopy(eventObj), eventType;
 
                         eventType = rotation > 0 ? smrEventList.ROTATION_RIGHT: smrEventList.ROTATION_LEFT;
                         _trigger(el, eventType, rotationEv, false);
@@ -964,7 +1649,7 @@ define("device",function(module) {
                         reset();
                     }
 
-                    eventType = rotation > 0 ? smrEventList.ROTATION_RIGHT: smrEventList.ROTATION_LEFT;
+                    var eventType = rotation > 0 ? smrEventList.ROTATION_RIGHT: smrEventList.ROTATION_LEFT;
                     _trigger(el, eventType, eventObj);
                     _trigger(el, smrEventList.ROTATION, eventObj);
                 }
