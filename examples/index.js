@@ -13,12 +13,12 @@ function showcase(name){
 	
 }
 
-touch.on(document, 'DOMContentLoaded', function(e){
+clouda.touch.on(document, 'DOMContentLoaded', function(e){
 	
 	var demoList = document.getElementById("demoList");
 	demoList.classList.add("show");
 
-	touch.on(demoList, 'tap', 'li', function(e){
+	clouda.touch.on(demoList, 'tap', 'li', function(e){
 		var name = this.getAttribute("data-name");
 		name && showcase(name);
 	});

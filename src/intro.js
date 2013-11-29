@@ -139,7 +139,7 @@
     var define= function(name,bindFunction){
         var module = clouda[name];
         //执行空间在clouda.lightapp下，防止污染其他空间
-        bindFunction.call(clouda.lightapp,module);
+        bindFunction.call(clouda.lightapp,module, clouda);
         // bindFunction.call(undefined,module);
     };
     clouda.device = {};
