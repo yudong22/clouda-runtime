@@ -23,3 +23,4 @@ Thumbs.db
 # specified files #
 ###################
 server.js
+node_modules
