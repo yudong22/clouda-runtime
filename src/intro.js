@@ -24,7 +24,9 @@
         USER_CANCEL:4,
         
         //API ERROR
-        ACC_GET_ERR:5,
+        ACC_GET_ERR:6,
+        LOC_GET_ERR:7,
+        
         
         
     };
@@ -35,6 +37,8 @@
       3:"执行接口出错。",
       4:"用户取消",
       5:"接口的运行环境准备中出错。",
+      6:"accelerometer 接口返回错误",
+      7:"geolocation 接口返回错误",
     };
     var runtimeError  = function(errno){
         try{

@@ -41,7 +41,7 @@ define("device",function(module) {
     /**
      * 已一定的频率，获取当前加速度，接收成功，失败的回调和间隔
      *
-     * @function startGet
+     * @function listen
      * @memberof clouda.device.accelerometer
      * @instance
      *
@@ -52,14 +52,14 @@ define("device",function(module) {
      * @returns null
      * 
      */
-    var start_id = null;
-    it.startGet = function(options){
+    var start_id;
+    it.listen = function(options){
         start_id = watchAcceleration(options.onSuccess,function(){
             if (options && typeof options.onFail == 'function'){
                 options.onFail(ErrCode.ACC_GET_ERR);
             }
             
-        },options.frequency,options);
+        },options);
     };
     /**
      * 终止获取回调
