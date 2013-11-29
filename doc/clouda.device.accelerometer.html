@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Namespace: notification</title>
+    <title>JSDoc: Namespace: accelerometer</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Namespace: notification</h1>
+    <h1 class="page-title">Namespace: accelerometer</h1>
     
     
 
@@ -27,7 +27,7 @@
     
 <header>
     <h2>
-    notification
+    accelerometer
     </h2>
     
 </header>  
@@ -62,7 +62,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="notification.js.html">notification.js</a>, <a href="notification.js.html#line2">line 2</a>
+        <a href="accelerometer.js.html">accelerometer.js</a>, <a href="accelerometer.js.html#line4">line 4</a>
     </li></ul></dd>
     
     
@@ -96,7 +96,7 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="alert"><span class="type-signature"></span>alert<span class="signature">(msg, options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="getCurrentAcceleration"><span class="type-signature"></span>getCurrentAcceleration<span class="signature">(options)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -104,7 +104,7 @@
     
     
     <div class="description">
-        调用系统 alert 方法，接收一个message参数和一个可选的配置
+        获取当前加速度，接收成功和失败的回调
     </div>
     
 
@@ -138,29 +138,6 @@
 	
         <tr>
             
-                <td class="name"><code>msg</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last">提示文字</td>
-        </tr>
-	
-	
-	
-        <tr>
-            
                 <td class="name"><code>options</code></td>
             
             
@@ -177,7 +154,7 @@
             
             
             
-            <td class="description last">可定义
+            <td class="description last">由onSuccess 和 onFail组成
                 <h6>Properties</h6>
                 
 
@@ -220,8 +197,6 @@
             
                 <td class="attributes">
                 
-                    &lt;optional><br>
-                
                     
                 
                     
@@ -231,20 +206,20 @@
             
             
             
-            <td class="description last">点击button的callback</td>
+            <td class="description last">成功的回调</td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>title</code></td>
+                <td class="name"><code>onFail</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">function</span>
 
 
             
@@ -264,40 +239,7 @@
             
             
             
-            <td class="description last">弹出框的title</td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>buttonName</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last">弹出框的buttonName</td>
+            <td class="description last">失败的回调</td>
         </tr>
 	
 	
@@ -334,7 +276,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="notification.js.html">notification.js</a>, <a href="notification.js.html#line17">line 17</a>
+        <a href="accelerometer.js.html">accelerometer.js</a>, <a href="accelerometer.js.html#line20">line 20</a>
     </li></ul></dd>
     
     
@@ -372,7 +314,7 @@
         
             
 <dt>
-    <h4 class="name" id="beep"><span class="type-signature"></span>beep<span class="signature">(milliseconds)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="startGet"><span class="type-signature"></span>startGet<span class="signature">(options)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -380,7 +322,7 @@
     
     
     <div class="description">
-        滴滴声
+        已一定的频率，获取当前加速度，接收成功，失败的回调和间隔
     </div>
     
 
@@ -414,7 +356,115 @@
 	
         <tr>
             
-                <td class="name"><code>milliseconds</code></td>
+                <td class="name"><code>options</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">由onSuccess 和 onFail组成
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>onSuccess</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">成功的回调</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>onFail</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">失败的回调</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>frequency</code></td>
             
             
             <td class="type">
@@ -427,10 +477,26 @@
             </td>
             
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
             
             
             
-            <td class="description last">持续时间，1000 毫秒 等于 1 秒</td>
+            
+            <td class="description last">检查的间隔，默认10000 ms</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+            </td>
         </tr>
 	
 	
@@ -461,7 +527,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="notification.js.html">notification.js</a>, <a href="notification.js.html#line59">line 59</a>
+        <a href="accelerometer.js.html">accelerometer.js</a>, <a href="accelerometer.js.html#line41">line 41</a>
     </li></ul></dd>
     
     
@@ -499,7 +565,7 @@
         
             
 <dt>
-    <h4 class="name" id="confirm"><span class="type-signature"></span>confirm<span class="signature">(msg, options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="stop"><span class="type-signature"></span>stop<span class="signature">(options)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -507,7 +573,7 @@
     
     
     <div class="description">
-        调用系统 confirm 方法，接收一个message参数和一个可选的配置
+        终止获取回调
     </div>
     
 
@@ -541,29 +607,6 @@
 	
         <tr>
             
-                <td class="name"><code>msg</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last">提示文字</td>
-        </tr>
-	
-	
-	
-        <tr>
-            
                 <td class="name"><code>options</code></td>
             
             
@@ -580,7 +623,7 @@
             
             
             
-            <td class="description last">可定义
+            <td class="description last">由onSuccess 和 onFail组成
                 <h6>Properties</h6>
                 
 
@@ -623,8 +666,6 @@
             
                 <td class="attributes">
                 
-                    &lt;optional><br>
-                
                     
                 
                     
@@ -634,257 +675,14 @@
             
             
             
-            <td class="description last">点击确定的callback</td>
+            <td class="description last"></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>title</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last">弹出框的title</td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>buttonLabels</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">array</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last">弹出框的确定和取消按键，默认是['ok','cancel']</td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-            </td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="notification.js.html">notification.js</a>, <a href="notification.js.html#line38">line 38</a>
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    null
-</div>
-
-
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="prompt"><span class="type-signature"></span>prompt<span class="signature">(msg, options)</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        弹出定制化的dialog，接收一个message参数和一个可选的配置
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>msg</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last">提示文字</td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last">可定义
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Argument</th>
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>onSuccess</code></td>
+                <td class="name"><code>onFail</code></td>
             
             
             <td class="type">
@@ -910,106 +708,7 @@
             
             
             
-            <td class="description last">点击确定的callback</td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>title</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last">标题</td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>buttonLabels</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">array</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last">确定和取消按键，默认是['ok','cancel']</td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>defaultText</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last">输入框默认文字</td>
+            <td class="description last">失败的回调</td>
         </tr>
 	
 	
@@ -1046,134 +745,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="notification.js.html">notification.js</a>, <a href="notification.js.html#line84">line 84</a>
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    null
-</div>
-
-
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="vibrate"><span class="type-signature"></span>vibrate<span class="signature">(milliseconds)</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        振动
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>milliseconds</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last">持续时间，1000 毫秒 等于 1 秒</td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="notification.js.html">notification.js</a>, <a href="notification.js.html#line71">line 71</a>
+        <a href="accelerometer.js.html">accelerometer.js</a>, <a href="accelerometer.js.html#line64">line 64</a>
     </li></ul></dd>
     
     
@@ -1230,7 +802,7 @@
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Fri Nov 29 2013 15:15:05 GMT+0800 (CST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Fri Nov 29 2013 15:15:04 GMT+0800 (CST)
 </footer>
 
 <script> prettyPrint(); </script>
