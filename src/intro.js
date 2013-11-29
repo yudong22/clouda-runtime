@@ -26,7 +26,10 @@
         //API ERROR
         ACC_GET_ERR:6,
         LOC_GET_ERR:7,
-        
+        CAP_GET_ERR:8,
+        CONTACT_FIND_ERR:9,
+        GLO_ERR:10,
+        REACH_ERR:11,
         
         
     };

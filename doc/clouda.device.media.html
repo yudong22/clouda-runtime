@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Namespace: accelerometer</title>
+    <title>JSDoc: Namespace: media</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Namespace: accelerometer</h1>
+    <h1 class="page-title">Namespace: media</h1>
     
     
 
@@ -27,7 +27,7 @@
     
 <header>
     <h2>
-    accelerometer
+    media
     </h2>
     
 </header>  
@@ -62,7 +62,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="accelerometer.js.html">accelerometer.js</a>, <a href="accelerometer.js.html#line4">line 4</a>
+        <a href="media.js.html">media.js</a>, <a href="media.js.html#line5">line 5</a>
     </li></ul></dd>
     
     
@@ -96,7 +96,7 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="getCurrentAcceleration"><span class="type-signature"></span>getCurrentAcceleration<span class="signature">(options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="getPicture"><span class="type-signature"></span>getPicture<span class="signature">(msg, options)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -104,7 +104,7 @@
     
     
     <div class="description">
-        获取当前加速度，接收成功和失败的回调
+        启动canema，读取手机图库
     </div>
     
 
@@ -138,6 +138,29 @@
 	
         <tr>
             
+                <td class="name"><code>msg</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">提示文字</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
                 <td class="name"><code>options</code></td>
             
             
@@ -154,7 +177,7 @@
             
             
             
-            <td class="description last">由onSuccess 和 onFail组成
+            <td class="description last">可定义
                 <h6>Properties</h6>
                 
 
@@ -206,7 +229,7 @@
             
             
             
-            <td class="description last">成功的回调</td>
+            <td class="description last">成功</td>
         </tr>
 	
 	
@@ -228,8 +251,6 @@
             
                 <td class="attributes">
                 
-                    &lt;optional><br>
-                
                     
                 
                     
@@ -239,232 +260,14 @@
             
             
             
-            <td class="description last">失败的回调</td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-            </td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="accelerometer.js.html">accelerometer.js</a>, <a href="accelerometer.js.html#line20">line 20</a>
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    null
-</div>
-
-
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="listen"><span class="type-signature"></span>listen<span class="signature">(options)</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        已一定的频率，获取当前加速度，接收成功，失败的回调和间隔
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last">由onSuccess 和 onFail组成
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Argument</th>
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>onSuccess</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last">成功的回调</td>
+            <td class="description last">失败</td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>onFail</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last">失败的回调</td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>frequency</code></td>
+                <td class="name"><code>quality</code></td>
             
             
             <td class="type">
@@ -490,191 +293,6 @@
             
             
             
-            <td class="description last">检查的间隔，默认10000 ms</td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-            </td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="accelerometer.js.html">accelerometer.js</a>, <a href="accelerometer.js.html#line43">line 43</a>
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    null
-</div>
-
-
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="stop"><span class="type-signature"></span>stop<span class="signature">(options)</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        终止获取回调
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last">由onSuccess 和 onFail组成
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Argument</th>
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>onSuccess</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    
-                
-                    
-                
-                </td>
-            
-            
-            
-            
             <td class="description last"></td>
         </tr>
 	
@@ -682,13 +300,13 @@
 	
         <tr>
             
-                <td class="name"><code>onFail</code></td>
+                <td class="name"><code>destinationType</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type">number</span>
 
 
             
@@ -708,7 +326,172 @@
             
             
             
-            <td class="description last">失败的回调</td>
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>sourceType</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>mediaType</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>mediaDirection</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>encodingType</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>saveToPhotoAlbum</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolen</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"></td>
         </tr>
 	
 	
@@ -745,7 +528,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="accelerometer.js.html">accelerometer.js</a>, <a href="accelerometer.js.html#line68">line 68</a>
+        <a href="media.js.html">media.js</a>, <a href="media.js.html#line42">line 42</a>
     </li></ul></dd>
     
     

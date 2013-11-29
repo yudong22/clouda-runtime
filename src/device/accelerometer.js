@@ -34,6 +34,8 @@ define("device",function(module) {
         getCurrentAcceleration(options.onSuccess,function(){
             if (options && typeof options.onFail == 'function'){
                 options.onFail(ErrCode.ACC_GET_ERR);
+            }else{
+                lightapp.error(ErrCode.ACC_GET_ERR);
             }
         },options);
     };
@@ -57,6 +59,8 @@ define("device",function(module) {
         start_id = watchAcceleration(options.onSuccess,function(){
             if (options && typeof options.onFail == 'function'){
                 options.onFail(ErrCode.ACC_GET_ERR);
+            }else{
+                lightapp.error(ErrCode.ACC_GET_ERR);
             }
             
         },options);

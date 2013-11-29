@@ -3,12 +3,38 @@ define("device",function(module) {
     //定义 contact 空间，clouda.device.contact 支持退化
     var it = module.contact = {};
     
-    //需要device的contact模块
-    var boot = ['create','find'];
+    /**
+     * @object contact
+     * @memberof clouda.device
+     * @instance
+     * @namespace clouda.device.contact
+     */
     
-    for(var i=0,len=boot.length;i<len;i++){
-        it[boot[i]] = new delegateClass("device","contact",boot[i]);
-    }
+    var create = new delegateClass("device","contact","create");
+    var find =new delegateClass("device","contact","find");
     
-    return module;
+    
+    /**
+     * Returns an array of Contacts matching the search criteria.
+     *
+     * @function find
+     * @memberof clouda.device.contact
+     * @instance
+     *
+     * @param fields that should be searched
+     * @param {{}} options
+     * @param {Function} options.onSuccess
+     * @param {Function} options.onFail
+     * @return null
+     */
+    it.find = function(fields,options){
+        find(fields,options.onSuccess,function(){
+            if (options && typeof options.onFail == 'function'){
+                options.onFail(ErrCode.CONTACT_FIND_ERR);
+            }else{
+                lightapp.error(ErrCode.CONTACT_FIND_ERR);
+            }
+        },options);
+    };
+    
 });

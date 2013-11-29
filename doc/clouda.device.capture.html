@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Namespace: notification</title>
+    <title>JSDoc: Namespace: capture</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Namespace: notification</h1>
+    <h1 class="page-title">Namespace: capture</h1>
     
     
 
@@ -27,7 +27,7 @@
     
 <header>
     <h2>
-    notification
+    capture
     </h2>
     
 </header>  
@@ -62,7 +62,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="notification.js.html">notification.js</a>, <a href="notification.js.html#line2">line 2</a>
+        <a href="capture.js.html">capture.js</a>, <a href="capture.js.html#line6">line 6</a>
     </li></ul></dd>
     
     
@@ -96,7 +96,7 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="alert"><span class="type-signature"></span>alert<span class="signature">(msg, options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="captureAudio"><span class="type-signature"></span>captureAudio<span class="signature">(options)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -104,7 +104,7 @@
     
     
     <div class="description">
-        调用系统 alert 方法，接收一个message参数和一个可选的配置
+        Launch audio recorder application for recording audio clip(s).
     </div>
     
 
@@ -134,29 +134,6 @@
 	</thead>
 	
 	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>msg</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last">提示文字</td>
-        </tr>
-	
 	
 	
         <tr>
@@ -177,7 +154,7 @@
             
             
             
-            <td class="description last">可定义
+            <td class="description last">
                 <h6>Properties</h6>
                 
 
@@ -195,6 +172,8 @@
 		
 		
 		
+		<th>Default</th>
+		
 		
 		<th class="last">Description</th>
 	</tr>
@@ -211,7 +190,7 @@
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type">Function</span>
 
 
             
@@ -219,8 +198,6 @@
             
             
                 <td class="attributes">
-                
-                    &lt;optional><br>
                 
                     
                 
@@ -230,21 +207,25 @@
             
             
             
+                <td class="default">
+                
+                </td>
             
-            <td class="description last">点击button的callback</td>
+            
+            <td class="description last"></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>title</code></td>
+                <td class="name"><code>onFail</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">Function</span>
 
 
             
@@ -252,8 +233,6 @@
             
             
                 <td class="attributes">
-                
-                    &lt;optional><br>
                 
                     
                 
@@ -263,21 +242,25 @@
             
             
             
+                <td class="default">
+                
+                </td>
             
-            <td class="description last">弹出框的title</td>
+            
+            <td class="description last"></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>buttonName</code></td>
+                <td class="name"><code>limit</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">int</span>
 
 
             
@@ -296,8 +279,53 @@
             
             
             
+                <td class="default">
+                
+                    1
+                
+                </td>
             
-            <td class="description last">弹出框的buttonName</td>
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>duration</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+                <td class="default">
+                
+                    0
+                
+                </td>
+            
+            
+            <td class="description last"></td>
         </tr>
 	
 	
@@ -334,7 +362,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="notification.js.html">notification.js</a>, <a href="notification.js.html#line17">line 17</a>
+        <a href="capture.js.html">capture.js</a>, <a href="capture.js.html#line18">line 18</a>
     </li></ul></dd>
     
     
@@ -355,16 +383,6 @@
     
     
     
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    null
-</div>
-
-
-
-        
     
     
 </dd>
@@ -372,7 +390,7 @@
         
             
 <dt>
-    <h4 class="name" id="beep"><span class="type-signature"></span>beep<span class="signature">(milliseconds)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="captureAudio"><span class="type-signature"></span>captureAudio<span class="signature">(options)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -380,7 +398,7 @@
     
     
     <div class="description">
-        滴滴声
+        Launch audio recorder application for recording audio clip(s).
     </div>
     
 
@@ -410,156 +428,6 @@
 	</thead>
 	
 	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>milliseconds</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last">持续时间，1000 毫秒 等于 1 秒</td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="notification.js.html">notification.js</a>, <a href="notification.js.html#line59">line 59</a>
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    null
-</div>
-
-
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="confirm"><span class="type-signature"></span>confirm<span class="signature">(msg, options)</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        调用系统 confirm 方法，接收一个message参数和一个可选的配置
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>msg</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last">提示文字</td>
-        </tr>
-	
 	
 	
         <tr>
@@ -580,7 +448,7 @@
             
             
             
-            <td class="description last">可定义
+            <td class="description last">
                 <h6>Properties</h6>
                 
 
@@ -598,6 +466,8 @@
 		
 		
 		
+		<th>Default</th>
+		
 		
 		<th class="last">Description</th>
 	</tr>
@@ -614,7 +484,7 @@
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type">Function</span>
 
 
             
@@ -622,8 +492,6 @@
             
             
                 <td class="attributes">
-                
-                    &lt;optional><br>
                 
                     
                 
@@ -633,21 +501,25 @@
             
             
             
+                <td class="default">
+                
+                </td>
             
-            <td class="description last">点击确定的callback</td>
+            
+            <td class="description last"></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>title</code></td>
+                <td class="name"><code>onFail</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">Function</span>
 
 
             
@@ -655,8 +527,6 @@
             
             
                 <td class="attributes">
-                
-                    &lt;optional><br>
                 
                     
                 
@@ -666,21 +536,25 @@
             
             
             
+                <td class="default">
+                
+                </td>
             
-            <td class="description last">弹出框的title</td>
+            
+            <td class="description last"></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>buttonLabels</code></td>
+                <td class="name"><code>limit</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">array</span>
+<span class="param-type">int</span>
 
 
             
@@ -699,8 +573,53 @@
             
             
             
+                <td class="default">
+                
+                    1
+                
+                </td>
             
-            <td class="description last">弹出框的确定和取消按键，默认是['ok','cancel']</td>
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>duration</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+                <td class="default">
+                
+                    0
+                
+                </td>
+            
+            
+            <td class="description last"></td>
         </tr>
 	
 	
@@ -737,7 +656,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="notification.js.html">notification.js</a>, <a href="notification.js.html#line38">line 38</a>
+        <a href="media.js.html">media.js</a>, <a href="media.js.html#line77">line 77</a>
     </li></ul></dd>
     
     
@@ -758,16 +677,6 @@
     
     
     
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    null
-</div>
-
-
-
-        
     
     
 </dd>
@@ -775,7 +684,7 @@
         
             
 <dt>
-    <h4 class="name" id="prompt"><span class="type-signature"></span>prompt<span class="signature">(msg, options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="captureImage"><span class="type-signature"></span>captureImage<span class="signature">(options)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -783,7 +692,7 @@
     
     
     <div class="description">
-        弹出定制化的dialog，接收一个message参数和一个可选的配置
+        Launch camera application for taking image(s).
     </div>
     
 
@@ -813,29 +722,6 @@
 	</thead>
 	
 	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>msg</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last">提示文字</td>
-        </tr>
-	
 	
 	
         <tr>
@@ -856,7 +742,7 @@
             
             
             
-            <td class="description last">可定义
+            <td class="description last">
                 <h6>Properties</h6>
                 
 
@@ -874,6 +760,8 @@
 		
 		
 		
+		<th>Default</th>
+		
 		
 		<th class="last">Description</th>
 	</tr>
@@ -890,7 +778,7 @@
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type">Function</span>
 
 
             
@@ -898,8 +786,6 @@
             
             
                 <td class="attributes">
-                
-                    &lt;optional><br>
                 
                     
                 
@@ -909,21 +795,25 @@
             
             
             
+                <td class="default">
+                
+                </td>
             
-            <td class="description last">点击确定的callback</td>
+            
+            <td class="description last"></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>title</code></td>
+                <td class="name"><code>onFail</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">Function</span>
 
 
             
@@ -931,8 +821,6 @@
             
             
                 <td class="attributes">
-                
-                    &lt;optional><br>
                 
                     
                 
@@ -942,21 +830,25 @@
             
             
             
+                <td class="default">
+                
+                </td>
             
-            <td class="description last">标题</td>
+            
+            <td class="description last"></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>buttonLabels</code></td>
+                <td class="name"><code>limit</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">array</span>
+<span class="param-type">int</span>
 
 
             
@@ -975,41 +867,14 @@
             
             
             
-            
-            <td class="description last">确定和取消按键，默认是['ok','cancel']</td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>defaultText</code></td>
-            
-            
-            <td class="type">
-            
+                <td class="default">
                 
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                    
+                    1
                 
                 </td>
             
             
-            
-            
-            <td class="description last">输入框默认文字</td>
+            <td class="description last"></td>
         </tr>
 	
 	
@@ -1046,7 +911,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="notification.js.html">notification.js</a>, <a href="notification.js.html#line84">line 84</a>
+        <a href="capture.js.html">capture.js</a>, <a href="capture.js.html#line44">line 44</a>
     </li></ul></dd>
     
     
@@ -1067,16 +932,6 @@
     
     
     
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    null
-</div>
-
-
-
-        
     
     
 </dd>
@@ -1084,7 +939,7 @@
         
             
 <dt>
-    <h4 class="name" id="vibrate"><span class="type-signature"></span>vibrate<span class="signature">(milliseconds)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="captureVideo"><span class="type-signature"></span>captureVideo<span class="signature">(options)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -1092,7 +947,7 @@
     
     
     <div class="description">
-        振动
+        Launch device camera application for recording video(s).
     </div>
     
 
@@ -1126,13 +981,13 @@
 	
         <tr>
             
-                <td class="name"><code>milliseconds</code></td>
+                <td class="name"><code>options</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">Object</span>
 
 
             
@@ -1142,7 +997,184 @@
             
             
             
-            <td class="description last">持续时间，1000 毫秒 等于 1 秒</td>
+            <td class="description last">
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		<th>Default</th>
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>onSuccess</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Function</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>onFail</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Function</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+                <td class="default">
+                
+                    1
+                
+                </td>
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>duration</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+                <td class="default">
+                
+                    0
+                
+                </td>
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+            </td>
         </tr>
 	
 	
@@ -1173,7 +1205,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="notification.js.html">notification.js</a>, <a href="notification.js.html#line71">line 71</a>
+        <a href="capture.js.html">capture.js</a>, <a href="capture.js.html#line67">line 67</a>
     </li></ul></dd>
     
     
@@ -1194,16 +1226,300 @@
     
     
     
-    <h5>Returns:</h5>
     
-            
-<div class="param-desc">
-    null
-</div>
-
-
+    
+</dd>
 
         
+            
+<dt>
+    <h4 class="name" id="captureVideo"><span class="type-signature"></span>captureVideo<span class="signature">(options)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Launch device camera application for recording video(s).
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		<th>Default</th>
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>onSuccess</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Function</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>onFail</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Function</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+                <td class="default">
+                
+                    1
+                
+                </td>
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>duration</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+                <td class="default">
+                
+                    0
+                
+                </td>
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+            </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="media.js.html">media.js</a>, <a href="media.js.html#line103">line 103</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
     
     
 </dd>

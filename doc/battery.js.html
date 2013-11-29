@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: accelerometer.js</title>
+    <title>JSDoc: Source: battery.js</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Source: accelerometer.js</h1>
+    <h1 class="page-title">Source: battery.js</h1>
     
     
 
@@ -27,28 +27,25 @@
         <article>
             <pre class="prettyprint source"><code>define("device",function(module) {
     var lightapp = this;
-    //定义 accelerometer 空间，clouda.device.accelerometer 
-     /**
-     * @object accelerometer
-     * @memberof clouda.device
-     * @instance
-     * @namespace clouda.device.accelerometer
-     */
-    var it = module.accelerometer = {};
-    
-    //需要device的accelerometer模块
-    // var boot = ['clearWatch','getCurrentAcceleration','watchAcceleration'];
-    
-    var getCurrentAcceleration = new delegateClass("device","accelerometer","getCurrentAcceleration");
-    var watchAcceleration = new delegateClass("device","accelerometer","watchAcceleration");
-    var clearWatch = new delegateClass("device","accelerometer","clearWatch");
-    
+    //定义 battery 空间，clouda.device.battery 支持退化
+    var it = module.battery = {};
     
     /**
-     * 获取当前加速度，接收成功和失败的回调
+     * @object battery
+     * @memberof clouda.device
+     * @instance
+     * @namespace clouda.device.battery
+     */
+    
+    var start = new delegateClass("device","batteryStatus","start");
+    var stop = new delegateClass("device","batteryStatus","stop");
+    
+    var start_id;
+    /**
+     * 已一定的频率获取电池状态
      *
-     * @function getCurrentAcceleration
-     * @memberof clouda.device.accelerometer
+     * @function listen
+     * @memberof clouda.device.battery
      * @instance
      *
      * @param {{}} options 由onSuccess 和 onFail组成
@@ -57,57 +54,36 @@
      * @returns null
      * 
      */
-    it.getCurrentAcceleration = function(options){
-        getCurrentAcceleration(options.onSuccess,function(){
+    it.listen = function(){
+        start_id = start(options.onSuccess,function(){
             if (options && typeof options.onFail == 'function'){
                 options.onFail(ErrCode.ACC_GET_ERR);
-            }else{
-                lightapp.error(ErrCode.ACC_GET_ERR);
-            }
-        },options);
-    };
-    
-    /**
-     * 已一定的频率，获取当前加速度，接收成功，失败的回调和间隔
-     *
-     * @function listen
-     * @memberof clouda.device.accelerometer
-     * @instance
-     *
-     * @param {{}} options 由onSuccess 和 onFail组成
-     * @param {function} options.onSuccess 成功的回调 
-     * @param {function} [options.onFail] 失败的回调
-     * @param {number} [options.frequency] 检查的间隔，默认10000 ms
-     * @returns null
-     * 
-     */
-    var start_id;
-    it.listen = function(options){
-        start_id = watchAcceleration(options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.ACC_GET_ERR);
-            }else{
-                lightapp.error(ErrCode.ACC_GET_ERR);
             }
             
         },options);
     };
     /**
-     * 终止获取回调
+     * 停止获取电池状态
      *
      * @function stop
-     * @memberof clouda.device.accelerometer
+     * @memberof clouda.device.battery
      * @instance
      *
      * @param {{}} options 由onSuccess 和 onFail组成
-     * @param {function} options.onSuccess 
+     * @param {function} options.onSuccess 成功的回调
      * @param {function} [options.onFail] 失败的回调
      * @returns null
      * 
      */
-    it.stop = function() {
-        clearWatch(start_id);
+    it.stop = function(){
+        stop(options.onSuccess,function(){
+            if (options && typeof options.onFail == 'function'){
+                options.onFail(ErrCode.ACC_GET_ERR);
+            }
+            
+        },options);
     };
+    
     return it;
 });</code></pre>
         </article>

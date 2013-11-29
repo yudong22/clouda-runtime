@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: accelerometer.js</title>
+    <title>JSDoc: Source: geolocation.js</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Source: accelerometer.js</h1>
+    <h1 class="page-title">Source: geolocation.js</h1>
     
     
 
@@ -27,42 +27,38 @@
         <article>
             <pre class="prettyprint source"><code>define("device",function(module) {
     var lightapp = this;
-    //定义 accelerometer 空间，clouda.device.accelerometer 
-     /**
-     * @object accelerometer
-     * @memberof clouda.device
-     * @instance
-     * @namespace clouda.device.accelerometer
-     */
-    var it = module.accelerometer = {};
-    
-    //需要device的accelerometer模块
-    // var boot = ['clearWatch','getCurrentAcceleration','watchAcceleration'];
-    
-    var getCurrentAcceleration = new delegateClass("device","accelerometer","getCurrentAcceleration");
-    var watchAcceleration = new delegateClass("device","accelerometer","watchAcceleration");
-    var clearWatch = new delegateClass("device","accelerometer","clearWatch");
-    
+    //定义 geolocation 空间，clouda.device.geolocation 支持退化
+    var it = module.geolocation = {};
     
     /**
-     * 获取当前加速度，接收成功和失败的回调
+     * @object geolocation
+     * @memberof clouda.device
+     * @instance
+     * @namespace clouda.device.geolocation
+     */
+    
+    var getCurrentPosition = new delegateClass("device","geolocation","getCurrentPosition");
+    var watchPosition = new delegateClass("device","geolocation","watchPosition");
+    var clearWatch = new delegateClass("device","geolocation","clearWatch");
+    
+    /**
+     * 获取当前地理位置，接收成功和失败的回调
      *
-     * @function getCurrentAcceleration
-     * @memberof clouda.device.accelerometer
+     * @function getCurrentPosition
+     * @memberof clouda.device.geolocation
      * @instance
      *
      * @param {{}} options 由onSuccess 和 onFail组成
      * @param {function} options.onSuccess 成功的回调
      * @param {function} [options.onFail] 失败的回调
+     * @param {boolen} [options.enableHighAccuracy] 高精度
      * @returns null
      * 
      */
-    it.getCurrentAcceleration = function(options){
-        getCurrentAcceleration(options.onSuccess,function(){
+    it.getCurrentPosition = function(options){
+        getCurrentPosition(options.onSuccess,function(){
             if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.ACC_GET_ERR);
-            }else{
-                lightapp.error(ErrCode.ACC_GET_ERR);
+                options.onFail(ErrCode.LOC_GET_ERR);
             }
         },options);
     };
@@ -71,32 +67,31 @@
      * 已一定的频率，获取当前加速度，接收成功，失败的回调和间隔
      *
      * @function listen
-     * @memberof clouda.device.accelerometer
+     * @memberof clouda.device.geolocation
      * @instance
      *
      * @param {{}} options 由onSuccess 和 onFail组成
      * @param {function} options.onSuccess 成功的回调 
      * @param {function} [options.onFail] 失败的回调
-     * @param {number} [options.frequency] 检查的间隔，默认10000 ms
+     * @param {boolen} [options.enableHighAccuracy] 高精度
      * @returns null
      * 
      */
     var start_id;
-    it.listen = function(options){
-        start_id = watchAcceleration(options.onSuccess,function(){
+    it.listen = function(){
+        start_id = watchPosition(options.onSuccess,function(){
             if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.ACC_GET_ERR);
-            }else{
-                lightapp.error(ErrCode.ACC_GET_ERR);
+                options.onFail(ErrCode.LOC_GET_ERR);
             }
             
         },options);
     };
+    
     /**
      * 终止获取回调
      *
      * @function stop
-     * @memberof clouda.device.accelerometer
+     * @memberof clouda.device.geolocation
      * @instance
      *
      * @param {{}} options 由onSuccess 和 onFail组成
@@ -105,10 +100,11 @@
      * @returns null
      * 
      */
-    it.stop = function() {
+    it.stop = function(){
         clearWatch(start_id);
     };
-    return it;
+    
+    return module;
 });</code></pre>
         </article>
     </section>
