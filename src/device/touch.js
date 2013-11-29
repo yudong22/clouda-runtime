@@ -104,7 +104,7 @@ define("touch",function(module, clouda) {
                 detail: detail
             };
 
-            if (CustomEvent) {
+            if (typeof CustomEvent !== 'undefined') {
                 e = new CustomEvent(evt, opt);
                 if (el) {
                     el.dispatchEvent(e);
@@ -539,8 +539,7 @@ define("touch",function(module, clouda) {
                     }
 
                     if (Math.abs(rotation) > config.minRotationAngle) {
-                        var rotationEv = _utils.deepCopy(eventObj),
-                        eventType;
+                        var rotationEv = _utils.deepCopy(eventObj), eventType;
 
                         eventType = rotation > 0 ? smrEventList.ROTATION_RIGHT: smrEventList.ROTATION_LEFT;
                         _trigger(el, eventType, rotationEv, false);
@@ -581,7 +580,7 @@ define("touch",function(module, clouda) {
                         reset();
                     }
 
-                    eventType = rotation > 0 ? smrEventList.ROTATION_RIGHT: smrEventList.ROTATION_LEFT;
+                    var eventType = rotation > 0 ? smrEventList.ROTATION_RIGHT: smrEventList.ROTATION_LEFT;
                     _trigger(el, eventType, eventObj);
                     _trigger(el, smrEventList.ROTATION, eventObj);
                 }
