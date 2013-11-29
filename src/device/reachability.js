@@ -22,7 +22,6 @@ define("device",function(module) {
     };
     
     // it.status = it.ConnectionType.UNKNOWN;
-    //TODO 应该提供监听方法
     
     var getInfo = new delegateClass("device","network","getInfo");
     
@@ -45,7 +44,32 @@ define("device",function(module) {
             }
         },options);
      };
-    
-    
+    //TODO 应该提供监听方法
+    /**
+     * 应该提供监听网络变化的方法
+     *
+     * @function listen
+     * @memberof clouda.device.reachability
+     * @instance
+     * @param {{}} options
+     * @param {Function} options.onSuccess
+     * @param {Function} options.onFail
+     */
+    it.listen = function(options){
+        
+    };
+     /**
+     * 应该提供停止监听网络变化的方法
+     *
+     * @function stop
+     * @memberof clouda.device.reachability
+     * @instance
+     * @param {{}} options
+     * @param {Function} options.onSuccess
+     * @param {Function} options.onFail
+     */
+    it.stop = function(options){
+        
+    };
     return module;
 });

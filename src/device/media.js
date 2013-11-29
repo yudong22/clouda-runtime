@@ -122,18 +122,5 @@ define("device",function(module) {
         },options);
      };
      
-     /**
-     * js控制关闭摄像头应用
-     *
-     * @function terminateCapture
-     * @memberof clouda.device.media
-     * @instance
-     * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
-     */
-     it.terminateCapture = function(options){
-        console.error("开发中");
-     };
     return module;
 });
