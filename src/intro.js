@@ -15,12 +15,16 @@
         /*SUCCESS*/
         SUCCESS:0,
         
+        //RUNTIME ERROR
         AK_UNDEFINED:1,
         RT_UNDEFINED:2,
         RT_GETERROR:5,
        
         EXEC_ERROR:3,
         USER_CANCEL:4,
+        
+        //API ERROR
+        ACC_GET_ERR:5,
         
         
     };

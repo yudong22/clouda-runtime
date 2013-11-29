@@ -52,7 +52,7 @@ define("device",function(module) {
      */
     it.confirm = function(msg,options){
         if (typeof options === 'object'){
-            return confirm(msg,options.onSuccess,options.title,options.buttonLabels,options);
+            return confirm.apply(this,msg,options.onSuccess,options.title,options.buttonLabels,options);
         }
         return confirm(msg);
     };
