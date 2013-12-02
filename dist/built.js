@@ -16,13 +16,19 @@
         /*SUCCESS*/
         SUCCESS:0,
         
+        //不符合预期
+        UNKNOW_CALLBACK:-1,
+        //用户取消
+        USER_CANCEL:-2,
+        
         //RUNTIME ERROR
-        AK_UNDEFINED:1,
-        RT_UNDEFINED:2,
+        AK_UNDEFINED:-4,
+        RT_UNDEFINED:-3,
         RT_GETERROR:5,
        
-        EXEC_ERROR:3,
-        USER_CANCEL:4,
+        
+        
+        EXEC_ERROR:-5,
         
         //API ERROR
         ACC_GET_ERR:6,
@@ -31,25 +37,37 @@
         CONTACT_FIND_ERR:9,
         GLO_ERR:10,
         REACH_ERR:11,
+        MEDIA_ERR:12,
         
         
     };
     var errorMessage = {
       0:"成功",
-      1:"错误，您需要在调用api前设置ak。 clouda.lightapp(your_ak_here);",
-      2:"接口的运行环境不存在。",
-      3:"执行接口出错。",
-      4:"用户取消",
+      "-1":"接口返回不符合预期",
+      "-2":"用户取消",
+      "-3":"接口的运行环境不存在。",
+      "-4":"错误，您需要在调用api前设置ak。 clouda.lightapp(your_ak_here);",
+      "-5":"执行接口出错。",
       5:"接口的运行环境准备中出错。",
       6:"accelerometer 接口返回错误",
       7:"geolocation 接口返回错误",
     };
-    var runtimeError  = function(errno){
+    
+    //第一个是接口层错误号，第二个是app层错误号，第三个是options，如果定义了onFail要触发
+    var runtimeError  = function(errno,apperrno,options){
+        //整合errno
+        if (errno < 0 ){//如果是用户取消或者接口不符标准，直接覆盖传入
+            apperrno = errno;
+        }
+        if (typeof options === 'object' && typeof options.onFail === 'function'){
+            options.onFail(apperrno);
+        }
+        
         try{
             throw new Error();
         }catch(e){
             var stackStr = (e.stack.split('\n'));
-            console.error(errorMessage[errno] ," " + stackStr[2].replace(/\s*/,""));
+            console.error(errorMessage[errno]+ (apperrno?" app错误号"+apperrno:"")+ stackStr[2].replace(/\s*/,""));
         }
     };
     
@@ -292,92 +310,88 @@ define("device",function(module) {
     return it;
 });define("device",function(module) {
     var lightapp = this;
-    //定义 capture 空间，clouda.device.capture 
-    var it = module.capture = {};
-    
-    /**
-     * @object capture
+    //定义 compass 空间，clouda.device.compass 
+     /**
+     * @object compass
      * @memberof clouda.device
      * @instance
-     * @namespace clouda.device.capture
+     * @namespace clouda.device.compass
      */
+    var it = module.compass = {};
     
-    var captureAudio = new delegateClass("device","capture","captureAudio");
-    var captureImage = new delegateClass("device","capture","captureImage");
-    var captureVideo = new delegateClass("device","capture","captureVideo");
+    //需要device的compass模块
+    // var boot = ['clearWatch','getCurrentHeading','watchHeading'];
+    
+    var getCurrentHeading = new delegateClass("device","compass","getCurrentHeading");
+    var watchHeading = new delegateClass("device","compass","watchHeading");
+    var clearWatch = new delegateClass("device","compass","clearWatch");
     
     
     /**
-     * Launch audio recorder application for recording audio clip(s).
+     * 获取当前指南针坐标，接收成功和失败的回调
      *
-     * @function captureAudio
-     * @memberof clouda.device.capture
+     * @function getCurrentHeading
+     * @memberof clouda.device.compass
      * @instance
      *
-     * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
-     * @param {int} [options.limit=1]
-     * @param {int} [options.duration=0]
-     *
-     *
+     * @param {{}} options 由onSuccess 和 onFail组成
+     * @param {function} options.onSuccess 成功的回调
+     * @param {function} [options.onFail] 失败的回调
+     * @returns null
+     * 
      */
-    it.captureAudio = function(options){
-        captureAudio(options.onSuccess,function(){
+    it.getCurrentHeading = function(options){
+        getCurrentHeading(options.onSuccess,function(){
             if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.CAP_GET_ERR);
+                options.onFail(ErrCode.ACC_GET_ERR);
             }else{
-                lightapp.error(ErrCode.CAP_GET_ERR);
+                lightapp.error(ErrCode.ACC_GET_ERR);
             }
         },options);
     };
     
-    
     /**
+     * 已一定的频率，获取当前指南针坐标，接收成功，失败的回调和间隔
      *
-     * Launch camera application for taking image(s).
-     *
-     * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
-     * @param {int} [options.limit=1]
-     * @function captureImage
-     * @memberof clouda.device.capture
+     * @function listen
+     * @memberof clouda.device.compass
      * @instance
+     *
+     * @param {{}} options 由onSuccess 和 onFail组成
+     * @param {function} options.onSuccess 成功的回调 
+     * @param {function} [options.onFail] 失败的回调
+     * @param {number} [options.frequency] 检查的间隔，默认100 ms
+     * @returns null
+     * 
      */
-     it.captureImage = function(options){
-        captureImage(options.onSuccess,function(){
+    var start_id;
+    it.listen = function(options){
+        start_id = watchHeading(options.onSuccess,function(){
             if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.CAP_GET_ERR);
+                options.onFail(ErrCode.ACC_GET_ERR);
             }else{
-                lightapp.error(ErrCode.CAP_GET_ERR);
+                lightapp.error(ErrCode.ACC_GET_ERR);
             }
+            
         },options);
-     };
-    
-    
+    };
     /**
-     * Launch device camera application for recording video(s).
+     * 终止获取回调
      *
-     * @function captureVideo
-     * @memberof clouda.device.capture
+     * @function stop
+     * @memberof clouda.device.compass
      * @instance
-     * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
-     * @param {int} [options.limit=1]
-     * @param {int} [options.duration=0]
+     *
+     * @param {{}} options 由onSuccess 和 onFail组成
+     * @param {function} options.onSuccess 
+     * @param {function} [options.onFail] 失败的回调
+     * @returns null
+     * 
      */
-     it.captureVideo = function(options){
-        captureVideo(options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.CAP_GET_ERR);
-            }else{
-                lightapp.error(ErrCode.CAP_GET_ERR);
-            }
-        },options);
-     };
-    
+    it.stop = function() {
+        clearWatch(start_id);
+    };
+    return it;
 });define("device",function(module) {
     var lightapp = this;
     //定义 contact 空间，clouda.device.contact 支持退化
@@ -796,50 +810,54 @@ define("device",function(module) {
     //定义 camera 空间，clouda.device.media 支持退化
     var it = module.media = {};
     /**
-     * @object camera
+     * @object media
      * @memberof clouda.device
      * @instance
      * @namespace clouda.device.media
      */
-    //需要device的camera模块
     
-     it.DestinationType = {
-        DATA_URL : 0,      // Return image as base64-encoded string
-        FILE_URI : 1,      // Return image file URI
-        NATIVE_URI : 2     // Return image native URI (e.g., assets-library:// on iOS or content:// on Android)
-     };
-     it.EncodingType = {
-        JPEG : 0,               // Return JPEG encoded image
-        PNG : 1                 // Return PNG encoded image
-     };
-     it.MediaType = {
-        PICTURE: 0,    // allow selection of still pictures only. DEFAULT. Will return format specified via DestinationType
-        VIDEO: 1,      // allow selection of video only, WILL ALWAYS RETURN FILE_URI
-        ALLMEDIA : 2   // allow selection from all media types
-     };
-     it.PictureSourceType = {
-        PHOTOLIBRARY : 0,
-        CAMERA : 1
-     };
-     it.Direction = {
-        BACK : 0,      // Use the back-facing camera
-        FRONT : 1      // Use the front-facing camera
-    };
+    module.MEDIA_DESTINATION={};
+    module.MEDIA_ENCODEING={};
+    module.MEDIA_TYPE={};
+    module.MEDIA_SOURCE={};
+    module.MEDIA_DIRECTION={};
+    
+    //定义类型
+    module.MEDIA_DESTINATION.DATA_URL = 0;
+    module.MEDIA_DESTINATION.FILE_URI = 1;
+    module.MEDIA_DESTINATION.NATIVE_URI = 2;
+    
+    module.MEDIA_ENCODEING.JPEG = 0;
+    module.MEDIA_ENCODEING.PNG = 1;
+    
+    module.MEDIA_TYPE.PICTURE = 0;
+    module.MEDIA_TYPE.VIDEO = 1;
+    module.MEDIA_TYPE.ALLMEDIA = 2; //for function getMedia only
+    module.MEDIA_TYPE.AUDIO = 3; //for function captureMedia only
+    
+    
+    module.MEDIA_SOURCE.PHOTOLIBRARY = 0;
+    module.MEDIA_SOURCE.CAMERA = 1;
+    
+    module.MEDIA_DIRECTION.BACK = 0;
+    module.MEDIA_DIRECTION.FRONT = 1;
+    
+    
+     
     var getPicture = new delegateClass("device","camera","getPicture");
     // var cleanup = new delegateClass("device","camera","cleanup");
     var captureAudio = new delegateClass("device","capture","captureAudio");
-    // var captureImage = new delegateClass("device","capture","captureImage");
+    var captureImage = new delegateClass("device","capture","captureImage");
     var captureVideo = new delegateClass("device","capture","captureVideo");
     
     
     /**
-     * 启动canema，读取手机图库
+     * 启动canema，支持读取手机图库或者拍照
      *
-     * @function getPicture
+     * @function getMedia
      * @memberof clouda.device.media
      * @instance
      *
-     * @param {string} msg 提示文字
      * @param {{}} options 可定义
      * @param {function} options.onSuccess 成功
      * @param {function} options.onFail 失败
@@ -854,67 +872,57 @@ define("device",function(module) {
      * 
      */
     
-    it.captureImage = function(options){
-        getPicture(options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.REACH_ERR);
+    it.getMedia = function(options){
+        getPicture(function(imageData){//success callback
+            if (imageData && typeof imageData=='string'){
+                options.onSuccess.apply(this,arguments);
             }else{
-                lightapp.error(ErrCode.REACH_ERR);
+                lightapp.error(ErrCode.MEDIA_ERR,ErrCode.UNKNOW_CALLBACK,options);
             }
+            
+        },function(nativeErr){
+            lightapp.error(ErrCode.MEDIA_ERR,nativeErr,options);
         },options);
-        // getPicture(options.onSuccess,options.onFail,options);
     };
-    //没有终止
-    
     
     /**
+     *
      * Launch audio recorder application for recording audio clip(s).
      *
-     * @function captureAudio
+     * @function captureMedia
      * @memberof clouda.device.media
      * @instance
      *
      * @param {{}} options
      * @param {Function} options.onSuccess
      * @param {Function} options.onFail
+     * @param {int} options.mediaType=clouda.device.MEDIA_TYPE.PICTURE
      * @param {int} [options.limit=1]
      * @param {int} [options.duration=0]
-     *
-     *
+     * @returns null
+     * 
      */
-    it.captureAudio = function(options){
-        captureAudio(options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.CAP_GET_ERR);
+    
+    it.captureMedia = function(options){
+        var func;
+        if (options.mediaType == clouda.device.MEDIA_TYPE.VIDEO){
+            func=captureVideo;
+        }else if (options.mediaType == clouda.device.MEDIA_TYPE.AUDIO){
+            func=captureAudio;
+        }else{//默认 MEDIA_TYPE.PICTURE
+            func=captureImage;
+        }
+        func(function(mediaFile){
+            if (mediaFile && typeof mediaFile=='object'){
+                options.onSuccess.apply(this,arguments);
             }else{
-                lightapp.error(ErrCode.CAP_GET_ERR);
+                lightapp.error(ErrCode.MEDIA_ERR,ErrCode.UNKNOW_CALLBACK,options);
             }
+        },options.onSuccess,function(nativeErr){
+            lightapp.error(ErrCode.MEDIA_ERR,nativeErr,options);
         },options);
     };
     
-    
-    /**
-     * Launch device camera application for recording video(s).
-     *
-     * @function captureVideo
-     * @memberof clouda.device.media
-     * @instance
-     * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
-     * @param {int} [options.limit=1]
-     * @param {int} [options.duration=0]
-     */
-     it.captureVideo = function(options){
-        captureVideo(options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.CAP_GET_ERR);
-            }else{
-                lightapp.error(ErrCode.CAP_GET_ERR);
-            }
-        },options);
-     };
-     
     return module;
 });define("device",function(module) {
     /**
@@ -1218,7 +1226,7 @@ define("device",function(module) {
         var proxyid = 0;
         var proxies = [];
         var _trigger = function(el, evt, detail) {
-
+			if(!el.bytouch){return;}
             detail = detail || {};
             var e,
                 opt = {
@@ -1962,6 +1970,7 @@ define("device",function(module) {
                         evt = utils.getPCevts(evt);
                     }
                     els.forEach(function(el) {
+						el.bytouch = true;
                         _bind(el, evt, handler);
                     });
                 });
@@ -1973,6 +1982,7 @@ define("device",function(module) {
                     evt = utils.getPCevts(evt);
                 }
                 els.forEach(function(el) {
+					el.bytouch = true;
                     _delegate(el, evt, sel, evtMap[evt]);
                 });
             }
@@ -1991,6 +2001,7 @@ define("device",function(module) {
                     evt = utils.getPCevts(evt);
                 }
                 els.forEach(function(el) {
+					el.bytouch = true;
                     _bind(el, evt, evtMap[evt]);
                 });
             }
@@ -2013,6 +2024,7 @@ define("device",function(module) {
                         evt = utils.getPCevts(evt);
                     }
                     els.forEach(function(el) {
+						el.bytouch = true;
                         _bind(el, evt, handler);
                     });
                 });
@@ -2029,6 +2041,7 @@ define("device",function(module) {
                     if (!_hasTouch) {
                         evt = utils.getPCevts(evt);
                     }
+					el.bytouch = true;
                     _delegate(el, evt, sel, handler);
                 });
                 return;
