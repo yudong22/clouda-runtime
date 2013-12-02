@@ -15,13 +15,19 @@
         /*SUCCESS*/
         SUCCESS:0,
         
+        //不符合预期
+        UNKNOW_CALLBACK:-1,
+        //用户取消
+        USER_CANCEL:-2,
+        
         //RUNTIME ERROR
-        AK_UNDEFINED:1,
-        RT_UNDEFINED:2,
+        AK_UNDEFINED:-4,
+        RT_UNDEFINED:-3,
         RT_GETERROR:5,
        
-        EXEC_ERROR:3,
-        USER_CANCEL:4,
+        
+        
+        EXEC_ERROR:-5,
         
         //API ERROR
         ACC_GET_ERR:6,
@@ -36,20 +42,31 @@
     };
     var errorMessage = {
       0:"成功",
-      1:"错误，您需要在调用api前设置ak。 clouda.lightapp(your_ak_here);",
-      2:"接口的运行环境不存在。",
-      3:"执行接口出错。",
-      4:"用户取消",
+      "-1":"接口返回不符合预期",
+      "-2":"用户取消",
+      "-3":"接口的运行环境不存在。",
+      "-4":"错误，您需要在调用api前设置ak。 clouda.lightapp(your_ak_here);",
+      "-5":"执行接口出错。",
       5:"接口的运行环境准备中出错。",
       6:"accelerometer 接口返回错误",
       7:"geolocation 接口返回错误",
     };
-    var runtimeError  = function(errno){
+    
+    //第一个是接口层错误号，第二个是app层错误号，第三个是options，如果定义了onFail要触发
+    var runtimeError  = function(errno,apperrno,options){
+        //整合errno
+        if (errno < 0 ){//如果是用户取消或者接口不符标准，直接覆盖传入
+            apperrno = errno;
+        }
+        if (typeof options === 'object' && typeof options.onFail === 'function'){
+            options.onFail(apperrno);
+        }
+        
         try{
             throw new Error();
         }catch(e){
             var stackStr = (e.stack.split('\n'));
-            console.error(errorMessage[errno] ," " + stackStr[2].replace(/\s*/,""));
+            console.error(errorMessage[errno]+ (apperrno?" app错误号"+apperrno:"")+ stackStr[2].replace(/\s*/,""));
         }
     };
     

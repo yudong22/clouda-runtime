@@ -9,6 +9,12 @@ define("device",function(module) {
      * @namespace clouda.device.media
      */
     
+    module.MEDIA_DESTINATION={};
+    module.MEDIA_ENCODEING={};
+    module.MEDIA_TYPE={};
+    module.MEDIA_SOURCE={};
+    module.MEDIA_DIRECTION={};
+    
     //定义类型
     module.MEDIA_DESTINATION.DATA_URL = 0;
     module.MEDIA_DESTINATION.FILE_URI = 1;
@@ -64,7 +70,7 @@ define("device",function(module) {
             if (imageData && typeof imageData=='string'){
                 options.onSuccess.apply(this,arguments);
             }else{
-                lightapp.error(ErrCode.MEDIA_ERR,options);
+                lightapp.error(ErrCode.MEDIA_ERR,ErrCode.UNKNOW_CALLBACK,options);
             }
             
         },function(nativeErr){
@@ -83,7 +89,7 @@ define("device",function(module) {
      * @param {{}} options
      * @param {Function} options.onSuccess
      * @param {Function} options.onFail
-     * @param {int} options.media_type=clouda.device.MEDIA_TYPE.PICTURE
+     * @param {int} options.mediaType=clouda.device.MEDIA_TYPE.PICTURE
      * @param {int} [options.limit=1]
      * @param {int} [options.duration=0]
      * @returns null
@@ -92,9 +98,9 @@ define("device",function(module) {
     
     it.captureMedia = function(options){
         var func;
-        if (options.media_type == clouda.device.MEDIA_TYPE.VIDEO){
+        if (options.mediaType == clouda.device.MEDIA_TYPE.VIDEO){
             func=captureVideo;
-        }else if (options.media_type == clouda.device.MEDIA_TYPE.AUDIO){
+        }else if (options.mediaType == clouda.device.MEDIA_TYPE.AUDIO){
             func=captureAudio;
         }else{//默认 MEDIA_TYPE.PICTURE
             func=captureImage;
@@ -103,7 +109,7 @@ define("device",function(module) {
             if (mediaFile && typeof mediaFile=='object'){
                 options.onSuccess.apply(this,arguments);
             }else{
-                lightapp.error(ErrCode.MEDIA_ERR,options);
+                lightapp.error(ErrCode.MEDIA_ERR,ErrCode.UNKNOW_CALLBACK,options);
             }
         },options.onSuccess,function(nativeErr){
             lightapp.error(ErrCode.MEDIA_ERR,nativeErr,options);
