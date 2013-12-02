@@ -28,11 +28,8 @@ define("device",function(module) {
      * 
      */
     it.listen = function(){
-        start_id = start(options.onsuccess,function(){
-            if (options && typeof options.onfail == 'function'){
-                options.onfail(ErrCode.ACC_GET_ERR);
-            }
-            
+        start_id = start(options.onsuccess,function(nativeErr){
+            lightapp.error(ErrCode.BTY_ERROR,nativeErr,options);
         },options);
     };
     /**

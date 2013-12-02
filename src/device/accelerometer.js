@@ -74,8 +74,6 @@ define("device",function(module) {
      * @memberof clouda.device.accelerometer
      * @instance
      *
-     * @param {{}} options 由onsuccess 和 onfail组成
-     * @param {function} options.onsuccess 
      * @param {function} [options.onfail] 失败的回调
      * @returns null
      * 

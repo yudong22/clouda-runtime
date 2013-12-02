@@ -35,6 +35,8 @@
         GLO_ERR:10,
         REACH_ERR:11,
         MEDIA_ERR:12,
+        CPS_ERROR:13,
+        BTY_ERROR:14,
         
         
     };
@@ -83,7 +85,11 @@
         var _this = this;
         execDelegate.call(this,this.module,function(module){
             try{
-                module[_this.submodule][_this.func].apply(_this,args);
+                if (!_this.func){//二级目录
+                    module[_this.submodule].apply(_this,args);
+                }else{
+                    module[_this.submodule][_this.func].apply(_this,args);
+                }
             }catch(e){
                 var code;
                 if (!module){
@@ -156,7 +162,7 @@
      * @param {Function} bindFunction
      *
      */
-    var define= function(name,bindFunction){
+    var define = function(name,bindFunction){
         var module = clouda[name];
         //执行空间在clouda.lightapp下，防止污染其他空间
         bindFunction.call(clouda.lightapp,module, clouda);

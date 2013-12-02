@@ -28,13 +28,16 @@ define("device",function(module) {
      * @return null
      */
     it.find = function(fields,options){
-        find(fields,options.onsuccess,function(){
-            if (options && typeof options.onfail == 'function'){
-                options.onfail(ErrCode.CONTACT_FIND_ERR);
+        find(fields,function(contact_array){
+            if ( Array.isArray(contact_array) ){
+                options.onsuccess.apply(this,arguments);
             }else{
-                lightapp.error(ErrCode.CONTACT_FIND_ERR);
+                lightapp.error(ErrCode.CONTACT_FIND_ERR,ErrCode.UNKNOW_CALLBACK,options);
             }
+        },function(nativeErr){
+            lightapp.error(ErrCode.CONTACT_FIND_ERR,nativeErr,options);
         },options);
+        
     };
     
 });

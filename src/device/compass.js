@@ -31,12 +31,15 @@ define("device",function(module) {
      * 
      */
     it.getCurrentHeading = function(options){
-        getCurrentHeading(options.onsuccess,function(){
-            if (options && typeof options.onfail == 'function'){
-                options.onfail(ErrCode.ACC_GET_ERR);
+
+        getCurrentHeading(function(obj){
+            if ( typeof obj==='object' && typeof obj.magneticHeading !='undefined' && typeof obj.trueHeading !='undefined' ){
+                options.onsuccess.apply(this,arguments);
             }else{
-                lightapp.error(ErrCode.ACC_GET_ERR);
+                lightapp.error(ErrCode.CPS_ERROR,ErrCode.UNKNOW_CALLBACK,options);
             }
+        },function(nativeErr){
+            lightapp.error(ErrCode.CPS_ERROR,nativeErr,options);
         },options);
     };
     
@@ -56,13 +59,14 @@ define("device",function(module) {
      */
     var start_id;
     it.listen = function(options){
-        start_id = watchHeading(options.onsuccess,function(){
-            if (options && typeof options.onfail == 'function'){
-                options.onfail(ErrCode.ACC_GET_ERR);
+        start_id = watchHeading(function(obj){
+            if ( typeof obj==='object' && typeof obj.magneticHeading !='undefined' && typeof obj.trueHeading !='undefined' ){
+                options.onsuccess.apply(this,arguments);
             }else{
-                lightapp.error(ErrCode.ACC_GET_ERR);
+                lightapp.error(ErrCode.CPS_ERROR,ErrCode.UNKNOW_CALLBACK,options);
             }
-            
+        },function(nativeErr){
+            lightapp.error(ErrCode.CPS_ERROR,nativeErr,options);
         },options);
     };
     /**
@@ -71,9 +75,8 @@ define("device",function(module) {
      * @function stop
      * @memberof clouda.device.compass
      * @instance
-     *
-     * @param {{}} options 由onsuccess 和 onfail组成
-     * @param {function} options.onsuccess 
+     * 
+     * 
      * @param {function} [options.onfail] 失败的回调
      * @returns null
      * 

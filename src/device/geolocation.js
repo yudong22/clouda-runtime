@@ -29,10 +29,15 @@ define("device",function(module) {
      * 
      */
     it.getCurrentPosition = function(options){
-        getCurrentPosition(options.onsuccess,function(){
-            if (options && typeof options.onfail == 'function'){
-                options.onfail(ErrCode.LOC_GET_ERR);
+        
+        getCurrentPosition(function(obj){
+            if ( typeof obj==='object' && typeof obj.latitude !='undefined' && typeof obj.longitude !='undefined' ){
+                options.onsuccess.apply(this,arguments);
+            }else{
+                lightapp.error(ErrCode.LOC_GET_ERR,ErrCode.UNKNOW_CALLBACK,options);
             }
+        },function(nativeErr){
+            lightapp.error(ErrCode.LOC_GET_ERR,nativeErr,options);
         },options);
     };
     
@@ -52,11 +57,14 @@ define("device",function(module) {
      */
     var start_id;
     it.listen = function(){
-        start_id = watchPosition(options.onsuccess,function(){
-            if (options && typeof options.onfail == 'function'){
-                options.onfail(ErrCode.LOC_GET_ERR);
+        start_id = watchPosition(function(obj){
+            if ( typeof obj==='object' && typeof obj.latitude !='undefined' && typeof obj.longitude !='undefined' ){
+                options.onsuccess.apply(this,arguments);
+            }else{
+                lightapp.error(ErrCode.LOC_GET_ERR,ErrCode.UNKNOW_CALLBACK,options);
             }
-            
+        },function(nativeErr){
+            lightapp.error(ErrCode.LOC_GET_ERR,nativeErr,options);
         },options);
     };
     
@@ -67,8 +75,6 @@ define("device",function(module) {
      * @memberof clouda.device.geolocation
      * @instance
      *
-     * @param {{}} options 由onsuccess 和 onfail组成
-     * @param {function} options.onsuccess 
      * @param {function} [options.onfail] 失败的回调
      * @returns null
      * 
