@@ -1,4 +1,4 @@
-/*! clouda-runtime - v0.1.0 - 2013-11-29 */
+/*! clouda-runtime - v0.1.0 - 2013-12-02 */
 (function(window){
     // for client js only
     if (typeof window !== 'object')return ;
@@ -417,6 +417,49 @@ define("device",function(module) {
         },options);
     };
     
+});define("device",function(module) {
+    var lightapp = this;
+    //定义 network 空间，clouda.device.reachability 使用nuwa.network 
+    var it = module.fs = {};
+    
+    /**
+     * @object fs
+     * @memberof clouda.device
+     * @instance
+     * @namespace clouda.device.fs
+     */
+    
+    // var getInfo = new delegateClass("device","network","getInfo");
+    
+    
+    //TODO
+    /**
+     * 上传文件
+     *
+     * @function postFile
+     * @memberof clouda.device.fs
+     * @instance
+     * @param {string} file_url 之前获得的127.0.0.1的文件URL地址 
+     * @param {string} target 要POST到的目标,如http://some.host/foo
+     * @param {{}} options
+     * @param {Function} options.onSuccess
+     * @param {Function} options.onFail
+     */
+    it.postFile = function(link,target,options){
+        
+    };
+     /**
+     * 应该提供停止监听网络变化的方法
+     *
+     * @function stop
+     * @memberof clouda.device.reachability
+     * @instance
+     * @param {{}} options
+     * @param {Function} options.onSuccess
+     * @param {Function} options.onFail
+     */
+     
+    return module;
 });define("device",function(module) {
     var lightapp = this;
     //定义 geolocation 空间，clouda.device.geolocation 支持退化
@@ -872,19 +915,6 @@ define("device",function(module) {
         },options);
      };
      
-     /**
-     * js控制关闭摄像头应用
-     *
-     * @function terminateCapture
-     * @memberof clouda.device.media
-     * @instance
-     * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
-     */
-     it.terminateCapture = function(options){
-        console.error("开发中");
-     };
     return module;
 });define("device",function(module) {
     /**
@@ -1016,7 +1046,6 @@ define("device",function(module) {
     };
     
     // it.status = it.ConnectionType.UNKNOWN;
-    //TODO 应该提供监听方法
     
     var getInfo = new delegateClass("device","network","getInfo");
     
@@ -1039,8 +1068,33 @@ define("device",function(module) {
             }
         },options);
      };
-    
-    
+    //TODO 应该提供监听方法
+    /**
+     * 应该提供监听网络变化的方法
+     *
+     * @function listen
+     * @memberof clouda.device.reachability
+     * @instance
+     * @param {{}} options
+     * @param {Function} options.onSuccess
+     * @param {Function} options.onFail
+     */
+    it.listen = function(options){
+        
+    };
+     /**
+     * 应该提供停止监听网络变化的方法
+     *
+     * @function stop
+     * @memberof clouda.device.reachability
+     * @instance
+     * @param {{}} options
+     * @param {Function} options.onSuccess
+     * @param {Function} options.onFail
+     */
+    it.stop = function(options){
+        
+    };
     return module;
 });define("device",function(module) {
     var lightapp = this;
@@ -1742,7 +1796,6 @@ define("device",function(module) {
             },
             tap: function(ev) {
                 var el = ev.target;
-                if (1) {}
                 if (config.tap) {
                     var now = Date.now();
                     var touchTime = now - startTime;

@@ -673,7 +673,6 @@ define("touch",function(module, clouda) {
             },
             tap: function(ev) {
                 var el = ev.target;
-                if (1) {}
                 if (config.tap) {
                     var now = Date.now();
                     var touchTime = now - startTime;
