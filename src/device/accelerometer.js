@@ -10,7 +10,6 @@ define("device",function(module) {
     var it = module.accelerometer = {};
     
     //需要device的accelerometer模块
-    // var boot = ['clearWatch','getCurrentAcceleration','watchAcceleration'];
     
     var getCurrentAcceleration = new delegateClass("device","accelerometer","getCurrentAcceleration");
     var watchAcceleration = new delegateClass("device","accelerometer","watchAcceleration");
@@ -20,23 +19,26 @@ define("device",function(module) {
     /**
      * 获取当前加速度，接收成功和失败的回调
      *
-     * @function getCurrentAcceleration
+     * @function get
      * @memberof clouda.device.accelerometer
      * @instance
      *
-     * @param {{}} options 由onSuccess 和 onFail组成
-     * @param {function} options.onSuccess 成功的回调
-     * @param {function} [options.onFail] 失败的回调
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调
+     * @param {function} [options.onfail] 失败的回调
      * @returns null
      * 
      */
-    it.getCurrentAcceleration = function(options){
-        getCurrentAcceleration(options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.ACC_GET_ERR);
+    it.get = function(options){
+        getCurrentAcceleration(function(obj){
+            options.onsuccess;
+            if ( typeof obj==='object' && typeof obj.x !='undefined' && typeof obj.y !='undefined' && typeof obj.z !='undefined'){
+                options.onsuccess.apply(this,arguments);
             }else{
-                lightapp.error(ErrCode.ACC_GET_ERR);
+                lightapp.error(ErrCode.ACC_GET_ERR,ErrCode.UNKNOW_CALLBACK,options);
             }
+        },function(nativeErr){
+            lightapp.error(ErrCode.ACC_GET_ERR,nativeErr,options);
         },options);
     };
     
@@ -47,22 +49,24 @@ define("device",function(module) {
      * @memberof clouda.device.accelerometer
      * @instance
      *
-     * @param {{}} options 由onSuccess 和 onFail组成
-     * @param {function} options.onSuccess 成功的回调 
-     * @param {function} [options.onFail] 失败的回调
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调 
+     * @param {function} [options.onfail] 失败的回调
      * @param {number} [options.frequency] 检查的间隔，默认10000 ms
      * @returns null
      * 
      */
     var start_id;
     it.listen = function(options){
-        start_id = watchAcceleration(options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.ACC_GET_ERR);
+        start_id = watchAcceleration(function(obj){
+            options.onsuccess;
+            if ( typeof obj==='object' && typeof obj.x !='undefined' && typeof obj.y !='undefined' && typeof obj.z !='undefined'){
+                options.onsuccess.apply(this,arguments);
             }else{
-                lightapp.error(ErrCode.ACC_GET_ERR);
+                lightapp.error(ErrCode.ACC_GET_ERR,ErrCode.UNKNOW_CALLBACK,options);
             }
-            
+        },function(nativeErr){
+            lightapp.error(ErrCode.ACC_GET_ERR,nativeErr,options);
         },options);
     };
     /**
@@ -72,9 +76,9 @@ define("device",function(module) {
      * @memberof clouda.device.accelerometer
      * @instance
      *
-     * @param {{}} options 由onSuccess 和 onFail组成
-     * @param {function} options.onSuccess 
-     * @param {function} [options.onFail] 失败的回调
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 
+     * @param {function} [options.onfail] 失败的回调
      * @returns null
      * 
      */

@@ -23,7 +23,7 @@ define("device",function(module) {
      *
      * @param {string} msg 提示文字
      * @param {{}} options 可定义
-     * @param {function} [options.onSuccess] 点击button的callback
+     * @param {function} [options.onsuccess] 点击button的callback
      * @param {string} [options.title] 弹出框的title
      * @param {string} [options.buttonName] 弹出框的buttonName
      * @returns null
@@ -31,7 +31,7 @@ define("device",function(module) {
      */
     it.alert = function(msg,options){
         if (typeof options === 'object'){
-            return alert(msg,options.onSuccess,options.title,options.buttonName,options);
+            return alert(msg,options.onsuccess,options.title,options.buttonName,options);
         }
         return alert(msg);
     };
@@ -44,7 +44,7 @@ define("device",function(module) {
      *
      * @param {string} msg 提示文字
      * @param {{}} options 可定义
-     * @param {function} [options.onSuccess] 点击确定的callback
+     * @param {function} [options.onsuccess] 点击确定的callback
      * @param {string} [options.title] 弹出框的title
      * @param {array} [options.buttonLabels] 弹出框的确定和取消按键，默认是['ok','cancel']
      * @returns null
@@ -52,7 +52,7 @@ define("device",function(module) {
      */
     it.confirm = function(msg,options){
         if (typeof options === 'object'){
-            return confirm.call(this,msg,options.onSuccess,options.title,options.buttonLabels,options);
+            return confirm.call(this,msg,options.onsuccess,options.title,options.buttonLabels,options);
         }
         return confirm(msg);
     };
@@ -90,7 +90,7 @@ define("device",function(module) {
      *
      * @param {string} msg 提示文字
      * @param {{}} options 可定义
-     * @param {function} [options.onSuccess] 点击确定的callback
+     * @param {function} [options.onsuccess] 点击确定的callback
      * @param {string} [options.title] 标题
      * @param {array} [options.buttonLabels] 确定和取消按键，默认是['ok','cancel']
      * @param {string} [options.defaultText] 输入框默认文字
@@ -99,7 +99,7 @@ define("device",function(module) {
      */
     it.prompt = function(msg,options){
         if (typeof options === 'object'){
-            return prompt(msg,options.onSuccess,options.title,options.buttonLabels,options.defaultText,options);
+            return prompt(msg,options.onsuccess,options.title,options.buttonLabels,options.defaultText,options);
         }
         return prompt(msg);
     };

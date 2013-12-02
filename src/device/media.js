@@ -52,8 +52,8 @@ define("device",function(module) {
      * @instance
      *
      * @param {{}} options 可定义
-     * @param {function} options.onSuccess 成功
-     * @param {function} options.onFail 失败
+     * @param {function} options.onsuccess 成功
+     * @param {function} options.onfail 失败
      * @param {number} [options.quality] 
      * @param {number} [options.destinationType]
      * @param {number} [options.sourceType] 
@@ -67,8 +67,8 @@ define("device",function(module) {
     
     it.getMedia = function(options){
         getPicture(function(imageData){//success callback
-            if (imageData && typeof imageData=='string'){
-                options.onSuccess.apply(this,arguments);
+            if (typeof imageData=='string'){
+                options.onsuccess.apply(this,arguments);
             }else{
                 lightapp.error(ErrCode.MEDIA_ERR,ErrCode.UNKNOW_CALLBACK,options);
             }
@@ -87,8 +87,8 @@ define("device",function(module) {
      * @instance
      *
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      * @param {int} options.mediaType=clouda.device.MEDIA_TYPE.PICTURE
      * @param {int} [options.limit=1]
      * @param {int} [options.duration=0]
@@ -107,11 +107,11 @@ define("device",function(module) {
         }
         func(function(mediaFile){
             if (mediaFile && typeof mediaFile=='object'){
-                options.onSuccess.apply(this,arguments);
+                options.onsuccess.apply(this,arguments);
             }else{
                 lightapp.error(ErrCode.MEDIA_ERR,ErrCode.UNKNOW_CALLBACK,options);
             }
-        },options.onSuccess,function(nativeErr){
+        },options.onsuccess,function(nativeErr){
             lightapp.error(ErrCode.MEDIA_ERR,nativeErr,options);
         },options);
     };

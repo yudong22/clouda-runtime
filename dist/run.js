@@ -16,3 +16,9 @@ var getmedia = function(){
         console.error(arguments);
     },duration:10,limit:2,mediaType:clouda.device.MEDIA_TYPE.VIDEO});
 };
+var accstop = function(){
+    clouda.device.accelerometer.stop({});
+};
+var acclisten = function(){
+    clouda.device.accelerometer.stop();
+};

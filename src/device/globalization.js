@@ -25,13 +25,13 @@ define("device",function(module) {
      * @instance
      *
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      */
      it.getPreferredLanguage = function (options) {
-        toolKit.getPreferredLanguage(options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.GLO_ERR);
+        toolKit.getPreferredLanguage(options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.GLO_ERR);
             }else{
                 lightapp.error(ErrCode.GLO_ERR);
             }
@@ -44,13 +44,13 @@ define("device",function(module) {
      * @instance
      *
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      */
     it.getLocaleName = function (options) {
-        toolKit.getLocaleName(options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.GLO_ERR);
+        toolKit.getLocaleName(options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.GLO_ERR);
             }else{
                 lightapp.error(ErrCode.GLO_ERR);
             }
@@ -63,13 +63,13 @@ define("device",function(module) {
      *
      * @param {Date} date
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      */
     it.dateToString = function (date, options) {
-        toolKit.dateToString(date,options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.GLO_ERR);
+        toolKit.dateToString(date,options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.GLO_ERR);
             }else{
                 lightapp.error(ErrCode.GLO_ERR);
             }
@@ -82,13 +82,13 @@ define("device",function(module) {
      *
      * @param {string} dateString
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      */
     it.stringToDate = function (dateString, options) {
-        toolKit.stringToDate(dateString,options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.GLO_ERR);
+        toolKit.stringToDate(dateString,options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.GLO_ERR);
             }else{
                 lightapp.error(ErrCode.GLO_ERR);
             }
@@ -101,13 +101,13 @@ define("device",function(module) {
      * @instance
      *
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      */
     it.getDatePattern = function (options) {
-        toolKit.getDatePattern(options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.GLO_ERR);
+        toolKit.getDatePattern(options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.GLO_ERR);
             }else{
                 lightapp.error(ErrCode.GLO_ERR);
             }
@@ -120,13 +120,13 @@ define("device",function(module) {
      * @instance
      *
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      */
     it.getDateNames = function (options) {
-        toolKit.getDateNames(options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.GLO_ERR);
+        toolKit.getDateNames(options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.GLO_ERR);
             }else{
                 lightapp.error(ErrCode.GLO_ERR);
             }
@@ -139,13 +139,13 @@ define("device",function(module) {
      *
      * @param {Date} date
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      */
     it.isDayLightSavingsTime = function (date, options) {
-        toolKit.isDayLightSavingsTime(date,options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.GLO_ERR);
+        toolKit.isDayLightSavingsTime(date,options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.GLO_ERR);
             }else{
                 lightapp.error(ErrCode.GLO_ERR);
             }
@@ -158,13 +158,13 @@ define("device",function(module) {
      * @instance
      *
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      */
     it.getFirstDayOfWeek = function (options) {
-        toolKit.getFirstDayOfWeek(options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.GLO_ERR);
+        toolKit.getFirstDayOfWeek(options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.GLO_ERR);
             }else{
                 lightapp.error(ErrCode.GLO_ERR);
             }
@@ -178,13 +178,13 @@ define("device",function(module) {
      *
      * @param {int} number
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      */
     it.numberToString = function (number, options) {
-        toolKit.numberToString(options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.GLO_ERR);
+        toolKit.numberToString(options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.GLO_ERR);
             }else{
                 lightapp.error(ErrCode.GLO_ERR);
             }
@@ -197,13 +197,13 @@ define("device",function(module) {
      *
      * @param {string} numberString
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      */
     it.stringToNumber = function (numberString, options) {
-        toolKit.stringToNumber(numberString,options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.GLO_ERR);
+        toolKit.stringToNumber(numberString,options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.GLO_ERR);
             }else{
                 lightapp.error(ErrCode.GLO_ERR);
             }
@@ -216,13 +216,13 @@ define("device",function(module) {
      * @instance
      *
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      */
     it.getNumberPattern = function (options) {
-        toolKit.getNumberPattern(options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.GLO_ERR);
+        toolKit.getNumberPattern(options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.GLO_ERR);
             }else{
                 lightapp.error(ErrCode.GLO_ERR);
             }
@@ -235,13 +235,13 @@ define("device",function(module) {
      *
      * @param {string} currencyCode
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      */
     it.getCurrencyPattern = function (currencyCode, options) {
-        toolKit.getCurrencyPattern(currencyCode,options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.GLO_ERR);
+        toolKit.getCurrencyPattern(currencyCode,options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.GLO_ERR);
             }else{
                 lightapp.error(ErrCode.GLO_ERR);
             }

@@ -32,13 +32,13 @@ define("device",function(module) {
      * @memberof clouda.device.reachability
      * @instance
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      */
      it.get = function(options){
-        getInfo(options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.REACH_ERR);
+        getInfo(options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.REACH_ERR);
             }else{
                 lightapp.error(ErrCode.REACH_ERR);
             }
@@ -52,8 +52,8 @@ define("device",function(module) {
      * @memberof clouda.device.reachability
      * @instance
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      */
     it.listen = function(options){
         
@@ -65,8 +65,8 @@ define("device",function(module) {
      * @memberof clouda.device.reachability
      * @instance
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      */
     it.stop = function(options){
         

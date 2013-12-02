@@ -24,3 +24,5 @@ Thumbs.db
 ###################
 server.js
 node_modules
+
+/dist/clouda-runtime.js

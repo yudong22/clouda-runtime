@@ -24,16 +24,16 @@ define("device",function(module) {
      * @memberof clouda.device.compass
      * @instance
      *
-     * @param {{}} options 由onSuccess 和 onFail组成
-     * @param {function} options.onSuccess 成功的回调
-     * @param {function} [options.onFail] 失败的回调
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调
+     * @param {function} [options.onfail] 失败的回调
      * @returns null
      * 
      */
     it.getCurrentHeading = function(options){
-        getCurrentHeading(options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.ACC_GET_ERR);
+        getCurrentHeading(options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.ACC_GET_ERR);
             }else{
                 lightapp.error(ErrCode.ACC_GET_ERR);
             }
@@ -47,18 +47,18 @@ define("device",function(module) {
      * @memberof clouda.device.compass
      * @instance
      *
-     * @param {{}} options 由onSuccess 和 onFail组成
-     * @param {function} options.onSuccess 成功的回调 
-     * @param {function} [options.onFail] 失败的回调
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调 
+     * @param {function} [options.onfail] 失败的回调
      * @param {number} [options.frequency] 检查的间隔，默认100 ms
      * @returns null
      * 
      */
     var start_id;
     it.listen = function(options){
-        start_id = watchHeading(options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.ACC_GET_ERR);
+        start_id = watchHeading(options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.ACC_GET_ERR);
             }else{
                 lightapp.error(ErrCode.ACC_GET_ERR);
             }
@@ -72,9 +72,9 @@ define("device",function(module) {
      * @memberof clouda.device.compass
      * @instance
      *
-     * @param {{}} options 由onSuccess 和 onFail组成
-     * @param {function} options.onSuccess 
-     * @param {function} [options.onFail] 失败的回调
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 
+     * @param {function} [options.onfail] 失败的回调
      * @returns null
      * 
      */

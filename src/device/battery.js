@@ -21,16 +21,16 @@ define("device",function(module) {
      * @memberof clouda.device.battery
      * @instance
      *
-     * @param {{}} options 由onSuccess 和 onFail组成
-     * @param {function} options.onSuccess 成功的回调
-     * @param {function} [options.onFail] 失败的回调
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调
+     * @param {function} [options.onfail] 失败的回调
      * @returns null
      * 
      */
     it.listen = function(){
-        start_id = start(options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.ACC_GET_ERR);
+        start_id = start(options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.ACC_GET_ERR);
             }
             
         },options);
@@ -42,16 +42,16 @@ define("device",function(module) {
      * @memberof clouda.device.battery
      * @instance
      *
-     * @param {{}} options 由onSuccess 和 onFail组成
-     * @param {function} options.onSuccess 成功的回调
-     * @param {function} [options.onFail] 失败的回调
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调
+     * @param {function} [options.onfail] 失败的回调
      * @returns null
      * 
      */
     it.stop = function(){
-        stop(options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.ACC_GET_ERR);
+        stop(options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.ACC_GET_ERR);
             }
             
         },options);

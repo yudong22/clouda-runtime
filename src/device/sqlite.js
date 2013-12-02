@@ -9,18 +9,6 @@ define("device",function(module) {
      * @instance
      * @namespace clouda.device.sqlite
      */
-    
-    // var openDatabase = new delegateClass("device","sqlite","openDatabase");
-//     
-    // it.openDatabase = function(options){
-        // openDatabase(options.onSuccess,function(){
-            // if (options && typeof options.onFail == 'function'){
-                // options.onFail(ErrCode.REACH_ERR);
-            // }else{
-                // lightapp.error(ErrCode.REACH_ERR);
-            // }
-        // },options);
-     // };
-    
+   
     return module;
 });

@@ -50,14 +50,14 @@
       7:"geolocation 接口返回错误",
     };
     
-    //第一个是接口层错误号，第二个是app层错误号，第三个是options，如果定义了onFail要触发
+    //第一个是接口层错误号，第二个是app层错误号，第三个是options，如果定义了onfail要触发
     var runtimeError  = function(errno,apperrno,options){
         //整合errno
         if (errno < 0 ){//如果是用户取消或者接口不符标准，直接覆盖传入
             apperrno = errno;
         }
-        if (typeof options === 'object' && typeof options.onFail === 'function'){
-            options.onFail(apperrno);
+        if (typeof options === 'object' && typeof options.onfail === 'function'){
+            options.onfail(apperrno);
         }
         
         try{
@@ -91,9 +91,9 @@
                 }else{
                     code = ErrCode.EXEC_ERROR;
                 }
-                if (args.length && typeof args[args.length-1] === 'object' ){//检查 onFail
-                    if (typeof args[args.length-1].onFail === 'function'){
-                        args[args.length-1].onFail(code);
+                if (args.length && typeof args[args.length-1] === 'object' ){//检查 onfail
+                    if (typeof args[args.length-1].onfail === 'function'){
+                        args[args.length-1].onfail(code);
                     }
                 }
                 _this.error(code);

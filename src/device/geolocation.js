@@ -21,17 +21,17 @@ define("device",function(module) {
      * @memberof clouda.device.geolocation
      * @instance
      *
-     * @param {{}} options 由onSuccess 和 onFail组成
-     * @param {function} options.onSuccess 成功的回调
-     * @param {function} [options.onFail] 失败的回调
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调
+     * @param {function} [options.onfail] 失败的回调
      * @param {boolen} [options.enableHighAccuracy] 高精度
      * @returns null
      * 
      */
     it.getCurrentPosition = function(options){
-        getCurrentPosition(options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.LOC_GET_ERR);
+        getCurrentPosition(options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.LOC_GET_ERR);
             }
         },options);
     };
@@ -43,18 +43,18 @@ define("device",function(module) {
      * @memberof clouda.device.geolocation
      * @instance
      *
-     * @param {{}} options 由onSuccess 和 onFail组成
-     * @param {function} options.onSuccess 成功的回调 
-     * @param {function} [options.onFail] 失败的回调
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调 
+     * @param {function} [options.onfail] 失败的回调
      * @param {boolen} [options.enableHighAccuracy] 高精度
      * @returns null
      * 
      */
     var start_id;
     it.listen = function(){
-        start_id = watchPosition(options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.LOC_GET_ERR);
+        start_id = watchPosition(options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.LOC_GET_ERR);
             }
             
         },options);
@@ -67,9 +67,9 @@ define("device",function(module) {
      * @memberof clouda.device.geolocation
      * @instance
      *
-     * @param {{}} options 由onSuccess 和 onFail组成
-     * @param {function} options.onSuccess 
-     * @param {function} [options.onFail] 失败的回调
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 
+     * @param {function} [options.onfail] 失败的回调
      * @returns null
      * 
      */

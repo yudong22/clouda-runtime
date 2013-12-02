@@ -23,14 +23,14 @@ define("device",function(module) {
      *
      * @param fields that should be searched
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      * @return null
      */
     it.find = function(fields,options){
-        find(fields,options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.CONTACT_FIND_ERR);
+        find(fields,options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.CONTACT_FIND_ERR);
             }else{
                 lightapp.error(ErrCode.CONTACT_FIND_ERR);
             }

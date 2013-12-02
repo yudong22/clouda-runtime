@@ -23,8 +23,8 @@ define("device",function(module) {
      * @param {string} file_url 之前获得的127.0.0.1的文件URL地址 
      * @param {string} target 要POST到的目标,如http://some.host/foo
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      */
     it.postFile = function(link,target,options){
         
@@ -36,8 +36,8 @@ define("device",function(module) {
      * @memberof clouda.device.reachability
      * @instance
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      */
      
     return module;
