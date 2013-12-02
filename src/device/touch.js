@@ -95,7 +95,7 @@ define("touch",function(module, clouda) {
         var proxyid = 0;
         var proxies = [];
         var _trigger = function(el, evt, detail) {
-
+			if(!el.bytouch){return;}
             detail = detail || {};
             var e,
                 opt = {
@@ -839,6 +839,7 @@ define("touch",function(module, clouda) {
                         evt = utils.getPCevts(evt);
                     }
                     els.forEach(function(el) {
+						el.bytouch = true;
                         _bind(el, evt, handler);
                     });
                 });
@@ -850,6 +851,7 @@ define("touch",function(module, clouda) {
                     evt = utils.getPCevts(evt);
                 }
                 els.forEach(function(el) {
+					el.bytouch = true;
                     _delegate(el, evt, sel, evtMap[evt]);
                 });
             }
@@ -868,6 +870,7 @@ define("touch",function(module, clouda) {
                     evt = utils.getPCevts(evt);
                 }
                 els.forEach(function(el) {
+					el.bytouch = true;
                     _bind(el, evt, evtMap[evt]);
                 });
             }
@@ -890,6 +893,7 @@ define("touch",function(module, clouda) {
                         evt = utils.getPCevts(evt);
                     }
                     els.forEach(function(el) {
+						el.bytouch = true;
                         _bind(el, evt, handler);
                     });
                 });
@@ -906,6 +910,7 @@ define("touch",function(module, clouda) {
                     if (!_hasTouch) {
                         evt = utils.getPCevts(evt);
                     }
+					el.bytouch = true;
                     _delegate(el, evt, sel, handler);
                 });
                 return;
