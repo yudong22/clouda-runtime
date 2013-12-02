@@ -12,7 +12,7 @@ module.exports = function(grunt) {
             },
             dist: {
                 src: ['src/intro.js', 'src/device/*.js','src/mbaas/*.js', 'src/outro.js'],
-                dest: 'dist/built.js',
+                dest: 'dist/clouda-runtime.js',
             },
         },
         uglify : {
@@ -21,12 +21,12 @@ module.exports = function(grunt) {
             },
            
             build : {
-                src : ['dist/built.js'],
+                src : ['dist/clouda-runtime.js'],
                 dest : 'build/<%= pkg.name %>.min.js'
             }
         },
         jshint: {
-          files: ['Gruntfile.js', 'src/device/*.js','src/mbaas/*.js','dist/built.js'],
+          files: ['Gruntfile.js', 'src/device/*.js','src/mbaas/*.js','dist/clouda-runtime.js'],
           options: {
             // options here to override JSHint defaults
             globals: {
