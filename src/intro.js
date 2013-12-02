@@ -24,9 +24,7 @@
         AK_UNDEFINED:-4,
         RT_UNDEFINED:-3,
         RT_GETERROR:5,
-       
-        
-        
+         
         EXEC_ERROR:-5,
         
         //API ERROR
@@ -87,14 +85,18 @@
             try{
                 module[_this.submodule][_this.func].apply(_this,args);
             }catch(e){
+                var code;
+                if (!module){
+                    code = ErrCode.RT_UNDEFINED;
+                }else{
+                    code = ErrCode.EXEC_ERROR;
+                }
                 if (args.length && typeof args[args.length-1] === 'object' ){//检查 onFail
                     if (typeof args[args.length-1].onFail === 'function'){
-                        args[args.length-1].onFail(ErrCode.EXEC_ERROR);
+                        args[args.length-1].onFail(code);
                     }
                 }
-                if(module){
-                    _this.error(ErrCode.EXEC_ERROR);
-                }
+                _this.error(code);
             }
             
         });
