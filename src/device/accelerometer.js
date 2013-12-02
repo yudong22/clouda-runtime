@@ -31,7 +31,6 @@ define("device",function(module) {
      */
     it.get = function(options){
         getCurrentAcceleration(function(obj){
-            options.onsuccess;
             if ( typeof obj==='object' && typeof obj.x !='undefined' && typeof obj.y !='undefined' && typeof obj.z !='undefined'){
                 options.onsuccess.apply(this,arguments);
             }else{
@@ -59,7 +58,6 @@ define("device",function(module) {
     var start_id;
     it.listen = function(options){
         start_id = watchAcceleration(function(obj){
-            options.onsuccess;
             if ( typeof obj==='object' && typeof obj.x !='undefined' && typeof obj.y !='undefined' && typeof obj.z !='undefined'){
                 options.onsuccess.apply(this,arguments);
             }else{
