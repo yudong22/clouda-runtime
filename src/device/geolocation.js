@@ -17,7 +17,7 @@ define("device",function(module) {
     /**
      * 获取当前地理位置，接收成功和失败的回调
      *
-     * @function getCurrentPosition
+     * @function get
      * @memberof clouda.device.geolocation
      * @instance
      *
@@ -25,10 +25,12 @@ define("device",function(module) {
      * @param {function} options.onsuccess 成功的回调
      * @param {function} [options.onfail] 失败的回调
      * @param {boolen} [options.enableHighAccuracy] 高精度
+     * @param {int} [options.maximumAge] 
+     * @param {int} [options.timeout] 
      * @returns null
      * 
      */
-    it.getCurrentPosition = function(options){
+    it.get = function(options){
         
         getCurrentPosition(function(obj){
             if ( typeof obj==='object' && typeof obj.latitude !='undefined' && typeof obj.longitude !='undefined' ){
@@ -52,6 +54,9 @@ define("device",function(module) {
      * @param {function} options.onsuccess 成功的回调 
      * @param {function} [options.onfail] 失败的回调
      * @param {boolen} [options.enableHighAccuracy] 高精度
+     * @param {int} [options.maximumAge] 
+     * @param {int} [options.timeout] 
+     * 
      * @returns null
      * 
      */

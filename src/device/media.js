@@ -25,7 +25,7 @@ define("device",function(module) {
     
     module.MEDIA_TYPE.PICTURE = 0;
     module.MEDIA_TYPE.VIDEO = 1;
-    module.MEDIA_TYPE.ALLMEDIA = 2; //for function getMedia only
+    module.MEDIA_TYPE.ALLMEDIA = 2; //for function getPicture only
     module.MEDIA_TYPE.AUDIO = 3; //for function captureMedia only
     
     
@@ -47,7 +47,7 @@ define("device",function(module) {
     /**
      * 启动canema，支持读取手机图库或者拍照
      *
-     * @function getMedia
+     * @function getPicture
      * @memberof clouda.device.media
      * @instance
      *
@@ -65,7 +65,7 @@ define("device",function(module) {
      * 
      */
     
-    it.getMedia = function(options){
+    it.getPicture = function(options){
         getPicture(function(imageData){//success callback
             if (typeof imageData=='string'){
                 options.onsuccess.apply(this,arguments);

@@ -37,6 +37,8 @@
         MEDIA_ERR:12,
         CPS_ERROR:13,
         BTY_ERROR:14,
+        QR_ERR:15,
+        
         
         
     };
@@ -145,7 +147,6 @@
             });
             
         }catch(e){
-            _this.error(ErrCode.RT_UNDEFINED);
             callback(null);
         }
         

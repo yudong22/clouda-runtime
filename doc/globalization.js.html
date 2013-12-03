@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: globalization.js</title>
+    <title>JSDoc: Source: device/globalization.js</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Source: globalization.js</h1>
+    <h1 class="page-title">Source: device/globalization.js</h1>
     
     
 
@@ -52,13 +52,13 @@
      * @instance
      *
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      */
      it.getPreferredLanguage = function (options) {
-        toolKit.getPreferredLanguage(options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.GLO_ERR);
+        toolKit.getPreferredLanguage(options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.GLO_ERR);
             }else{
                 lightapp.error(ErrCode.GLO_ERR);
             }
@@ -71,13 +71,13 @@
      * @instance
      *
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      */
     it.getLocaleName = function (options) {
-        toolKit.getLocaleName(options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.GLO_ERR);
+        toolKit.getLocaleName(options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.GLO_ERR);
             }else{
                 lightapp.error(ErrCode.GLO_ERR);
             }
@@ -90,13 +90,13 @@
      *
      * @param {Date} date
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      */
     it.dateToString = function (date, options) {
-        toolKit.dateToString(date,options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.GLO_ERR);
+        toolKit.dateToString(date,options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.GLO_ERR);
             }else{
                 lightapp.error(ErrCode.GLO_ERR);
             }
@@ -109,13 +109,13 @@
      *
      * @param {string} dateString
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      */
     it.stringToDate = function (dateString, options) {
-        toolKit.stringToDate(dateString,options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.GLO_ERR);
+        toolKit.stringToDate(dateString,options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.GLO_ERR);
             }else{
                 lightapp.error(ErrCode.GLO_ERR);
             }
@@ -128,13 +128,13 @@
      * @instance
      *
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      */
     it.getDatePattern = function (options) {
-        toolKit.getDatePattern(options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.GLO_ERR);
+        toolKit.getDatePattern(options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.GLO_ERR);
             }else{
                 lightapp.error(ErrCode.GLO_ERR);
             }
@@ -147,13 +147,13 @@
      * @instance
      *
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      */
     it.getDateNames = function (options) {
-        toolKit.getDateNames(options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.GLO_ERR);
+        toolKit.getDateNames(options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.GLO_ERR);
             }else{
                 lightapp.error(ErrCode.GLO_ERR);
             }
@@ -166,13 +166,13 @@
      *
      * @param {Date} date
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      */
     it.isDayLightSavingsTime = function (date, options) {
-        toolKit.isDayLightSavingsTime(date,options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.GLO_ERR);
+        toolKit.isDayLightSavingsTime(date,options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.GLO_ERR);
             }else{
                 lightapp.error(ErrCode.GLO_ERR);
             }
@@ -185,13 +185,13 @@
      * @instance
      *
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      */
     it.getFirstDayOfWeek = function (options) {
-        toolKit.getFirstDayOfWeek(options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.GLO_ERR);
+        toolKit.getFirstDayOfWeek(options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.GLO_ERR);
             }else{
                 lightapp.error(ErrCode.GLO_ERR);
             }
@@ -205,13 +205,13 @@
      *
      * @param {int} number
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      */
     it.numberToString = function (number, options) {
-        toolKit.numberToString(options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.GLO_ERR);
+        toolKit.numberToString(options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.GLO_ERR);
             }else{
                 lightapp.error(ErrCode.GLO_ERR);
             }
@@ -224,13 +224,13 @@
      *
      * @param {string} numberString
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      */
     it.stringToNumber = function (numberString, options) {
-        toolKit.stringToNumber(numberString,options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.GLO_ERR);
+        toolKit.stringToNumber(numberString,options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.GLO_ERR);
             }else{
                 lightapp.error(ErrCode.GLO_ERR);
             }
@@ -243,13 +243,13 @@
      * @instance
      *
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      */
     it.getNumberPattern = function (options) {
-        toolKit.getNumberPattern(options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.GLO_ERR);
+        toolKit.getNumberPattern(options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.GLO_ERR);
             }else{
                 lightapp.error(ErrCode.GLO_ERR);
             }
@@ -262,13 +262,13 @@
      *
      * @param {string} currencyCode
      * @param {{}} options
-     * @param {Function} options.onSuccess
-     * @param {Function} options.onFail
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
      */
     it.getCurrencyPattern = function (currencyCode, options) {
-        toolKit.getCurrencyPattern(currencyCode,options.onSuccess,function(){
-            if (options && typeof options.onFail == 'function'){
-                options.onFail(ErrCode.GLO_ERR);
+        toolKit.getCurrencyPattern(currencyCode,options.onsuccess,function(){
+            if (options && typeof options.onfail == 'function'){
+                options.onfail(ErrCode.GLO_ERR);
             }else{
                 lightapp.error(ErrCode.GLO_ERR);
             }
@@ -286,13 +286,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Namespaces</h3><ul><li><a href="clouda.device.accelerometer.html">accelerometer</a></li><li><a href="clouda.device.battery.html">battery</a></li><li><a href="clouda.device.capture.html">capture</a></li><li><a href="clouda.device.contact.html">contact</a></li><li><a href="clouda.device.geolocation.html">geolocation</a></li><li><a href="clouda.device.globalization.html">globalization</a></li><li><a href="clouda.device.media.html">media</a></li><li><a href="clouda.device.notification.html">notification</a></li><li><a href="clouda.device.reachability.html">reachability</a></li><li><a href="clouda.device.sqlite.html">sqlite</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Namespaces</h3><ul><li><a href="clouda.device.accelerometer.html">accelerometer</a></li><li><a href="clouda.device.battery.html">battery</a></li><li><a href="clouda.device.compass.html">compass</a></li><li><a href="clouda.device.contact.html">contact</a></li><li><a href="clouda.device.fs.html">fs</a></li><li><a href="clouda.device.geolocation.html">geolocation</a></li><li><a href="clouda.device.globalization.html">globalization</a></li><li><a href="clouda.device.media.html">media</a></li><li><a href="clouda.device.notification.html">notification</a></li><li><a href="clouda.device.reachability.html">reachability</a></li><li><a href="clouda.device.sqlite.html">sqlite</a></li><li><a href="clouda.mbaas.qr.html">qr</a></li><li><a href="clouda.mbaas.tts_.html">tts</a></li><li><a href="clouda.mbaas.vtt.html">vtt</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Fri Nov 29 2013 17:26:36 GMT+0800 (CST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Tue Dec 03 2013 17:20:11 GMT+0800 (CST)
 </footer>
 
 <script> prettyPrint(); </script>

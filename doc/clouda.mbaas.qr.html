@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Namespace: reachability</title>
+    <title>JSDoc: Namespace: qr</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Namespace: reachability</h1>
+    <h1 class="page-title">Namespace: qr</h1>
     
     
 
@@ -27,7 +27,7 @@
     
 <header>
     <h2>
-    reachability
+    qr
     </h2>
     
 </header>  
@@ -62,7 +62,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="reachability.js.html">device/reachability.js</a>, <a href="reachability.js.html#line6">line 6</a>
+        <a href="qr.js.html">mbaas/qr.js</a>, <a href="qr.js.html#line6">line 6</a>
     </li></ul></dd>
     
     
@@ -96,7 +96,7 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="getStatus"><span class="type-signature"></span>getStatus<span class="signature">(options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="generate"><span class="type-signature"></span>generate<span class="signature">(要生成的文字, options)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -104,7 +104,7 @@
     
     
     <div class="description">
-        Launch device camera application for recording video(s).
+        生成二维码
     </div>
     
 
@@ -138,6 +138,29 @@
 	
         <tr>
             
+                <td class="name"><code>要生成的文字</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
                 <td class="name"><code>options</code></td>
             
             
@@ -154,7 +177,7 @@
             
             
             
-            <td class="description last">
+            <td class="description last">由onsuccess 和 onfail组成
                 <h6>Properties</h6>
                 
 
@@ -167,6 +190,8 @@
 		
 		<th>Type</th>
 		
+		
+		<th>Argument</th>
 		
 		
 		
@@ -186,17 +211,25 @@
             <td class="type">
             
                 
-<span class="param-type">Function</span>
+<span class="param-type">function</span>
 
 
             
             </td>
             
             
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
             
             
             
-            <td class="description last"></td>
+            
+            <td class="description last">成功的回调</td>
         </tr>
 	
 	
@@ -209,12 +242,121 @@
             <td class="type">
             
                 
-<span class="param-type">Function</span>
+<span class="param-type">function</span>
 
 
             
             </td>
             
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">失败的回调</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">生成qr的类别</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>backgroundUrl</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>destType</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
             
             
             
@@ -256,7 +398,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="reachability.js.html">device/reachability.js</a>, <a href="reachability.js.html#line28">line 28</a>
+        <a href="qr.js.html">mbaas/qr.js</a>, <a href="qr.js.html#line79">line 79</a>
     </li></ul></dd>
     
     
@@ -277,6 +419,16 @@
     
     
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    null
+</div>
+
+
+
+        
     
     
 </dd>
@@ -284,7 +436,7 @@
         
             
 <dt>
-    <h4 class="name" id="listen"><span class="type-signature"></span>listen<span class="signature">(options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="scanBarcode"><span class="type-signature"></span>scanBarcode<span class="signature">(options)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -292,7 +444,7 @@
     
     
     <div class="description">
-        应该提供监听网络变化的方法
+        扫条形码
     </div>
     
 
@@ -342,7 +494,7 @@
             
             
             
-            <td class="description last">
+            <td class="description last">由onsuccess 和 onfail组成
                 <h6>Properties</h6>
                 
 
@@ -355,6 +507,8 @@
 		
 		<th>Type</th>
 		
+		
+		<th>Argument</th>
 		
 		
 		
@@ -374,17 +528,25 @@
             <td class="type">
             
                 
-<span class="param-type">Function</span>
+<span class="param-type">function</span>
 
 
             
             </td>
             
             
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
             
             
             
-            <td class="description last"></td>
+            
+            <td class="description last">成功的回调</td>
         </tr>
 	
 	
@@ -397,17 +559,27 @@
             <td class="type">
             
                 
-<span class="param-type">Function</span>
+<span class="param-type">function</span>
 
 
             
             </td>
             
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
             
             
             
-            <td class="description last"></td>
+            
+            <td class="description last">失败的回调</td>
         </tr>
 	
 	
@@ -444,7 +616,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="reachability.js.html">device/reachability.js</a>, <a href="reachability.js.html#line48">line 48</a>
+        <a href="qr.js.html">mbaas/qr.js</a>, <a href="qr.js.html#line54">line 54</a>
     </li></ul></dd>
     
     
@@ -465,6 +637,16 @@
     
     
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    null
+</div>
+
+
+
+        
     
     
 </dd>
@@ -472,7 +654,7 @@
         
             
 <dt>
-    <h4 class="name" id="stop"><span class="type-signature"></span>stop<span class="signature">(options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="scanQrcode"><span class="type-signature"></span>scanQrcode<span class="signature">(options)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -480,7 +662,7 @@
     
     
     <div class="description">
-        应该提供停止监听网络变化的方法
+        扫二维码
     </div>
     
 
@@ -530,7 +712,7 @@
             
             
             
-            <td class="description last">
+            <td class="description last">由onsuccess 和 onfail组成
                 <h6>Properties</h6>
                 
 
@@ -543,6 +725,8 @@
 		
 		<th>Type</th>
 		
+		
+		<th>Argument</th>
 		
 		
 		
@@ -562,17 +746,25 @@
             <td class="type">
             
                 
-<span class="param-type">Function</span>
+<span class="param-type">function</span>
 
 
             
             </td>
             
             
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
             
             
             
-            <td class="description last"></td>
+            
+            <td class="description last">成功的回调</td>
         </tr>
 	
 	
@@ -585,17 +777,27 @@
             <td class="type">
             
                 
-<span class="param-type">Function</span>
+<span class="param-type">function</span>
 
 
             
             </td>
             
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
             
             
             
-            <td class="description last"></td>
+            
+            <td class="description last">失败的回调</td>
         </tr>
 	
 	
@@ -632,7 +834,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fs.js.html">device/fs.js</a>, <a href="fs.js.html#line32">line 32</a>
+        <a href="qr.js.html">mbaas/qr.js</a>, <a href="qr.js.html#line29">line 29</a>
     </li></ul></dd>
     
     
@@ -653,194 +855,16 @@
     
     
     
+    <h5>Returns:</h5>
     
-    
-</dd>
+            
+<div class="param-desc">
+    null
+</div>
+
+
 
         
-            
-<dt>
-    <h4 class="name" id="stop"><span class="type-signature"></span>stop<span class="signature">(options)</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        应该提供停止监听网络变化的方法
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last">
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>onsuccess</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Function</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>onfail</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Function</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-            </td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="reachability.js.html">device/reachability.js</a>, <a href="reachability.js.html#line61">line 61</a>
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
     
     
 </dd>

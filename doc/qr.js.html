@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: device/geolocation.js</title>
+    <title>JSDoc: Source: mbaas/qr.js</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Source: device/geolocation.js</h1>
+    <h1 class="page-title">Source: mbaas/qr.js</h1>
     
     
 
@@ -25,97 +25,114 @@
     
     <section>
         <article>
-            <pre class="prettyprint source"><code>define("device",function(module) {
+            <pre class="prettyprint source"><code>define("mbaas",function(module) {
     var lightapp = this;
-    //定义 geolocation 空间，clouda.device.geolocation 支持退化
-    var it = module.geolocation = {};
+    //定义 battery 空间，clouda.device.battery 支持退化
+    var it = module.qr = {};
     
     /**
-     * @object geolocation
-     * @memberof clouda.device
+     * @object qr
+     * @memberof clouda.mbaas
      * @instance
-     * @namespace clouda.device.geolocation
+     * @namespace clouda.mbaas.qr
      */
     
-    var getCurrentPosition = new delegateClass("device","geolocation","getCurrentPosition");
-    var watchPosition = new delegateClass("device","geolocation","watchPosition");
-    var clearWatch = new delegateClass("device","geolocation","clearWatch");
+    module.QR_TYPE = {};
+    module.QR_TYPE.BLACK = 0;
+    module.QR_TYPE.COLOR = 1;
+    module.QR_TYPE.DYNAMIC = 2;
+    
+    module.QR_DESTTYPE = {};
+    module.QR_DESTTYPE.GIF = "gif";
+    module.QR_DESTTYPE.PNG = "png";
+    
+    
+    var qr = new delegateClass("barcode","identifyQRcode");
+    var bar = new delegateClass("barcode","identifyBarcode");
+    // var optionClass = new delegateClass("barcode","QRcodeOptions");
+    var create = new delegateClass("barcode","createQRcode");
+    
     
     /**
-     * 获取当前地理位置，接收成功和失败的回调
+     * 扫二维码
      *
-     * @function get
-     * @memberof clouda.device.geolocation
+     * @function scanQrcode
+     * @memberof clouda.mbaas.qr
      * @instance
      *
      * @param {{}} options 由onsuccess 和 onfail组成
      * @param {function} options.onsuccess 成功的回调
      * @param {function} [options.onfail] 失败的回调
-     * @param {boolen} [options.enableHighAccuracy] 高精度
-     * @param {int} [options.maximumAge] 
-     * @param {int} [options.timeout] 
      * @returns null
      * 
      */
-    it.get = function(options){
-        
-        getCurrentPosition(function(obj){
-            if ( typeof obj==='object' && typeof obj.latitude !='undefined' && typeof obj.longitude !='undefined' ){
+     it.scanQrcode = function(options){
+        qr(function(string){//success callback
+            if (typeof string=='string'){
                 options.onsuccess.apply(this,arguments);
             }else{
-                lightapp.error(ErrCode.LOC_GET_ERR,ErrCode.UNKNOW_CALLBACK,options);
+                lightapp.error(ErrCode.QR_ERR,ErrCode.UNKNOW_CALLBACK,options);
             }
+            
         },function(nativeErr){
-            lightapp.error(ErrCode.LOC_GET_ERR,nativeErr,options);
+            lightapp.error(ErrCode.QR_ERR,nativeErr,options);
         },options);
-    };
-    
-    /**
-     * 已一定的频率，获取当前加速度，接收成功，失败的回调和间隔
+     };
+     /**
+     * 扫条形码
      *
-     * @function listen
-     * @memberof clouda.device.geolocation
+     * @function scanBarcode
+     * @memberof clouda.mbaas.qr
      * @instance
      *
      * @param {{}} options 由onsuccess 和 onfail组成
-     * @param {function} options.onsuccess 成功的回调 
+     * @param {function} options.onsuccess 成功的回调
      * @param {function} [options.onfail] 失败的回调
-     * @param {boolen} [options.enableHighAccuracy] 高精度
-     * @param {int} [options.maximumAge] 
-     * @param {int} [options.timeout] 
-     * 
      * @returns null
      * 
      */
-    var start_id;
-    it.listen = function(){
-        start_id = watchPosition(function(obj){
-            if ( typeof obj==='object' && typeof obj.latitude !='undefined' && typeof obj.longitude !='undefined' ){
+    it.scanBarcode = function(options){
+        bar(function(string){//success callback
+            if (typeof string=='string'){
                 options.onsuccess.apply(this,arguments);
             }else{
-                lightapp.error(ErrCode.LOC_GET_ERR,ErrCode.UNKNOW_CALLBACK,options);
+                lightapp.error(ErrCode.QR_ERR,ErrCode.UNKNOW_CALLBACK,options);
             }
+            
         },function(nativeErr){
-            lightapp.error(ErrCode.LOC_GET_ERR,nativeErr,options);
+            lightapp.error(ErrCode.QR_ERR,nativeErr,options);
         },options);
-    };
-    
+     };
     /**
-     * 终止获取回调
+     * 生成二维码
      *
-     * @function stop
-     * @memberof clouda.device.geolocation
+     * @function generate
+     * @memberof clouda.mbaas.qr
      * @instance
      *
+     * @param {string} 要生成的文字
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调
      * @param {function} [options.onfail] 失败的回调
+     * @param {int} [options.type] 生成qr的类别
+     * @param {string} [options.backgroundUrl] 
+     * @param {int} [options.destType] 
      * @returns null
      * 
      */
-    it.stop = function(){
-        clearWatch(start_id);
-    };
-    
-    return module;
+    it.generate = function(content,options){
+        //function(sucessCallback, errorCallback, type, content, backgroundUrl, destType){
+        create(function(string){//success callback
+            if (typeof string=='string'){
+                options.onsuccess.apply(this,arguments);
+            }else{
+                lightapp.error(ErrCode.QR_ERR,ErrCode.UNKNOW_CALLBACK,options);
+            }
+            
+        },function(nativeErr){
+            lightapp.error(ErrCode.QR_ERR,nativeErr,options);
+        },options.type,content,options.backgroundUrl,options.destType);
+     };
 });</code></pre>
         </article>
     </section>

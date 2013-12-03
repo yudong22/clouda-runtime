@@ -328,7 +328,6 @@ define("touch",function(module, clouda) {
         /**
              * 获取事件的位置信息
              * @param  ev, 原生事件对象
-             * @return array  [{ x: int, y: int }]
              */
         function getPosOfEvent(ev) {
             //多指触摸， 返回多个手势位置信息
