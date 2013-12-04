@@ -22,3 +22,17 @@ var accstop = function(){
 var acclisten = function(){
     clouda.device.accelerometer.stop();
 };
+var bindpush = function(){
+    clouda.mbaas.push.registerForRemoteNotification({onsuccess:function(data){
+        alert(JSON.stringify(data));
+    },onfail:function(errcode){
+        alert("error"+errcode);
+    }});
+};
+var unbindpush = function(){
+    clouda.mbaas.push.unregisterForRemoteNotification({onsuccess:function(){
+        
+    },onfail:function(errcode){
+        alert("error"+errcode);
+    }});
+};

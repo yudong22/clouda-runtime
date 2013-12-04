@@ -10,13 +10,19 @@
     clouda.lightapp = function(ak){
         clouda.lightapp.ak = ak;
     };
+    clouda.STATUS = {
+        SUCCESS:1,
+        SYSTEM_FAILURE:2,
+        USER_CANCELED:3
+    };
     //定义错误格式
     var ErrCode = {
-        /*SUCCESS*/
-        SUCCESS:0,
-        
         //不符合预期
         UNKNOW_CALLBACK:-1,
+        
+        //不符合预期的input
+        UNKNOW_INPUT:-1,
+        
         //用户取消
         USER_CANCEL:-2,
         
@@ -26,7 +32,7 @@
         RT_GETERROR:5,
          
         EXEC_ERROR:-5,
-        
+        NOT_FINISH:-99,
         //API ERROR
         ACC_GET_ERR:6,
         LOC_GET_ERR:7,
@@ -38,7 +44,7 @@
         CPS_ERROR:13,
         BTY_ERROR:14,
         QR_ERR:15,
-        
+        FS_ERR:16,
         
         
     };
@@ -49,6 +55,7 @@
       "-3":"接口的运行环境不存在。",
       "-4":"错误，您需要在调用api前设置ak。 clouda.lightapp(your_ak_here);",
       "-5":"执行接口出错。",
+      "-99":"功能开发中。",
       5:"接口的运行环境准备中出错。",
       6:"accelerometer 接口返回错误",
       7:"geolocation 接口返回错误",
@@ -85,7 +92,7 @@
     delegateClass.prototype.exec = function(){
         var args = arguments;
         var _this = this;
-        execDelegate.call(this,this.module,function(module){
+        installPlugin(this.module,function(module){
             try{
                 if (!_this.func){//二级目录
                     module[_this.submodule].apply(_this,args);
@@ -113,7 +120,7 @@
     
     
     var regPlugins = {};
-    var execDelegate = function(pluginName,callback){
+    var installPlugin = function(pluginName,callback){
         if (!clouda.lightapp.ak) {
             this.error(ErrCode.AK_UNDEFINED);
             console.error("错误，'"+pluginName+"' clouda.lightapp(your_ak_here);");
