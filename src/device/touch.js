@@ -715,20 +715,15 @@ define("touch",function(module, clouda) {
                         __tapped = true;
                         __prev_tapped_end_time = now;
                         __prev_tapped_pos = pos.start[0];
-
-                        _trigger(el, smrEventList.TAP, {
-                            type: smrEventList.TAP,
-                            originEvent: ev,
-                            fingersCount: getFingers(ev),
-                            position: pos.start[0]
-                        });
-
-                        _trigger(el, smrEventList.CLICK, {
-                            type: smrEventList.CLICK,
-                            originEvent: ev,
-                            fingersCount: getFingers(ev),
-                            position: pos.start[0]
-                        });
+                        
+                        if(_hasTouch){
+                            _trigger(el, smrEventList.TAP, {
+                                type: smrEventList.TAP,
+                                originEvent: ev,
+                                fingersCount: getFingers(ev),
+                                position: pos.start[0]
+                            });
+                        }
 
                     }
                 }
