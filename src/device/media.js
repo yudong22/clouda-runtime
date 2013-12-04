@@ -65,18 +65,18 @@ define("device",function(module) {
      * 
      */
     
-    it.getPicture = function(options){
-        getPicture(function(imageData){//success callback
-            if (typeof imageData=='string'){
-                options.onsuccess.apply(this,arguments);
-            }else{
-                lightapp.error(ErrCode.MEDIA_ERR,ErrCode.UNKNOW_CALLBACK,options);
-            }
-            
-        },function(nativeErr){
-            lightapp.error(ErrCode.MEDIA_ERR,nativeErr,options);
-        },options);
-    };
+    // it.getPicture = function(options){
+        // getPicture(function(imageData){//success callback
+            // if (typeof imageData=='string'){
+                // options.onsuccess.apply(this,arguments);
+            // }else{
+                // lightapp.error(ErrCode.MEDIA_ERR,ErrCode.UNKNOW_CALLBACK,options);
+            // }
+//             
+        // },function(nativeErr){
+            // lightapp.error(ErrCode.MEDIA_ERR,nativeErr,options);
+        // },options);
+    // };
     
     /**
      *

@@ -11,18 +11,18 @@ define("device",function(module) {
      */
     
     
-    it.setItem = function(){
+    it.set = function(){
         window.localStorage.setItem.apply(this,arguments);
     };
-    it.getItem = function(){
+    it.get = function(){
         window.localStorage.getItem.apply(this,arguments);
     };
-    it.removeItem = function(){
+    it.remove = function(){
         window.localStorage.removeItem.apply(this,arguments);
     };
-    it.getLength = function(onsuccess){
-        if (typeof onsuccess === 'function'){
-            onsuccess(window.localStorage.length);
+    it.count = function(options){
+        if (typeof options.onsuccess === 'function'){
+            options.onsuccess(window.localStorage.length);
         }else{
             lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
         }

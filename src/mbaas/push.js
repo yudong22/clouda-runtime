@@ -88,7 +88,7 @@ define("mbaas",function(module) {
      /**
      * onReceive
      *
-     * @function onReceive
+     * @function onreceive
      * @memberof clouda.mbaas.push
      * @instance
      *
@@ -98,7 +98,7 @@ define("mbaas",function(module) {
      * @returns null
      * 
      */
-    it.onReceive = function(options){
+    it.onreceive = function(options){
         lightapp.error(ErrCode.NOT_FINISH,nativeErr,options);
     };
 });

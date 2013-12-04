@@ -12,8 +12,8 @@
     };
     clouda.STATUS = {
         SUCCESS:1,
-        SYSTEM_FAILURE:2,
-        USER_CANCELED:3
+        SYSTEM_FAILURE:-3,
+        USER_CANCELED:-2
     };
     //定义错误格式
     var ErrCode = {
@@ -24,11 +24,11 @@
         UNKNOW_INPUT:-1,
         
         //用户取消
-        USER_CANCEL:-2,
+        // USER_CANCEL:-2,
         
         //RUNTIME ERROR
         AK_UNDEFINED:-4,
-        RT_UNDEFINED:-3,
+        
         RT_GETERROR:5,
          
         EXEC_ERROR:-5,
@@ -102,7 +102,7 @@
             }catch(e){
                 var code;
                 if (!module){
-                    code = ErrCode.RT_UNDEFINED;
+                    code = clouda.STATUS.SYSTEM_FAILURE;
                 }else{
                     code = ErrCode.EXEC_ERROR;
                 }

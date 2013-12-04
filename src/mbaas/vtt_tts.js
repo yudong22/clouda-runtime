@@ -62,7 +62,7 @@ define("mbaas",function(module) {
                     if (result.status === module.VVT_STATUS.FINISH ){
                         options.onsuccess.apply(this,arguments);
                     }else if (result.status === module.VVT_STATUS.USER_CANCELED) {
-                        options.onfail.call(this,ErrCode.USER_CANCEL);
+                        options.onfail.call(this,clouda.STATUS.USER_CANCELED);
                     }else if (result.status === module.VVT_STATUS.ERROR) {
                         options.onfail.call(this,result.status);
                     }

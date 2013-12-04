@@ -1,13 +1,13 @@
 define("device",function(module) {
     var lightapp = this;
-    //定义 network 空间，clouda.device.reachability 使用nuwa.network 
-    var it = module.reachability = {};
+    //定义 network 空间，clouda.device.connection 使用nuwa.network 
+    var it = module.connection = {};
     
     /**
-     * @object reachability
+     * @object connection
      * @memberof clouda.device
      * @instance
-     * @namespace clouda.device.reachability
+     * @namespace clouda.device.connection
      */
     
     it.ConnectionType = {
@@ -28,14 +28,28 @@ define("device",function(module) {
     /**
      * Launch device camera application for recording video(s).
      *
-     * @function getStatus
-     * @memberof clouda.device.reachability
+     * @function startListen
+     * @memberof clouda.device.connection
      * @instance
      * @param {{}} options
      * @param {Function} options.onsuccess
      * @param {Function} options.onfail
      */
-     it.get = function(options){
+     // it.startListen = function(options){
+//         
+     // };
+    //TODO 应该提供监听方法
+    /**
+     * 应该提供监听网络变化的方法
+     *
+     * @function startListen
+     * @memberof clouda.device.connection
+     * @instance
+     * @param {{}} options
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
+     */
+    it.startListen = function(options){
         getInfo(options.onsuccess,function(){
             if (options && typeof options.onfail == 'function'){
                 options.onfail(ErrCode.REACH_ERR);
@@ -43,33 +57,19 @@ define("device",function(module) {
                 lightapp.error(ErrCode.REACH_ERR);
             }
         },options);
-     };
-    //TODO 应该提供监听方法
-    /**
-     * 应该提供监听网络变化的方法
-     *
-     * @function listen
-     * @memberof clouda.device.reachability
-     * @instance
-     * @param {{}} options
-     * @param {Function} options.onsuccess
-     * @param {Function} options.onfail
-     */
-    it.listen = function(options){
-        
     };
      /**
      * 应该提供停止监听网络变化的方法
      *
-     * @function stop
-     * @memberof clouda.device.reachability
+     * @function stopListen
+     * @memberof clouda.device.connection
      * @instance
      * @param {{}} options
      * @param {Function} options.onsuccess
      * @param {Function} options.onfail
      */
-    it.stop = function(options){
-        
+    it.stopListen = function(options){
+        lightapp.error(ErrCode.NOT_FINISH,nativeErr,options);
     };
     return module;
 });

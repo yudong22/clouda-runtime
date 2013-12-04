@@ -29,8 +29,7 @@ define("device",function(module) {
      * @param {Function} options.onsuccess
      * @param {Function} options.onfail
      * @param {Function} options.onprogress
-     * @param {string} options.fileKey
-     * @param {string} options.savedName
+     * @param {string} options.uploadKey
      */
     var fileTransfer=null;
     it.postFile = function(link,target,options) {
@@ -44,8 +43,8 @@ define("device",function(module) {
             }
             
             var opt = new ft.FileUploadOptions();
-            opt.fileKey = options.fileKey;
-            opt.fileName = options.savedName;
+            opt.fileKey = options.uploadKey;
+            opt.fileName = getFileNameFromPath(link);
             // opt.mimeType = "text/html";
             fileTransfer.upload(link, target, function(result) {
                 options.onsuccess.apply(this,arguments);
@@ -167,7 +166,6 @@ define("device",function(module) {
      * @param {{}} options
      * @param {Function} options.onsuccess
      * @param {Function} options.onfail
-     * @param {Function} options.onprogress
      */
     
     it.getInfo = function(link,options){

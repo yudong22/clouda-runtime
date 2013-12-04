@@ -13,7 +13,11 @@ define("device",function(module) {
     var create = new delegateClass("device","contact","create");
     var find =new delegateClass("device","contact","find");
     
-    
+    module.CONTACT_COLUMN={
+        NAME:"name",
+        PHONE:"phoneNumbers",
+        EMAIL:"emails",
+    };
     /**
      * Returns an array of Contacts matching the search criteria.
      *
@@ -40,4 +44,18 @@ define("device",function(module) {
         
     };
     
+    it.insert = function(fields,options){
+        
+    };
+    
+    it.update = function(fields,options){
+        
+    };
+    
+    it.remove = function(fields,options){
+        
+    };
+    it.count = function(fields,options){
+        
+    };
 });

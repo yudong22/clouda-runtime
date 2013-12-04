@@ -46,7 +46,7 @@ define("device",function(module) {
     /**
      * 已一定的频率，获取当前加速度，接收成功，失败的回调和间隔
      *
-     * @function listen
+     * @function startListen
      * @memberof clouda.device.geolocation
      * @instance
      *
@@ -61,7 +61,7 @@ define("device",function(module) {
      * 
      */
     var start_id;
-    it.listen = function(){
+    it.startListen = function(){
         start_id = watchPosition(function(obj){
             if ( typeof obj==='object' && typeof obj.latitude !='undefined' && typeof obj.longitude !='undefined' ){
                 options.onsuccess.apply(this,arguments);
@@ -76,7 +76,7 @@ define("device",function(module) {
     /**
      * 终止获取回调
      *
-     * @function stop
+     * @function stopListen
      * @memberof clouda.device.geolocation
      * @instance
      *
@@ -84,7 +84,7 @@ define("device",function(module) {
      * @returns null
      * 
      */
-    it.stop = function(){
+    it.stopListen = function(){
         clearWatch(start_id);
     };
     

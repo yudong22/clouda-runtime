@@ -56,7 +56,7 @@ define("device",function(module) {
      * 
      */
     var start_id;
-    it.listen = function(options){
+    it.startListen = function(options){
         start_id = watchAcceleration(function(obj){
             if ( typeof obj==='object' && typeof obj.x !='undefined' && typeof obj.y !='undefined' && typeof obj.z !='undefined'){
                 options.onsuccess.apply(this,arguments);
@@ -78,7 +78,7 @@ define("device",function(module) {
      * @returns null
      * 
      */
-    it.stop = function() {
+    it.stopListen = function() {
         clearWatch(start_id);
     };
     return it;

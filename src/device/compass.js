@@ -58,7 +58,7 @@ define("device",function(module) {
      * 
      */
     var start_id;
-    it.listen = function(options){
+    it.startListen = function(options){
         start_id = watchHeading(function(obj){
             if ( typeof obj==='object' && typeof obj.magneticHeading !='undefined' && typeof obj.trueHeading !='undefined' ){
                 options.onsuccess.apply(this,arguments);
@@ -81,7 +81,7 @@ define("device",function(module) {
      * @returns null
      * 
      */
-    it.stop = function() {
+    it.stopListen = function() {
         clearWatch(start_id);
     };
     return it;

@@ -17,7 +17,7 @@ define("device",function(module) {
     /**
      * 已一定的频率获取电池状态
      *
-     * @function listen
+     * @function startListen
      * @memberof clouda.device.battery
      * @instance
      *
@@ -27,7 +27,7 @@ define("device",function(module) {
      * @returns null
      * 
      */
-    it.listen = function(){
+    it.startListen = function(){
         start_id = start(options.onsuccess,function(nativeErr){
             lightapp.error(ErrCode.BTY_ERROR,nativeErr,options);
         },options);
@@ -35,7 +35,7 @@ define("device",function(module) {
     /**
      * 停止获取电池状态
      *
-     * @function stop
+     * @function stopListen
      * @memberof clouda.device.battery
      * @instance
      *
@@ -45,7 +45,7 @@ define("device",function(module) {
      * @returns null
      * 
      */
-    it.stop = function(){
+    it.stopListen = function(){
         stop(options.onsuccess,function(){
             if (options && typeof options.onfail == 'function'){
                 options.onfail(ErrCode.ACC_GET_ERR);
