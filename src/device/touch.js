@@ -95,7 +95,7 @@ define("touch",function(module, clouda) {
         var proxyid = 0;
         var proxies = [];
         var _trigger = function(el, evt, detail) {
-			if(!el.bytouch){return;}
+            if(!el.bytouch || el.onclick){return;}
             detail = detail || {};
             var e,
                 opt = {
@@ -219,7 +219,13 @@ define("touch",function(module, clouda) {
                     }
                 }
             };
-
+            var subels = document.querySelectorAll(utils.getSelector(el) + " " + sel);
+            if(subels.length){
+                var j = 0, l = subels.length;
+                for( j; j < l ; j++){
+                    subels[j].bytouch = true;
+                }
+            }
             handler.proxy = handler.proxy || {};
             if (!handler.proxy[evt]) {
                 handler.proxy[evt] = [proxyid++];
@@ -244,6 +250,13 @@ define("touch",function(module, clouda) {
              * {Function} the same handler of _on
              */
         var _undelegate = function(el, evt, sel, handler) {
+            var subels = document.querySelectorAll(utils.getSelector(el) + " " + sel);
+            if(subels.length){
+                var j = 0, l = subels.length;
+                for( j; j < l ; j++){
+                    subels[j].bytouch = false;
+                }
+            }
             if (!handler) {
                 var listeners = el.listeners[evt];
                 listeners.forEach(function(proxy) {
@@ -702,20 +715,15 @@ define("touch",function(module, clouda) {
                         __tapped = true;
                         __prev_tapped_end_time = now;
                         __prev_tapped_pos = pos.start[0];
-
-                        _trigger(el, smrEventList.TAP, {
-                            type: smrEventList.TAP,
-                            originEvent: ev,
-                            fingersCount: getFingers(ev),
-                            position: pos.start[0]
-                        });
-
-                        _trigger(el, smrEventList.CLICK, {
-                            type: smrEventList.CLICK,
-                            originEvent: ev,
-                            fingersCount: getFingers(ev),
-                            position: pos.start[0]
-                        });
+                        
+                        if(_hasTouch){
+                            _trigger(el, smrEventList.TAP, {
+                                type: smrEventList.TAP,
+                                originEvent: ev,
+                                fingersCount: getFingers(ev),
+                                position: pos.start[0]
+                            });
+                        }
 
                     }
                 }
@@ -838,7 +846,7 @@ define("touch",function(module, clouda) {
                         evt = utils.getPCevts(evt);
                     }
                     els.forEach(function(el) {
-						el.bytouch = true;
+                        el.bytouch = true;
                         _bind(el, evt, handler);
                     });
                 });
@@ -850,7 +858,7 @@ define("touch",function(module, clouda) {
                     evt = utils.getPCevts(evt);
                 }
                 els.forEach(function(el) {
-					el.bytouch = true;
+                    el.bytouch = true;
                     _delegate(el, evt, sel, evtMap[evt]);
                 });
             }
@@ -869,7 +877,7 @@ define("touch",function(module, clouda) {
                     evt = utils.getPCevts(evt);
                 }
                 els.forEach(function(el) {
-					el.bytouch = true;
+                    el.bytouch = true;
                     _bind(el, evt, evtMap[evt]);
                 });
             }
@@ -892,7 +900,7 @@ define("touch",function(module, clouda) {
                         evt = utils.getPCevts(evt);
                     }
                     els.forEach(function(el) {
-						el.bytouch = true;
+                        el.bytouch = true;
                         _bind(el, evt, handler);
                     });
                 });
@@ -909,7 +917,7 @@ define("touch",function(module, clouda) {
                     if (!_hasTouch) {
                         evt = utils.getPCevts(evt);
                     }
-					el.bytouch = true;
+                    el.bytouch = true;
                     _delegate(el, evt, sel, handler);
                 });
                 return;
@@ -918,7 +926,7 @@ define("touch",function(module, clouda) {
 
         var _off = function() {
             var evts;
-            var args = arguments;
+            var args = arguments, handler;
             if (args.length < 1 || args.length > 4) {
                 return console.error("unexpected arguments!");
             }
@@ -1000,13 +1008,13 @@ define("touch",function(module, clouda) {
         //init gesture
         function init() {
             var eventNames = _hasTouch ? 'touchstart touchmove touchend touchcancel': 'mouseup mousedown mousemove mouseout';
-            _on(doc, 'DOMContentLoaded',
-            function() {
+            doc.addEventListener('DOMContentLoaded', function(){
                 var env = doc.body;
-                _on(env, eventNames, handlerOriginEvent);
-            });
+                eventNames.split(" ").forEach(function(eventName){
+                    env.addEventListener(eventName, handlerOriginEvent, false);
+                });
+            }, false);
         }
-
         init();
 
         exports.on = _on;
