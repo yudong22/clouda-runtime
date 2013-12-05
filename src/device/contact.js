@@ -14,11 +14,22 @@ define("device",function(module) {
     var find =new delegateClass("device","contact","find");
     
     module.CONTACT_COLUMN={
+        ID:"id",
         NAME:"name",
+        NICKNAME:"nickname",
         PHONE:"phoneNumbers",
         EMAIL:"emails",
+        ADDRESS:"addresses",
+        ORGANIZATION:"organizations",
+        BIRTHDAY:"birthday",
+        PHOTO:"photos",
+        CATEGORY:"categories",
+        IM:"ims",
+        URL:"urls",
+        NOTE:"note",
+  
     };
-    /**
+    /*
      * Returns an array of Contacts matching the search criteria.
      *
      * @function find
@@ -29,33 +40,92 @@ define("device",function(module) {
      * @param {{}} options
      * @param {Function} options.onsuccess
      * @param {Function} options.onfail
+     * @param {string} options.filter
+     * @param {boolean} options.multiple
      * @return null
      */
     it.find = function(fields,options){
-        find(fields,function(contact_array){
-            if ( Array.isArray(contact_array) ){
-                options.onsuccess.apply(this,arguments);
-            }else{
-                lightapp.error(ErrCode.CONTACT_FIND_ERR,ErrCode.UNKNOW_CALLBACK,options);
+        installPlugin("device", function(device) {
+           
+            device.contact.find(fields,function(contact_array){
+                if ( Array.isArray(contact_array) ){
+                    options.onsuccess.apply(this,arguments);
+                }else{
+                    lightapp.error(ErrCode.CONTACT_FIND_ERR,ErrCode.UNKNOW_CALLBACK,options);
+                }
+            },function(nativeErr){
+                lightapp.error(ErrCode.CONTACT_FIND_ERR,nativeErr,options);
+            },options);
+        });
+        
+        
+    };
+    
+    
+    it.insert = function(fields, options) {
+        installPlugin("device", function(device) {
+            var person = device.contact.create();
+
+            for (var i in fields) {
+                if (i === module.CONTACT_COLUMN.NAME) {
+                    person.displayName = fields[module.CONTACT_COLUMN.NAME];
+                } else {
+                    person[i] = fields[i];
+                }
             }
-        },function(nativeErr){
-            lightapp.error(ErrCode.CONTACT_FIND_ERR,nativeErr,options);
-        },options);
-        
+            person.save(function() {
+                options.onsuccess.apply(this, arguments);
+            }, function(errno) {
+                lightapp.error(ErrCode.CONTACT_FIND_ERR, errno, options);
+            });
+        });
+    }; 
+
+    
+    it.update = function(id,fields,options){
+        installPlugin("device", function(device) {
+           var myoptions = {"multiple":false,"filter":id};
+            device.contact.find([module.CONTACT_COLUMN.ID],function(contacts){
+                if (contacts && contacts[0]){
+                    for (var i in fields){
+                        contacts[0][i] = fields[i];
+                    }
+                    contacts[0].save(function(){
+                        options.onsuccess.apply(this,arguments);
+                    },function(errno){
+                        lightapp.error(ErrCode.CONTACT_FIND_ERR,errno,options);
+                    });
+                }else{
+                    lightapp.error(ErrCode.CONTACT_FIND_ERR,ErrCode.UNKNOW_CALLBACK,options);
+                }
+            },function(nativeErr){
+                lightapp.error(ErrCode.CONTACT_FIND_ERR,nativeErr,options);
+            },myoptions);
+        });
     };
     
-    it.insert = function(fields,options){
-        
+    it.remove = function(id,options){
+        installPlugin("device", function(device) {
+           var myoptions = {"multiple":false,"filter":id};
+            device.contact.find([module.CONTACT_COLUMN.ID],function(contacts){
+                if (contacts && contacts[0]){
+                    contacts[0].remove(function(){
+                        options.onsuccess.apply(this,arguments);
+                    },function(errno){
+                        lightapp.error(ErrCode.CONTACT_FIND_ERR,errno,options);
+                    });
+                }else{
+                    lightapp.error(ErrCode.CONTACT_FIND_ERR,ErrCode.UNKNOW_CALLBACK,options);
+                }
+            },function(nativeErr){
+                lightapp.error(ErrCode.CONTACT_FIND_ERR,nativeErr,options);
+            },myoptions);
+        });
     };
-    
-    it.update = function(fields,options){
-        
+    it.count = function(options){
+        lightapp.error(ErrCode.NOT_FINISH,ErrCode.NOT_FINISH,options);
     };
-    
-    it.remove = function(fields,options){
-        
-    };
-    it.count = function(fields,options){
-        
+    it.getCursor = function(cursorOffset,options){
+        lightapp.error(ErrCode.NOT_FINISH,ErrCode.NOT_FINISH,options);
     };
 });

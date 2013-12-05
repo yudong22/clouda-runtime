@@ -57,15 +57,17 @@ define("device",function(module) {
      */
     var start_id;
     it.startListen = function(options){
-        start_id = watchAcceleration(function(obj){
-            if ( typeof obj==='object' && typeof obj.x !='undefined' && typeof obj.y !='undefined' && typeof obj.z !='undefined'){
-                options.onsuccess.apply(this,arguments);
-            }else{
-                lightapp.error(ErrCode.ACC_GET_ERR,ErrCode.UNKNOW_CALLBACK,options);
-            }
-        },function(nativeErr){
-            lightapp.error(ErrCode.ACC_GET_ERR,nativeErr,options);
-        },options);
+        installPlugin("device", function(device) {
+            start_id = device.accelerometer.watchAcceleration(function(){
+                if ( typeof obj==='object' && typeof obj.x !='undefined' && typeof obj.y !='undefined' && typeof obj.z !='undefined'){
+                    options.onsuccess.apply(this,arguments);
+                }else{
+                    lightapp.error(ErrCode.ACC_GET_ERR,ErrCode.UNKNOW_CALLBACK,options);
+                }
+            }, function(error) {
+               lightapp.error(ErrCode.ACC_GET_ERR,error,options);
+            },options);
+        });
     };
     /**
      * 终止获取回调

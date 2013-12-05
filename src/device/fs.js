@@ -99,7 +99,7 @@ define("device",function(module) {
      * @param {Function} options.onfail
      */
     
-    it.abort = function(options) {
+    it.abort = function() {
         if(fileTransfer === null){
             lightapp.error(ErrCode.FS_ERR, err, options);
         }else{
@@ -178,6 +178,9 @@ define("device",function(module) {
                lightapp.error(ErrCode.FS_ERR,error,options);
             });
         },options);
+    };
+    it.getInfoByOffset = function(offset,options){
+        lightapp.error(ErrCode.NOT_FINISH,ErrCode.NOT_FINISH,options);
     };
     return module;
 });

@@ -1,6 +1,6 @@
 define("mbaas",function(module) {
     var lightapp = this;
-    var vvt = module.vtt = {};
+    var vtt = module.vtt = {};
     var tts = module.tts = {};
     
     /**
@@ -14,23 +14,23 @@ define("mbaas",function(module) {
     var voiceRecognition = new delegateClass("voice","voiceRecognition");
     var say = new delegateClass("voice","tts","say");
     
-    module.VVT_STATUS={};
-    module.VVT_STATUS.START_RECORDING = 0;
-    module.VVT_STATUS.NONE = 1;
-    module.VVT_STATUS.SPEECH_START = 2;
-    module.VVT_STATUS.SPEECH_END = 4;
-    module.VVT_STATUS.FINISH = 5;
-    module.VVT_STATUS.PLAY_BEGINE_TONE_START = 6;
-    module.VVT_STATUS.PLAY_BEGINE_TONE_END = 7;
-    module.VVT_STATUS.PLAY_END_TONE_START = 8;
-    module.VVT_STATUS.PLAY_END_TONE_END = 9;
-    module.VVT_STATUS.UPDATE_RESULTS = 10;
-    module.VVT_STATUS.AUDIO_DATA = 11;
-    module.VVT_STATUS.USER_CANCELED = 61440;
-    module.VVT_STATUS.ERROR = 65535;
+    module.VTT_STATUS={};
+    module.VTT_STATUS.START_RECORDING = 0;
+    module.VTT_STATUS.NONE = 1;
+    module.VTT_STATUS.SPEECH_START = 2;
+    module.VTT_STATUS.SPEECH_END = 4;
+    module.VTT_STATUS.FINISH = 5;
+    module.VTT_STATUS.PLAY_BEGINE_TONE_START = 6;
+    module.VTT_STATUS.PLAY_BEGINE_TONE_END = 7;
+    module.VTT_STATUS.PLAY_END_TONE_START = 8;
+    module.VTT_STATUS.PLAY_END_TONE_END = 9;
+    module.VTT_STATUS.UPDATE_RESULTS = 10;
+    module.VTT_STATUS.AUDIO_DATA = 11;
+    module.VTT_STATUS.USER_CANCELED = 61440;
+    module.VTT_STATUS.ERROR = 65535;
     
-    // for(var name in module.VVT_STATUS){
-        // module.VVT_STATUS
+    // for(var name in module.VTT_STATUS){
+        // module.VTT_STATUS
     // }
     /**
      * 启动识别
@@ -48,7 +48,7 @@ define("mbaas",function(module) {
      * @returns null
      * 
      */
-     vvt.startCapture = function(options){
+     vtt.startCapture = function(options){
         if (options.voicePower){
              voiceRecognition.enableVoicePower(successCallback, errorCallback, options.voicePower);
         }
@@ -59,16 +59,16 @@ define("mbaas",function(module) {
                 // options.onsuccess.apply(this,arguments);
                 plg.voiceRecognition.setStatusChangeListener(
                   function(result) {
-                    if (result.status === module.VVT_STATUS.FINISH ){
+                    if (result.status === module.VTT_STATUS.FINISH ){
                         options.onsuccess.apply(this,arguments);
-                    }else if (result.status === module.VVT_STATUS.USER_CANCELED) {
+                    }else if (result.status === module.VTT_STATUS.USER_CANCELED) {
                         options.onfail.call(this,clouda.STATUS.USER_CANCELED);
-                    }else if (result.status === module.VVT_STATUS.ERROR) {
+                    }else if (result.status === module.VTT_STATUS.ERROR) {
                         options.onfail.call(this,result.status);
                     }
                   },
                   function(error) {
-                    lightapp.error(ErrCode.VVT_ERR,error.code,options);
+                    lightapp.error(ErrCode.vtt_ERR,error.code,options);
                   }
                 );
             
@@ -77,7 +77,7 @@ define("mbaas",function(module) {
         },options);
      };
      
-     vvt.speakFinish = function(options){
+     vtt.speakFinish = function(options){
         voiceRecognition.speakFinish(function(string){//success callback
             options.onsuccess.call(this,"OK");
         },function(nativeErr){
@@ -85,12 +85,12 @@ define("mbaas",function(module) {
         },options);
      };
      
-     vvt.terminateCapture = function(options){
+     vtt.terminateCapture = function(options){
         voiceRecognition.stopVoiceRecognition(function(string){//success callback
             if (typeof string=='string'){
                 options.onfail.apply(this,arguments);
             }else{
-                lightapp.error(ErrCode.VVT_ERR,ErrCode.UNKNOW_CALLBACK,options);
+                lightapp.error(ErrCode.vtt_ERR,ErrCode.UNKNOW_CALLBACK,options);
             }
         },function(nativeErr){
             lightapp.error(ErrCode.BTY_ERROR,nativeErr,options);
@@ -104,10 +104,10 @@ define("mbaas",function(module) {
      * @namespace clouda.mbaas.vtt clouda.mbaas.tts
      */
     module.TTS_TYPE = {
-      DICT_EN: 'dict_en',
-      DICT_UK: 'dict_uk',
-      TRANS_EN: 'trans_en',
-      TRANS_ZH: 'trans_zh',
+      TYPE_DICT_US: 'dict_en',
+      TYPE_DICT_UK: 'dict_uk',
+      // TRANS_EN: 'trans_en',
+      TYPE_DICT_ZH: 'trans_zh',
     };
    
    /**
@@ -131,7 +131,7 @@ define("mbaas",function(module) {
             if (typeof string=='string'){
                 options.onsuccess.apply(this,arguments);
             }else{
-                lightapp.error(ErrCode.VVT_ERR,ErrCode.UNKNOW_CALLBACK,options);
+                lightapp.error(ErrCode.vtt_ERR,ErrCode.UNKNOW_CALLBACK,options);
             }
             
         },function(nativeErr){

@@ -20,7 +20,7 @@ define("mbaas",function(module) {
     /**
      * 注册
      *
-     * @function registerForRemoteNotification
+     * @function register
      * @memberof clouda.mbaas.push
      * @instance
      *
@@ -30,7 +30,7 @@ define("mbaas",function(module) {
      * @returns null
      * 
      */
-    it.registerForRemoteNotification = function(options){
+    it.register = function(options){
         bind(function(data){
             data = JSON.parse(data);
             if (data.uid){
@@ -46,7 +46,7 @@ define("mbaas",function(module) {
     /**
      * 取消注册
      *
-     * @function unregisterForRemoteNotification
+     * @function unregister
      * @memberof clouda.mbaas.push
      * @instance
      *
@@ -56,7 +56,7 @@ define("mbaas",function(module) {
      * @returns null
      * 
      */
-    it.unregisterForRemoteNotification = function(options){
+    it.unregister = function(options){
         unbind(function(){
             options.onsuccess();
         },function(nativeErr){
@@ -99,6 +99,6 @@ define("mbaas",function(module) {
      * 
      */
     it.onreceive = function(options){
-        lightapp.error(ErrCode.NOT_FINISH,nativeErr,options);
+        lightapp.error(ErrCode.NOT_FINISH,ErrCode.NOT_FINISH,options);
     };
 });

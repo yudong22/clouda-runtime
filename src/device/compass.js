@@ -59,15 +59,17 @@ define("device",function(module) {
      */
     var start_id;
     it.startListen = function(options){
-        start_id = watchHeading(function(obj){
-            if ( typeof obj==='object' && typeof obj.magneticHeading !='undefined' && typeof obj.trueHeading !='undefined' ){
-                options.onsuccess.apply(this,arguments);
-            }else{
-                lightapp.error(ErrCode.CPS_ERROR,ErrCode.UNKNOW_CALLBACK,options);
-            }
-        },function(nativeErr){
-            lightapp.error(ErrCode.CPS_ERROR,nativeErr,options);
-        },options);
+        installPlugin("device", function(device) {
+            start_id = device.compass.watchHeading(function(){
+                if ( typeof obj==='object' && typeof obj.magneticHeading !='undefined' && typeof obj.trueHeading !='undefined' ){
+                    options.onsuccess.apply(this,arguments);
+                }else{
+                    lightapp.error(ErrCode.CPS_ERROR,ErrCode.UNKNOW_CALLBACK,options);
+                }
+            }, function(error) {
+               lightapp.error(ErrCode.CPS_ERROR,error,options);
+            });
+        });
     };
     /**
      * 终止获取回调

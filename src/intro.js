@@ -45,6 +45,7 @@
         BTY_ERROR:14,
         QR_ERR:15,
         FS_ERR:16,
+        BTY_ERR:17,
         
         
     };

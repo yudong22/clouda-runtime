@@ -13,7 +13,14 @@ define("device",function(module) {
     var start = new delegateClass("device","batteryStatus","start");
     var stop = new delegateClass("device","batteryStatus","stop");
     
-    var start_id;
+    it.get = function(options){
+        start(function(){
+            options.onsuccess.apply(this,arguments);
+            stop(function(){},function(){});
+        },function(nativeErr){
+            lightapp.error(ErrCode.BTY_ERR,nativeErr,options);
+        },options);
+    };
     /**
      * 已一定的频率获取电池状态
      *
@@ -28,8 +35,8 @@ define("device",function(module) {
      * 
      */
     it.startListen = function(options){
-        start_id = start(options.onsuccess,function(nativeErr){
-            lightapp.error(ErrCode.BTY_ERROR,nativeErr,options);
+        start(options.onsuccess,function(nativeErr){
+            lightapp.error(ErrCode.BTY_ERR,nativeErr,options);
         },options);
     };
     /**
@@ -46,11 +53,8 @@ define("device",function(module) {
      * 
      */
     it.stopListen = function(options){
-        stop(options.onsuccess,function(){
-            if (options && typeof options.onfail == 'function'){
-                options.onfail(ErrCode.ACC_GET_ERR);
-            }
-            
+        stop(options.onsuccess,function(nativeErr){
+            lightapp.error(ErrCode.BTY_ERR,nativeErr,options);
         },options);
     };
     

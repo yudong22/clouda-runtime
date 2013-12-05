@@ -62,15 +62,17 @@ define("device",function(module) {
      */
     var start_id;
     it.startListen = function(){
-        start_id = watchPosition(function(obj){
-            if ( typeof obj==='object' && typeof obj.latitude !='undefined' && typeof obj.longitude !='undefined' ){
-                options.onsuccess.apply(this,arguments);
-            }else{
-                lightapp.error(ErrCode.LOC_GET_ERR,ErrCode.UNKNOW_CALLBACK,options);
-            }
-        },function(nativeErr){
-            lightapp.error(ErrCode.LOC_GET_ERR,nativeErr,options);
-        },options);
+        installPlugin("device", function(device) {
+            start_id = device.geolocation.watchPosition(function(){
+                if ( typeof obj==='object' && typeof obj.latitude !='undefined' && typeof obj.longitude !='undefined' ){
+                    options.onsuccess.apply(this,arguments);
+                }else{
+                    lightapp.error(ErrCode.LOC_GET_ERR,ErrCode.UNKNOW_CALLBACK,options);
+                }
+            }, function(error) {
+               lightapp.error(ErrCode.LOC_GET_ERR,error,options);
+            },options);
+        });
     };
     
     /**
