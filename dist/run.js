@@ -36,3 +36,12 @@ var unbindpush = function(){
         alert("error"+errcode);
     }});
 };
+var dianchistart = function(){
+    clouda.device.battery.startListen({onsuccess:function(data){
+        alert("success");
+        console.log(data);
+    },onfail:function(errno){
+        alert("error");
+        console.log(errno);
+    }});
+};

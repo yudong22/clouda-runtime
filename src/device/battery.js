@@ -27,7 +27,7 @@ define("device",function(module) {
      * @returns null
      * 
      */
-    it.startListen = function(){
+    it.startListen = function(options){
         start_id = start(options.onsuccess,function(nativeErr){
             lightapp.error(ErrCode.BTY_ERROR,nativeErr,options);
         },options);
@@ -45,7 +45,7 @@ define("device",function(module) {
      * @returns null
      * 
      */
-    it.stopListen = function(){
+    it.stopListen = function(options){
         stop(options.onsuccess,function(){
             if (options && typeof options.onfail == 'function'){
                 options.onfail(ErrCode.ACC_GET_ERR);
