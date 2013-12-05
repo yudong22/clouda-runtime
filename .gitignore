@@ -26,3 +26,4 @@ server.js
 node_modules
 
 /dist/clouda-runtime.js
+/build/clouda-runtime.min.js
