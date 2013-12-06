@@ -1,5 +1,7 @@
 (function(){
 	
+	clouda.lightapp("VeDdg6Kees4APXuaOFslObjS");
+	
 	var bd = document.getElementById("bd"),
 		hd = document.getElementById("hd");
 
@@ -8,12 +10,7 @@
 		bd.style.width = window.innerWidth + "px";
 	}
 
-	clouda.touch.on(document,'DOMContentLoaded', function(e){
-		autoResize();
-	});
-
-	clouda.touch.on(window, 'resize', function(e){
-		autoResize();
-	});
+	clouda.touch.on(document,'DOMContentLoaded', autoResize);
+	clouda.touch.on(window, 'resize', autoResize);
 })();
 

@@ -33,40 +33,41 @@
 		value.innerText = val;
 	}
 	
-	window.showLevel showLevel;
+	window.showLevel = showLevel;
+	
+	clouda.touch.on(window, 'resize', positioning);
 	
 	clouda.touch.on(document,'DOMContentLoaded', function(e){
 		
 		positioning();
 		
-		clouda.device.battery.listen({
-			onSuccess : function(){
-			
-				console.log("listen success", arguments);
-				var val = 80;
-				if(val >=0 && val <= 100){
-					showLevel(val);
-				}
-			},
-			onFail : function(){
-				console.log("listen fail", arguments);
+		clouda.touch.on($("back"), 'tap', function(e){
+			location.href = "../index.html";
+		});
+		
+		clouda.device.battery.startListen({
+			onsuccess:function(data){
+				var val = data.level;
+				if(val >=0 && val <= 100){ showLevel(val);}
+			},onfail:function(errno){
+				alert(errno);
 			}
 		});
 		
 	});
 
-	clouda.touch.on(window, 'beforeunload', function(e){
+	/* clouda.touch.on(window, 'beforeunload', function(e){
 		
-		clouda.device.battery.stop({
-			onSuccess : function(){
+		clouda.device.battery.stopListen({
+			onsuccess : function(){
 				console.log("stop success", arguments);
 			},
-			onFail : function(){
+			onfail : function(){
 				console.log("stop fail", arguments);
 			}
 		});
 		
-	});
+	}); */
 	
 })();
 
