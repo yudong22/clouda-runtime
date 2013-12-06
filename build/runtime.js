@@ -48,7 +48,8 @@
         FS_ERR:16,
         BTY_ERR:17,
         CONNECT_ERROR:18,
-        
+        SCREEN_ERROR:19,
+        FR_ERROR:20,
         
     };
     var errorMessage = {
@@ -171,8 +172,8 @@
                     _this.error(ErrCode.RT_GETERROR);
                     callback(null);
                 });
-                inst.on('progress',function(err){
-                    
+                inst.on('progress',function(percentage){
+                    console.log( pluginName + ' percentage = ' + percentage);
                 });
                 inst.on('complete',function(err){
                     regPlugins[pluginName] = nuwa.require(pluginName);
@@ -305,8 +306,8 @@ define("device",function(module) {
      * @namespace clouda.device.battery
      */
     
-    var start = new delegateClass("device","batteryStatus","start");
-    var stop = new delegateClass("device","batteryStatus","stop");
+    var start = new delegateClass("device","batterystatus","start");
+    var stop = new delegateClass("device","batterystatus","stop");
     
     it.get = function(options){
         start(function(){
@@ -402,7 +403,7 @@ define("device",function(module) {
     /**
      * 已一定的频率，获取当前指南针坐标，接收成功，失败的回调和间隔
      *
-     * @function listen
+     * @function startListen
      * @memberof clouda.device.compass
      * @instance
      *
@@ -430,7 +431,7 @@ define("device",function(module) {
     /**
      * 终止获取回调
      *
-     * @function stop
+     * @function stopListen
      * @memberof clouda.device.compass
      * @instance
      * 
@@ -1206,9 +1207,9 @@ define("device",function(module) {
     
     //需要device的gyro模块
     
-    var getCurrentAcceleration = new delegateClass("device","deviceOrientation","getCurrentDeviceOrientation");
-    // var watchDeviceOrientation = new delegateClass("device","deviceOrientation","watchDeviceOrientation");
-    var clearWatch = new delegateClass("device","deviceOrientation","clearWatch");
+    var getCurrentAcceleration = new delegateClass("device","orientation","getCurrentDeviceOrientation");
+    // var watchDeviceOrientation = new delegateClass("device","orientation","watchDeviceOrientation");
+    var clearWatch = new delegateClass("device","orientation","clearWatch");
     
     
     /**
@@ -1253,7 +1254,7 @@ define("device",function(module) {
     var start_id;
     it.startListen = function(options){
         installPlugin("device", function(device) {
-            start_id = device.deviceOrientation.watchDeviceOrientation(function(){
+            start_id = device.orientation.watchDeviceOrientation(function(){
                 if ( typeof obj==='object' && typeof obj.alpha !='undefined' && typeof obj.beta !='undefined' && typeof obj.gamma !='undefined'){
                     options.onsuccess.apply(this,arguments);
                 }else{
@@ -1537,6 +1538,85 @@ define("device",function(module) {
         return prompt(msg);
     };
     return module;
+});define("mbaas",function(module) {
+    var lightapp = this;
+    var it = module.screen = {};
+    
+    /**
+     * @object screen
+     * @memberof clouda.mbaas
+     * @instance
+     * @namespace clouda.mbaas.screen
+     */
+    
+    var takeScreenShot = new delegateClass("device","sharescreenshot","takeScreenshot");
+    var sharePicture = new delegateClass("device","sharescreenshot","sharePicture");
+    var shareScreenShot = new delegateClass("device","sharescreenshot","shareScreenshot");
+    
+    /**
+     * 截屏
+     *
+     * @function takeScreenShot
+     * @memberof clouda.mbaas.screen
+     * @instance
+     *
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调
+     * @param {function} [options.onfail] 失败的回调
+     * @returns null
+     * 
+     */
+    it.takeScreenShot = function(options) {
+        takeScreenShot(function(base64jpeg){
+            options.onsuccess(base64jpeg);
+        },function(error) {
+            lightapp.error(ErrCode.SCREEN_ERROR,error,options);
+        });
+    };
+    
+    /**
+     * 分享
+     *
+     * @function sharePicture
+     * @memberof clouda.mbaas.screen
+     * @instance
+     *
+     * @param {imgData} base64imgData 图片
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调
+     * @param {function} [options.onfail] 失败的回调
+     * @returns null
+     * 
+     */
+    it.sharePicture = function(imgData,options) {
+        sharePicture(function(){
+            options.onsuccess(clouda.STATUS.SUCCESS);
+        },function(error) {
+            lightapp.error(ErrCode.SCREEN_ERROR,error,options);
+        },imgData);
+    };
+    
+    /**
+     * 截屏+分享
+     *
+     * @function shareScreenShot
+     * @memberof clouda.mbaas.screen
+     * @instance
+     *
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调
+     * @param {function} [options.onfail] 失败的回调
+     * @returns null
+     * 
+     */
+    it.shareScreenShot = function(options) {
+        shareScreenshot(function(){
+            options.onsuccess(clouda.STATUS.SUCCESS);
+        },function(error) {
+            lightapp.error(ErrCode.SCREEN_ERROR,error,options);
+        });
+    };
+    
 });define("device",function(module) {
     var lightapp = this;
     //定义 sqlite 空间，clouda.device.sqlite 
@@ -2566,15 +2646,74 @@ define("device",function(module) {
 });
 define("mbaas",function(module) {
     var lightapp = this;
-    var it = module.face = {};
+    var it = module.facerecognition = {};
     
     /**
-     * @object face
+     * @object facerecognition
      * @memberof clouda.mbaas
      * @instance
      * @namespace clouda.mbaas.face
      */
+    var face;
+    it.register = function(link,options){
+        installPlugin("facerecognition", function(plg) {
+            if (!face)face = new plg.FaceRecognition(lightapp.ak);
+            
+            face.register(function(){
+                options.onsuccess.apply(this.arguments);
+            }, function(error) {
+               lightapp.error(ErrCode.FR_ERROR,error,options);
+            },opt);
+        });
+    };
     
+    it.verify = function(link,options){
+        installPlugin("facerecognition", function(plg) {
+            if (!face)face = new plg.FaceRecognition(lightapp.ak);
+            
+            face.verify(function(){
+                options.onsuccess.apply(this.arguments);
+            }, function(error) {
+               lightapp.error(ErrCode.FR_ERROR,error,options);
+            },opt);
+        });
+    };
+    
+    it.check_blink = function(link,options){
+        installPlugin("facerecognition", function(plg) {
+            if (!face)face = new plg.FaceRecognition(lightapp.ak);
+            
+            face.check_blink(function(){
+                options.onsuccess.apply(this.arguments);
+            }, function(error) {
+               lightapp.error(ErrCode.FR_ERROR,error,options);
+            },opt);
+        });
+    };
+    
+    it.authorize_device = function(link,options){
+        installPlugin("facerecognition", function(plg) {
+            if (!face)face = new plg.FaceRecognition(lightapp.ak);
+            
+            face.authorize_device(function(){
+                options.onsuccess.apply(this.arguments);
+            }, function(error) {
+               lightapp.error(ErrCode.FR_ERROR,error,options);
+            },opt);
+        });
+    };
+    
+    it.get_device_list = function(link,options){
+        installPlugin("facerecognition", function(plg) {
+            if (!face)face = new plg.FaceRecognition(lightapp.ak);
+            
+            face.get_device_list(function(){
+                options.onsuccess.apply(this.arguments);
+            }, function(error) {
+               lightapp.error(ErrCode.FR_ERROR,error,options);
+            },opt);
+        });
+    };
     
 });define("mbaas",function(module) {
     var lightapp = this;
@@ -2607,6 +2746,32 @@ define("mbaas",function(module) {
      * @instance
      * @namespace clouda.mbaas.player
      */
+    
+    /**
+     * 播放
+     *
+     * @function play
+     * @memberof clouda.mbaas.player
+     * @instance
+     *
+     * @param {string} link 播放的链接
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调
+     * @param {function} [options.onfail] 失败的回调
+     * @returns null
+     * 
+     */
+    
+    it.play = function(link,options){
+        installPlugin("videoplayer", function(plg) {
+            var opt = new plg.VideoPlayerOptions(link);
+            plg.play(function(){
+                options.onsuccess(clouda.STATUS.SUCCESS);
+            }, function(error) {
+               lightapp.error(ErrCode.CPS_ERROR,error,options);
+            },opt);
+        });
+    };
     
 });define("mbaas",function(module) {
     var lightapp = this;
@@ -2828,18 +2993,6 @@ define("mbaas",function(module) {
             lightapp.error(ErrCode.QR_ERR,nativeErr,options);
         },options.type,content,options.backgroundPath,options.destType);
      };
-});define("mbaas",function(module) {
-    var lightapp = this;
-    //定义 battery 空间，clouda.device.battery 支持退化
-    var it = module.screenshare = {};
-    
-    /**
-     * @object screenshare
-     * @memberof clouda.mbaas
-     * @instance
-     * @namespace clouda.mbaas.screenshare
-     */
-    
 });define("mbaas",function(module) {
     var lightapp = this;
     var vtt = module.vtt = {};

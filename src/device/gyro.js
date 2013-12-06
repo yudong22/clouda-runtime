@@ -11,9 +11,9 @@ define("device",function(module) {
     
     //需要device的gyro模块
     
-    var getCurrentAcceleration = new delegateClass("device","deviceOrientation","getCurrentDeviceOrientation");
-    // var watchDeviceOrientation = new delegateClass("device","deviceOrientation","watchDeviceOrientation");
-    var clearWatch = new delegateClass("device","deviceOrientation","clearWatch");
+    var getCurrentAcceleration = new delegateClass("device","orientation","getCurrentDeviceOrientation");
+    // var watchDeviceOrientation = new delegateClass("device","orientation","watchDeviceOrientation");
+    var clearWatch = new delegateClass("device","orientation","clearWatch");
     
     
     /**
@@ -58,7 +58,7 @@ define("device",function(module) {
     var start_id;
     it.startListen = function(options){
         installPlugin("device", function(device) {
-            start_id = device.deviceOrientation.watchDeviceOrientation(function(){
+            start_id = device.orientation.watchDeviceOrientation(function(){
                 if ( typeof obj==='object' && typeof obj.alpha !='undefined' && typeof obj.beta !='undefined' && typeof obj.gamma !='undefined'){
                     options.onsuccess.apply(this,arguments);
                 }else{

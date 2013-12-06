@@ -10,8 +10,8 @@ define("device",function(module) {
      * @namespace clouda.device.battery
      */
     
-    var start = new delegateClass("device","batteryStatus","start");
-    var stop = new delegateClass("device","batteryStatus","stop");
+    var start = new delegateClass("device","batterystatus","start");
+    var stop = new delegateClass("device","batterystatus","stop");
     
     it.get = function(options){
         start(function(){
