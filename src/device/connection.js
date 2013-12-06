@@ -9,22 +9,21 @@ define("device",function(module) {
      * @instance
      * @namespace clouda.device.connection
      */
-    
-    it.ConnectionType = {
-        UNKNOWN:0,
-        ETHERNET:1,
-        WIFI:2,
-        CELL_2G:3,
-        CELL_3G:4,
-        CELL_4G:5,
-        CELL:6,
-        NONE:7
+    module.CONNECTION_STATUS = {
+        UNKNOWN: "unknown",
+        ETHERNET: "ethernet",
+        WIFI: "wifi",
+        CELL_2G: "2g",
+        CELL_3G: "3g",
+        CELL_4G: "4g",
+        CELL:"cellular",
+        NONE: "none"
     };
     
-    // it.status = it.ConnectionType.UNKNOWN;
+    
+    it.status = module.CONNECTION_STATUS.UNKNOWN;
     
     var getInfo = new delegateClass("device","network","getInfo");
-    
     /**
      * Launch device camera application for recording video(s).
      *
@@ -35,9 +34,19 @@ define("device",function(module) {
      * @param {Function} options.onsuccess
      * @param {Function} options.onfail
      */
-     // it.startListen = function(options){
-//         
-     // };
+     it.get = function(options){
+         if (it.status !== module.CONNECTION_STATUS.UNKNOWN) {
+              options.onsuccess(it.status);
+              return;
+         }
+        getInfo(function(status){
+           it.status = status;
+           options.onsuccess.call(this,status);
+           delete options.onsuccess;
+        },function(nativeErr){
+            lightapp.error(ErrCode.CONNECT_ERROR,nativeErr,options);
+        },options);
+     };
     //TODO 应该提供监听方法
     /**
      * 应该提供监听网络变化的方法
@@ -49,13 +58,17 @@ define("device",function(module) {
      * @param {Function} options.onsuccess
      * @param {Function} options.onfail
      */
+    var triggerfunction = null;
     it.startListen = function(options){
-        getInfo(options.onsuccess,function(){
-            if (options && typeof options.onfail == 'function'){
-                options.onfail(ErrCode.REACH_ERR);
-            }else{
-                lightapp.error(ErrCode.REACH_ERR);
-            }
+        triggerfunction = options.onsuccess;
+        getInfo(function(status){
+           it.status = status;
+           if (typeof triggerfunction === 'function'){
+               triggerfunction.call(undefined,status);
+           }
+           triggerfunction(status);
+        },function(nativeErr){
+            lightapp.error(ErrCode.CONNECT_ERROR,nativeErr,options);
         },options);
     };
      /**
@@ -69,7 +82,7 @@ define("device",function(module) {
      * @param {Function} options.onfail
      */
     it.stopListen = function(options){
-        lightapp.error(ErrCode.NOT_FINISH,nativeErr,options);
+        triggerfunction = null;
     };
     return module;
 });

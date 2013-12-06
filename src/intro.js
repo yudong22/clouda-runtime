@@ -39,13 +39,14 @@
         CAP_GET_ERR:8,
         CONTACT_FIND_ERR:9,
         GLO_ERR:10,
-        REACH_ERR:11,
+        REACH_ERR:11,//reachability
         MEDIA_ERR:12,
         CPS_ERROR:13,
         BTY_ERROR:14,
         QR_ERR:15,
         FS_ERR:16,
         BTY_ERR:17,
+        CONNECT_ERROR:18,
         
         
     };
