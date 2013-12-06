@@ -1,7 +1,7 @@
 #百度轻应用API参考文档#
 
 ----------
-2013/12/5 19:16:37   
+2013/12/6 19:49:10 19:16:37   
 
 问题反馈： [clouda-support@baidu.com](mailto:clouda-support@baidu.com)
 
@@ -36,7 +36,7 @@
 
 在HTML页面中添加以下代码：
 
-    <script type="text/javascript" src="http://clouda.bdcdn.com/api/latest/lightapp.js"></script>
+    <script type="text/javascript" src="http://bcscdn.baidu.com/bcs-cdn/clouda/api-latest.js"></script>
     
 
 ##系统通用的状态码信息
@@ -57,6 +57,7 @@
 - 联系人(Contact)
 - 文件管理（FileSystem）
 - 地理位置（Geolocation）
+- 陀螺仪感应器（Gyroscope）
 - 本地存储（LocalStorage）
 - 本地媒体功能（Media）
 - 消息推送(Notification)
@@ -421,11 +422,13 @@ options是一个对象，其中包括以下参数：
 网络连接状态类型：
 
 	clouda.device.CONNECTION_STATUS.UNKNOWN // 未知状态
-    clouda.device.CONNECTION_STATUS.DISCONNECTED // 断开状态
+    clouda.device.CONNECTION_STATUS.NONE // 断开状态
     clouda.device.CONNECTION_STATUS.WIFI // WIFI连通状态
-    clouda.device.CONNECTION_STATUS.GPRS // 移动数据2G连通状态
-    clouda.device.CONNECTION_STATUS.EDGE // 移动数据2.5G连通状态
-    clouda.device.CONNECTION_STATUS.3G // 移动数据3G连通状态
+    clouda.device.CONNECTION_STATUS.CELL_2G // 移动数据2G连通状态
+    clouda.device.CONNECTION_STATUS.CELL_3G // 移动数据3G连通状态
+    clouda.device.CONNECTION_STATUS.CELL_4G // 移动数据4G连通状态
+	clouda.device.CONNECTION_STATUS.CELL // 移动数据通连通状态
+	clouda.device.CONNECTION_STATUS.ETHERNET // 以太网连通状态
 
 
 ### startListen ###
@@ -831,7 +834,7 @@ options: 为object，参数说明同clouda.device.contact.find(field, options)�
 ### Geolocation ###
 	clouda.device.geolocation
 
-地理位置信息
+地理位置
 
 **方法：**
 
@@ -909,6 +912,108 @@ options是一个object，其中包括以下参数：
 **功能描述：**
 
 停止监听地理位置信息。
+
+### Gyroscope ###
+    clouda.device.gyroscope
+
+陀螺仪感应器
+
+**方法：**
+
+- get(options)
+- startListen(options)
+- stopListen()
+
+#### get ####
+get(options)
+
+**功能描述：**
+
+捕获设备x,y,z轴方向的转动角度信息
+
+**参数说明：**
+
+options是一个对象，其中包含以下参数：
+
+<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>返回</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>onsuccess</td>
+			<td>function(data){}</td>          
+			<td>获取陀螺仪转动角度信息成功，data是返回的Gyroscope对象信息</td>  
+		</tr>
+        <tr>
+			<td>frequency</td>
+			<td>number</td>            
+			<td>陀螺仪转动角度信息获取频率设置，默认为10000，单位：毫秒</td>  
+		</tr>
+		<tr>
+			<td>onfail</td>
+			<td>function(err){}</td>          
+			<td>获取失败，返回错误码</td>  
+		</tr>
+    <tbody>
+</table>
+
+
+**返回的Gyroscope对象：**
+
+特定时间点采集到的陀螺仪转动角度信息。
+<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>alpha</td>
+			<td>number</td>          
+			<td>x轴方向转动角度数据，[0,1)之间</td>  
+		</tr>
+        <tr>
+			<td>beta</td>
+			<td>number</td>            
+			<td>beta轴方向转动角度数据，[0,1)之间</td>  
+		</tr>
+		<tr>
+			<td>gamma</td>
+			<td>number</td>          
+			<td>gamma轴方向转动角度数据，[0,1)之间</td>  
+		</tr>
+		<tr>
+			<td>timestamp</td>
+			<td>number</td>          
+			<td>获取陀螺仪转动角度数据数据时的时间戳，单位：毫秒</td>  
+		</tr>
+    <tbody>
+</table>
+
+#### startListen ####
+
+    startListen(options)
+
+**功能描述：**
+
+监听设备x,y,z轴方向转动角度信息
+
+**参数说明：**
+
+同get(options)中的参数说明。
+
+
+#### stopListen ####
+
+    stopListen()
+
+**功能描述：**
+
+停止监听设备x,y,z轴方向转动角度信息
 
 
 ### LocalStorage ###
@@ -1351,7 +1456,8 @@ options是一个对象，其中包含以下参数：
 **方法：**
 
 - startCapture(options)
-- generate(content,options)
+- generate(
+- content,options)
 
 #### startCapture ####
 
