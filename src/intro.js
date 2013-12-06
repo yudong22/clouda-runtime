@@ -11,7 +11,7 @@
         clouda.lightapp.ak = ak;
     };
     clouda.STATUS = {
-        SUCCESS:1,
+        SUCCESS:0,//在 runtimeready 后会执为1
         SYSTEM_FAILURE:-3,
         USER_CANCELED:-2
     };
@@ -119,13 +119,37 @@
     };
     clouda.lightapp.error = delegateClass.prototype.error = runtimeError;
     
-    
+    //定义
+    var beforeRuntimeReadyStack = [];
+    document.addEventListener("runtimeready",function(){
+        clouda.STATUS.SUCCESS = 1;
+        if (beforeRuntimeReadyStack.length){
+            for(var i=0,len=beforeRuntimeReadyStack.length;i<len;i++){
+                installPlugin.apply(undefined,beforeRuntimeReadyStack[i]);
+            }
+            delete beforeRuntimeReadyStack;
+        }
+    });
+    var n=0; //6s后超时
+    setTimeout(function(){
+        n=100;//timeout!
+        if (beforeRuntimeReadyStack.length){
+            for(var i=0,len=beforeRuntimeReadyStack.length;i<len;i++){
+                installPlugin.apply(undefined,beforeRuntimeReadyStack[i]);
+            }
+            delete beforeRuntimeReadyStack;
+        }
+    },6000);
     var regPlugins = {};
     var installPlugin = function(pluginName,callback){
         if (!clouda.lightapp.ak) {
             this.error(ErrCode.AK_UNDEFINED);
             console.error("错误，'"+pluginName+"' clouda.lightapp(your_ak_here);");
             return false;
+        }
+        if ( !clouda.STATUS.SUCCESS && n < 100 ){//还没有 ready 
+            beforeRuntimeReadyStack.push([pluginName,callback]);
+            return;
         }
         var _this = this;
         if (!pluginName) {

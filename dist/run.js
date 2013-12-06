@@ -17,20 +17,20 @@ var getmedia = function(){
     },duration:10,limit:2,mediaType:clouda.device.MEDIA_TYPE.VIDEO});
 };
 var accstop = function(){
-    clouda.device.accelerometer.stop({});
+    clouda.device.accelerometer.stopListen();
 };
 var acclisten = function(){
-    clouda.device.accelerometer.stop();
+    clouda.device.accelerometer.stopListen();
 };
 var bindpush = function(){
-    clouda.mbaas.push.registerForRemoteNotification({onsuccess:function(data){
+    clouda.mbaas.push.register({onsuccess:function(data){
         alert(JSON.stringify(data));
     },onfail:function(errcode){
         alert("error"+errcode);
     }});
 };
 var unbindpush = function(){
-    clouda.mbaas.push.unregisterForRemoteNotification({onsuccess:function(){
+    clouda.mbaas.push.unregister({onsuccess:function(){
         
     },onfail:function(errcode){
         alert("error"+errcode);
@@ -38,7 +38,7 @@ var unbindpush = function(){
 };
 var dianchistart = function(){
     clouda.device.battery.startListen({onsuccess:function(data){
-        alert("success");
+        alert("success"+data.level);
         console.log(data);
     },onfail:function(errno){
         alert("error");

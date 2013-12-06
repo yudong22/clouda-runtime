@@ -1,4 +1,4 @@
-/*! clouda-runtime - v0.1.0 - 2013-12-05 */
+/*! clouda-runtime - v0.1.0 - 2013-12-06 */
 (function(window){
     // for client js only
     if (typeof window !== 'object')return ;
@@ -12,7 +12,7 @@
         clouda.lightapp.ak = ak;
     };
     clouda.STATUS = {
-        SUCCESS:1,
+        SUCCESS:0,//在 runtimeready 后会执为1
         SYSTEM_FAILURE:-3,
         USER_CANCELED:-2
     };
@@ -120,13 +120,37 @@
     };
     clouda.lightapp.error = delegateClass.prototype.error = runtimeError;
     
-    
+    //定义
+    var beforeRuntimeReadyStack = [];
+    document.addEventListener("runtimeready",function(){
+        clouda.STATUS.SUCCESS = 1;
+        if (beforeRuntimeReadyStack.length){
+            for(var i=0,len=beforeRuntimeReadyStack.length;i<len;i++){
+                installPlugin.apply(undefined,beforeRuntimeReadyStack[i]);
+            }
+            delete beforeRuntimeReadyStack;
+        }
+    });
+    var n=0; //6s后超时
+    setTimeout(function(){
+        n=100;//timeout!
+        if (beforeRuntimeReadyStack.length){
+            for(var i=0,len=beforeRuntimeReadyStack.length;i<len;i++){
+                installPlugin.apply(undefined,beforeRuntimeReadyStack[i]);
+            }
+            delete beforeRuntimeReadyStack;
+        }
+    },6000);
     var regPlugins = {};
     var installPlugin = function(pluginName,callback){
         if (!clouda.lightapp.ak) {
             this.error(ErrCode.AK_UNDEFINED);
             console.error("错误，'"+pluginName+"' clouda.lightapp(your_ak_here);");
             return false;
+        }
+        if ( !clouda.STATUS.SUCCESS && n < 100 ){//还没有 ready 
+            beforeRuntimeReadyStack.push([pluginName,callback]);
+            return;
         }
         var _this = this;
         if (!pluginName) {
@@ -1152,6 +1176,93 @@ define("device",function(module) {
     
     return module;
 });define("device",function(module) {
+    var lightapp = this;
+    //定义 gyro 空间，clouda.device.gyro 
+     /**
+     * @object gyro
+     * @memberof clouda.device
+     * @instance
+     * @namespace clouda.device.gyro
+     */
+    var it = module.gyro = {};
+    
+    //需要device的gyro模块
+    
+    var getCurrentAcceleration = new delegateClass("device","deviceOrientation","getCurrentDeviceOrientation");
+    // var watchDeviceOrientation = new delegateClass("device","deviceOrientation","watchDeviceOrientation");
+    var clearWatch = new delegateClass("device","deviceOrientation","clearWatch");
+    
+    
+    /**
+     * 获取当前加速度，接收成功和失败的回调
+     *
+     * @function get
+     * @memberof clouda.device.gyro
+     * @instance
+     *
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调
+     * @param {function} [options.onfail] 失败的回调
+     * @returns null
+     * 
+     */
+    it.get = function(options){
+        getCurrentAcceleration(function(obj){
+            if ( typeof obj==='object' && typeof obj.alpha !='undefined' && typeof obj.beta !='undefined' && typeof obj.gamma !='undefined'){
+                options.onsuccess.apply(this,arguments);
+            }else{
+                lightapp.error(ErrCode.ACC_GET_ERR,ErrCode.UNKNOW_CALLBACK,options);
+            }
+        },function(nativeErr){
+            lightapp.error(ErrCode.ACC_GET_ERR,nativeErr,options);
+        },options);
+    };
+    
+    /**
+     * 已一定的频率，获取当前加速度，接收成功，失败的回调和间隔
+     *
+     * @function startListen
+     * @memberof clouda.device.gyro
+     * @instance
+     *
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调 
+     * @param {function} [options.onfail] 失败的回调
+     * @param {number} [options.frequency] 检查的间隔，默认10000 ms
+     * @returns null
+     * 
+     */
+    var start_id;
+    it.startListen = function(options){
+        installPlugin("device", function(device) {
+            start_id = device.deviceOrientation.watchDeviceOrientation(function(){
+                if ( typeof obj==='object' && typeof obj.alpha !='undefined' && typeof obj.beta !='undefined' && typeof obj.gamma !='undefined'){
+                    options.onsuccess.apply(this,arguments);
+                }else{
+                    lightapp.error(ErrCode.ACC_GET_ERR,ErrCode.UNKNOW_CALLBACK,options);
+                }
+            }, function(error) {
+               lightapp.error(ErrCode.ACC_GET_ERR,error,options);
+            },options);
+        });
+    };
+    /**
+     * 终止获取回调
+     *
+     * @function stopListen
+     * @memberof clouda.device.gyro
+     * @instance
+     *
+     * @param {function} [options.onfail] 失败的回调
+     * @returns null
+     * 
+     */
+    it.stopListen = function() {
+        clearWatch(start_id);
+    };
+    return it;
+});
+define("device",function(module) {
     var lightapp = this;
     //定义 localStorage 空间，clouda.device.localStorage 支持退化
     var it = module.localStorage = {};
