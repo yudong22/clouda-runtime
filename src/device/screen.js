@@ -1,4 +1,4 @@
-define("mbaas",function(module) {
+define("device",function(module) {
     var lightapp = this;
     var it = module.screen = {};
     
@@ -9,9 +9,9 @@ define("mbaas",function(module) {
      * @namespace clouda.mbaas.screen
      */
     
-    var takeScreenShot = new delegateClass("device","sharescreenshot","takeScreenshot");
+    var takeScreenshot = new delegateClass("device","sharescreenshot","takeScreenshot");
     var sharePicture = new delegateClass("device","sharescreenshot","sharePicture");
-    var shareScreenShot = new delegateClass("device","sharescreenshot","shareScreenshot");
+    var shareScreenshot = new delegateClass("device","sharescreenshot","shareScreenshot");
     
     /**
      * 截屏
@@ -26,8 +26,8 @@ define("mbaas",function(module) {
      * @returns null
      * 
      */
-    it.takeScreenShot = function(options) {
-        takeScreenShot(function(base64jpeg){
+    it.takeScreenshot = function(options) {
+        takeScreenshot(function(base64jpeg){
             options.onsuccess(base64jpeg);
         },function(error) {
             lightapp.error(ErrCode.SCREEN_ERROR,error,options);
@@ -69,7 +69,7 @@ define("mbaas",function(module) {
      * @returns null
      * 
      */
-    it.shareScreenShot = function(options) {
+    it.shareScreenshot = function(options) {
         shareScreenshot(function(){
             options.onsuccess(clouda.STATUS.SUCCESS);
         },function(error) {

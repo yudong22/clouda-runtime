@@ -15,7 +15,9 @@ define("mbaas",function(module) {
     
     var checkBindState = new delegateClass("device","push","checkBindState");
     
-    
+    var setTag = new delegateClass("device","push","setTag");
+    var deleteTag = new delegateClass("device","push","deleteTag");
+    var listTag = new delegateClass("device","push","listTag");
     
     /**
      * 注册
@@ -60,7 +62,7 @@ define("mbaas",function(module) {
         unbind(function(){
             options.onsuccess();
         },function(nativeErr){
-            lightapp.error(ErrCode.LOC_GET_ERR,nativeErr,options);
+            lightapp.error(ErrCode.PUSH_ERR,nativeErr,options);
         },lightapp.ak,options);
     };
     
@@ -81,7 +83,29 @@ define("mbaas",function(module) {
         checkStatus(function(bool){
             options.onsuccess(bool);
         },function(nativeErr){
-            lightapp.error(ErrCode.LOC_GET_ERR,nativeErr,options);
+            lightapp.error(ErrCode.PUSH_ERR,nativeErr,options);
+        },lightapp.ak,options);
+    };
+    
+    it.setTag = function(options){
+        setTag(function(data){
+            options.onsuccess(data);
+        },function(nativeErr){
+            lightapp.error(ErrCode.PUSH_ERR,nativeErr,options);
+        },lightapp.ak,options);
+    };
+    it.deleteTag = function(options){
+        deleteTag(function(data){
+            options.onsuccess(data);
+        },function(nativeErr){
+            lightapp.error(ErrCode.PUSH_ERR,nativeErr,options);
+        },lightapp.ak,options);
+    };
+    it.listTag = function(options){
+        listTag(function(data){
+            options.onsuccess(data);
+        },function(nativeErr){
+            lightapp.error(ErrCode.PUSH_ERR,nativeErr,options);
         },lightapp.ak,options);
     };
     

@@ -49,6 +49,7 @@
         CONNECT_ERROR:18,
         SCREEN_ERROR:19,
         FR_ERROR:20,
+        PUSH_ERR:21,
         
     };
     var errorMessage = {

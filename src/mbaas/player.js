@@ -17,7 +17,7 @@ define("mbaas",function(module) {
      * @memberof clouda.mbaas.player
      * @instance
      *
-     * @param {string} link 播放的链接
+     * @param {string} link 播放的链接,全路径
      * @param {{}} options 由onsuccess 和 onfail组成
      * @param {function} options.onsuccess 成功的回调
      * @param {function} [options.onfail] 失败的回调
