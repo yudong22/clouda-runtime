@@ -10,7 +10,7 @@
 		compassbox = $("compassbox"),
 		anglebox = $("anglebox"),
 		angle = $("angle"),
-		value = $("angle"),
+		value = $("value"),
 		desc = $("desc");
 		
 	
@@ -19,7 +19,20 @@
 	}
 	
 	var rotate = function(angle){
-		compass.style.webkitTransform = "rotate(" + angle + ")";
+		compass.style.webkitTransform = "rotate(" + angle + "deg)";
+		angle = parseInt(angle);
+		value.innerText = angle;
+		var direct;
+		if(angle >= 0 && angle <= 90){
+			direct = "北";
+		}else if(angle > 90 && angle <= 180){
+			direct = "西"; 
+		}else if(angle > 180 && angle <= 270){
+			direct = "南";
+		}else {
+			direct = "东";
+		}
+		desc.innerText = direct;
 	}
 	
 	clouda.touch.on(document,'DOMContentLoaded', function(e){
@@ -32,11 +45,8 @@
 		
 		clouda.device.compass.startListen({
 			onsuccess : function(data){
-				console.log(data);
-				var angle = data.magneticHeading
-				console.log("trueHeading", data.trueHeading);
-				console.log("accuracy", data.accuracy);
-				rotate(angle);
+				var angle = data.magneticHeading;
+				rotate(360 - angle);
 			},
 			onfail : function(err){
 				console.log(err);
