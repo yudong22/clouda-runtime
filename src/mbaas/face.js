@@ -1,6 +1,6 @@
 define("mbaas",function(module) {
     var lightapp = this;
-    var it = module.facerecognition = {};
+    var it = module.face = {};
     
     /**
      * @object facerecognition

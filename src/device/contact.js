@@ -15,7 +15,7 @@ define("device",function(module) {
     
     module.CONTACT_COLUMN={
         ID:"id",
-        NAME:"name",
+        DISPLAYNAME:"displayName",
         NICKNAME:"nickname",
         PHONE:"phoneNumbers",
         EMAIL:"emails",
@@ -67,11 +67,7 @@ define("device",function(module) {
             var person = device.contact.create();
 
             for (var i in fields) {
-                if (i === module.CONTACT_COLUMN.NAME) {
-                    person.displayName = fields[module.CONTACT_COLUMN.NAME];
-                } else {
-                    person[i] = fields[i];
-                }
+                person[i] = fields[i];
             }
             person.save(function() {
                 options.onsuccess.apply(this, arguments);

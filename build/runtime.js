@@ -1,4 +1,4 @@
-/*! clouda-runtime - v0.1.0 - 2013-12-06 */
+/*! clouda-runtime - v0.1.0 - 2013-12-09 */
 (function(window){
     // for client js only
     if (typeof window !== 'object')return ;
@@ -50,6 +50,7 @@
         CONNECT_ERROR:18,
         SCREEN_ERROR:19,
         FR_ERROR:20,
+        PUSH_ERR:21,
         
     };
     var errorMessage = {
@@ -548,7 +549,7 @@ define("device",function(module) {
     
     module.CONTACT_COLUMN={
         ID:"id",
-        NAME:"name",
+        DISPLAYNAME:"displayName",
         NICKNAME:"nickname",
         PHONE:"phoneNumbers",
         EMAIL:"emails",
@@ -600,11 +601,7 @@ define("device",function(module) {
             var person = device.contact.create();
 
             for (var i in fields) {
-                if (i === module.CONTACT_COLUMN.NAME) {
-                    person.displayName = fields[module.CONTACT_COLUMN.NAME];
-                } else {
-                    person[i] = fields[i];
-                }
+                person[i] = fields[i];
             }
             person.save(function() {
                 options.onsuccess.apply(this, arguments);
@@ -1213,7 +1210,7 @@ define("device",function(module) {
     
     
     /**
-     * 获取当前加速度，接收成功和失败的回调
+     * 获取当前角度，接收成功和失败的回调
      *
      * @function get
      * @memberof clouda.device.gyro
@@ -1238,7 +1235,7 @@ define("device",function(module) {
     };
     
     /**
-     * 已一定的频率，获取当前加速度，接收成功，失败的回调和间隔
+     * 已一定的频率，获取当前角度，接收成功，失败的回调和间隔
      *
      * @function startListen
      * @memberof clouda.device.gyro
@@ -1533,31 +1530,31 @@ define("device",function(module) {
      */
     it.prompt = function(msg,options){
         if (typeof options === 'object'){
-            return prompt(msg,options.onsuccess,options.title,options.buttonLabels,options.defaultText,options);
+            prompt(msg,options.onsuccess,options.title,options.buttonLabels,options.defaultText,options);
         }
-        return prompt(msg);
+        prompt(msg);
     };
     return module;
-});define("mbaas",function(module) {
+});define("device",function(module) {
     var lightapp = this;
     var it = module.screen = {};
     
     /**
      * @object screen
-     * @memberof clouda.mbaas
+     * @memberof clouda.device
      * @instance
-     * @namespace clouda.mbaas.screen
+     * @namespace clouda.device.screen
      */
     
-    var takeScreenShot = new delegateClass("device","sharescreenshot","takeScreenshot");
+    var takeScreenshot = new delegateClass("device","sharescreenshot","takeScreenshot");
     var sharePicture = new delegateClass("device","sharescreenshot","sharePicture");
-    var shareScreenShot = new delegateClass("device","sharescreenshot","shareScreenshot");
+    var shareScreenshot = new delegateClass("device","sharescreenshot","shareScreenshot");
     
     /**
      * 截屏
      *
-     * @function takeScreenShot
-     * @memberof clouda.mbaas.screen
+     * @function captureScreen
+     * @memberof clouda.device.screen
      * @instance
      *
      * @param {{}} options 由onsuccess 和 onfail组成
@@ -1566,8 +1563,8 @@ define("device",function(module) {
      * @returns null
      * 
      */
-    it.takeScreenShot = function(options) {
-        takeScreenShot(function(base64jpeg){
+    it.captureScreen = function(options) {
+        takeScreenshot(function(base64jpeg){
             options.onsuccess(base64jpeg);
         },function(error) {
             lightapp.error(ErrCode.SCREEN_ERROR,error,options);
@@ -1577,8 +1574,8 @@ define("device",function(module) {
     /**
      * 分享
      *
-     * @function sharePicture
-     * @memberof clouda.mbaas.screen
+     * @function shareImage
+     * @memberof clouda.device.screen
      * @instance
      *
      * @param {imgData} base64imgData 图片
@@ -1588,7 +1585,7 @@ define("device",function(module) {
      * @returns null
      * 
      */
-    it.sharePicture = function(imgData,options) {
+    it.shareImage = function(imgData,options) {
         sharePicture(function(){
             options.onsuccess(clouda.STATUS.SUCCESS);
         },function(error) {
@@ -1599,8 +1596,8 @@ define("device",function(module) {
     /**
      * 截屏+分享
      *
-     * @function shareScreenShot
-     * @memberof clouda.mbaas.screen
+     * @function shareScreen
+     * @memberof clouda.device.screen
      * @instance
      *
      * @param {{}} options 由onsuccess 和 onfail组成
@@ -1609,7 +1606,7 @@ define("device",function(module) {
      * @returns null
      * 
      */
-    it.shareScreenShot = function(options) {
+    it.shareScreen = function(options) {
         shareScreenshot(function(){
             options.onsuccess(clouda.STATUS.SUCCESS);
         },function(error) {
@@ -1617,23 +1614,10 @@ define("device",function(module) {
         });
     };
     
-});define("device",function(module) {
-    var lightapp = this;
-    //定义 sqlite 空间，clouda.device.sqlite 
-    var it = module.sqlite = {};
-    
-    /**
-     * @object sqlite 使用sqllit接口未封装
-     * @memberof clouda.device
-     * @instance
-     * @namespace clouda.device.sqlite
-     */
-   
-    return module;
 });define("touch",function(module, clouda) {
     
     var touch = touch || {};
-
+    
     (function(doc, exports) {
         'use strict';
         var os = (function() {
@@ -2605,7 +2589,7 @@ define("device",function(module) {
             }
         };
 
-        var _dispatch = function(el, evt) {
+        var _dispatch = function(el, evt, detail) {
             var args = arguments;
             if (!_hasTouch) {
                 evt = utils.getPCevts(evt);
@@ -2614,7 +2598,7 @@ define("device",function(module) {
             els = els.length ? Array.prototype.call(els) : [els];
 
             els.forEach(function(el) {
-                _trigger(el, evt);
+                _trigger(el, evt, detail);
             });
         };
 
@@ -2646,18 +2630,46 @@ define("device",function(module) {
 });
 define("mbaas",function(module) {
     var lightapp = this;
-    var it = module.facerecognition = {};
+    var it = module.face = {};
     
     /**
      * @object facerecognition
      * @memberof clouda.mbaas
      * @instance
-     * @namespace clouda.mbaas.face
+     * @namespace clouda.mbaas.facerecognition
+     * 
      */
-    var face;
-    it.register = function(link,options){
+    module.FR_ERROR={
+        NETWORK_ERR : 1, 
+        TIMEOUT_ERR : 2,
+        CANCEL_ERR : 3,
+        REGISTER_ERR : 4,
+        VERIFY_ERR : 5,
+        DETECT_FACE_ERR : 6,
+        AUTHORIZE_DEVICE_ERR : 7,
+        GET_DEVICE_LIST_ERR : 8,
+        CLECK_BLINK_ERR : 9,
+        SERVER_ERR : 99,
+        UNKNOWN_ERR : 100
+    };
+     
+     /**
+     * 注册人脸识别
+     *
+     * @function register
+     * @memberof clouda.mbaas.facerecognition
+     * @instance
+     *
+     * @param {string} uid 用户唯一标识符
+     * @param {{}} options 可定义
+     * @param {function} [options.onsuccess] 
+     * @param {function} [options.onfail] 
+     * @returns null
+     * 
+     */
+    it.register = function(uid,options){
         installPlugin("facerecognition", function(plg) {
-            if (!face)face = new plg.FaceRecognition(lightapp.ak);
+            var face = new plg.FaceRecognition(uid);
             
             face.register(function(){
                 options.onsuccess.apply(this.arguments);
@@ -2666,11 +2678,10 @@ define("mbaas",function(module) {
             },opt);
         });
     };
-    
-    it.verify = function(link,options){
+    //uid
+    it.verify = function(uid,options){
         installPlugin("facerecognition", function(plg) {
-            if (!face)face = new plg.FaceRecognition(lightapp.ak);
-            
+            var face = new plg.FaceRecognition(uid);
             face.verify(function(){
                 options.onsuccess.apply(this.arguments);
             }, function(error) {
@@ -2678,10 +2689,10 @@ define("mbaas",function(module) {
             },opt);
         });
     };
-    
-    it.check_blink = function(link,options){
+    //检查眨眼
+    it.check_blink = function(uid,options){
         installPlugin("facerecognition", function(plg) {
-            if (!face)face = new plg.FaceRecognition(lightapp.ak);
+            var face = new plg.FaceRecognition(uid);
             
             face.check_blink(function(){
                 options.onsuccess.apply(this.arguments);
@@ -2690,10 +2701,10 @@ define("mbaas",function(module) {
             },opt);
         });
     };
-    
-    it.authorize_device = function(link,options){
+    //绑定设备
+    it.authorize_device = function(uid,options){
         installPlugin("facerecognition", function(plg) {
-            if (!face)face = new plg.FaceRecognition(lightapp.ak);
+            var face = new plg.FaceRecognition(uid);
             
             face.authorize_device(function(){
                 options.onsuccess.apply(this.arguments);
@@ -2702,10 +2713,10 @@ define("mbaas",function(module) {
             },opt);
         });
     };
-    
-    it.get_device_list = function(link,options){
+    //获取设备列表
+    it.get_device_list = function(uid,options){
         installPlugin("facerecognition", function(plg) {
-            if (!face)face = new plg.FaceRecognition(lightapp.ak);
+            var face = new plg.FaceRecognition(uid);
             
             face.get_device_list(function(){
                 options.onsuccess.apply(this.arguments);
@@ -2754,7 +2765,7 @@ define("mbaas",function(module) {
      * @memberof clouda.mbaas.player
      * @instance
      *
-     * @param {string} link 播放的链接
+     * @param {string} link 播放的链接,全路径
      * @param {{}} options 由onsuccess 和 onfail组成
      * @param {function} options.onsuccess 成功的回调
      * @param {function} [options.onfail] 失败的回调
@@ -2790,7 +2801,9 @@ define("mbaas",function(module) {
     
     var checkBindState = new delegateClass("device","push","checkBindState");
     
-    
+    var setTag = new delegateClass("device","push","setTag");
+    var deleteTag = new delegateClass("device","push","deleteTag");
+    var listTag = new delegateClass("device","push","listTag");
     
     /**
      * 注册
@@ -2835,7 +2848,7 @@ define("mbaas",function(module) {
         unbind(function(){
             options.onsuccess();
         },function(nativeErr){
-            lightapp.error(ErrCode.LOC_GET_ERR,nativeErr,options);
+            lightapp.error(ErrCode.PUSH_ERR,nativeErr,options);
         },lightapp.ak,options);
     };
     
@@ -2853,11 +2866,33 @@ define("mbaas",function(module) {
      * 
      */
     it.checkStatus = function(options){
-        checkStatus(function(bool){
+        checkBindState(function(bool){
             options.onsuccess(bool);
         },function(nativeErr){
-            lightapp.error(ErrCode.LOC_GET_ERR,nativeErr,options);
+            lightapp.error(ErrCode.PUSH_ERR,nativeErr,options);
         },lightapp.ak,options);
+    };
+    
+    it.setTag = function(tags,options){
+        setTag(function(data){
+            options.onsuccess(data);
+        },function(nativeErr){
+            lightapp.error(ErrCode.PUSH_ERR,nativeErr,options);
+        },tags,options);
+    };
+    it.removeTag = function(tags,options){
+        deleteTag(function(data){
+            options.onsuccess(data);
+        },function(nativeErr){
+            lightapp.error(ErrCode.PUSH_ERR,nativeErr,options);
+        },tags,options);
+    };
+    it.listTag = function(options){
+        listTag(function(data){
+            options.onsuccess(data);
+        },function(nativeErr){
+            lightapp.error(ErrCode.PUSH_ERR,nativeErr,options);
+        },options);
     };
     
      /**

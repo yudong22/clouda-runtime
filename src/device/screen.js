@@ -4,9 +4,9 @@ define("device",function(module) {
     
     /**
      * @object screen
-     * @memberof clouda.mbaas
+     * @memberof clouda.device
      * @instance
-     * @namespace clouda.mbaas.screen
+     * @namespace clouda.device.screen
      */
     
     var takeScreenshot = new delegateClass("device","sharescreenshot","takeScreenshot");
@@ -16,8 +16,8 @@ define("device",function(module) {
     /**
      * 截屏
      *
-     * @function takeScreenShot
-     * @memberof clouda.mbaas.screen
+     * @function captureScreen
+     * @memberof clouda.device.screen
      * @instance
      *
      * @param {{}} options 由onsuccess 和 onfail组成
@@ -26,7 +26,7 @@ define("device",function(module) {
      * @returns null
      * 
      */
-    it.takeScreenshot = function(options) {
+    it.captureScreen = function(options) {
         takeScreenshot(function(base64jpeg){
             options.onsuccess(base64jpeg);
         },function(error) {
@@ -37,8 +37,8 @@ define("device",function(module) {
     /**
      * 分享
      *
-     * @function sharePicture
-     * @memberof clouda.mbaas.screen
+     * @function shareImage
+     * @memberof clouda.device.screen
      * @instance
      *
      * @param {imgData} base64imgData 图片
@@ -48,7 +48,7 @@ define("device",function(module) {
      * @returns null
      * 
      */
-    it.sharePicture = function(imgData,options) {
+    it.shareImage = function(imgData,options) {
         sharePicture(function(){
             options.onsuccess(clouda.STATUS.SUCCESS);
         },function(error) {
@@ -59,8 +59,8 @@ define("device",function(module) {
     /**
      * 截屏+分享
      *
-     * @function shareScreenShot
-     * @memberof clouda.mbaas.screen
+     * @function shareScreen
+     * @memberof clouda.device.screen
      * @instance
      *
      * @param {{}} options 由onsuccess 和 onfail组成
@@ -69,7 +69,7 @@ define("device",function(module) {
      * @returns null
      * 
      */
-    it.shareScreenshot = function(options) {
+    it.shareScreen = function(options) {
         shareScreenshot(function(){
             options.onsuccess(clouda.STATUS.SUCCESS);
         },function(error) {

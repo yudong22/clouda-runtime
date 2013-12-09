@@ -99,9 +99,9 @@ define("device",function(module) {
      */
     it.prompt = function(msg,options){
         if (typeof options === 'object'){
-            return prompt(msg,options.onsuccess,options.title,options.buttonLabels,options.defaultText,options);
+            prompt(msg,options.onsuccess,options.title,options.buttonLabels,options.defaultText,options);
         }
-        return prompt(msg);
+        prompt(msg);
     };
     return module;
 });

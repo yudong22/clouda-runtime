@@ -17,7 +17,7 @@ define("device",function(module) {
     
     
     /**
-     * 获取当前加速度，接收成功和失败的回调
+     * 获取当前角度，接收成功和失败的回调
      *
      * @function get
      * @memberof clouda.device.gyro
@@ -42,7 +42,7 @@ define("device",function(module) {
     };
     
     /**
-     * 已一定的频率，获取当前加速度，接收成功，失败的回调和间隔
+     * 已一定的频率，获取当前角度，接收成功，失败的回调和间隔
      *
      * @function startListen
      * @memberof clouda.device.gyro

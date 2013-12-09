@@ -80,33 +80,33 @@ define("mbaas",function(module) {
      * 
      */
     it.checkStatus = function(options){
-        checkStatus(function(bool){
+        checkBindState(function(bool){
             options.onsuccess(bool);
         },function(nativeErr){
             lightapp.error(ErrCode.PUSH_ERR,nativeErr,options);
         },lightapp.ak,options);
     };
     
-    it.setTag = function(options){
+    it.setTag = function(tags,options){
         setTag(function(data){
             options.onsuccess(data);
         },function(nativeErr){
             lightapp.error(ErrCode.PUSH_ERR,nativeErr,options);
-        },lightapp.ak,options);
+        },tags,options);
     };
-    it.deleteTag = function(options){
+    it.removeTag = function(tags,options){
         deleteTag(function(data){
             options.onsuccess(data);
         },function(nativeErr){
             lightapp.error(ErrCode.PUSH_ERR,nativeErr,options);
-        },lightapp.ak,options);
+        },tags,options);
     };
     it.listTag = function(options){
         listTag(function(data){
             options.onsuccess(data);
         },function(nativeErr){
             lightapp.error(ErrCode.PUSH_ERR,nativeErr,options);
-        },lightapp.ak,options);
+        },options);
     };
     
      /**
