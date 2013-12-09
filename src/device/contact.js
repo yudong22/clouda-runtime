@@ -123,6 +123,7 @@ define("device",function(module) {
         installPlugin("device", function(device) {
             var media = device.contact.findBounds(["id"],function(contacts){
                 options.onsuccess(contacts.count);
+                contacts.close(function(){},function(){});
             },function(nativeErr){
                 lightapp.error(ErrCode.CONTACT_FIND_ERR,nativeErr,options);
             });
@@ -130,9 +131,10 @@ define("device",function(module) {
     };
     it.getCursor = function(cursorOffset,length,options){
         installPlugin("device", function(device) {
-            var media = device.contact.findBounds(["id"],function(contacts){
+            device.contact.findBounds(["id"],function(contacts){
                 contacts.get(cursorOffset, function(refs){
                     options.onsuccess(refs);
+                    contacts.close(function(){},function(){});
                 }, function(nativeErr){
                     lightapp.error(ErrCode.CONTACT_FIND_ERR,nativeErr,options);
                 }, length);
