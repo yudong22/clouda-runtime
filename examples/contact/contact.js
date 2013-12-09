@@ -26,10 +26,10 @@
 		clouda.device.contact.find(["*"], {
 			onsuccess : function(data){
 				var contacts = "";
-				console.log(data.length);
 				data.forEach(function(item){
+					
 					var username = item.displayName;
-					var mobile = item[clouda.device.CONTACT_COLUMN.PHONE];
+					var mobile = item.phoneNumbers;
 					if(username && mobile && mobile[0]){
 						var c = getContact(username, mobile[0].value);
 						contacts += c;
