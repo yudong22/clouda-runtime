@@ -130,7 +130,7 @@
             for(var i=0,len=beforeRuntimeReadyStack.length;i<len;i++){
                 installPlugin.apply(undefined,beforeRuntimeReadyStack[i]);
             }
-            delete beforeRuntimeReadyStack;
+            beforeRuntimeReadyStack.length = 0;
         }
     });
     var n=0; //6s后超时
@@ -140,7 +140,7 @@
             for(var i=0,len=beforeRuntimeReadyStack.length;i<len;i++){
                 installPlugin.apply(undefined,beforeRuntimeReadyStack[i]);
             }
-            delete beforeRuntimeReadyStack;
+            beforeRuntimeReadyStack.length = 0;
         }
     },6000);
     var regPlugins = {};
