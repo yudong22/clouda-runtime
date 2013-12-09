@@ -60,7 +60,7 @@ define("device",function(module) {
     var start_id;
     it.startListen = function(options){
         installPlugin("device", function(device) {
-            start_id = device.compass.watchHeading(function(){
+            start_id = device.compass.watchHeading(function(obj){
                 if ( typeof obj==='object' && typeof obj.magneticHeading !='undefined' && typeof obj.trueHeading !='undefined' ){
                     options.onsuccess.apply(this,arguments);
                 }else{

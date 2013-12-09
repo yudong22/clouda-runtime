@@ -131,7 +131,7 @@
             for(var i=0,len=beforeRuntimeReadyStack.length;i<len;i++){
                 installPlugin.apply(undefined,beforeRuntimeReadyStack[i]);
             }
-            delete beforeRuntimeReadyStack;
+            beforeRuntimeReadyStack.length = 0;
         }
     });
     var n=0; //6s后超时
@@ -141,7 +141,7 @@
             for(var i=0,len=beforeRuntimeReadyStack.length;i<len;i++){
                 installPlugin.apply(undefined,beforeRuntimeReadyStack[i]);
             }
-            delete beforeRuntimeReadyStack;
+            beforeRuntimeReadyStack.length = 0;
         }
     },6000);
     var regPlugins = {};
@@ -418,7 +418,7 @@ define("device",function(module) {
     var start_id;
     it.startListen = function(options){
         installPlugin("device", function(device) {
-            start_id = device.compass.watchHeading(function(){
+            start_id = device.compass.watchHeading(function(obj){
                 if ( typeof obj==='object' && typeof obj.magneticHeading !='undefined' && typeof obj.trueHeading !='undefined' ){
                     options.onsuccess.apply(this,arguments);
                 }else{
@@ -546,23 +546,24 @@ define("device",function(module) {
     
     var create = new delegateClass("device","contact","create");
     var find =new delegateClass("device","contact","find");
+    var findBounds = new delegateClass("device","contact","findBounds");
     
-    module.CONTACT_COLUMN={
-        ID:"id",
-        DISPLAYNAME:"displayName",
-        NICKNAME:"nickname",
-        PHONE:"phoneNumbers",
-        EMAIL:"emails",
-        ADDRESS:"addresses",
-        ORGANIZATION:"organizations",
-        BIRTHDAY:"birthday",
-        PHOTO:"photos",
-        CATEGORY:"categories",
-        IM:"ims",
-        URL:"urls",
-        NOTE:"note",
-  
-    };
+    // module.CONTACT_COLUMN={
+        // ID:"id",
+        // DISPLAYNAME:"displayName",
+        // NICKNAME:"nickname",
+        // PHONE:"phoneNumbers",
+        // EMAIL:"emails",
+        // ADDRESS:"addresses",
+        // ORGANIZATION:"organizations",
+        // BIRTHDAY:"birthday",
+        // PHOTO:"photos",
+        // CATEGORY:"categories",
+        // IM:"ims",
+        // URL:"urls",
+        // NOTE:"note",
+//   
+    // };
     /*
      * Returns an array of Contacts matching the search criteria.
      *
@@ -615,7 +616,7 @@ define("device",function(module) {
     it.update = function(id,fields,options){
         installPlugin("device", function(device) {
            var myoptions = {"multiple":false,"filter":id};
-            device.contact.find([module.CONTACT_COLUMN.ID],function(contacts){
+            device.contact.find(["*"],function(contacts){
                 if (contacts && contacts[0]){
                     for (var i in fields){
                         contacts[0][i] = fields[i];
@@ -637,7 +638,7 @@ define("device",function(module) {
     it.remove = function(id,options){
         installPlugin("device", function(device) {
            var myoptions = {"multiple":false,"filter":id};
-            device.contact.find([module.CONTACT_COLUMN.ID],function(contacts){
+            device.contact.find(["*"],function(contacts){
                 if (contacts && contacts[0]){
                     contacts[0].remove(function(){
                         options.onsuccess.apply(this,arguments);
@@ -658,6 +659,44 @@ define("device",function(module) {
     it.getCursor = function(cursorOffset,options){
         lightapp.error(ErrCode.NOT_FINISH,ErrCode.NOT_FINISH,options);
     };
+    it.nextCursor = function(cursorOffset,options){
+        lightapp.error(ErrCode.NOT_FINISH,ErrCode.NOT_FINISH,options);
+    };
+});define("device",function(module) {
+    var lightapp = this;
+    //定义 battery 空间，clouda.device.device 支持退化
+    var it = module.device = {};
+    
+    /**
+     * @object device
+     * @memberof clouda.device
+     * @instance
+     * @namespace clouda.device.device
+     */
+    
+    var getUuid = new delegateClass("device","getUuid");
+    
+   
+    /**
+     * 获取uuid
+     *
+     * @function startListen
+     * @memberof clouda.device.device
+     * @instance
+     *
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调
+     * @param {function} [options.onfail] 失败的回调
+     * @returns null
+     * 
+     */
+    it.uuid = function(options){
+        getUuid(options.onsuccess,function(nativeErr){
+            lightapp.error(ErrCode.BTY_ERR,nativeErr,options);
+        },options);
+    };
+    
+    return it;
 });define("device",function(module) {
     var lightapp = this;
     //定义 network 空间，clouda.device.reachability 使用nuwa.network 
@@ -835,12 +874,17 @@ define("device",function(module) {
     it.getInfo = function(link,options){
         installPlugin("device", function(device) {
             var fileEntry = new device.fs.fileEntry(getFileNameFromPath(link), link);
-            
-            fileEntry.getMetadata(function(metadata) {
-               options.onsuccess.apply(this,arguments);
-            }, function(error) {
-               lightapp.error(ErrCode.FS_ERR,error,options);
-            });
+            var fileobj = fileEntry.find();
+            if (fileobj.type ) {
+                options.onsuccess(fileobj);
+            }else{
+                options.onfail();
+            }
+            // fileEntry.getMetadata(function(metadata) {
+               // .apply(this,arguments);
+            // }, function(error) {
+               // lightapp.error(ErrCode.FS_ERR,error,options);
+            // });
         },options);
     };
     it.getInfoByOffset = function(offset,options){
@@ -1445,6 +1489,10 @@ define("device",function(module) {
     var beep = new delegateClass("device","notification","beep");
     var vibrate = new delegateClass("device","notification","vibrate");
     
+    var activityStart = new delegateClass("device","notification","activityStart");
+    var activityStop = new delegateClass("device","notification","activityStop");
+    var progressStart = new delegateClass("device","notification","progressStart");
+    
     /**
      * 调用系统 alert 方法，接收一个message参数和一个可选的配置
      *
@@ -1534,6 +1582,59 @@ define("device",function(module) {
         }
         prompt(msg);
     };
+    
+    /**
+     * 弹出loading
+     *
+     * @function activityStart
+     * @memberof clouda.device.notification
+     * @instance
+     *
+     * @param {string} title 
+     * @param {string} msg 
+     * @param {{}} options 可定义
+     * @param {function} [options.onfail] 失败调用
+     * @returns null
+     * 
+     */
+    it.activityStart = function(title,msg,options){
+        activityStart(title,message,options);
+    };
+    
+     /**
+     * 关闭loading
+     *
+     * @function activityStart
+     * @memberof clouda.device.notification
+     * @instance
+     *
+     * @param {{}} options 可定义
+     * @param {function} [options.onfail] 失败调用
+     * @returns null
+     * 
+     */
+    it.activityStop = function(options){
+        activityStop(options);
+    };
+    
+     /**
+     * 弹出进度条
+     *
+     * @function activityStart
+     * @memberof clouda.device.notification
+     * @instance
+     *
+     * @param {string} title 
+     * @param {string} msg 
+     * @param {{}} options 可定义
+     * @param {function} [options.onfail] 失败调用
+     * @returns null
+     * 
+     */
+    it.progress = function(title,message,options){
+        progressStart(title,message);
+    };
+    
     return module;
 });define("device",function(module) {
     var lightapp = this;

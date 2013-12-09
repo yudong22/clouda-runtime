@@ -12,23 +12,24 @@ define("device",function(module) {
     
     var create = new delegateClass("device","contact","create");
     var find =new delegateClass("device","contact","find");
+    var findBounds = new delegateClass("device","contact","findBounds");
     
-    module.CONTACT_COLUMN={
-        ID:"id",
-        DISPLAYNAME:"displayName",
-        NICKNAME:"nickname",
-        PHONE:"phoneNumbers",
-        EMAIL:"emails",
-        ADDRESS:"addresses",
-        ORGANIZATION:"organizations",
-        BIRTHDAY:"birthday",
-        PHOTO:"photos",
-        CATEGORY:"categories",
-        IM:"ims",
-        URL:"urls",
-        NOTE:"note",
-  
-    };
+    // module.CONTACT_COLUMN={
+        // ID:"id",
+        // DISPLAYNAME:"displayName",
+        // NICKNAME:"nickname",
+        // PHONE:"phoneNumbers",
+        // EMAIL:"emails",
+        // ADDRESS:"addresses",
+        // ORGANIZATION:"organizations",
+        // BIRTHDAY:"birthday",
+        // PHOTO:"photos",
+        // CATEGORY:"categories",
+        // IM:"ims",
+        // URL:"urls",
+        // NOTE:"note",
+//   
+    // };
     /*
      * Returns an array of Contacts matching the search criteria.
      *
@@ -81,7 +82,7 @@ define("device",function(module) {
     it.update = function(id,fields,options){
         installPlugin("device", function(device) {
            var myoptions = {"multiple":false,"filter":id};
-            device.contact.find([module.CONTACT_COLUMN.ID],function(contacts){
+            device.contact.find(["*"],function(contacts){
                 if (contacts && contacts[0]){
                     for (var i in fields){
                         contacts[0][i] = fields[i];
@@ -103,7 +104,7 @@ define("device",function(module) {
     it.remove = function(id,options){
         installPlugin("device", function(device) {
            var myoptions = {"multiple":false,"filter":id};
-            device.contact.find([module.CONTACT_COLUMN.ID],function(contacts){
+            device.contact.find(["*"],function(contacts){
                 if (contacts && contacts[0]){
                     contacts[0].remove(function(){
                         options.onsuccess.apply(this,arguments);
@@ -122,6 +123,9 @@ define("device",function(module) {
         lightapp.error(ErrCode.NOT_FINISH,ErrCode.NOT_FINISH,options);
     };
     it.getCursor = function(cursorOffset,options){
+        lightapp.error(ErrCode.NOT_FINISH,ErrCode.NOT_FINISH,options);
+    };
+    it.nextCursor = function(cursorOffset,options){
         lightapp.error(ErrCode.NOT_FINISH,ErrCode.NOT_FINISH,options);
     };
 });

@@ -45,3 +45,15 @@ var dianchistart = function(){
         console.log(errno);
     }});
 };
+var compass = function(){
+    clouda.device.compass.startListen({onsuccess:function(data){
+        alert("success"+data.trueHeading);
+        console.log(data);
+    },onfail:function(errno){
+        alert("error");
+        console.log(errno);
+    }});
+    setTimeout(function(){
+        clouda.device.compass.stopListen();
+    },2000);
+};

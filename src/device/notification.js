@@ -14,6 +14,10 @@ define("device",function(module) {
     var beep = new delegateClass("device","notification","beep");
     var vibrate = new delegateClass("device","notification","vibrate");
     
+    var activityStart = new delegateClass("device","notification","activityStart");
+    var activityStop = new delegateClass("device","notification","activityStop");
+    var progressStart = new delegateClass("device","notification","progressStart");
+    
     /**
      * 调用系统 alert 方法，接收一个message参数和一个可选的配置
      *
@@ -103,5 +107,58 @@ define("device",function(module) {
         }
         prompt(msg);
     };
+    
+    /**
+     * 弹出loading
+     *
+     * @function activityStart
+     * @memberof clouda.device.notification
+     * @instance
+     *
+     * @param {string} title 
+     * @param {string} msg 
+     * @param {{}} options 可定义
+     * @param {function} [options.onfail] 失败调用
+     * @returns null
+     * 
+     */
+    it.activityStart = function(title,msg,options){
+        activityStart(title,message,options);
+    };
+    
+     /**
+     * 关闭loading
+     *
+     * @function activityStart
+     * @memberof clouda.device.notification
+     * @instance
+     *
+     * @param {{}} options 可定义
+     * @param {function} [options.onfail] 失败调用
+     * @returns null
+     * 
+     */
+    it.activityStop = function(options){
+        activityStop(options);
+    };
+    
+     /**
+     * 弹出进度条
+     *
+     * @function activityStart
+     * @memberof clouda.device.notification
+     * @instance
+     *
+     * @param {string} title 
+     * @param {string} msg 
+     * @param {{}} options 可定义
+     * @param {function} [options.onfail] 失败调用
+     * @returns null
+     * 
+     */
+    it.progress = function(title,message,options){
+        progressStart(title,message);
+    };
+    
     return module;
 });
