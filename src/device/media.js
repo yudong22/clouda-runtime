@@ -35,7 +35,13 @@ define("device",function(module) {
     module.MEDIA_DIRECTION.BACK = 0;
     module.MEDIA_DIRECTION.FRONT = 1;
     
-    
+    module.MEDIA_STATUS = {
+        NONE : 0,
+        STARTING : 1,
+        RUNNING : 2,
+        PAUSED : 3,
+        STOPPED : 4
+    };
      
     var getPicture = new delegateClass("device","camera","getPicture");
     // var cleanup = new delegateClass("device","camera","cleanup");
@@ -114,6 +120,32 @@ define("device",function(module) {
         },options.onsuccess,function(nativeErr){
             lightapp.error(ErrCode.MEDIA_ERR,nativeErr,options);
         },options);
+    };
+    
+     /**
+     *
+     * create mediafile by link
+     *
+     * @function createMedia
+     * @memberof clouda.device.media
+     * @instance
+     *
+     * @param {{}} options
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
+     * @param {int} options.status=clouda.device.MEDIA_STATUS.NONE
+     * @returns null
+     * 
+     */
+    it.createMedia = function(link,options){
+        installPlugin("device", function(device) {
+            var media = new device.Media(link,function(id){
+                console.log(id,media);
+                options.onsuccess(media);
+            },function(nativeErr){
+                lightapp.error(ErrCode.MEDIA_ERR,nativeErr,options);
+            },(options.status||clouda.device.MEDIA_STATUS.NONE));
+        });
     };
     
     return module;

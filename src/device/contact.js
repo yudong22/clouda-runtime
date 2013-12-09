@@ -120,12 +120,28 @@ define("device",function(module) {
         });
     };
     it.count = function(options){
-        lightapp.error(ErrCode.NOT_FINISH,ErrCode.NOT_FINISH,options);
+        installPlugin("device", function(device) {
+            var media = device.contact.findBounds(["id"],function(contacts){
+                options.onsuccess(contacts.count);
+            },function(nativeErr){
+                lightapp.error(ErrCode.CONTACT_FIND_ERR,nativeErr,options);
+            });
+        });
     };
-    it.getCursor = function(cursorOffset,options){
-        lightapp.error(ErrCode.NOT_FINISH,ErrCode.NOT_FINISH,options);
+    it.getCursor = function(cursorOffset,length,options){
+        installPlugin("device", function(device) {
+            var media = device.contact.findBounds(["id"],function(contacts){
+                contacts.get(cursorOffset, function(refs){
+                    options.onsuccess(refs);
+                }, function(nativeErr){
+                    lightapp.error(ErrCode.CONTACT_FIND_ERR,nativeErr,options);
+                }, length);
+            },function(nativeErr){
+                lightapp.error(ErrCode.CONTACT_FIND_ERR,nativeErr,options);
+            });
+        });
     };
-    it.nextCursor = function(cursorOffset,options){
-        lightapp.error(ErrCode.NOT_FINISH,ErrCode.NOT_FINISH,options);
-    };
+    // it.nextCursor = function(cursorOffset,options){
+        // lightapp.error(ErrCode.NOT_FINISH,ErrCode.NOT_FINISH,options);
+    // };
 });

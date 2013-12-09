@@ -268,7 +268,7 @@ define("device",function(module) {
     var start_id;
     it.startListen = function(options){
         installPlugin("device", function(device) {
-            start_id = device.accelerometer.watchAcceleration(function(){
+            start_id = device.accelerometer.watchAcceleration(function(obj){
                 if ( typeof obj==='object' && typeof obj.x !='undefined' && typeof obj.y !='undefined' && typeof obj.z !='undefined'){
                     options.onsuccess.apply(this,arguments);
                 }else{
@@ -654,14 +654,30 @@ define("device",function(module) {
         });
     };
     it.count = function(options){
-        lightapp.error(ErrCode.NOT_FINISH,ErrCode.NOT_FINISH,options);
+        installPlugin("device", function(device) {
+            var media = device.contact.findBounds(["id"],function(contacts){
+                options.onsuccess(contacts.count);
+            },function(nativeErr){
+                lightapp.error(ErrCode.CONTACT_FIND_ERR,nativeErr,options);
+            });
+        });
     };
-    it.getCursor = function(cursorOffset,options){
-        lightapp.error(ErrCode.NOT_FINISH,ErrCode.NOT_FINISH,options);
+    it.getCursor = function(cursorOffset,length,options){
+        installPlugin("device", function(device) {
+            var media = device.contact.findBounds(["id"],function(contacts){
+                contacts.get(cursorOffset, function(refs){
+                    options.onsuccess(refs);
+                }, function(nativeErr){
+                    lightapp.error(ErrCode.CONTACT_FIND_ERR,nativeErr,options);
+                }, length);
+            },function(nativeErr){
+                lightapp.error(ErrCode.CONTACT_FIND_ERR,nativeErr,options);
+            });
+        });
     };
-    it.nextCursor = function(cursorOffset,options){
-        lightapp.error(ErrCode.NOT_FINISH,ErrCode.NOT_FINISH,options);
-    };
+    // it.nextCursor = function(cursorOffset,options){
+        // lightapp.error(ErrCode.NOT_FINISH,ErrCode.NOT_FINISH,options);
+    // };
 });define("device",function(module) {
     var lightapp = this;
     //定义 battery 空间，clouda.device.device 支持退化
@@ -709,8 +725,19 @@ define("device",function(module) {
      * @namespace clouda.device.fs
      */
     
-    var localDir = function(){
-        return "/sdcard/Baidu/"+lightapp.ak;
+    var localDir = function(callback){
+        // return "/sdcard/Baidu/"+lightapp.ak;
+        installPlugin("device", function(device) {
+
+            var fileEntry = new device.fs.fileEntry(getFileNameFromPath(link), link);
+            
+            device.fs.requestFileSystem(LocalFileSystem.PERSISTENT, 100000000, function(fileSystem){
+                callback(fileSystem);
+            }, function(){
+                callback(null);
+            });
+            
+        });
     };
     var getFileNameFromPath = function(str){
         return str.substring(str.lastIndexOf("/")+1);
@@ -783,11 +810,18 @@ define("device",function(module) {
                 }
             }
             //可能需要加下载路径
-            fileTransfer.download(link, localDir() +"/" + name, function(result) {
-                options.onsuccess.apply(this, arguments);
-            }, function(err) {
-                lightapp.error(ErrCode.FS_ERR, err, options);
-            },options);
+            localDir(function(direntry){
+                if (!direntry) {
+                    lightapp.error(ErrCode.FS_ERR, err, options);
+                    return ;
+                }
+                fileTransfer.download(link, direntry.name +"/" + name, function(result) {
+                    options.onsuccess.apply(this, arguments);
+                }, function(err) {
+                    lightapp.error(ErrCode.FS_ERR, err, options);
+                },options);
+            });
+            
         });
     }; 
     
@@ -836,27 +870,32 @@ define("device",function(module) {
     
     it.empty = function(options){
         installPlugin("device", function(device){
-            var ld = localDir();
-            var directEntry = new device.fs.DirectoryEntry(getFileNameFromPath(ld), ld);
-            directEntry.removeRecursively(function(){
-                options.onsuccess.apply(this,arguments);
-            }, function(error){
-                lightapp.error(ErrCode.FS_ERR,error,options);
-            },options);
+            //var ld = localDir();
+            localDir(function(direntry){
+                var directEntry = direntry;
+                directEntry.removeRecursively(function(){
+                    options.onsuccess.apply(this,arguments);
+                }, function(error){
+                    lightapp.error(ErrCode.FS_ERR,error,options);
+                },options);
+            });
+            
         });
     };
     
     it.getCount = function(options){
         installPlugin("device", function(device) {
-            var ld = localDir();
-            var directEntry = new device.fs.DirectoryEntry(getFileNameFromPath(ld), ld);
-            var directReader = directEntry.createReader();
+            localDir(function(direntry){
+                var directEntry = direntry;
+                var directReader = directEntry.createReader();
+                
+                directReader.readEntries(function(entries){
+                    options.onsuccess.call(this,entries.length);
+                }, function(error){
+                    lightapp.error(ErrCode.FS_ERR,error,options);
+                },options);
+            });
             
-            directReader.readEntries(function(){
-                options.onsuccess.apply(this,arguments);
-            }, function(error){
-                lightapp.error(ErrCode.FS_ERR,error,options);
-            },options);
         });
     };
     /**
@@ -874,21 +913,35 @@ define("device",function(module) {
     it.getInfo = function(link,options){
         installPlugin("device", function(device) {
             var fileEntry = new device.fs.fileEntry(getFileNameFromPath(link), link);
-            var fileobj = fileEntry.find();
-            if (fileobj.type ) {
+            fileEntry.file(function(fileobj){
                 options.onsuccess(fileobj);
-            }else{
-                options.onfail();
-            }
-            // fileEntry.getMetadata(function(metadata) {
-               // .apply(this,arguments);
-            // }, function(error) {
-               // lightapp.error(ErrCode.FS_ERR,error,options);
-            // });
+            },function(){
+                lightapp.error(ErrCode.FS_ERR,ErrCode.UNKNOW_CALLBACK,options);
+            });
+            
         },options);
     };
     it.getInfoByOffset = function(offset,options){
-        lightapp.error(ErrCode.NOT_FINISH,ErrCode.NOT_FINISH,options);
+        installPlugin("device", function(device) {
+            localDir(function(direntry){
+                var directEntry = direntry;
+                var directReader = directEntry.createReader();
+                directReader.readEntries(function(entries){
+                    if (offset >= entries.length){
+                        lightapp.error(ErrCode.FS_ERR,ErrCode.UNKNOW_CALLBACK,options);
+                        return ;
+                    }
+                    fileEntry.file(function(fileobj){
+                        options.onsuccess(fileobj);
+                    },function(){
+                        lightapp.error(ErrCode.FS_ERR,ErrCode.UNKNOW_CALLBACK,options);
+                    });
+                }, function(error){
+                    lightapp.error(ErrCode.FS_ERR,error,options);
+                },options);
+            });
+            
+        },options);
     };
     return module;
 });define("device",function(module) {
@@ -1295,7 +1348,7 @@ define("device",function(module) {
     var start_id;
     it.startListen = function(options){
         installPlugin("device", function(device) {
-            start_id = device.orientation.watchDeviceOrientation(function(){
+            start_id = device.orientation.watchDeviceOrientation(function(obj){
                 if ( typeof obj==='object' && typeof obj.alpha !='undefined' && typeof obj.beta !='undefined' && typeof obj.gamma !='undefined'){
                     options.onsuccess.apply(this,arguments);
                 }else{
@@ -1391,7 +1444,13 @@ define("device",function(module) {
     module.MEDIA_DIRECTION.BACK = 0;
     module.MEDIA_DIRECTION.FRONT = 1;
     
-    
+    module.MEDIA_STATUS = {
+        NONE : 0,
+        STARTING : 1,
+        RUNNING : 2,
+        PAUSED : 3,
+        STOPPED : 4
+    };
      
     var getPicture = new delegateClass("device","camera","getPicture");
     // var cleanup = new delegateClass("device","camera","cleanup");
@@ -1470,6 +1529,32 @@ define("device",function(module) {
         },options.onsuccess,function(nativeErr){
             lightapp.error(ErrCode.MEDIA_ERR,nativeErr,options);
         },options);
+    };
+    
+     /**
+     *
+     * create mediafile by link
+     *
+     * @function createMedia
+     * @memberof clouda.device.media
+     * @instance
+     *
+     * @param {{}} options
+     * @param {Function} options.onsuccess
+     * @param {Function} options.onfail
+     * @param {int} options.status=clouda.device.MEDIA_STATUS.NONE
+     * @returns null
+     * 
+     */
+    it.createMedia = function(link,options){
+        installPlugin("device", function(device) {
+            var media = new device.Media(link,function(id){
+                console.log(id,media);
+                options.onsuccess(media);
+            },function(nativeErr){
+                lightapp.error(ErrCode.MEDIA_ERR,nativeErr,options);
+            },(options.status||clouda.device.MEDIA_STATUS.NONE));
+        });
     };
     
     return module;

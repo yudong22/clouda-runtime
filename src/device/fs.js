@@ -10,8 +10,19 @@ define("device",function(module) {
      * @namespace clouda.device.fs
      */
     
-    var localDir = function(){
-        return "/sdcard/Baidu/"+lightapp.ak;
+    var localDir = function(callback){
+        // return "/sdcard/Baidu/"+lightapp.ak;
+        installPlugin("device", function(device) {
+
+            var fileEntry = new device.fs.fileEntry(getFileNameFromPath(link), link);
+            
+            device.fs.requestFileSystem(LocalFileSystem.PERSISTENT, 100000000, function(fileSystem){
+                callback(fileSystem);
+            }, function(){
+                callback(null);
+            });
+            
+        });
     };
     var getFileNameFromPath = function(str){
         return str.substring(str.lastIndexOf("/")+1);
@@ -84,11 +95,18 @@ define("device",function(module) {
                 }
             }
             //可能需要加下载路径
-            fileTransfer.download(link, localDir() +"/" + name, function(result) {
-                options.onsuccess.apply(this, arguments);
-            }, function(err) {
-                lightapp.error(ErrCode.FS_ERR, err, options);
-            },options);
+            localDir(function(direntry){
+                if (!direntry) {
+                    lightapp.error(ErrCode.FS_ERR, err, options);
+                    return ;
+                }
+                fileTransfer.download(link, direntry.name +"/" + name, function(result) {
+                    options.onsuccess.apply(this, arguments);
+                }, function(err) {
+                    lightapp.error(ErrCode.FS_ERR, err, options);
+                },options);
+            });
+            
         });
     }; 
     
@@ -137,27 +155,32 @@ define("device",function(module) {
     
     it.empty = function(options){
         installPlugin("device", function(device){
-            var ld = localDir();
-            var directEntry = new device.fs.DirectoryEntry(getFileNameFromPath(ld), ld);
-            directEntry.removeRecursively(function(){
-                options.onsuccess.apply(this,arguments);
-            }, function(error){
-                lightapp.error(ErrCode.FS_ERR,error,options);
-            },options);
+            //var ld = localDir();
+            localDir(function(direntry){
+                var directEntry = direntry;
+                directEntry.removeRecursively(function(){
+                    options.onsuccess.apply(this,arguments);
+                }, function(error){
+                    lightapp.error(ErrCode.FS_ERR,error,options);
+                },options);
+            });
+            
         });
     };
     
     it.getCount = function(options){
         installPlugin("device", function(device) {
-            var ld = localDir();
-            var directEntry = new device.fs.DirectoryEntry(getFileNameFromPath(ld), ld);
-            var directReader = directEntry.createReader();
+            localDir(function(direntry){
+                var directEntry = direntry;
+                var directReader = directEntry.createReader();
+                
+                directReader.readEntries(function(entries){
+                    options.onsuccess.call(this,entries.length);
+                }, function(error){
+                    lightapp.error(ErrCode.FS_ERR,error,options);
+                },options);
+            });
             
-            directReader.readEntries(function(){
-                options.onsuccess.apply(this,arguments);
-            }, function(error){
-                lightapp.error(ErrCode.FS_ERR,error,options);
-            },options);
         });
     };
     /**
@@ -175,16 +198,35 @@ define("device",function(module) {
     it.getInfo = function(link,options){
         installPlugin("device", function(device) {
             var fileEntry = new device.fs.fileEntry(getFileNameFromPath(link), link);
-            
-            fileEntry.getMetadata(function(metadata) {
-               options.onsuccess.apply(this,arguments);
-            }, function(error) {
-               lightapp.error(ErrCode.FS_ERR,error,options);
+            fileEntry.file(function(fileobj){
+                options.onsuccess(fileobj);
+            },function(){
+                lightapp.error(ErrCode.FS_ERR,ErrCode.UNKNOW_CALLBACK,options);
             });
+            
         },options);
     };
     it.getInfoByOffset = function(offset,options){
-        lightapp.error(ErrCode.NOT_FINISH,ErrCode.NOT_FINISH,options);
+        installPlugin("device", function(device) {
+            localDir(function(direntry){
+                var directEntry = direntry;
+                var directReader = directEntry.createReader();
+                directReader.readEntries(function(entries){
+                    if (offset >= entries.length){
+                        lightapp.error(ErrCode.FS_ERR,ErrCode.UNKNOW_CALLBACK,options);
+                        return ;
+                    }
+                    fileEntry.file(function(fileobj){
+                        options.onsuccess(fileobj);
+                    },function(){
+                        lightapp.error(ErrCode.FS_ERR,ErrCode.UNKNOW_CALLBACK,options);
+                    });
+                }, function(error){
+                    lightapp.error(ErrCode.FS_ERR,error,options);
+                },options);
+            });
+            
+        },options);
     };
     return module;
 });
