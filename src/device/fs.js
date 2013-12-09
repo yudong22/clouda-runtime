@@ -38,7 +38,9 @@ define("device",function(module) {
             if (fileTransfer === null) {
                 fileTransfer = new ft.FileTransfer();
                 if (options.onprogress){
-                    fileTransfer.onprogress = options.onprogress;
+                    fileTransfer.onprogress = function(data){
+                        options.onprogress(data.loaded/data.total);
+                    };
                 }
             }
             
@@ -76,7 +78,9 @@ define("device",function(module) {
             if (fileTransfer === null) {
                 fileTransfer = new ft.FileTransfer();
                 if (options.onprogress) {
-                    fileTransfer.onprogress = options.onprogress;
+                    fileTransfer.onprogress = function(data){
+                        options.onprogress(data.loaded/data.total);
+                    };
                 }
             }
             //可能需要加下载路径

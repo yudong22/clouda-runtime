@@ -47,7 +47,9 @@
         FS_ERR:16,
         BTY_ERR:17,
         CONNECT_ERROR:18,
-        
+        SCREEN_ERROR:19,
+        FR_ERROR:20,
+        PUSH_ERR:21,
         
     };
     var errorMessage = {
@@ -170,8 +172,8 @@
                     _this.error(ErrCode.RT_GETERROR);
                     callback(null);
                 });
-                inst.on('progress',function(err){
-                    
+                inst.on('progress',function(percentage){
+                    console.log( pluginName + ' percentage = ' + percentage);
                 });
                 inst.on('complete',function(err){
                     regPlugins[pluginName] = nuwa.require(pluginName);
