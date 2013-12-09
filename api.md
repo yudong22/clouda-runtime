@@ -1,7 +1,7 @@
 #百度轻应用API参考文档#
 
 ----------
-2013/12/6 19:49:10 19:16:37   
+2013/12/9 19:01:20    
 
 问题反馈： [clouda-support@baidu.com](mailto:clouda-support@baidu.com)
 
@@ -24,10 +24,7 @@
 
 ## APP信息注册
 
-
-<font color="red">**注意：**</font>
-
-<font color="red">其中使用云服务类API，需要先到[开发者中心](http://developer.baidu.com/console)获取应用API Key，并调用以下轻应用注册接口；否则，相关云服务类接口将无法被调用成功。</font>
+<font color="red">使用云服务类API，需要先到[开发者中心](http://developer.baidu.com/console)获取应用API Key，并调用以下轻应用注册接口；否则，相关云服务类接口将无法被调用成功。</font>
  
 	clouda.lightapp(apikey)
 
@@ -62,6 +59,7 @@
 - 本地媒体功能（Media）
 - 消息推送(Notification)
 - 二维码（QRCode）
+- 截屏分享（Screen）
 
 ### Accelerometer ###
 
@@ -386,7 +384,7 @@ options是一个对象，其中包括以下参数：
 
 - get(options)
 - startListen(options)
-- stopListen()    <font color="red">(Runtime需要后续添加)</font>
+- stopListen()   
 
 #### get ####
 
@@ -459,8 +457,8 @@ options：参数说明同clouda.device.connection.get(options)中的options说�
 **方法：**
 
 - find(field, options)
-- count(options)    <font color="red">(Runtime需要后续添加)</font>
-- getCursor(cursorOffset, options)    <font color="red">(Runtime需要后续添加)</font>
+- count(options)    
+- getCursor(cursorOffset, options)    
 - insert(data, options)
 - update(id, data, options)
 - remove(id, options)
@@ -474,23 +472,14 @@ options：参数说明同clouda.device.connection.get(options)中的options说�
 
 **参数说明：**
 
-- field: 为array, 其中的元素是Contact类中的元素组合。
+- field: 为array类型, 其中的元素是“Contact对象”中的元素组合。表示查找条件。
+		
+   举例：
 
-		field的字段定义列表：
-		clouda.device.CONTACT_COLUMN.ID // 联系人ID，全局唯一标识符  (string)
-		clouda.device.CONTACT_COLUMN.NAME // 姓名  (string)
-		clouda.device.CONTACT_COLUMN.NICKNAME // 昵称 (string)
-    	clouda.device.CONTACT_COLUMN.PHONE // 电话（座机、手机等相同）(array)
-    	clouda.device.CONTACT_COLUMN.EMAIL // Email  (array)
-		clouda.device.CONTACT_COLUMN.ADDRESS // 联系地址  （array）
-		clouda.device.CONTACT_COLUMN.ORGANIZATION // 公司 (array)
-		clouda.device.CONTACT_COLUMN.BIRTHDAY // 生日 (string)
-		clouda.device.CONTACT_COLUMN.PHOTO // 照片 (array)
-		clouda.device.CONTACT_COLUMN.CATEGORY // 自定义类别(array)
-		clouda.device.CONTACT_COLUMN.IM // IM信息 (array)
-		clouda.device.CONTACT_COLUMN.URL // 相关网页，如博客(array)
-		clouda.device.CONTACT_COLUMN.NOTE // 备注(string)
+   1.全选：可用`["*"]`
 
+   2.自定义选择：
+	["displayName", "phone", "email"]
 
 - options: 为object，其中包括以下参数：
 
@@ -504,7 +493,7 @@ options：参数说明同clouda.device.connection.get(options)中的options说�
         <tr>
 			<td>onsuccess</td>
 			<td>function(data){}</td>           
-			<td>操作成功，data是返回的Contact对象</td>  
+			<td>操作成功，data是返回的是“Contact对象”组成的数组</td>  
 		</tr>
         <tr>
 			<td>onfail</td>
@@ -524,7 +513,7 @@ options：参数说明同clouda.device.connection.get(options)中的options说�
     <tbody>
 </table>
 
-**返回的Contact对象：**
+**Contact对象：**
 <table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
@@ -535,12 +524,181 @@ options：参数说明同clouda.device.connection.get(options)中的options说�
         <tr>
 			<td>id</td>
 			<td>string</td>           
-			<td>全局唯一标识符，标识通讯录中的一个联系人</td>  
+			<td>联系人ID，全局唯一标识符，标识通讯录中的一个联系人</td>  
 		</tr>
         <tr>
-			<td>data</td>
-			<td>object</td>           
-			<td>以field中的字段为key，该字段所对应的内容为value的对象</td>  
+			<td>displayName</td>
+			<td>string</td>           
+			<td>姓名</td>  
+		</tr>
+        <tr>
+			<td>nickname/td>
+			<td>string</td>           
+			<td>昵称</td>  
+		</tr>
+        <tr>
+			<td>phone</td>
+			<td>array</td>           
+			<td>电话（座机、手机等相同），详细说明参考“ContactField”对象</td>  
+		</tr>
+        <tr>
+			<td>address</td>
+			<td>array</td>           
+			<td>联系地址，详细说明参考“ContactAddress”对象</td>  
+		</tr>
+        <tr>
+			<td>email</td>
+			<td>array</td>           
+			<td>电子邮件地址，详细说明参考“ContactField”对象</td>  
+		</tr>
+        <tr>
+			<td>organization</td>
+			<td>array</td>           
+			<td>组织，详细说明参考“ContactOrg”对象</td>  
+		</tr>	
+        <tr>
+			<td>birthday</td>
+			<td>string</td>           
+			<td>生日</td>  
+		</tr>
+        <tr>
+			<td>photo</td>
+			<td>array</td>           
+			<td>头像，详细说明参考“ContactField”对象</td>  
+		</tr>
+        <tr>
+			<td>im</td>
+			<td>array</td>           
+			<td>IM信息，详细说明参考“ContactField”对象</td>  
+		</tr>
+        <tr>
+			<td>url</td>
+			<td>array</td>           
+			<td>相关网页，如博客，详细说明参考“ContactField”对象</td>  
+		</tr>
+        <tr>
+			<td>note</td>
+			<td>string</td>           
+			<td>备注</td>  
+		</tr>
+        <tr>
+			<td>category</td>
+			<td>array</td>           
+			<td>自定义类别，详细说明参考“ContactField”对象</td>  
+		</tr>
+	</tbody>
+</table>
+
+**ContactField对象：**
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>type</td>
+			<td>string</td>           
+			<td>字段类型</td>  
+		</tr>
+        <tr>
+			<td>value</td>
+			<td>string</td>           
+			<td>字段值（电话号码或email）</td>  
+		</tr>
+        <tr>
+			<td>pref/td>
+			<td>boolean</td>           
+			<td>用户是否设置为首选项，true：设置为首选项</td>  
+		</tr>
+	</tbody>
+</table>
+
+**ContactAddress对象：**
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>type</td>
+			<td>string</td>           
+			<td>字段类型</td>  
+		</tr>
+        <tr>
+			<td>pref/td>
+			<td>boolean</td>           
+			<td>用户是否设置为首选项，true：设置为首选项</td>  
+		</tr>
+        <tr>
+			<td>formatted</td>
+			<td>string</td>           
+			<td>完整地址显示格式</td>  
+		</tr>
+        <tr>
+			<td>streeAddress</td>
+			<td>string</td>           
+			<td>完整街道地址</td>  
+		</tr>
+        <tr>
+			<td>locality</td>
+			<td>string</td>           
+			<td>城市或地区</td>  
+		</tr>
+        <tr>
+			<td>region</td>
+			<td>string</td>           
+			<td>省</td>  
+		</tr>
+        <tr>
+			<td>country</td>
+			<td>string</td>           
+			<td>国家</td>  
+		</tr>
+        <tr>
+			<td>postCode</td>
+			<td>string</td>           
+			<td>邮编</td>  
+		</tr>
+
+	</tbody>
+</table>
+
+**ContactOrg对象：**
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>type</td>
+			<td>string</td>           
+			<td>字段类型</td>  
+		</tr>
+        <tr>
+			<td>name</td>
+			<td>string</td>           
+			<td>组织名称</td>  
+		</tr>
+        <tr>
+			<td>pref/td>
+			<td>boolean</td>           
+			<td>用户是否设置为首选项，true：设置为首选项</td>  
+		</tr>
+        <tr>
+			<td>department</td>
+			<td>string</td>           
+			<td>部门</td>  
+		</tr>
+        <tr>
+			<td>title</td>
+			<td>string</td>           
+			<td>职务</td>  
 		</tr>
 	</tbody>
 </table>
@@ -621,8 +779,8 @@ options: 为object，参数说明同clouda.device.contact.find(field, options)�
 - remove(path, options)
 - empty()
 - count(options)
-- getInfo(path, options)   <font color="red">(Runtime需要后续添加)</font>
-- getInfoByOffset(offset, options)  <font color="red">(Runtime需要后续添加)</font>
+- getInfo(path, options)  
+- getInfoByOffset(offset, options) 
 
 ### post ###
     post(path,target,options)
@@ -914,7 +1072,7 @@ options是一个object，其中包括以下参数：
 停止监听地理位置信息。
 
 ### Gyroscope ###
-    clouda.device.gyroscope
+    clouda.device.gyro
 
 陀螺仪感应器
 
@@ -1152,6 +1310,7 @@ options：是一个object类型，其中包含以下参数：
 - confirm(options)
 - beep(options)
 - vibrate(options)
+- prompt(msg, options)
 
 #### alert ####
     alert(options)
@@ -1173,7 +1332,7 @@ options：为object类型，其中包括以下参数：
         <tr>
 			<td>onsuccess</td>
 			<td>function(){}</td>           
-			<td>用户点击确定</td>  
+			<td>用户点击“OK”按钮</td>  
 		</tr>
         <tr>
 			<td>onfail</td>
@@ -1188,12 +1347,12 @@ options：为object类型，其中包括以下参数：
         <tr>
 			<td>title</td>
 			<td>string</td>          
-			<td>对话框标题，可选项，默认为：警告</td>  
+			<td>对话框标题，可选项，默认为：Alert</td>  
 		</tr>
         <tr>
 			<td>buttonName</td>
 			<td>string</td>          
-			<td>按钮名称，可选项，默认为：确定</td>  
+			<td>按钮名称，可选项，默认为：OK</td>  
 		</tr>
 	</tbody>
 </table>
@@ -1218,12 +1377,12 @@ options为一个object，其中包括以下参数：
         <tr>
 			<td>onsuccess</td>
 			<td>function(){}</td>           
-			<td>用户点击“确定”按钮 </td>  
+			<td>用户点击“OK”按钮 </td>  
 		</tr>
         <tr>
 			<td>onfail</td>
 			<td>function(err){}</td>          
-			<td>操作失败或用户点击取消，返回错误码</td>  
+			<td>操作失败或用户点击“Cancel”，返回错误码</td>  
 		</tr>
         <tr>
 			<td>message</td>
@@ -1233,12 +1392,12 @@ options为一个object，其中包括以下参数：
         <tr>
 			<td>title</td>
 			<td>string</td>          
-			<td>对话框标题，可选项，默认为：确定</td>  
+			<td>对话框标题，可选项，默认为：Confirm</td>  
 		</tr>
         <tr>
-			<td>buttonName</td>
-			<td>string</td>          
-			<td>按钮名称，可选项，默认为：确定、取消</td>  
+			<td>buttonLabels</td>
+			<td>array</td>          
+			<td>自定义按钮标签名，可选项，默认为：[OK，Cancel]；</td>  
 		</tr>
 	</tbody>
 </table>
@@ -1272,7 +1431,7 @@ options为一个object，其中包括以下参数：
 		</tr>
         <tr>
 			<td>times</td>
-			<td>Number</td>          
+			<td>number</td>          
 			<td>蜂鸣的重复次数</td>  
 		</tr>
 	</tbody>
@@ -1284,7 +1443,6 @@ options为一个object，其中包括以下参数：
 **功能描述：**
 
 使设备震动，且可设置指定的震动时长。
-
 
 **参数说明：**
 options为一个object，其中包括以下参数：
@@ -1307,8 +1465,49 @@ options为一个object，其中包括以下参数：
 		</tr>
         <tr>
 			<td>time</td>
-			<td>Number</td>          
+			<td>number</td>          
 			<td>设备震动时长，单位：毫秒，默认1000</td>  
+		</tr>
+	</tbody>
+</table>
+
+### prompt ###
+    prompt(msg, options)
+
+**功能描述：**
+
+弹出一个定制化对话框
+
+**参数说明：**
+
+- msg : 为 string 类型，对话框信息
+- options :为一个object，其中包括以下参数：
+<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>onsuccess</td>
+			<td>function(){}</td>           
+			<td>用户点击“确定”按钮 </td>  
+		</tr>
+        <tr>
+			<td>onfail</td>
+			<td>function(err){}</td>          
+			<td>操作失败或用户点击取消，返回错误码</td>  
+		</tr>
+        <tr>
+			<td>title</td>
+			<td>string</td>          
+			<td>对话框标题，可选项，默认为：确定</td>  
+		</tr>
+        <tr>
+			<td>buttonName</td>
+			<td>string</td>          
+			<td>按钮名称，可选项，默认为：确定、取消</td>  
 		</tr>
 	</tbody>
 </table>
@@ -1318,7 +1517,7 @@ options为一个object，其中包括以下参数：
 
 **方法：**
 
-- captureMedia(options)    <font color="red">(Runtime需要后续添加Image类型的MediaFile接口封装)</font>
+- captureMedia(options)    
 
 #### CaptureMedia ####
     captureMedia(options)
@@ -1456,8 +1655,7 @@ options是一个对象，其中包含以下参数：
 **方法：**
 
 - startCapture(options)
-- generate(
-- content,options)
+- generate(content,options)
 
 #### startCapture ####
 
@@ -1546,12 +1744,334 @@ options是一个对象，其中包含以下参数：
     <tbody>
 </table>
 
+### Screen ###
+	clouda.device.screen
+
+截屏分享
+
+**方法：**
+
+- captureScreen(options)
+- shareImage(data, options)
+- shareScreen(options)
+
+#### captureScreen ####
+	capture(options)
+
+**功能描述：**
+
+获取截屏
+
+**参数说明：**
+
+- options：为 object 类型，其中包括以下参数：
+
+<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>onsuccess</td>
+			<td>function(data){}</td>            
+			<td>获取成功，返回的 data 为一个base64 string 的 jpeg 文件流</td>  
+		</tr>
+        <tr>
+			<td>onfail</td>
+			<td>function(err){}</td>          
+			<td>操作失败，返回错误码信息</td>  
+		</tr>
+    </tbody>
+</table>
+
+
+#### shareImage ####
+	shareImage(data, options)
+
+**功能描述：**
+
+分享图片
+
+**参数说明：**
+
+- data : 为 base64 的 string 类型，captureScreen接口中返回的data信息
+- options：为 object 类型，其中包括以下参数：
+
+<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>onsuccess</td>
+			<td>function(data){}</td>            
+			<td>分享成功，返回SUCCESS状态码</td>  
+		</tr>
+        <tr>
+			<td>onfail</td>
+			<td>function(err){}</td>          
+			<td>操作失败，返回错误码信息</td>  
+		</tr>
+    </tbody>
+</table>
+
+#### shareScreen ####
+	shareScreen(options)
+
+**功能描述：**
+
+获取并分享截屏
+
+**参数说明：**
+
+- options：为 object 类型，其中包括以下参数：
+- 
+<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>onsuccess</td>
+			<td>function(data){}</td>            
+			<td>分享成功，返回SUCCESS状态码</td>  
+		</tr>
+        <tr>
+			<td>onfail</td>
+			<td>function(err){}</td>          
+			<td>操作失败，返回错误码信息</td>  
+		</tr>
+    </tbody>
+</table>
+
 ## 云服务类API ##
+
 云服务类API目前支持以下功能：
 
-- 推送服务（Push）
+- 人脸识别（FaceRecognition）
+- 播放器（Player）
+- 推送服务（Push） 
 - 文本语音服务（TTS）
 - 语音识别服务（VTT）
+
+### FaceRecognition ###
+    clouda.mbass.face
+
+人脸识别
+
+**方法：**
+
+- register(uid, options)
+- verify(uid, options)
+- checkBlink(uid, options)
+- authorizeDevice(uid, options)
+- listDevice(uid, options)
+
+#### register ####
+	register(uid, options)
+
+**功能描述：**
+
+注册人脸识别服务，启动摄像功能获取人脸信息，并与UID建立绑定关系
+
+**参数说明：**
+
+- uid： 为 string 类型（32个字符以内），开发者为其人脸识别服务的用户所赋予的唯一识别标识
+- options：为 object 类型，其中包括以下参数：
+
+<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>onsuccess</td>
+			<td>function(data){}</td>            
+			<td>注册成功，返回SUCCESS状态码</td>  
+		</tr>
+        <tr>
+			<td>onfail</td>
+			<td>function(err){}</td>          
+			<td>操作失败，返回错误码信息</td>  
+		</tr>
+    </tbody>
+</table>
+
+#### verify ####
+	verify(uid, options)
+
+**功能描述：**
+
+启动摄像功能获取人脸信息，并与register接口中已注册的人脸信息进行验证
+
+**参数说明：**
+
+- uid： 为 string 类型（32个字符以内），开发者为其人脸识别服务的用户所赋予的唯一识别标识
+- options：为object类型，其中包括以下参数：
+
+<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>onsuccess</td>
+			<td>function(data){}</td>            
+			<td>验证成功，返回SUCCESS状态码</td>  
+		</tr>
+        <tr>
+			<td>onfail</td>
+			<td>function(err){}</td>          
+			<td>操作失败，返回错误码信息</td>  
+		</tr>
+    </tbody>
+</table>
+
+#### checkBlink ####
+	checkBlink(uid, options)
+
+**功能描述：**
+
+检查眨眼情况，用于活体检测或者通过眼睛活动状态进行远程控制操作
+
+**参数说明：**
+
+- uid： 为 string 类型（32个字符以内），开发者为其人脸识别服务的用户所赋予的唯一识别标识
+- options：为object类型，其中包括以下参数：
+
+<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>onsuccess</td>
+			<td>function(data){}</td>            
+			<td>操作成功，返回SUCCESS状态码，存在眨眼情况</td>  
+		</tr>
+        <tr>
+			<td>onfail</td>
+			<td>function(err){}</td>          
+			<td>操作失败，返回系统错误码信息</td>  
+		</tr>
+    </tbody>
+</table>
+
+#### authorizeDevice ####
+	authorizeDevice(uid, options)
+
+**功能描述：**
+
+绑定设备，认证该用户可使用人脸识别服务的具体采集设备
+
+**参数说明：**
+
+options：为object类型，其中包括以下参数：
+
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>onsuccess</td>
+			<td>function(data){}</td>            
+			<td>绑定成功，返回Success状态码</td>  
+		</tr>
+        <tr>
+			<td>onfail</td>
+			<td>function(err){}</td>          
+			<td>绑定失败，返回错误码信息</td>  
+		</tr>
+    </tbody>
+</table>
+
+#### listDevice ####
+	listDevice(uid, options)
+
+**功能描述：**
+
+查看该用户使用人脸服务所认证的设备列表信息
+
+**参数说明：**
+
+- uid ： 为 string 类型（32个字符以内），开发者为其人脸识别服务的用户所赋予的唯一识别标识
+- options：为object类型，其中包括以下参数：
+
+<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>onsuccess</td>
+			<td>function(data){}</td>            
+			<td>获取成功，data返回string类型Device UUID信息（uuid）列表</td>  
+		</tr>
+        <tr>
+			<td>onfail</td>
+			<td>function(err){}</td>          
+			<td>获取失败，返回错误码信息</td>  
+		</tr>
+    </tbody>
+</table>
+
+### Player ###
+	clouda.mbaas.player
+
+播放器
+
+**方法：**
+
+- play(link, options)
+
+#### play ####
+	play(link, options)
+
+**功能描述：**
+
+播放媒体文件
+
+**参数说明：**
+
+- link ： 为string类型，所要播放的媒体文件链接（本地媒体文件路径或 Web URL均可）
+- options：为object类型，其中包括以下参数：
+
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>onsuccess</td>
+			<td>function(data){}</td>            
+			<td>播放成功，返回SUCCESS状态码</td>  
+		</tr>
+        <tr>
+			<td>onfail</td>
+			<td>function(err){}</td>          
+			<td>操作失败，返回错误码信息</td>  
+		</tr>
+    </tbody>
+</table>
 
 ### Push ###
 
@@ -1564,7 +2084,10 @@ options是一个对象，其中包含以下参数：
 - register(options)
 - unregister(options)
 - checkStatus(options)
-- onreceive(options)   <font color="red">(Runtime需要后续添加)</font>
+- onreceive(options) 
+- setTag(tags, options)  
+- removeTag(tags, options)
+- listTag(options)
 
 #### register ####
     register(options)
@@ -1577,7 +2100,7 @@ options是一个对象，其中包含以下参数：
 
 options：为object类型，其中包括以下参数：
 
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -1690,6 +2213,103 @@ options：为object类型，其中包括以下参数：
 			<td>onsuccess</td>
 			<td>function(data){}</td>            
 			<td>接收成功，返回的data为string类型</td>  
+		</tr>
+    </tbody>
+</table>
+
+#### setTag ####
+    setTag(tags, options)
+
+**功能描述：**
+
+设置一个或多个广播组标签
+
+**参数说明：**
+
+- tags： 广播组标签，为array类型，由广播组标签字符串组成
+- options：为object类型，其中包括以下参数：
+
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>onsuccess</td>
+			<td>function(data){}</td>            
+			<td>设置成功，返回的data为SUCCESS状态码</td>  
+		</tr>
+        <tr>
+			<td>onfail</td>
+			<td>function(err){}</td>          
+			<td>设置失败，返回错误码信息</td>  
+		</tr>
+    </tbody>
+</table>
+
+#### removeTag ####
+
+    removeTag(tags, options)
+
+**功能描述：**
+
+删除一个或多个广播组标签
+
+**参数说明：**
+
+- tags： 广播组标签，为array类型，由广播组标签字符串组成
+- options：为object类型，其中包括以下参数：
+
+<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>onsuccess</td>
+			<td>function(data){}</td>            
+			<td>删除成功，返回SUCCESS状态码</td>  
+		</tr>
+        <tr>
+			<td>onfail</td>
+			<td>function(err){}</td>          
+			<td>删除失败，返回错误码信息</td>  
+		</tr>
+    </tbody>
+</table>
+
+#### listTag ####
+
+    listTag(options)
+
+**功能描述：**
+
+获取所有标签
+
+**参数说明：**
+
+options：为object类型，其中包括以下参数：
+
+<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>onsuccess</td>
+			<td>function(data){}</td>            
+			<td>获取成功，返回的data为array类型，由广播组标签string类型组成</td>  
+		</tr>
+        <tr>
+			<td>onfail</td>
+			<td>function(err){}</td>          
+			<td>获取失败，返回错误码信息</td>  
 		</tr>
     </tbody>
 </table>
