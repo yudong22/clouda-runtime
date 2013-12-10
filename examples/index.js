@@ -17,7 +17,8 @@
 		"语音备忘" : 'speaker',
 		"播放器" : 'player',
 		"电池" : 'battery',
-		"通讯录" : 'contact'
+		"通讯录" : 'contact',
+		"网络" : 'network'
 	}
 	
 	var COL = 3,
