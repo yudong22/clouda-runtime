@@ -146,7 +146,7 @@
     var regPlugins = {};
     var installPlugin = function(pluginName,callback){
         if (!clouda.lightapp.ak) {
-            this.error(ErrCode.AK_UNDEFINED);
+            runtimeError(ErrCode.AK_UNDEFINED);
             console.error("错误，'"+pluginName+"' clouda.lightapp(your_ak_here);");
             return false;
         }
@@ -154,7 +154,6 @@
             beforeRuntimeReadyStack.push([pluginName,callback]);
             return;
         }
-        var _this = this;
         if (!pluginName) {
             return false;
         }
@@ -169,7 +168,7 @@
             
             nuwa.pm.absorb(pluginName,function(inst){
                 inst.on('error',function(err){
-                    _this.error(ErrCode.RT_GETERROR);
+                    runtimeError(ErrCode.RT_GETERROR);
                     callback(null);
                 });
                 inst.on('progress',function(percentage){

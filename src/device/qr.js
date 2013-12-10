@@ -1,13 +1,13 @@
-define("mbaas",function(module) {
+define("device",function(module) {
     var lightapp = this;
     //定义 battery 空间，clouda.device.battery 支持退化
     var it = module.qr = {};
     
     /**
      * @object qr
-     * @memberof clouda.mbaas
+     * @memberof clouda.device
      * @instance
-     * @namespace clouda.mbaas.qr
+     * @namespace clouda.device.qr
      */
     
     
@@ -23,8 +23,8 @@ define("mbaas",function(module) {
     /**
      * 扫二维码
      *
-     * @function scanQrcode
-     * @memberof clouda.mbaas.qr
+     * @function startCapture
+     * @memberof clouda.device.qr
      * @instance
      *
      * @param {{}} options 由onsuccess 和 onfail组成
@@ -74,7 +74,7 @@ define("mbaas",function(module) {
      * 生成二维码
      *
      * @function generate
-     * @memberof clouda.mbaas.qr
+     * @memberof clouda.device.qr
      * @instance
      *
      * @param {string} 要生成的文字

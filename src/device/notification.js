@@ -122,7 +122,7 @@ define("device",function(module) {
      * @returns null
      * 
      */
-    it.activityStart = function(title,msg,options){
+    it.startLoad = function(title,msg,options){
         activityStart(title,message,options);
     };
     
@@ -138,7 +138,7 @@ define("device",function(module) {
      * @returns null
      * 
      */
-    it.activityStop = function(options){
+    it.stopLoad = function(options){
         activityStop(options);
     };
     
