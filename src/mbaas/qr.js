@@ -82,7 +82,7 @@ define("mbaas",function(module) {
      * @param {function} options.onsuccess 成功的回调
      * @param {function} [options.onfail] 失败的回调
      * @param {int} [options.animate] 
-     * @param {string} [options.backgroundPath] 
+     * @param {string} [options.backgroundUrl] 
      * @param {int} [options.mono] 
      * @returns null
      * 
@@ -113,6 +113,6 @@ define("mbaas",function(module) {
             
         },function(nativeErr){
             lightapp.error(ErrCode.QR_ERR,nativeErr,options);
-        },options.type,content,options.backgroundPath,options.destType);
+        },options.type,content,options.backgroundUrl,options.destType);
      };
 });

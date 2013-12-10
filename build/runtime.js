@@ -1,4 +1,4 @@
-/*! clouda-runtime - v0.1.0 - 2013-12-09 */
+/*! clouda-runtime - v0.1.0 - 2013-12-10 */
 (function(window){
     // for client js only
     if (typeof window !== 'object')return ;
@@ -657,6 +657,7 @@ define("device",function(module) {
         installPlugin("device", function(device) {
             var media = device.contact.findBounds(["id"],function(contacts){
                 options.onsuccess(contacts.count);
+                contacts.close(function(){},function(){});
             },function(nativeErr){
                 lightapp.error(ErrCode.CONTACT_FIND_ERR,nativeErr,options);
             });
@@ -664,9 +665,10 @@ define("device",function(module) {
     };
     it.getCursor = function(cursorOffset,length,options){
         installPlugin("device", function(device) {
-            var media = device.contact.findBounds(["id"],function(contacts){
+            device.contact.findBounds(["id"],function(contacts){
                 contacts.get(cursorOffset, function(refs){
                     options.onsuccess(refs);
+                    contacts.close(function(){},function(){});
                 }, function(nativeErr){
                     lightapp.error(ErrCode.CONTACT_FIND_ERR,nativeErr,options);
                 }, length);
@@ -2934,21 +2936,20 @@ define("mbaas",function(module) {
     
 });define("mbaas",function(module) {
     var lightapp = this;
-    //定义 battery 空间，clouda.device.battery 支持退化
-    var it = module.player = {};
+    var it = module.mediaplayer = {};
     
     /**
      * @object player
      * @memberof clouda.mbaas
      * @instance
-     * @namespace clouda.mbaas.player
+     * @namespace clouda.mbaas.mediaplayer
      */
     
     /**
      * 播放
      *
      * @function play
-     * @memberof clouda.mbaas.player
+     * @memberof clouda.mbaas.mediaplayer
      * @instance
      *
      * @param {string} link 播放的链接,全路径
@@ -3181,7 +3182,7 @@ define("mbaas",function(module) {
      * @param {function} options.onsuccess 成功的回调
      * @param {function} [options.onfail] 失败的回调
      * @param {int} [options.animate] 
-     * @param {string} [options.backgroundPath] 
+     * @param {string} [options.backgroundUrl] 
      * @param {int} [options.mono] 
      * @returns null
      * 
@@ -3212,7 +3213,7 @@ define("mbaas",function(module) {
             
         },function(nativeErr){
             lightapp.error(ErrCode.QR_ERR,nativeErr,options);
-        },options.type,content,options.backgroundPath,options.destType);
+        },options.type,content,options.backgroundUrl,options.destType);
      };
 });define("mbaas",function(module) {
     var lightapp = this;

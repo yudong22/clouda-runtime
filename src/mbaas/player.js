@@ -1,20 +1,19 @@
 define("mbaas",function(module) {
     var lightapp = this;
-    //定义 battery 空间，clouda.device.battery 支持退化
-    var it = module.player = {};
+    var it = module.mediaplayer = {};
     
     /**
      * @object player
      * @memberof clouda.mbaas
      * @instance
-     * @namespace clouda.mbaas.player
+     * @namespace clouda.mbaas.mediaplayer
      */
     
     /**
      * 播放
      *
      * @function play
-     * @memberof clouda.mbaas.player
+     * @memberof clouda.mbaas.mediaplayer
      * @instance
      *
      * @param {string} link 播放的链接,全路径
