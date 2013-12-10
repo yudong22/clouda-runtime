@@ -16,6 +16,7 @@
 	
 	var positioning = function(){
 		compass.style.left = (compassbox.offsetWidth - d) / 2 + "px";
+		compass.style.display = "block";
 	}
 	
 	var rotate = function(angle){
@@ -37,7 +38,7 @@
 	
 	clouda.touch.on(document,'DOMContentLoaded', function(e){
 		
-		positioning();
+		setTimeout(positioning, 200);
 		
 		clouda.touch.on($("back"), 'tap', function(e){
 			location.href = "../index.html";

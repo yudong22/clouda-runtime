@@ -2,7 +2,6 @@
 	position: absolute;
 	width: 242px;
 	height: 389px;
-	-webkit-transition: left .4s ease;
 	overflow: hidden;
 }
 

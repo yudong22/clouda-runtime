@@ -12,7 +12,7 @@
 	height: 386px;
 	background: url(compass.png) no-repeat;
 	z-index: 1;
-	-webkit-transition: left .2s ease;
+	display:none;
 }
 
 #anglebox{

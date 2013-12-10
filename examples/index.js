@@ -5,7 +5,7 @@
 		if(!name){return ;}
 		setTimeout(function(){
 			location.href = href;
-		}, 250);
+		}, 0);
 		
 	}
 	
@@ -24,6 +24,7 @@
 		itemHeight = 87;
 	
 	var positioning = function(demoList, lis, rect, uw){
+		
 		for(var i = 0; i < 12; i++){
 			lis[i].style.height = uw + "px";
 			lis[i].style.width = uw + "px";
@@ -35,18 +36,21 @@
 			var nameEl = lis[i].querySelector(".name");
 			if(nameEl){
 				lis[i].demoTarget = demoHash[nameEl.innerText];
+				nameEl.style.display = "block";
 			}
 		}
+		
 	}
 	
-	clouda.touch.on(doc, 'DOMContentLoaded', function(e){
+	clouda.touch.on(window, 'load', function(e){
 		
 		var demoList = doc.getElementById("demoList");
 		var lis = demoList.querySelectorAll("li");
 		var rect = demoList.getBoundingClientRect();
 		var uw = rect.width / COL;
-		
-		positioning(demoList, lis, rect, uw);
+		setTimeout(function(){
+			positioning(demoList, lis, rect, uw);
+		}, 0);
 		
 		clouda.touch.on(demoList, 'tap', 'li', function(e){
 			var name = this.demoTarget;

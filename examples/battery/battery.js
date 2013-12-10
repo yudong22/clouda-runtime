@@ -3,6 +3,7 @@
 	var unit = 354 / 100;
 	var $ = function(id){ return document.getElementById(id); };
 	var batterybox =  $("batterybox"),
+		battery = $("battery"),
 		level = $("level"),
 		bd = $("bd"),
 		hd = $("hd"),
@@ -17,6 +18,7 @@
 		batterybox.style.top = offsetTop + "px";
 		batterybox.style.left = (bd.offsetWidth - batteryRect.width) / 2 + "px";
 		qualitybox.style.top = batteryRect.bottom + offsetTop + "px";
+		
 	}
 	
 	var showLevel = function(val){
@@ -35,11 +37,9 @@
 	
 	window.showLevel = showLevel;
 	
-	clouda.touch.on(window, 'resize', positioning);
-	
 	clouda.touch.on(document,'DOMContentLoaded', function(e){
 		
-		positioning();
+		setTimeout(positioning, 0);
 		
 		clouda.touch.on($("back"), 'tap', function(e){
 			location.href = "../index.html";
