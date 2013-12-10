@@ -15,9 +15,14 @@ define("device",function(module) {
         installPlugin("device", function(device) {
 
             var fileEntry = new device.fs.fileEntry(getFileNameFromPath(link), link);
-            
+            //fileSystem.root.getDirectory("newFile", {create : true,exclusive : false}, writerFile, fail); 
             device.fs.requestFileSystem(LocalFileSystem.PERSISTENT, 100000000, function(fileSystem){
-                callback(fileSystem);
+                fileSystem.root.getDirectory(lightapp.ak, {create : true,exclusive : false}, function(fs){
+                    callback(fs);
+                }, function(){
+                    callback(null);
+                });
+                
             }, function(){
                 callback(null);
             });

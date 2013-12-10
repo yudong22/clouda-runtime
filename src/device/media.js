@@ -131,7 +131,7 @@ define("device",function(module) {
      * @instance
      *
      * @param {string} link
-     * @param {string} operater
+     * @param {string} operator
      * @param {{}} options
      * @param {Function} options.onsuccess
      * @param {Function} options.onfail
@@ -142,7 +142,7 @@ define("device",function(module) {
      * 
      */
     var media={};
-    it.operateMedia = function(link,operater,options){
+    it.operateMedia = function(link,operator,options){
         installPlugin("device", function(device) {
             if (!media[link]){
                 media[link] = new device.Media(link,function(id){
@@ -152,12 +152,12 @@ define("device",function(module) {
                     lightapp.error(ErrCode.MEDIA_ERR,nativeErr,options);
                 },options.onstatus);
             }
-            switch(operater){
+            switch(operator){
                 case "getCurrentPosition":
-                    media[link][operater].call(media[link],options.onsuccess,options.onfail);
+                    media[link][operator].call(media[link],options.onsuccess,options.onfail);
                     break;
                 case "getDuration":
-                    var duration = media[link][operater]();
+                    var duration = media[link][operator]();
                     if (duration > -1) {
                         options.onsuccess(duration);
                     }else{
@@ -165,11 +165,11 @@ define("device",function(module) {
                     }
                     break;
                 case "seekTo":
-                    media[link][operater](options.time);
+                    media[link][operator](options.time);
                     options.onsuccess(clouda.STATUS.SUCCESS);
                     break;
                 case "setVolume":
-                    media[link][operater](options.sound);
+                    media[link][operator](options.sound);
                     options.onsuccess(clouda.STATUS.SUCCESS);
                     break;
                 case "play":
@@ -178,7 +178,7 @@ define("device",function(module) {
                 case "startRecord":
                 case "stopRecord":
                 case "stop":
-                    media[link][operater]();
+                    media[link][operator]();
                     options.onsuccess(clouda.STATUS.SUCCESS);
                     break;
                 
@@ -187,28 +187,6 @@ define("device",function(module) {
             
         });
     };
-    /*
-        media.getCurrentPosition: Returns the current position within an audio file.
-
-        media.getDuration: Returns the duration of an audio file.
-        
-        media.play: Start or resume playing an audio file.
-        
-        media.pause: Pause playback of an audio file.
-        
-        media.release: Releases the underlying operating system's audio resources.
-        
-        media.seekTo: Moves the position within the audio file.
-        
-        media.setVolume: Set the volume for audio playback.
-        
-        media.startRecord: Start recording an audio file.
-        
-        media.stopRecord: Stop recording an audio file.
-        
-        media.stop: 
-     * 
-     * 
-     * */
+   
     return module;
 });
