@@ -1540,24 +1540,86 @@ define("device",function(module) {
      * @memberof clouda.device.media
      * @instance
      *
+     * @param {string} link
+     * @param {string} operater
      * @param {{}} options
      * @param {Function} options.onsuccess
      * @param {Function} options.onfail
-     * @param {int} options.status=clouda.device.MEDIA_STATUS.NONE
+     * @param {Function} options.onstatus
+     * @param {float} sound 设置声音大小 最大1.0 仅限(setVolume)
+     * @param {int} time 从开始到的毫秒数 仅限(getDuration)
      * @returns null
      * 
      */
-    it.createMedia = function(link,options){
+    var media={};
+    it.operateMedia = function(link,operater,options){
         installPlugin("device", function(device) {
-            var media = new device.Media(link,function(id){
-                console.log(id,media);
-                options.onsuccess(media);
-            },function(nativeErr){
-                lightapp.error(ErrCode.MEDIA_ERR,nativeErr,options);
-            },(options.status||clouda.device.MEDIA_STATUS.NONE));
+            if (!media[link]){
+                media[link] = new device.Media(link,function(id){
+                    //options.onsuccess(media);
+                },function(nativeErr){
+                    delete media[link];
+                    lightapp.error(ErrCode.MEDIA_ERR,nativeErr,options);
+                },options.onstatus);
+            }
+            switch(operater){
+                case "getCurrentPosition":
+                    media[link][operater].call(media[link],options.onsuccess,options.onfail);
+                    break;
+                case "getDuration":
+                    var duration = media[link][operater]();
+                    if (duration > -1) {
+                        options.onsuccess(duration);
+                    }else{
+                        options.onfail(duration);
+                    }
+                    break;
+                case "seekTo":
+                    media[link][operater](options.time);
+                    options.onsuccess(clouda.STATUS.SUCCESS);
+                    break;
+                case "setVolume":
+                    media[link][operater](options.sound);
+                    options.onsuccess(clouda.STATUS.SUCCESS);
+                    break;
+                case "play":
+                case "pause":
+                case "release":
+                case "startRecord":
+                case "stopRecord":
+                case "stop":
+                    media[link][operater]();
+                    options.onsuccess(clouda.STATUS.SUCCESS);
+                    break;
+                
+            }
+            
+            
         });
     };
-    
+    /*
+        media.getCurrentPosition: Returns the current position within an audio file.
+
+        media.getDuration: Returns the duration of an audio file.
+        
+        media.play: Start or resume playing an audio file.
+        
+        media.pause: Pause playback of an audio file.
+        
+        media.release: Releases the underlying operating system's audio resources.
+        
+        media.seekTo: Moves the position within the audio file.
+        
+        media.setVolume: Set the volume for audio playback.
+        
+        media.startRecord: Start recording an audio file.
+        
+        media.stopRecord: Stop recording an audio file.
+        
+        media.stop: 
+     * 
+     * 
+     * */
     return module;
 });define("device",function(module) {
     /**
@@ -1580,7 +1642,7 @@ define("device",function(module) {
     var progressStart = new delegateClass("device","notification","progressStart");
     
     /**
-     * 调用系统 alert 方法，接收一个message参数和一个可选的配置
+     * 调用系统 alert 方法，接收一个msg参数和一个可选的配置
      *
      * @function alert
      * @memberof clouda.device.notification
@@ -1601,7 +1663,7 @@ define("device",function(module) {
         return alert(msg);
     };
     /**
-     * 调用系统 confirm 方法，接收一个message参数和一个可选的配置
+     * 调用系统 confirm 方法，接收一个msg参数和一个可选的配置
      *
      * @function confirm
      * @memberof clouda.device.notification
@@ -1647,7 +1709,7 @@ define("device",function(module) {
     it.vibrate = vibrate;
     
     /**
-     * 弹出定制化的dialog，接收一个message参数和一个可选的配置
+     * 弹出定制化的dialog，接收一个msg参数和一个可选的配置
      *
      * @function prompt
      * @memberof clouda.device.notification
@@ -1684,7 +1746,7 @@ define("device",function(module) {
      * 
      */
     it.startLoad = function(title,msg,options){
-        activityStart(title,message,options);
+        activityStart(title,msg,options);
     };
     
      /**
@@ -1717,12 +1779,13 @@ define("device",function(module) {
      * @returns null
      * 
      */
-    it.progress = function(title,message,options){
-        progressStart(title,message);
+    it.progress = function(title,msg,options){
+        progressStart(title,msg);
     };
     
     return module;
-});define("device",function(module) {
+});
+define("device",function(module) {
     var lightapp = this;
     //定义 battery 空间，clouda.device.battery 支持退化
     var it = module.qr = {};
@@ -1828,16 +1891,29 @@ define("device",function(module) {
                 options.type = QR_TYPE.BLACK;
             }
         }
-        create(function(string){//success callback
-            if (typeof string=='string'){
-                options.onsuccess.apply(this,arguments);
-            }else{
-                lightapp.error(ErrCode.QR_ERR,ErrCode.UNKNOW_CALLBACK,options);
-            }
-            
-        },function(nativeErr){
-            lightapp.error(ErrCode.QR_ERR,nativeErr,options);
-        },options.type,content,options.backgroundUrl,options.destType);
+        installPlugin("barcode",function(plg){
+            var opt = new plg.QRcodeOptions(options.type, options.destType, options.backgroundUrl||"");
+            plg.createQRcode(
+              function(result) {
+                options.onsuccess(result);
+              },
+              function (error) {
+                  lightapp.error(ErrCode.QR_ERR,error,options);
+              },
+              content,
+              opt
+            );
+        });
+        // create(function(string){//success callback
+            // if (typeof string=='string'){
+                // options.onsuccess.apply(this,arguments);
+            // }else{
+                // lightapp.error(ErrCode.QR_ERR,ErrCode.UNKNOW_CALLBACK,options);
+            // }
+//             
+        // },function(nativeErr){
+            // lightapp.error(ErrCode.QR_ERR,nativeErr,options);
+        // },options.type,content,options.backgroundUrl,options.destType);
      };
 });define("device",function(module) {
     var lightapp = this;
@@ -2979,7 +3055,7 @@ define("mbaas",function(module) {
                 options.onsuccess.apply(this.arguments);
             }, function(error) {
                lightapp.error(ErrCode.FR_ERROR,error,options);
-            },opt);
+            });
         });
     };
     //uid
@@ -2990,11 +3066,11 @@ define("mbaas",function(module) {
                 options.onsuccess.apply(this.arguments);
             }, function(error) {
                lightapp.error(ErrCode.FR_ERROR,error,options);
-            },opt);
+            });
         });
     };
     //检查眨眼
-    it.check_blink = function(uid,options){
+    it.checkBlink = function(uid,options){
         installPlugin("facerecognition", function(plg) {
             var face = new plg.FaceRecognition(uid);
             
@@ -3002,11 +3078,11 @@ define("mbaas",function(module) {
                 options.onsuccess.apply(this.arguments);
             }, function(error) {
                lightapp.error(ErrCode.FR_ERROR,error,options);
-            },opt);
+            });
         });
     };
     //绑定设备
-    it.authorize_device = function(uid,options){
+    it.authorizeDevice = function(uid,options){
         installPlugin("facerecognition", function(plg) {
             var face = new plg.FaceRecognition(uid);
             
@@ -3014,11 +3090,11 @@ define("mbaas",function(module) {
                 options.onsuccess.apply(this.arguments);
             }, function(error) {
                lightapp.error(ErrCode.FR_ERROR,error,options);
-            },opt);
+            });
         });
     };
     //获取设备列表
-    it.get_device_list = function(uid,options){
+    it.listDevice = function(uid,options){
         installPlugin("facerecognition", function(plg) {
             var face = new plg.FaceRecognition(uid);
             
@@ -3026,7 +3102,7 @@ define("mbaas",function(module) {
                 options.onsuccess.apply(this.arguments);
             }, function(error) {
                lightapp.error(ErrCode.FR_ERROR,error,options);
-            },opt);
+            });
         });
     };
     
@@ -3123,7 +3199,9 @@ define("mbaas",function(module) {
      */
     it.register = function(options){
         bind(function(data){
-            data = JSON.parse(data);
+            if (typeof data === 'string') {
+                data = JSON.parse(data);
+            }
             if (data.uid){
                 options.onsuccess(data);
             }else{
@@ -3149,7 +3227,7 @@ define("mbaas",function(module) {
      */
     it.unregister = function(options){
         unbind(function(){
-            options.onsuccess();
+            options.onsuccess(clouda.STATUS.SUCCESS);
         },function(nativeErr){
             lightapp.error(ErrCode.PUSH_ERR,nativeErr,options);
         },lightapp.ak,options);

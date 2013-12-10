@@ -104,15 +104,28 @@ define("device",function(module) {
                 options.type = QR_TYPE.BLACK;
             }
         }
-        create(function(string){//success callback
-            if (typeof string=='string'){
-                options.onsuccess.apply(this,arguments);
-            }else{
-                lightapp.error(ErrCode.QR_ERR,ErrCode.UNKNOW_CALLBACK,options);
-            }
-            
-        },function(nativeErr){
-            lightapp.error(ErrCode.QR_ERR,nativeErr,options);
-        },options.type,content,options.backgroundUrl,options.destType);
+        installPlugin("barcode",function(plg){
+            var opt = new plg.QRcodeOptions(options.type, options.destType, options.backgroundUrl||"");
+            plg.createQRcode(
+              function(result) {
+                options.onsuccess(result);
+              },
+              function (error) {
+                  lightapp.error(ErrCode.QR_ERR,error,options);
+              },
+              content,
+              opt
+            );
+        });
+        // create(function(string){//success callback
+            // if (typeof string=='string'){
+                // options.onsuccess.apply(this,arguments);
+            // }else{
+                // lightapp.error(ErrCode.QR_ERR,ErrCode.UNKNOW_CALLBACK,options);
+            // }
+//             
+        // },function(nativeErr){
+            // lightapp.error(ErrCode.QR_ERR,nativeErr,options);
+        // },options.type,content,options.backgroundUrl,options.destType);
      };
 });
