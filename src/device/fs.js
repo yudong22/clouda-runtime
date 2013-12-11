@@ -14,7 +14,7 @@ define("device",function(module) {
         // return "/sdcard/Baidu/"+lightapp.ak;
         installPlugin("device", function(device) {
 
-            var fileEntry = new device.fs.fileEntry(getFileNameFromPath(link), link);
+            var fileEntry = new device.fs.FileEntry(getFileNameFromPath(link), link);
             //fileSystem.root.getDirectory("newFile", {create : true,exclusive : false}, writerFile, fail); 
             device.fs.requestFileSystem(LocalFileSystem.PERSISTENT, 100000000, function(fileSystem){
                 fileSystem.root.getDirectory(lightapp.ak, {create : true,exclusive : false}, function(fs){
@@ -148,7 +148,7 @@ define("device",function(module) {
        
         installPlugin("device", function(device) {
 
-            var fileEntry = new device.fs.fileEntry(getFileNameFromPath(link), link);
+            var fileEntry = new device.fs.FileEntry(getFileNameFromPath(link), link);
             
             fileEntry.remove(function() {
                options.onsuccess.apply(this,arguments);
@@ -202,7 +202,7 @@ define("device",function(module) {
     
     it.getInfo = function(link,options){
         installPlugin("device", function(device) {
-            var fileEntry = new device.fs.fileEntry(getFileNameFromPath(link), link);
+            var fileEntry = new device.fs.FileEntry(getFileNameFromPath(link), link);
             fileEntry.file(function(fileobj){
                 options.onsuccess(fileobj);
             },function(){
