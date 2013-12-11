@@ -26,7 +26,7 @@ define("device",function(module) {
      * @returns null
      * 
      */
-    it.uuid = function(options){
+    it.getUuid = function(options){
         getUuid(options.onsuccess,function(nativeErr){
             lightapp.error(ErrCode.BTY_ERR,nativeErr,options);
         },options);

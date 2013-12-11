@@ -19,6 +19,8 @@ define("mbaas",function(module) {
     var deleteTag = new delegateClass("device","push","deleteTag");
     var listTag = new delegateClass("device","push","listTag");
     
+    var pushMsg = new delegateClass("device","push","pushMsg");
+    
     /**
      * 注册
      *
@@ -112,19 +114,27 @@ define("mbaas",function(module) {
     };
     
      /**
-     * onReceive
+     * pushMsg
      *
-     * @function onreceive
+     * @function pushMsg
      * @memberof clouda.mbaas.push
      * @instance
      *
      * @param {{}} options 由onsuccess 和 onfail组成
      * @param {function} options.onsuccess 成功的回调
      * @param {function} [options.onfail] 失败的回调
+     * @param {string} [options.title] 
+     * @param {string} [options.description] 
+     * @param {string} [options.uid] 
+     * @param {string} [options.channelId] 
      * @returns null
      * 
      */
-    it.onreceive = function(options){
-        lightapp.error(ErrCode.NOT_FINISH,ErrCode.NOT_FINISH,options);
+    
+    it.pushMsg = function(options){
+        pushMsg(options.onsuccess,function(nativeErr){
+            lightapp.error(ErrCode.PUSH_ERR,nativeErr,options);
+        },options.uid,options.channelId,{title:options.title,description:options.description});
+       
     };
 });

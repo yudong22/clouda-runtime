@@ -48,7 +48,7 @@ define("device",function(module) {
      * @param {string} options.uploadKey
      */
     var fileTransfer=null;
-    it.postFile = function(link,target,options) {
+    it.post = function(link,target,options) {
         installPlugin("filetransfer", function(ft) {
             ft = ft.fileTransfer;
             if (fileTransfer === null) {
@@ -88,7 +88,7 @@ define("device",function(module) {
      */
     
  
-    it.downloadFile = function(link, name, options) {
+    it.download = function(link, name, options) {
         installPlugin("filetransfer", function(ft) {
             ft = ft.fileTransfer;
             if (fileTransfer === null) {

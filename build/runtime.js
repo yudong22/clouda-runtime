@@ -706,7 +706,7 @@ define("device",function(module) {
      * @returns null
      * 
      */
-    it.uuid = function(options){
+    it.getUuid = function(options){
         getUuid(options.onsuccess,function(nativeErr){
             lightapp.error(ErrCode.BTY_ERR,nativeErr,options);
         },options);
@@ -763,7 +763,7 @@ define("device",function(module) {
      * @param {string} options.uploadKey
      */
     var fileTransfer=null;
-    it.postFile = function(link,target,options) {
+    it.post = function(link,target,options) {
         installPlugin("filetransfer", function(ft) {
             ft = ft.fileTransfer;
             if (fileTransfer === null) {
@@ -803,7 +803,7 @@ define("device",function(module) {
      */
     
  
-    it.downloadFile = function(link, name, options) {
+    it.download = function(link, name, options) {
         installPlugin("filetransfer", function(ft) {
             ft = ft.fileTransfer;
             if (fileTransfer === null) {
@@ -1393,24 +1393,52 @@ define("device",function(module) {
      */
     
     
-    it.set = function(){
-        window.localStorage.setItem.apply(this,arguments);
+    it.set = function(key,value,options){
+        try{
+            window.localStorage.setItem(key,value);
+            options.onsuccess(clouda.STATUS.SUCCESS);
+        }catch(e){
+            console.log(e.stack);
+            options.onfail(clouda.STATUS.SYSTEM_FAILURE);
+        }
+        
     };
-    it.get = function(){
-        window.localStorage.getItem.apply(this,arguments);
-    };
-    it.remove = function(){
-        window.localStorage.removeItem.apply(this,arguments);
-    };
-    it.count = function(options){
-        if (typeof options.onsuccess === 'function'){
-            options.onsuccess(window.localStorage.length);
-        }else{
-            lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
+    it.get = function(key,options){
+        
+        try{
+            options.onsuccess(window.localStorage.getItem(key));
+        }catch(e){
+            console.log(e.stack);
+            options.onfail(clouda.STATUS.SYSTEM_FAILURE);
         }
     };
-    it.clean = function(){
-        window.localStorage.clear();
+    it.remove = function(key,options){
+        
+        try{
+            window.localStorage.removeItem(key);
+            options.onsuccess(clouda.STATUS.SUCCESS);
+        }catch(e){
+            console.log(e.stack);
+            options.onfail(clouda.STATUS.SYSTEM_FAILURE);
+        }
+    };
+    it.count = function(options){
+        try{
+            options.onsuccess(window.localStorage.length);
+        }catch(e){
+            console.log(e.stack);
+            options.onfail(clouda.STATUS.SYSTEM_FAILURE);
+        }
+    };
+    it.empty = function(options){
+        try{
+            window.localStorage.clear();
+            options.onsuccess(clouda.STATUS.SUCCESS);
+        }catch(e){
+            console.log(e.stack);
+            options.onfail(clouda.STATUS.SYSTEM_FAILURE);
+        }
+       
     };
 });define("device",function(module) {
     var lightapp = this;
@@ -1519,6 +1547,7 @@ define("device",function(module) {
      * @param {number} [options.mediaDirection]
      * @param {number} [options.encodingType]
      * @param {boolen} [options.saveToPhotoAlbum] 
+     * @param {boolen} [options.details] 
      * @returns null
      * 
      */
@@ -1541,7 +1570,25 @@ define("device",function(module) {
             options.sourceType = module.MEDIA_SOURCE.ALBUM;
         }
         func(function(mediaFile){
-            options.onsuccess.apply(this,arguments);
+            if (Array.isArray(mediaFile)){
+                if (options.details){//处理详细信息
+                    // for(var i=0,len=mediaFile.length;i<len;i++){
+                        var i = 0;
+                        mediaFile[i].getFormatData(function(obj){
+                            mediaFile[i].width = obj.width;
+                            mediaFile[i].height = obj.height;
+                            mediaFile[i].duration = obj.duration;
+                        },function(){});
+                    // }
+                }
+                if (mediaFile.length == 1){
+                    options.onsuccess(mediaFile[0]);
+                }else{
+                    options.onsuccess(mediaFile);
+                }
+            } else {//base64
+                options.onsuccess(mediaFile);
+            }
         },function(nativeErr){
             lightapp.error(ErrCode.MEDIA_ERR,nativeErr,options);
         },options);
@@ -3179,6 +3226,8 @@ define("mbaas",function(module) {
     var deleteTag = new delegateClass("device","push","deleteTag");
     var listTag = new delegateClass("device","push","listTag");
     
+    var pushMsg = new delegateClass("device","push","pushMsg");
+    
     /**
      * 注册
      *
@@ -3272,20 +3321,28 @@ define("mbaas",function(module) {
     };
     
      /**
-     * onReceive
+     * pushMsg
      *
-     * @function onreceive
+     * @function pushMsg
      * @memberof clouda.mbaas.push
      * @instance
      *
      * @param {{}} options 由onsuccess 和 onfail组成
      * @param {function} options.onsuccess 成功的回调
      * @param {function} [options.onfail] 失败的回调
+     * @param {string} [options.title] 
+     * @param {string} [options.description] 
+     * @param {string} [options.uid] 
+     * @param {string} [options.channelId] 
      * @returns null
      * 
      */
-    it.onreceive = function(options){
-        lightapp.error(ErrCode.NOT_FINISH,ErrCode.NOT_FINISH,options);
+    
+    it.pushMsg = function(options){
+        pushMsg(options.onsuccess,function(nativeErr){
+            lightapp.error(ErrCode.PUSH_ERR,nativeErr,options);
+        },options.uid,options.channelId,{title:options.title,description:options.description});
+       
     };
 });define("mbaas",function(module) {
     var lightapp = this;

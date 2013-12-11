@@ -105,6 +105,7 @@ define("device",function(module) {
      * @param {number} [options.mediaDirection]
      * @param {number} [options.encodingType]
      * @param {boolen} [options.saveToPhotoAlbum] 
+     * @param {boolen} [options.details] 
      * @returns null
      * 
      */
@@ -127,7 +128,25 @@ define("device",function(module) {
             options.sourceType = module.MEDIA_SOURCE.ALBUM;
         }
         func(function(mediaFile){
-            options.onsuccess.apply(this,arguments);
+            if (Array.isArray(mediaFile)){
+                if (options.details){//处理详细信息
+                    // for(var i=0,len=mediaFile.length;i<len;i++){
+                        var i = 0;
+                        mediaFile[i].getFormatData(function(obj){
+                            mediaFile[i].width = obj.width;
+                            mediaFile[i].height = obj.height;
+                            mediaFile[i].duration = obj.duration;
+                        },function(){});
+                    // }
+                }
+                if (mediaFile.length == 1){
+                    options.onsuccess(mediaFile[0]);
+                }else{
+                    options.onsuccess(mediaFile);
+                }
+            } else {//base64
+                options.onsuccess(mediaFile);
+            }
         },function(nativeErr){
             lightapp.error(ErrCode.MEDIA_ERR,nativeErr,options);
         },options);
