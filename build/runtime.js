@@ -1,4 +1,4 @@
-/*! clouda-runtime - v0.1.0 - 2013-12-10 */
+/*! clouda-runtime - v0.1.0 - 2013-12-11 */
 (function(window){
     // for client js only
     if (typeof window !== 'object')return ;
@@ -31,7 +31,7 @@
         AK_UNDEFINED:-4,
         
         RT_GETERROR:5,
-         
+        
         EXEC_ERROR:-5,
         NOT_FINISH:-99,
         //API ERROR
@@ -469,7 +469,7 @@ define("device",function(module) {
     
     it.status = module.CONNECTION_STATUS.UNKNOWN;
     
-    var getInfo = new delegateClass("device","network","getInfo");
+    var getInfo = new delegateClass("device","connection","getInfo");
     /**
      * Launch device camera application for recording video(s).
      *
@@ -1551,7 +1551,7 @@ define("device",function(module) {
      * @param {Function} options.onsuccess
      * @param {Function} options.onfail
      * @param {Function} options.onstatus
-     * @param {float} sound 设置声音大小 最大1.0 仅限(setVolume)
+     * @param {float} volume 设置声音大小 最大1.0 仅限(setVolume)
      * @param {int} time 从开始到的毫秒数 仅限(getDuration)
      * @returns null
      * 
@@ -1584,7 +1584,7 @@ define("device",function(module) {
                     options.onsuccess(clouda.STATUS.SUCCESS);
                     break;
                 case "setVolume":
-                    media[link][operator](options.sound);
+                    media[link][operator](options.volume);
                     options.onsuccess(clouda.STATUS.SUCCESS);
                     break;
                 case "play":
@@ -3288,7 +3288,7 @@ define("mbaas",function(module) {
      */
     
     
-    var voiceRecognition = new delegateClass("voice","voiceRecognition");
+    // var voiceRecognition = new delegateClass("voice","voiceRecognition");
     var say = new delegateClass("voice","tts","say");
     
     module.VTT_STATUS={};
@@ -3305,6 +3305,10 @@ define("mbaas",function(module) {
     module.VTT_STATUS.AUDIO_DATA = 11;
     module.VTT_STATUS.USER_CANCELED = 61440;
     module.VTT_STATUS.ERROR = 65535;
+    module.VTT_SPEECHMODE = {
+        SEARCH:0,
+        INPUT:1
+    };
     
     // for(var name in module.VTT_STATUS){
         // module.VTT_STATUS
@@ -3326,52 +3330,58 @@ define("mbaas",function(module) {
      * 
      */
      vtt.startCapture = function(options){
-        if (options.voicePower){
-             voiceRecognition.enableVoicePower(successCallback, errorCallback, options.voicePower);
-        }
-        if (options.speechMode){
-             voiceRecognition.setSpeechMode(successCallback, errorCallback, options.speechMode);
-        }
-        voiceRecognition.startVoiceRecognition(function(string){//success callback
-                // options.onsuccess.apply(this,arguments);
-                plg.voiceRecognition.setStatusChangeListener(
-                  function(result) {
-                    if (result.status === module.VTT_STATUS.FINISH ){
-                        options.onsuccess.apply(this,arguments);
-                    }else if (result.status === module.VTT_STATUS.USER_CANCELED) {
-                        options.onfail.call(this,clouda.STATUS.USER_CANCELED);
-                    }else if (result.status === module.VTT_STATUS.ERROR) {
-                        options.onfail.call(this,result.status);
-                    }
-                  },
-                  function(error) {
-                    lightapp.error(ErrCode.vtt_ERR,error.code,options);
-                  }
-                );
-            
-        },function(nativeErr){
-            lightapp.error(ErrCode.BTY_ERROR,nativeErr,options);
-        },options);
+         installPlugin("voice",function(plg){
+             var voiceRecognition = plg.vtt;
+             if (options.voicePower){
+                 voiceRecognition.enableVoicePower(function(){}, function(){}, options.voicePower);
+            }
+            if (options.speechMode){
+                 voiceRecognition.setSpeechMode(function(){}, function(){}, options.speechMode);
+            }
+            voiceRecognition.startVoiceRecognition(function(string){//success callback
+                    // options.onsuccess.apply(this,arguments);
+                    voiceRecognition.setStatusChangeListener(
+                      function(result) {
+                        if (result.status === module.VTT_STATUS.FINISH ){
+                            options.onsuccess.apply(this,arguments);
+                        }else if (result.status === module.VTT_STATUS.USER_CANCELED) {
+                            options.onfail.call(this,clouda.STATUS.USER_CANCELED);
+                        }else if (result.status === module.VTT_STATUS.ERROR) {
+                            options.onfail.call(this,result.status);
+                        }
+                      },
+                      function(error) {
+                        lightapp.error(ErrCode.vtt_ERR,error.code,options);
+                      }
+                    );
+                
+            },function(nativeErr){
+                lightapp.error(ErrCode.BTY_ERROR,nativeErr,options);
+            },options);
+         });
+        
      };
      
      vtt.speakFinish = function(options){
-        voiceRecognition.speakFinish(function(string){//success callback
-            options.onsuccess.call(this,"OK");
-        },function(nativeErr){
-            lightapp.error(ErrCode.BTY_ERROR,nativeErr,options);
-        },options);
+         installPlugin("voice",function(plg){
+            var voiceRecognition = plg.vtt;
+            voiceRecognition.speakFinish(function(string){//success callback
+                options.onsuccess(clouda.STATUS.SUCCESS);
+            },function(nativeErr){
+                lightapp.error(ErrCode.BTY_ERROR,nativeErr,options);
+            },options);
+       });
      };
      
      vtt.terminateCapture = function(options){
-        voiceRecognition.stopVoiceRecognition(function(string){//success callback
-            if (typeof string=='string'){
-                options.onfail.apply(this,arguments);
-            }else{
-                lightapp.error(ErrCode.vtt_ERR,ErrCode.UNKNOW_CALLBACK,options);
-            }
-        },function(nativeErr){
-            lightapp.error(ErrCode.BTY_ERROR,nativeErr,options);
-        },options);
+         installPlugin("voice",function(plg){
+            var voiceRecognition = plg.vtt;
+            voiceRecognition.stopVoiceRecognition(function(string){//success callback
+                options.onsuccess(clouda.STATUS.SUCCESS);
+            },function(nativeErr){
+                lightapp.error(ErrCode.BTY_ERROR,nativeErr,options);
+            },options);
+        });
      };
      
      /**

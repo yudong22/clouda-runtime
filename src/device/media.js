@@ -136,7 +136,7 @@ define("device",function(module) {
      * @param {Function} options.onsuccess
      * @param {Function} options.onfail
      * @param {Function} options.onstatus
-     * @param {float} sound 设置声音大小 最大1.0 仅限(setVolume)
+     * @param {float} volume 设置声音大小 最大1.0 仅限(setVolume)
      * @param {int} time 从开始到的毫秒数 仅限(getDuration)
      * @returns null
      * 
@@ -169,7 +169,7 @@ define("device",function(module) {
                     options.onsuccess(clouda.STATUS.SUCCESS);
                     break;
                 case "setVolume":
-                    media[link][operator](options.sound);
+                    media[link][operator](options.volume);
                     options.onsuccess(clouda.STATUS.SUCCESS);
                     break;
                 case "play":
