@@ -1,7 +1,7 @@
 #百度轻应用API参考文档#
 
 ----------
-2013/12/10 19:52:07    
+更新日期： 2013/12/11 20:16:53   
 
 问题反馈： [clouda-support@baidu.com](mailto:clouda-support@baidu.com)
 
@@ -16,30 +16,27 @@
 - 云服务类：   **clouda.mbaas**
 - 触摸事件与手势处理类：  **clouda.touch**
 
-
-##命名空间
+## 命名空间
 
 百度轻应用API统一使用的命名空间为：
 
     clouda
 
-## APP信息注册及服务开启
+## APP信息注册及服务开启设置
 
-<font color="red">使用云服务类API，需要先到[开发者中心](http://developer.baidu.com/console)获取应用API Key及开启相关服务，之后调用以下轻应用注册接口；否则，相关云服务类接口将无法被调用成功。</font>
+<font color="red">使用云服务类API，需要先到[开发者中心](http://developer.baidu.com/console)创建应用，获取应用 API Key 及开启或设置相关服务，之后调用以下轻应用注册接口；否则，相关云服务类接口将无法被调用成功。</font>
 
 ### APP信息注册API ###
  
 	clouda.lightapp(apikey)
 
-### 相关服务开启 ###
+### 服务开启及设置 ###
 
-如果需要使用以下云服务的相关API，请点击[开发者中心](http://developer.baidu.com/console)所创建的应用下的“媒体云”及“云推送”服务中，开启服务。
+如需使用以下云服务的相关API，请点击[开发者中心管理控制台](http://developer.baidu.com/console)所创建的应用下的相关服务的管理控制台进行服务开启及设置相关操作（<font color="red">无需等待审核通过，即可使用</font>）：
 
-- 人脸识别（FaceRecognition）
-- 播放器（MediaPlayer）
-- 推送服务（Push） 
-- 文本语音服务（TTS）
-- 语音识别服务（VTT）
+- **人脸识别（FaceRecognition）**：申请开启服务，详见：[《人脸识别管理控制台》](http://developer.baidu.com/wiki/index.php?title=docs/cplat/media/face/console)
+- **推送服务（Push）**： 无需申请开启服务，但需要通过管理控制台进行推送，详见：[《Push服务Android集成指南》](http://developer.baidu.com/wiki/index.php?title=docs/cplat/push/guide)
+- **语音识别服务（VTT）**：申请开启服务，详见：[《语音技术管理控制台》](http://developer.baidu.com/wiki/index.php?title=docs/cplat/media/voice/console)
 
 ##部署JS API文件
 
@@ -48,10 +45,9 @@
     <script type="text/javascript" src="http://bcscdn.baidu.com/bcs-cdn/clouda/api-latest.js"></script>
 
 ##系统通用的状态码信息
-    clouda.STATUS.SUCCESS -- 成功(非0)
-    clouda.STATUS.SYSTEM_FAILURE -- 系统错误
-    clouda.STATUS.USER_CANCELED -- 用户取消操作
-
+    clouda.STATUS.SUCCESS ： 成功(非0)
+    clouda.STATUS.SYSTEM_FAILURE ： 系统错误
+    clouda.STATUS.USER_CANCELED ： 用户取消操作
 
 ## 本地设备能力类API##
     clouda.device
@@ -88,7 +84,7 @@
 - stopListen()
 
 #### get ####
-get(options)
+	get(options)
 
 **功能描述：**
 
@@ -96,7 +92,7 @@ get(options)
 
 **参数说明：**
 
-options是一个对象，其中包含以下参数：
+- options： 为 object 类型，其中包含以下参数：
 
 <table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
@@ -110,19 +106,18 @@ options是一个对象，其中包含以下参数：
 			<td>function(data){}</td>          
 			<td>获取加速度信息成功，data是返回的Acceleration对象信息</td>  
 		</tr>
-        <tr>
-			<td>frequency</td>
-			<td>number</td>            
-			<td>加速度信息获取频率设置，默认为10000，单位：毫秒</td>  
-		</tr>
 		<tr>
 			<td>onfail</td>
 			<td>function(err){}</td>          
 			<td>获取失败，返回错误码</td>  
 		</tr>
+        <tr>
+			<td>frequency</td>
+			<td>number</td>            
+			<td>加速度信息获取频率设置，默认为10000，单位：毫秒</td>  
+		</tr>
     <tbody>
 </table>
-
 
 **返回的Acceleration对象：**
 
@@ -187,7 +182,7 @@ options是一个对象，其中包含以下参数：
 
 - get(options)
 - startListen(options)
-- stopListen()
+- stopListen(options)
 
 #### get ####
     get(options)
@@ -198,7 +193,7 @@ options是一个对象，其中包含以下参数：
 
 **参数说明：**
 
-options 是一个object，其中包含以下参数：
+- options ： 为 object 类型，其中包含以下参数：
 
 <table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
@@ -235,7 +230,7 @@ options 是一个object，其中包含以下参数：
 			<td>电量百分比</td>  
 		</tr>
         <tr>
-			<td>charging</td>
+			<td>isPlugged</td>
 			<td>boolean</td>            
 			<td>电池充电状态，默认false，未充电</td>  
 		</tr>
@@ -255,15 +250,11 @@ options 是一个object，同get(options)中的options说明。
 
 
 #### stopListen ####
-    stopListen()
+    stopListen(options)
 
 **功能描述：**
 
 清除电池状态信息
-
-**参数说明：**
-
-options 是一个object，同get(options)中的options说明。
 
 ### Compass ###
 
@@ -329,7 +320,7 @@ options ： 为 object 类型，其中包括以下参数：
 			<td>指南针在某一时刻相对于北极的朝向，取值范围是[0-359.99]度；若为负值则表明该参数不确定</td>  
 		</tr>
         <tr>
-			<td>accuracy</td>
+			<td>headingAccuracy</td>
 			<td>number</td>            
 			<td>实际度数和记录度数之间的偏差</td>  
 		</tr>
@@ -341,8 +332,7 @@ options ： 为 object 类型，其中包括以下参数：
     <tbody>
 </table>
 
-
-### startListen ###
+#### startListen ####
     startListen(options)
 
 **功能描述：**
@@ -390,7 +380,6 @@ options是一个对象，其中包括以下参数：
      clouda.device.connection
     
 网络连接
-
 
 **方法：**
 
@@ -441,7 +430,7 @@ options是一个对象，其中包括以下参数：
 	clouda.device.CONNECTION_STATUS.ETHERNET // 以太网连通状态
 
 
-### startListen ###
+#### startListen ####
     startListen(options)
 
 **功能描述：**
@@ -469,7 +458,7 @@ options：参数说明同clouda.device.connection.get(options)中的options说�
 
 - find(field, options)
 - count(options)    
-- getCursor(cursorOffset, options)    
+- getCursor(field, cursorOffset, length， options)    
 - insert(data, options)
 - update(id, data, options)
 - remove(id, options)
@@ -670,7 +659,7 @@ options：参数说明同clouda.device.connection.get(options)中的options说�
 			<td>国家</td>  
 		</tr>
         <tr>
-			<td>postCode</td>
+			<td>postalCode</td>
 			<td>string</td>           
 			<td>邮编</td>  
 		</tr>
@@ -723,10 +712,10 @@ options：参数说明同clouda.device.connection.get(options)中的options说�
 
 **参数说明：**
 
-options: 为object，参数说明同clouda.device.contact.find(field, options)中的options说明。
+options: 为object，参数说明同find(field, options)中的options说明。
 
 #### getCursor ####
-    getCursor(cursorOffset, options)
+    getCursor(field, cursorOffset, length， options)
 
 **功能描述：**
 
@@ -734,9 +723,11 @@ options: 为object，参数说明同clouda.device.contact.find(field, options)�
 
 **参数说明：**
 
-- cursorOffset：指定位移的联系人，类型为：number
+- field : 同 find(field, options)中的field说明
+- cursorOffset：为 int 类型， 指定位移的联系人，表示从第几个开始
+- length : 为 int 类型，设置查询个数
 - options：
-   参数说明同clouda.device.contact.find(field, options)中的options说明。
+   参数说明同find(field, options)中的options说明。
 
 #### insert ####
     insert(data, options)
@@ -747,7 +738,7 @@ options: 为object，参数说明同clouda.device.contact.find(field, options)�
 
 **参数说明：**
 
-- data： find(field, options)接口中返回的Contact对象中的data信息。
+- data： find(field, options)接口中返回的“Contact对象”中的data信息。
 - options：参数说明同clouda.device.contact.find(field, options)中的options说明。
 
 #### update ####
@@ -763,7 +754,6 @@ options: 为object，参数说明同clouda.device.contact.find(field, options)�
 - data： find(field, options)接口中返回的Contact对象中的data信息。
 - options：参数说明同clouda.device.contact.find(field, options)中的options说明。
 
-
 #### remove ####
     remove(id, options)
 
@@ -774,7 +764,7 @@ options: 为object，参数说明同clouda.device.contact.find(field, options)�
 **参数说明：**
 
 - id： find(field, options)接口中返回的Contact对象中的id信息。
-- options：参数说明同clouda.device.contact.find(field, options)中的options说明。
+- options：参数说明同find(field, options)中的options说明。
 
 ### Device ###
 
@@ -833,16 +823,16 @@ options: 为object，参数说明同clouda.device.contact.find(field, options)�
 - getInfo(path, options)  
 - getInfoByOffset(offset, options) 
 
-### post ###
+#### post ####
     post(path,target,options)
 
 **功能描述：**
 
-将MediaFile以POST方式上传至指定URL
+将本地文件以POST方式上传至指定URL
 
 **参数说明：**
 
-- path : 为 string 类型，本地MediaFile的path(全路径,包含文件名)
+- path : 为 string 类型，本地文件的path(全路径，包含文件名)
 - target : 为 string 类型，目标地址URL(仅HTTP/HTTPS)
 - options : 为 object 类型，其中包含以下参数：
 <table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
@@ -853,43 +843,43 @@ options: 为object，参数说明同clouda.device.contact.find(field, options)�
             <th>描述</th>
         </tr>
         <tr>
-			<td>param</td>
-			<td>object</td>           
-			<td>伴随文件上传，传递的POST数据（可选）</td>  
-		</tr>
-        <tr>
-			<td>onprogress</td>
-			<td>float</td>           
-			<td>上传进度</td>  
-		</tr>
-        <tr>
-			<td>uploadKey</td>
-			<td>string</td>           
-			<td>上传表单中的key</td>  
-		</tr>
-        <tr>
 			<td>onsuccess</td>
 			<td>function(data){}</td>           
-			<td>操作成功，data是目标URL返回的结果</td>  
+			<td>操作成功，返回的 data 是目标URL返回的结果</td>  
 		</tr>
         <tr>
 			<td>onfail</td>
 			<td>function(err){}</td>          
 			<td>操作失败，返回错误码</td>  
 		</tr>
+        <tr>
+			<td>param</td>
+			<td>object</td>           
+			<td>伴随文件上传，传递的POST数据（可选）</td>  
+		</tr>
+        <tr>
+			<td>onprogress</td>
+			<td>function(data){}</td>           
+			<td>上传进度，返回的 data 是 float 类型的数值</td>  
+		</tr>
+        <tr>
+			<td>uploadKey</td>
+			<td>string</td>           
+			<td>上传表单中的key</td>  
+		</tr>
 	</tbody>
 </table>
 
-### download ###
+#### download ####
     download(url, name, options)
 
 **功能描述：**
 
-将指定URL的MediaFile下载到本地
+将指定URL的文件下载到本地
 
 **参数说明：**
 
-- url : 要下载的MediaFile的URL, string类型
+- url : 要下载文件的URL, string类型
 - name : 下载后的文件名，string类型
 - options :
 <table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
@@ -900,11 +890,6 @@ options: 为object，参数说明同clouda.device.contact.find(field, options)�
             <th>描述</th>
         </tr>
         <tr>
-			<td>onprogress</td>
-			<td>float</td>           
-			<td>下载进度</td>  
-		</tr>
-        <tr>
 			<td>onsuccess</td>
 			<td>function(data){}</td>           
 			<td>操作成功，data是文件下载到本地存储的本地路径</td>  
@@ -914,17 +899,22 @@ options: 为object，参数说明同clouda.device.contact.find(field, options)�
 			<td>function(err){}</td>          
 			<td>操作失败，返回错误码</td>  
 		</tr>
+        <tr>
+			<td>onprogress</td>
+			<td>function(data){}</td>           
+			<td>下载进度，返回的 data 是 float 类型的数值</td>  
+		</tr>
 	</tbody>
 </table>
 
-### abort ###
+#### abort ####
     abort()
 
 **功能描述：**
 
 取消上传或下载
 
-### remove ###
+#### remove ####
     remove(path, options)
 
 **功能描述：**
@@ -932,8 +922,9 @@ options: 为object，参数说明同clouda.device.contact.find(field, options)�
 删除本地文件，仅支持移除当前API KEY所属应用的文件
 
 **参数说明：**
-- path : 本地MediaFile的path(全路径,包含文件名), string
-- options :
+
+- path : 本地文件的path(全路径，包含文件名), string 类型
+- options :  为 object 类型，其中包含以下参数：
 <table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
@@ -954,13 +945,17 @@ options: 为object，参数说明同clouda.device.contact.find(field, options)�
 	</tbody>
 </table>
 
-### empty ###
+#### empty ####
     empty()
 
 **功能描述：**
 
 清空当前API KEY所属应用的所有本地文件
 
+**参数说明：**
+
+- options : 为 object 类型，其中包含以下参数：
+
 <table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
@@ -971,7 +966,7 @@ options: 为object，参数说明同clouda.device.contact.find(field, options)�
         <tr>
 			<td>onsuccess</td>
 			<td>function(data){}</td>           
-			<td>操作成功，返回clouda.STATUS.SUCCESS</td>  
+			<td>操作成功，返回SUCCESS状态码</td>  
 		</tr>
         <tr>
 			<td>onfail</td>
@@ -981,7 +976,7 @@ options: 为object，参数说明同clouda.device.contact.find(field, options)�
 	</tbody>
 </table>
 
-### count ###
+#### count ####
     count(options)
 
 **功能描述：**
@@ -989,6 +984,8 @@ options: 为object，参数说明同clouda.device.contact.find(field, options)�
 获取当前API KEY所属应用的所有本地文件数量
 
 **参数说明：**
+
+- options : 为 object 类型，其中包含以下参数：
 <table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
@@ -1009,16 +1006,19 @@ options: 为object，参数说明同clouda.device.contact.find(field, options)�
 	</tbody>
 </table>
 
-### getInfo ###
+#### getInfo ####
 
-- getInfo(path,function{})
-- getInfoByOffset(offset,function{})
+	 getInfo(path, options) 或 getInfoByOffset(offset, options)
 
 **功能描述：**
 
-通过path或从零起始的offset获取本地MediaFile文件信息
+通过path或从零起始的offset获取本地文件信息
 
 **参数说明：**
+
+- path : 为 string 类型，本地文件的path(全路径，包含文件名)
+- offset ： 为 int 类型，从零起始，获取第一个匹配元素的偏移坐标
+- options : 为 object 类型，其中包含以下参数：
 <table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
@@ -1029,12 +1029,49 @@ options: 为object，参数说明同clouda.device.contact.find(field, options)�
         <tr>
 			<td>onsuccess</td>
 			<td>function(data){}</td>           
-			<td>操作成功，返回MediaFile对象</td>  
+			<td>操作成功，返回 File 对象</td>  
 		</tr>
         <tr>
 			<td>onfail</td>
 			<td>function(err){}</td>          
 			<td>操作失败，返回错误码</td>  
+		</tr>
+	</tbody>
+</table>
+
+**返回的 File 对象**
+
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>name</td>
+			<td>string</td>          
+			<td>文件名，不含路径信息</td>  
+		</tr>
+        <tr>
+			<td>fullPath</td>
+			<td>string</td>            
+			<td>文件本地全路径（含文件名）</td>  
+		</tr>
+        <tr>
+			<td>type</td>
+			<td>string</td>            
+			<td>文件的MIME类型</td>  
+		</tr>
+        <tr>
+			<td>lastModified</td>
+			<td>date</td>            
+			<td>文件最后修改时间</td>  
+		</tr>
+        <tr>
+			<td>size</td>
+			<td>number</td>            
+			<td>文件大小，单位：字节(bytes)</td>  
 		</tr>
 	</tbody>
 </table>
@@ -1060,7 +1097,7 @@ options: 为object，参数说明同clouda.device.contact.find(field, options)�
 
 **参数说明：**
 
-options是一个object，其中包括以下参数：
+- options是一个object，其中包括以下参数：
 
 <table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
 <tbody>
@@ -1070,14 +1107,6 @@ options是一个object，其中包括以下参数：
         <th>描述</th>
     </tr>
     <tr>
-		<td>method</td>
-		<td>number</td>          
-		<td>定位的方式，可选择以下类型：<br>
-		- clouda.device.geolocation.METHOD.BASE_STATION : 基站<br>
-		- clouda.device.geolocation.METHOD.GPS : GPS(默认)
-		</td>  
-	</tr>
-    <tr>
 		<td>onsuccess</td>
 		<td>function(data){}</td>          
 		<td>获取地理信息成功</td>  
@@ -1086,6 +1115,14 @@ options是一个object，其中包括以下参数：
 		<td>onfail</td>
 		<td>function(err){}</td>            
 		<td>获取地理信息失败，返回错误码</td>  
+	</tr>
+    <tr>
+		<td>method</td>
+		<td>number</td>          
+		<td>定位的方式，可选择以下类型：<br>
+		- clouda.device.LOCATION_METHOD.BASE_STATION : 基站<br>
+		- clouda.device.LOCATION_METHOD.GPS : GPS(默认)
+		</td>  
 	</tr>
     <tr>
 		<td>timeout</td>
@@ -1142,7 +1179,7 @@ get(options)
 
 **参数说明：**
 
-options是一个对象，其中包含以下参数：
+- options ： 为 object 类型，其中包含以下参数：
 
 <table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
@@ -1156,19 +1193,18 @@ options是一个对象，其中包含以下参数：
 			<td>function(data){}</td>          
 			<td>获取陀螺仪转动角度信息成功，data是返回的Gyroscope对象信息</td>  
 		</tr>
-        <tr>
-			<td>frequency</td>
-			<td>number</td>            
-			<td>陀螺仪转动角度信息获取频率设置，默认为10000，单位：毫秒</td>  
-		</tr>
 		<tr>
 			<td>onfail</td>
 			<td>function(err){}</td>          
 			<td>获取失败，返回错误码</td>  
 		</tr>
+        <tr>
+			<td>frequency</td>
+			<td>number</td>            
+			<td>陀螺仪转动角度信息获取频率设置，默认为10000，单位：毫秒</td>  
+		</tr>
     <tbody>
 </table>
-
 
 **返回的Gyroscope对象：**
 
@@ -1215,7 +1251,6 @@ options是一个对象，其中包含以下参数：
 
 同get(options)中的参数说明。
 
-
 #### stopListen ####
 
     stopListen()
@@ -1223,7 +1258,6 @@ options是一个对象，其中包含以下参数：
 **功能描述：**
 
 停止监听设备x,y,z轴方向转动角度信息
-
 
 ### LocalStorage ###
     clouda.device.localStorage
@@ -1309,7 +1343,6 @@ options：为object类型，其中包含以下参数：
 
 同get(key,options)中的参数说明
 
-
 #### count ####
     count(options)
 
@@ -1340,328 +1373,12 @@ options：是一个object类型，其中包含以下参数：
 	</tbody>
 </table>
 
-
 #### empty ####
     empty()
 
 **功能描述：**
 
 清空本地所有数据
-
-
-### Notification ###
-    
-    clouda.device.notification
-
-本地设备通知，可设置通知、震动或蜂鸣声提示。
-
-**方法：**
-
-- alert(options)
-- confirm(options)
-- beep(options)
-- vibrate(options)
-- prompt(msg, options)
-- startLoad(title, msg, options)
-- stopLoad(options)
-- progress(title, msg, options)
-
-#### alert ####
-    alert(options)
-
-**功能描述：**
-
-显示一个定制的警告或对话框
-
-**参数说明：**
-
-options：为object类型，其中包括以下参数：
-<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
-    <tbody>
-        <tr>
-            <th>参数</th>
-            <th>类型</th>
-            <th>描述</th>
-        </tr>
-        <tr>
-			<td>onsuccess</td>
-			<td>function(){}</td>           
-			<td>用户点击“OK”按钮</td>  
-		</tr>
-        <tr>
-			<td>onfail</td>
-			<td>function(err){}</td>          
-			<td>操作失败，返回错误码</td>  
-		</tr>
-        <tr>
-			<td>msg</td>
-			<td>string</td>          
-			<td>对话框信息</td>  
-		</tr>
-        <tr>
-			<td>title</td>
-			<td>string</td>          
-			<td>对话框标题，可选项，默认为：Alert</td>  
-		</tr>
-        <tr>
-			<td>buttonName</td>
-			<td>string</td>          
-			<td>按钮名称，可选项，默认为：OK</td>  
-		</tr>
-	</tbody>
-</table>
-
-### confirm ###
-    confirm(options)
-
-**功能描述：**
-
-显示一个可定制的确认对话框
-
-**参数说明：**
-
-options为一个object，其中包括以下参数：
-<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
-    <tbody>
-        <tr>
-            <th>参数</th>
-            <th>类型</th>
-            <th>描述</th>
-        </tr>
-        <tr>
-			<td>onsuccess</td>
-			<td>function(){}</td>           
-			<td>用户点击“OK”按钮 </td>  
-		</tr>
-        <tr>
-			<td>onfail</td>
-			<td>function(err){}</td>          
-			<td>操作失败或用户点击“Cancel”，返回错误码</td>  
-		</tr>
-        <tr>
-			<td>msg</td>
-			<td>string</td>          
-			<td>对话框信息</td>  
-		</tr>
-        <tr>
-			<td>title</td>
-			<td>string</td>          
-			<td>对话框标题，可选项，默认为：Confirm</td>  
-		</tr>
-        <tr>
-			<td>buttonLabels</td>
-			<td>array</td>          
-			<td>自定义按钮标签名，可选项，默认为：[OK，Cancel]；</td>  
-		</tr>
-	</tbody>
-</table>
-
-### beep ###
-    beep(options)
-
-**功能描述：**
-
-设备将发出蜂鸣声
-
-**参数说明：**
-
-options为一个object，其中包括以下参数：
-<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
-    <tbody>
-        <tr>
-            <th>参数</th>
-            <th>类型</th>
-            <th>描述</th>
-        </tr>
-        <tr>
-			<td>onsuccess</td>
-			<td>function(){}</td>           
-			<td>操作成功</td>  
-		</tr>
-        <tr>
-			<td>onfail</td>
-			<td>function(err){}</td>          
-			<td>操作失败，返回错误码</td>  
-		</tr>
-        <tr>
-			<td>times</td>
-			<td>number</td>          
-			<td>蜂鸣的重复次数</td>  
-		</tr>
-	</tbody>
-</table>
-
-### vibrate ###
-    vibrate(options)
-
-**功能描述：**
-
-使设备震动，且可设置指定的震动时长。
-
-**参数说明：**
-options为一个object，其中包括以下参数：
-<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
-    <tbody>
-        <tr>
-            <th>参数</th>
-            <th>类型</th>
-            <th>描述</th>
-        </tr>
-        <tr>
-			<td>onsuccess</td>
-			<td>function(){}</td>           
-			<td>操作成功</td>  
-		</tr>
-        <tr>
-			<td>onfail</td>
-			<td>function(err){}</td>          
-			<td>操作失败，返回错误码</td>  
-		</tr>
-        <tr>
-			<td>time</td>
-			<td>number</td>          
-			<td>设备震动时长，单位：毫秒，默认1000</td>  
-		</tr>
-	</tbody>
-</table>
-
-### prompt ###
-    prompt(msg, options)
-
-**功能描述：**
-
-弹出一个定制化对话框
-
-**参数说明：**
-
-- msg : 为 string 类型，对话框信息
-- options :为一个object，其中包括以下参数：
-<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
-    <tbody>
-        <tr>
-            <th>参数</th>
-            <th>类型</th>
-            <th>描述</th>
-        </tr>
-        <tr>
-			<td>onsuccess</td>
-			<td>function(){}</td>           
-			<td>用户点击“确定”按钮 </td>  
-		</tr>
-        <tr>
-			<td>onfail</td>
-			<td>function(err){}</td>          
-			<td>操作失败或用户点击取消，返回错误码</td>  
-		</tr>
-        <tr>
-			<td>title</td>
-			<td>string</td>          
-			<td>对话框标题，可选项，默认为：确定</td>  
-		</tr>
-        <tr>
-			<td>buttonName</td>
-			<td>string</td>          
-			<td>按钮名称，可选项，默认为：确定、取消</td>  
-		</tr>
-	</tbody>
-</table>
-
-#### startLoad ####
-	startLoad(title, msg, options)
-
-**功能描述：**
-
-启动加载界面
-
-**参数说明：**
-
-- title : 为 string 类型， 对话框标题，可选项，默认为：确定
-- msg : 为 string 类型，对话框信息
-- options ：为 object 类型，其中包含以下参数：
-
-<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
-   <tbody>
-    <tr>
-        <th>参数</th>
-        <th>类型</th>
-        <th>描述</th>
-    </tr>
-    <tr>
-		<td>onsuccess</td>
-		<td>function(data){}</td>          
-		<td>操作成功，返回 MediaFile 对象</td>  
-	</tr>
-    <tr>
-		<td>onfail</td>
-		<td>function(err){}</td>          
-		<td>操作失败，返回错误码</td>  
-	</tr>
-	</tbody>
-</table>
-
-#### stopLoad ####
-	stopLoad(options)
-
-**功能描述：**
-
-停止加载界面
-
-**参数说明：**
-
-- options ：为 object 类型，其中包含以下参数：
-
-<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
-   <tbody>
-    <tr>
-        <th>参数</th>
-        <th>类型</th>
-        <th>描述</th>
-    </tr>
-    <tr>
-		<td>onsuccess</td>
-		<td>function(data){}</td>          
-		<td>操作成功，返回 MediaFile 对象</td>  
-	</tr>
-    <tr>
-		<td>onfail</td>
-		<td>function(err){}</td>          
-		<td>操作失败，返回错误码</td>  
-	</tr>
-	</tbody>
-</table>
-
-#### progress ####
-	progress(title, msg, options)
-
-**功能描述：**
-
-显示进度条
-
-**参数说明：**
-
-- title : 为 string 类型， 对话框标题，可选项，默认为：确定
-- msg : 为 string 类型，对话框信息
-- options ：为 object 类型，其中包含以下参数：
-
-<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
-   <tbody>
-    <tr>
-        <th>参数</th>
-        <th>类型</th>
-        <th>描述</th>
-    </tr>
-    <tr>
-		<td>onsuccess</td>
-		<td>function(data){}</td>          
-		<td>操作成功，返回 MediaFile 对象</td>  
-	</tr>
-    <tr>
-		<td>onfail</td>
-		<td>function(err){}</td>          
-		<td>操作失败，返回错误码</td>  
-	</tr>
-	</tbody>
-</table>
 
 ### Media ###
 	clouda.device.media
@@ -1694,7 +1411,7 @@ options ：为 object 类型，其中包含以下参数：
     <tr>
 		<td>onsuccess</td>
 		<td>function(data){}</td>          
-		<td>操作成功，返回 MediaFile 对象</td>  
+		<td>操作成功，返回 MediaFile 对象或其组成的数组，如[MediaFile, MediaFile]</td>  
 	</tr>
     <tr>
 		<td>onfail</td>
@@ -1735,6 +1452,12 @@ options ：为 object 类型，其中包含以下参数：
 		- clouda.device.MEDIA_FORMAT.BASE64：仅适用于image，即Base64编码字符串
 		</td>  
 	</tr>
+    <tr>
+		<td>details</td>
+		<td>boolean</td>
+		<td>是否返回文件的所有属性信息，默认：false，返回的 MediaFile 对象只显示5个基本信息
+		</td>  
+	</tr>
 <tbody>
 </table>
 
@@ -1748,58 +1471,48 @@ options ：为 object 类型，其中包含以下参数：
             <th>描述</th>
         </tr>
         <tr>
-			<td>source</td>
-			<td>string</td>          
-			<td>方法被调用时的Source
-			</td>  
-		</tr>
-        <tr>
 			<td>name</td>
 			<td>string</td>          
-			<td>文件名</td>  
+			<td>文件名，不含路径信息</td>  
 		</tr>
         <tr>
-			<td>path</td>
+			<td>fullPath</td>
 			<td>string</td>            
 			<td>文件本地全路径（含文件名）</td>  
 		</tr>
         <tr>
-			<td>mime_type</td>
+			<td>type</td>
 			<td>string</td>            
-			<td>MIME类型</td>  
-		</tr>
-        <tr>
-			<td>extension</td>
-			<td>number</td>            
-			<td>文件后缀名</td>  
-		</tr>
-        <tr>
-			<td>height</td>
-			<td>number</td>            
-			<td>图像或视频高度，音频文件时该值为0，单位：像素</td>  
-		</tr>
-        <tr>
-			<td>width</td>
-			<td>number</td>            
-			<td>图像或视频宽度，音频文件时该值为0，单位：像素</td>  
-		</tr>
-        <tr>
-			<td>duration</td>
-			<td>number</td>            
-			<td>视频或音频文件时长，图像文件时该值为0，单位：秒</td>  
+			<td>文件的MIME类型</td>  
 		</tr>
         <tr>
 			<td>lastModified</td>
-			<td>number</td>            
+			<td>date</td>            
 			<td>文件最后修改时间</td>  
 		</tr>
         <tr>
 			<td>size</td>
 			<td>number</td>            
-			<td>文件大小，单位：字节bytes</td>  
+			<td>文件大小，单位：字节(bytes)</td>  
+		</tr>
+        <tr>
+			<td>height</td>
+			<td>number</td>            
+			<td>图像或视频高度，音频文件时该值为0，单位：像素, 仅在options.details为true时返回</td>  
+		</tr>
+        <tr>
+			<td>width</td>
+			<td>number</td>            
+			<td>图像或视频宽度，音频文件时该值为0，单位：像素，仅在options.details为true时返回</td>  
+		</tr>
+        <tr>
+			<td>duration</td>
+			<td>number</td>            
+			<td>视频或音频文件时长，图像文件时该值为0，单位：秒，仅在options.details为true时返回</td>  
 		</tr>
     <tbody>
 </table>
+
 
 #### operateMedia ####
     operateMedia(link, operator, options)
@@ -1881,7 +1594,7 @@ options ：为 object 类型，其中包含以下参数：
     <tr>
 		<td>onsuccess</td>
 		<td>function(data){}</td>          
-		<td>操作成功，data 返回 Media 对象</td>  
+		<td>操作成功，data返回信息，详见 operate 参数说明</td>  
 	</tr>
     <tr>
 		<td>onfail</td>
@@ -1900,6 +1613,269 @@ options ：为 object 类型，其中包含以下参数：
 	</td>  
 	</tr>
 <tbody>
+</table>
+
+### Notification ###
+    
+    clouda.device.notification
+
+本地设备通知，可设置通知、震动或蜂鸣声提示。
+
+**方法：**
+
+- alert(msg, options)
+- confirm(msg, options)
+- beep(time)
+- vibrate(time)
+- prompt(msg, options)
+- startLoad(title, msg, options)
+- stopLoad(options)
+- progress(title, msg, options)
+
+#### alert ####
+    alert(msg, options)
+
+**功能描述：**
+
+显示一个定制的警告或对话框
+
+**参数说明：**
+
+- msg : 为 string 类型，对话框信息
+- options：为object类型，其中包括以下参数：
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>onsuccess</td>
+			<td>function(){}</td>           
+			<td>用户点击“OK”按钮</td>  
+		</tr>
+        <tr>
+			<td>onfail</td>
+			<td>function(err){}</td>          
+			<td>操作失败，返回错误码</td>  
+		</tr>
+        <tr>
+			<td>title</td>
+			<td>string</td>          
+			<td>对话框标题，可选项，默认为：Alert</td>  
+		</tr>
+        <tr>
+			<td>buttonName</td>
+			<td>string</td>          
+			<td>按钮名称，可选项，默认为：OK</td>  
+		</tr>
+	</tbody>
+</table>
+
+#### confirm ####
+    confirm(msg, options)
+
+**功能描述：**
+
+显示一个可定制的确认对话框
+
+**参数说明：**
+
+- msg : 为 string 类型，对话框信息
+- options ：为一个object，其中包括以下参数：
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>onsuccess</td>
+			<td>function(){}</td>           
+			<td>用户点击“OK”按钮 </td>  
+		</tr>
+        <tr>
+			<td>onfail</td>
+			<td>function(err){}</td>          
+			<td>操作失败或用户点击“Cancel”，返回错误码</td>  
+		</tr>
+        <tr>
+			<td>title</td>
+			<td>string</td>          
+			<td>对话框标题，可选项，默认为：Confirm</td>  
+		</tr>
+        <tr>
+			<td>buttonLabels</td>
+			<td>array</td>          
+			<td>自定义按钮标签名，可选项，默认为：[OK，Cancel]</td>  
+		</tr>
+	</tbody>
+</table>
+
+#### beep ####
+    beep(time)
+
+**功能描述：**
+
+设备将发出蜂鸣声，且可设定持续时长
+
+**参数说明：**
+
+- time : 为 int 类型， 蜂鸣的持续时间，单位：毫秒
+
+#### vibrate ####
+    vibrate(time)
+
+**功能描述：**
+
+使设备震动，且可设置指定的震动时长。
+
+**参数说明：**
+
+- time ： 为 int 类型， 设备震动时长，单位： 毫秒
+
+#### prompt ####
+    prompt(msg, options)
+
+**功能描述：**
+
+弹出一个定制化对话框
+
+**参数说明：**
+
+- msg : 为 string 类型，对话框信息
+- options :为一个object，其中包括以下参数：
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>onsuccess</td>
+			<td>function(){}</td>           
+			<td>用户点击“确定”按钮 </td>  
+		</tr>
+        <tr>
+			<td>onfail</td>
+			<td>function(err){}</td>          
+			<td>操作失败或用户点击取消，返回错误码</td>  
+		</tr>
+        <tr>
+			<td>title</td>
+			<td>string</td>          
+			<td>对话框标题，可选项，默认为：OK</td>  
+		</tr>
+        <tr>
+			<td>buttonLabels</td>
+			<td>array</td>          
+			<td>自定义按钮标签名，可选项，默认为：[OK，Cancel]</td>  
+		</tr>
+		<tr>
+			<td>defaultText</td>
+			<td>string</td>          
+			<td>输入框默认文字， 默认为空</td> 
+	</tbody>
+</table>
+
+#### startLoad ####
+	startLoad(title, msg, options)
+
+**功能描述：**
+
+启动加载界面
+
+**参数说明：**
+
+- title : 为 string 类型， 对话框标题，可选项，默认为：OK
+- msg : 为 string 类型，对话框信息
+- options ：为 object 类型，其中包含以下参数：
+
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+   <tbody>
+    <tr>
+        <th>参数</th>
+        <th>类型</th>
+        <th>描述</th>
+    </tr>
+    <tr>
+		<td>onsuccess</td>
+		<td>function(data){}</td>          
+		<td>操作成功，返回 MediaFile 对象</td>  
+	</tr>
+    <tr>
+		<td>onfail</td>
+		<td>function(err){}</td>          
+		<td>操作失败，返回错误码</td>  
+	</tr>
+	</tbody>
+</table>
+
+#### stopLoad ####
+	stopLoad(options)
+
+**功能描述：**
+
+停止加载界面
+
+**参数说明：**
+
+- options ：为 object 类型，其中包含以下参数：
+
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+   <tbody>
+    <tr>
+        <th>参数</th>
+        <th>类型</th>
+        <th>描述</th>
+    </tr>
+    <tr>
+		<td>onsuccess</td>
+		<td>function(data){}</td>          
+		<td>操作成功，返回 MediaFile 对象</td>  
+	</tr>
+    <tr>
+		<td>onfail</td>
+		<td>function(err){}</td>          
+		<td>操作失败，返回错误码</td>  
+	</tr>
+	</tbody>
+</table>
+
+#### progress ####
+	progress(title, msg, options)
+
+**功能描述：**
+
+显示进度条
+
+**参数说明：**
+
+- title : 为 string 类型， 对话框标题，可选项，默认为：OK
+- msg : 为 string 类型，对话框信息
+- options ：为 object 类型，其中包含以下参数：
+
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+   <tbody>
+    <tr>
+        <th>参数</th>
+        <th>类型</th>
+        <th>描述</th>
+    </tr>
+    <tr>
+		<td>onsuccess</td>
+		<td>function(data){}</td>          
+		<td>操作成功，返回 MediaFile 对象</td>  
+	</tr>
+    <tr>
+		<td>onfail</td>
+		<td>function(err){}</td>          
+		<td>操作失败，返回错误码</td>  
+	</tr>
+	</tbody>
 </table>
 
 ### QRCode ###
@@ -1935,11 +1911,6 @@ options ：为 object 类型，其中包含以下参数：
             <th>描述</th>
         </tr>
         <tr>
-			<td>type</td>
-			<td>number</td>          
-			<td>扫描对象类型</td>  
-		</tr>
-        <tr>
 			<td>onsuccess</td>
 			<td>function(data){}</td>            
 			<td>扫描成功，返回二维码内容字符串</td>  
@@ -1948,6 +1919,11 @@ options ：为 object 类型，其中包含以下参数：
 			<td>onfail</td>
 			<td>function(err){}</td>          
 			<td>二维码扫描失败，返回错误码</td>  
+		</tr>
+        <tr>
+			<td>type</td>
+			<td>number</td>          
+			<td>扫描对象类型</td>  
 		</tr>
     <tbody>
 </table>
@@ -2233,7 +2209,8 @@ options ：为 object 类型，其中包含以下参数：
 
 **参数说明：**
 
-options：为object类型，其中包括以下参数：
+- uid ： 为 string 类型（32个字符以内），开发者为其人脸识别服务的用户所赋予的唯一识别标识
+- options：为object类型，其中包括以下参数：
 
 <table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
@@ -2245,7 +2222,7 @@ options：为object类型，其中包括以下参数：
         <tr>
 			<td>onsuccess</td>
 			<td>function(data){}</td>            
-			<td>绑定成功，返回Success状态码</td>  
+			<td>绑定成功，返回SUCCESS状态码</td>  
 		</tr>
         <tr>
 			<td>onfail</td>
@@ -2343,6 +2320,7 @@ options：为object类型，其中包括以下参数：
 - setTag(tags, options)  
 - removeTag(tags, options)
 - listTag(options)
+- pushMsg(options)
 
 #### register ####
     register(options)
@@ -2455,7 +2433,7 @@ options：为object类型，其中包括以下参数：
         <tr>
 			<td>onsuccess</td>
 			<td>function(data){}</td>            
-			<td>注册成功，返回的data为boolean</td>  
+			<td>注册成功，返回的data为boolean类型</td>  
 		</tr>
         <tr>
 			<td>onfail</td>
@@ -2567,7 +2545,7 @@ options：为object类型，其中包括以下参数：
 
 **参数说明：**
 
-options：为object类型，其中包括以下参数：
+- options：为object类型，其中包括以下参数：
 
 <table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
@@ -2585,6 +2563,57 @@ options：为object类型，其中包括以下参数：
 			<td>onfail</td>
 			<td>function(err){}</td>          
 			<td>获取失败，返回错误码信息</td>  
+		</tr>
+    </tbody>
+</table>
+
+#### pushMsg ####
+	pushMsg()
+
+**功能描述：**
+
+推送消息
+
+**参数说明：**
+
+- options：为object类型，其中包括以下参数：
+
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>onsuccess</td>
+			<td>function(data){}</td>            
+			<td>推送成功，返回 SUCCESS 状态码</td>  
+		</tr>
+        <tr>
+			<td>onfail</td>
+			<td>function(err){}</td>          
+			<td>推送失败，返回错误码信息</td>  
+		</tr>
+        <tr>
+			<td>title</td>
+			<td>string</td>          
+			<td>推送消息的标题</td>  
+		</tr>
+        <tr>
+			<td>uid</td>
+			<td>string</td>          
+			<td>用户ID信息</td>  
+		</tr>
+        <tr>
+			<td>channelId</td>
+			<td>string</td>          
+			<td>Channel ID信息</td>  
+		</tr>
+        <tr>
+			<td>description</td>
+			<td>string</td>          
+			<td>推送消息的内容</td>  
 		</tr>
     </tbody>
 </table>
@@ -2648,6 +2677,8 @@ options：为object类型，其中包括以下参数：
 **方法：**
 
 - startCapture(options)
+- stopCapture(options)
+- speakFinish(options)
 
 #### startCapture ####
     startCapture(options)
@@ -2674,10 +2705,83 @@ options：为object类型，其中包括以下参数：
 			<td>onfail</td>
 			<td>function(err){}</td>          
 			<td>识别失败<br>
-			- clouda.mbbas.vtt.STATUS.FAILED ：语音识别失败
+			- clouda.mbaas.VTT_STATUS.FAILED ：语音识别失败
 			</td>  
 		</tr>
+        <tr>
+			<td>voicePower</td>
+			<td>boolean</td>            
+			<td>是否启用计算声音强度，默认：false，不启用</td>  
+		</tr>
+        <tr>
+			<td>speechMode</td>
+			<td>int</td>            
+			<td>设置识别模式，可选，其参数如下：<br>
+			- clouda.mbaas.VTT_SPEECHMODE.SEARCH ：搜索模式 （默认）<br>
+			- clouda.mbaas.VTT_SPEECHMODE.INPUT  ：文本输入模式
+		</td>  
+		</tr>
     </tbody>
+</table>
+
+#### stopCapture ####
+    stopCapture(options)
+
+**功能描述：**
+
+终止语音识别
+
+**参数说明：**
+
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>onsuccess</td>
+			<td>function(data){}</td>            
+			<td>操作成功，返回SUCCESS状态码</td>  
+		</tr>
+        <tr>
+			<td>onfail</td>
+			<td>function(err){}</td>          
+			<td>操作失败，返回错误码
+			</td>  
+		</tr>
+	</tbody>
+</table>
+
+#### speakFinish ####
+	speakFinish(options)
+
+**功能描述：**
+
+语音输入完成，开始识别
+
+**参数说明：**
+
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>onsuccess</td>
+			<td>function(data){}</td>            
+			<td>操作成功，返回SUCCESS状态码</td>  
+		</tr>
+        <tr>
+			<td>onfail</td>
+			<td>function(err){}</td>          
+			<td>操作失败，返回错误码
+			</td>  
+		</tr>
+	</tbody>
 </table>
 
 ## 手势事件处理类API ##
