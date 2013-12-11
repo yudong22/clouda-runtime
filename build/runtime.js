@@ -665,7 +665,6 @@ define("device",function(module) {
     };
     it.getCursor = function(fields,cursorOffset,length,options){
         installPlugin("device", function(device) {
-            console.log(device.contact.findBounds);
             device.contact.findBounds(fields,function(contacts){
                 contacts.get(cursorOffset, function(refs){
                     options.onsuccess(refs);
@@ -675,12 +674,10 @@ define("device",function(module) {
                 }, length);
             },function(nativeErr){
                 lightapp.error(ErrCode.CONTACT_FIND_ERR,nativeErr,options);
-            });
+            },options);
         });
     };
-    // it.nextCursor = function(cursorOffset,options){
-        // lightapp.error(ErrCode.NOT_FINISH,ErrCode.NOT_FINISH,options);
-    // };
+   
 });define("device",function(module) {
     var lightapp = this;
     //定义 battery 空间，clouda.device.device 支持退化
