@@ -23,7 +23,7 @@ define("device",function(module) {
     
     it.status = module.CONNECTION_STATUS.UNKNOWN;
     
-    var getInfo = new delegateClass("device","network","getInfo");
+    var getInfo = new delegateClass("device","connection","getInfo");
     /**
      * Launch device camera application for recording video(s).
      *

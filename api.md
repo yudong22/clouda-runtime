@@ -1,7 +1,7 @@
 #百度轻应用API参考文档#
 
 ----------
-2013/12/9 19:01:20    
+2013/12/10 19:52:07    
 
 问题反馈： [clouda-support@baidu.com](mailto:clouda-support@baidu.com)
 
@@ -18,23 +18,34 @@
 
 
 ##命名空间
+
 百度轻应用API统一使用的命名空间为：
 
     clouda
 
-## APP信息注册
+## APP信息注册及服务开启
 
-<font color="red">使用云服务类API，需要先到[开发者中心](http://developer.baidu.com/console)获取应用API Key，并调用以下轻应用注册接口；否则，相关云服务类接口将无法被调用成功。</font>
+<font color="red">使用云服务类API，需要先到[开发者中心](http://developer.baidu.com/console)获取应用API Key及开启相关服务，之后调用以下轻应用注册接口；否则，相关云服务类接口将无法被调用成功。</font>
+
+### APP信息注册API ###
  
 	clouda.lightapp(apikey)
 
+### 相关服务开启 ###
+
+如果需要使用以下云服务的相关API，请点击[开发者中心](http://developer.baidu.com/console)所创建的应用下的“媒体云”及“云推送”服务中，开启服务。
+
+- 人脸识别（FaceRecognition）
+- 播放器（MediaPlayer）
+- 推送服务（Push） 
+- 文本语音服务（TTS）
+- 语音识别服务（VTT）
 
 ##部署JS API文件
 
 在HTML页面中添加以下代码：
 
     <script type="text/javascript" src="http://bcscdn.baidu.com/bcs-cdn/clouda/api-latest.js"></script>
-    
 
 ##系统通用的状态码信息
     clouda.STATUS.SUCCESS -- 成功(非0)
@@ -52,12 +63,13 @@
 - 指南针(Compass)
 - 网络连接状态(Connection)
 - 联系人(Contact)
+- 设备信息（Device）
 - 文件管理（FileSystem）
 - 地理位置（Geolocation）
 - 陀螺仪感应器（Gyroscope）
 - 本地存储（LocalStorage）
 - 本地媒体功能（Media）
-- 消息推送(Notification)
+- 消息通知(Notification)
 - 二维码（QRCode）
 - 截屏分享（Screen）
 
@@ -86,7 +98,7 @@ get(options)
 
 options是一个对象，其中包含以下参数：
 
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -115,7 +127,7 @@ options是一个对象，其中包含以下参数：
 **返回的Acceleration对象：**
 
 特定时间点采集到的加速度信息。
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -188,7 +200,7 @@ options是一个对象，其中包含以下参数：
 
 options 是一个object，其中包含以下参数：
 
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -210,7 +222,7 @@ options 是一个object，其中包含以下参数：
 
 **返回的BatteryStatus对象：**
 
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -275,9 +287,9 @@ options 是一个object，同get(options)中的options说明。
 
 **参数说明：**
 
-options是一个对象，其中包括以下参数：
+options ： 为 object 类型，其中包括以下参数：
 
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -341,7 +353,7 @@ options是一个对象，其中包括以下参数：
 
 options是一个对象，其中包括以下参数：
 
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -395,7 +407,7 @@ options是一个对象，其中包括以下参数：
 获取当前网络状态
 
 **参数说明：**
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -440,7 +452,6 @@ options是一个对象，其中包括以下参数：
 
 options：参数说明同clouda.device.connection.get(options)中的options说明。
 
-
 #### stopListen ####
     stopListen()
 
@@ -472,18 +483,18 @@ options：参数说明同clouda.device.connection.get(options)中的options说�
 
 **参数说明：**
 
-- field: 为array类型, 其中的元素是“Contact对象”中的元素组合。表示查找条件。
+- field: 为array类型, 其中的元素是“Contact对象”中的“参数”字段组合。表示查找条件。
 		
    举例：
 
    1.全选：可用`["*"]`
 
    2.自定义选择：
-	["displayName", "phone", "email"]
+	["displayName", "phoneNumbers", "emails"]
 
 - options: 为object，其中包括以下参数：
 
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -532,27 +543,27 @@ options：参数说明同clouda.device.connection.get(options)中的options说�
 			<td>姓名</td>  
 		</tr>
         <tr>
-			<td>nickname/td>
+			<td>nickname</td>
 			<td>string</td>           
 			<td>昵称</td>  
 		</tr>
         <tr>
-			<td>phone</td>
+			<td>phoneNumbers</td>
 			<td>array</td>           
 			<td>电话（座机、手机等相同），详细说明参考“ContactField”对象</td>  
 		</tr>
         <tr>
-			<td>address</td>
+			<td>addresses</td>
 			<td>array</td>           
 			<td>联系地址，详细说明参考“ContactAddress”对象</td>  
 		</tr>
         <tr>
-			<td>email</td>
+			<td>emails</td>
 			<td>array</td>           
 			<td>电子邮件地址，详细说明参考“ContactField”对象</td>  
 		</tr>
         <tr>
-			<td>organization</td>
+			<td>organizations</td>
 			<td>array</td>           
 			<td>组织，详细说明参考“ContactOrg”对象</td>  
 		</tr>	
@@ -562,17 +573,17 @@ options：参数说明同clouda.device.connection.get(options)中的options说�
 			<td>生日</td>  
 		</tr>
         <tr>
-			<td>photo</td>
+			<td>photos</td>
 			<td>array</td>           
 			<td>头像，详细说明参考“ContactField”对象</td>  
 		</tr>
         <tr>
-			<td>im</td>
+			<td>ims</td>
 			<td>array</td>           
 			<td>IM信息，详细说明参考“ContactField”对象</td>  
 		</tr>
         <tr>
-			<td>url</td>
+			<td>urls</td>
 			<td>array</td>           
 			<td>相关网页，如博客，详细说明参考“ContactField”对象</td>  
 		</tr>
@@ -582,7 +593,7 @@ options：参数说明同clouda.device.connection.get(options)中的options说�
 			<td>备注</td>  
 		</tr>
         <tr>
-			<td>category</td>
+			<td>categories</td>
 			<td>array</td>           
 			<td>自定义类别，详细说明参考“ContactField”对象</td>  
 		</tr>
@@ -600,7 +611,7 @@ options：参数说明同clouda.device.connection.get(options)中的options说�
         <tr>
 			<td>type</td>
 			<td>string</td>           
-			<td>字段类型</td>  
+			<td>字段类型，如“住宅”、“单位”等</td>  
 		</tr>
         <tr>
 			<td>value</td>
@@ -608,7 +619,7 @@ options：参数说明同clouda.device.connection.get(options)中的options说�
 			<td>字段值（电话号码或email）</td>  
 		</tr>
         <tr>
-			<td>pref/td>
+			<td>pref</td>
 			<td>boolean</td>           
 			<td>用户是否设置为首选项，true：设置为首选项</td>  
 		</tr>
@@ -626,10 +637,10 @@ options：参数说明同clouda.device.connection.get(options)中的options说�
         <tr>
 			<td>type</td>
 			<td>string</td>           
-			<td>字段类型</td>  
+			<td>字段类型，如“住宅”、“单位”等</td>  
 		</tr>
         <tr>
-			<td>pref/td>
+			<td>pref</td>
 			<td>boolean</td>           
 			<td>用户是否设置为首选项，true：设置为首选项</td>  
 		</tr>
@@ -678,7 +689,7 @@ options：参数说明同clouda.device.connection.get(options)中的options说�
         <tr>
 			<td>type</td>
 			<td>string</td>           
-			<td>字段类型</td>  
+			<td>字段类型，如“住宅”、“单位”等</td>  
 		</tr>
         <tr>
 			<td>name</td>
@@ -686,7 +697,7 @@ options：参数说明同clouda.device.connection.get(options)中的options说�
 			<td>组织名称</td>  
 		</tr>
         <tr>
-			<td>pref/td>
+			<td>pref</td>
 			<td>boolean</td>           
 			<td>用户是否设置为首选项，true：设置为首选项</td>  
 		</tr>
@@ -713,7 +724,6 @@ options：参数说明同clouda.device.connection.get(options)中的options说�
 **参数说明：**
 
 options: 为object，参数说明同clouda.device.contact.find(field, options)中的options说明。
-
 
 #### getCursor ####
     getCursor(cursorOffset, options)
@@ -766,10 +776,51 @@ options: 为object，参数说明同clouda.device.contact.find(field, options)�
 - id： find(field, options)接口中返回的Contact对象中的id信息。
 - options：参数说明同clouda.device.contact.find(field, options)中的options说明。
 
+### Device ###
+
+	clouda.device.device
+
+设备信息
+
+**方法：**
+
+- getUuid(options)
+
+#### getUuid ####
+	getUuid(options)
+
+**功能描述：**
+
+获取设备的全球唯一标识符（UUID），UUID由设备生产商及特定设备平台或型号所决定
+
+**参数说明：**
+
+- options : 为 object 类型，其中包含以下参数：
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>onsuccess</td>
+			<td>function(data){}</td>           
+			<td>操作成功，data返回的是一个string</td>  
+		</tr>
+        <tr>
+			<td>onfail</td>
+			<td>function(err){}</td>          
+			<td>操作失败，返回错误码</td>  
+		</tr>
+	</tbody>
+</table>
 
 ### FileSystem ###
 
     clouda.device.fs
+
+文件管理
 
 **方法：**
 
@@ -791,9 +842,9 @@ options: 为object，参数说明同clouda.device.contact.find(field, options)�
 
 **参数说明：**
 
-- path : 本地MediaFile的path(全路径,包含文件名)
-- target : 目标地址URL(仅HTTP/HTTPS)
-- options :
+- path : 为 string 类型，本地MediaFile的path(全路径,包含文件名)
+- target : 为 string 类型，目标地址URL(仅HTTP/HTTPS)
+- options : 为 object 类型，其中包含以下参数：
 <table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
@@ -1011,7 +1062,7 @@ options: 为object，参数说明同clouda.device.contact.find(field, options)�
 
 options是一个object，其中包括以下参数：
 
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
 <tbody>
     <tr>
         <th>参数</th>
@@ -1093,7 +1144,7 @@ get(options)
 
 options是一个对象，其中包含以下参数：
 
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -1122,7 +1173,7 @@ options是一个对象，其中包含以下参数：
 **返回的Gyroscope对象：**
 
 特定时间点采集到的陀螺仪转动角度信息。
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -1197,7 +1248,7 @@ options是一个对象，其中包含以下参数：
 **参数说明：**
 
 - options(可选)：为object类型，其中包含以下参数：
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -1226,8 +1277,8 @@ options是一个对象，其中包含以下参数：
 
 **参数说明：**
 
-options：：为object类型，其中包含以下参数：
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+options：为object类型，其中包含以下参数：
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -1269,7 +1320,7 @@ options：：为object类型，其中包含以下参数：
 **参数说明：**
 
 options：是一个object类型，其中包含以下参数：
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -1311,6 +1362,9 @@ options：是一个object类型，其中包含以下参数：
 - beep(options)
 - vibrate(options)
 - prompt(msg, options)
+- startLoad(title, msg, options)
+- stopLoad(options)
+- progress(title, msg, options)
 
 #### alert ####
     alert(options)
@@ -1322,7 +1376,7 @@ options：是一个object类型，其中包含以下参数：
 **参数说明：**
 
 options：为object类型，其中包括以下参数：
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -1340,7 +1394,7 @@ options：为object类型，其中包括以下参数：
 			<td>操作失败，返回错误码</td>  
 		</tr>
         <tr>
-			<td>message</td>
+			<td>msg</td>
 			<td>string</td>          
 			<td>对话框信息</td>  
 		</tr>
@@ -1367,7 +1421,7 @@ options：为object类型，其中包括以下参数：
 **参数说明：**
 
 options为一个object，其中包括以下参数：
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -1385,7 +1439,7 @@ options为一个object，其中包括以下参数：
 			<td>操作失败或用户点击“Cancel”，返回错误码</td>  
 		</tr>
         <tr>
-			<td>message</td>
+			<td>msg</td>
 			<td>string</td>          
 			<td>对话框信息</td>  
 		</tr>
@@ -1412,7 +1466,7 @@ options为一个object，其中包括以下参数：
 **参数说明：**
 
 options为一个object，其中包括以下参数：
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -1446,7 +1500,7 @@ options为一个object，其中包括以下参数：
 
 **参数说明：**
 options为一个object，其中包括以下参数：
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -1482,7 +1536,7 @@ options为一个object，其中包括以下参数：
 
 - msg : 为 string 类型，对话框信息
 - options :为一个object，其中包括以下参数：
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -1512,12 +1566,112 @@ options为一个object，其中包括以下参数：
 	</tbody>
 </table>
 
+#### startLoad ####
+	startLoad(title, msg, options)
+
+**功能描述：**
+
+启动加载界面
+
+**参数说明：**
+
+- title : 为 string 类型， 对话框标题，可选项，默认为：确定
+- msg : 为 string 类型，对话框信息
+- options ：为 object 类型，其中包含以下参数：
+
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+   <tbody>
+    <tr>
+        <th>参数</th>
+        <th>类型</th>
+        <th>描述</th>
+    </tr>
+    <tr>
+		<td>onsuccess</td>
+		<td>function(data){}</td>          
+		<td>操作成功，返回 MediaFile 对象</td>  
+	</tr>
+    <tr>
+		<td>onfail</td>
+		<td>function(err){}</td>          
+		<td>操作失败，返回错误码</td>  
+	</tr>
+	</tbody>
+</table>
+
+#### stopLoad ####
+	stopLoad(options)
+
+**功能描述：**
+
+停止加载界面
+
+**参数说明：**
+
+- options ：为 object 类型，其中包含以下参数：
+
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+   <tbody>
+    <tr>
+        <th>参数</th>
+        <th>类型</th>
+        <th>描述</th>
+    </tr>
+    <tr>
+		<td>onsuccess</td>
+		<td>function(data){}</td>          
+		<td>操作成功，返回 MediaFile 对象</td>  
+	</tr>
+    <tr>
+		<td>onfail</td>
+		<td>function(err){}</td>          
+		<td>操作失败，返回错误码</td>  
+	</tr>
+	</tbody>
+</table>
+
+#### progress ####
+	progress(title, msg, options)
+
+**功能描述：**
+
+显示进度条
+
+**参数说明：**
+
+- title : 为 string 类型， 对话框标题，可选项，默认为：确定
+- msg : 为 string 类型，对话框信息
+- options ：为 object 类型，其中包含以下参数：
+
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+   <tbody>
+    <tr>
+        <th>参数</th>
+        <th>类型</th>
+        <th>描述</th>
+    </tr>
+    <tr>
+		<td>onsuccess</td>
+		<td>function(data){}</td>          
+		<td>操作成功，返回 MediaFile 对象</td>  
+	</tr>
+    <tr>
+		<td>onfail</td>
+		<td>function(err){}</td>          
+		<td>操作失败，返回错误码</td>  
+	</tr>
+	</tbody>
+</table>
+
 ### Media ###
 	clouda.device.media
 
+本地媒体功能
+
 **方法：**
 
-- captureMedia(options)    
+- captureMedia(options)
+- operateMedia(link, operator, options)    
 
 #### CaptureMedia ####
     captureMedia(options)
@@ -1525,11 +1679,12 @@ options为一个object，其中包括以下参数：
 **功能描述：**
 
 调取本地录音、照相、视频功能；拍摄、录制、拍照及读取本地图片文件。
+
 **参数说明：**
 
-options是一个对象，其中包含以下参数：
+options ：为 object 类型，其中包含以下参数：
 
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
    <tbody>
     <tr>
         <th>参数</th>
@@ -1577,7 +1732,7 @@ options是一个对象，其中包含以下参数：
 		<td>string</td>
 		<td>返回数据格式，参数如下：<br>
 		- clouda.device.MEDIA_FORMAT.FILE：  MediaFile对象 (默认) <br>
-		- clouda.device.MEDIA_FORMATBASE64：仅适用于image，即Base64编码字符串
+		- clouda.device.MEDIA_FORMAT.BASE64：仅适用于image，即Base64编码字符串
 		</td>  
 	</tr>
 <tbody>
@@ -1646,6 +1801,106 @@ options是一个对象，其中包含以下参数：
     <tbody>
 </table>
 
+#### operateMedia ####
+    operateMedia(link, operator, options)
+
+**功能描述：**
+
+录制和回放指定路径的音频文件
+
+**参数说明：**
+
+- link : 为 string 类型，本地音频文件路径或 Web 音频文件的 URI
+- operator ： 为 string 类型，所支持的对音频文件的具体操作类型如下：
+   <table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+   <tbody>
+    <tr>
+        <th>方法</th>
+        <th>描述</th>
+    </tr>
+    <tr>
+		<td>getCurrentPosition</td>      
+		<td>返回音频文件的当前播放位置，操作成功的返回值为 int 类型的当前秒数（s）；操作失败，则返错误码
+		</td>  
+	</tr>
+    <tr>
+		<td>getDuration</td>         
+		<td>返回音频文件的总时长，操作成功的返回值为 int 类型的总时长（单位：秒数）；操作失败，则返错误码</td>  
+	</tr>
+    <tr>
+		<td>play</td>
+		<td>开始或继续播放音频文件，操作成功返回SUCCESS状态码；操作失败，则返错误码</td>           
+	</tr>
+    <tr>
+		<td>pause</td>
+		<td>暂停播放音频文件，操作成功返回SUCCESS状态码；操作失败，则返错误码</td>          
+	</tr>
+    <tr>
+		<td>release</td>
+		<td>释放底层操作系统的音频资源，操作成功返回SUCCESS状态码；操作失败，则返错误码</td>          
+	</tr>
+    <tr>
+		<td>seekTo</td>
+		<td>移动音频文件的播放位置。此操作类型下，options中需包含以下三个参数：<br>
+		- time: int 类型，设置音频文件重放位置，单位：毫秒  <br>
+		- onsuccess:  操作成功返回SUCCESS状态码   <br>
+		- onfail: 操作失败，则返错误码</td>          
+	</tr>
+    <tr>
+		<td>setVolume</td>
+		<td>设置播放音量，此操作类型下，options中需包含以下三个参数：<br>
+		- volume: float 类型，设置音频文件播放音量，取值范围为[0.0, 1.0]  <br>
+		- onsuccess:  操作成功返回SUCCESS状态码  <br>
+		- onfail: 操作失败，则返错误码</td>           
+	</tr>
+    <tr>
+		<td>startRecord</td>
+		<td>开始录制音频文件，操作成功返回SUCCESS状态码；操作失败，则返错误码</td>            
+	</tr>
+    <tr>
+		<td>stopRecord</td>
+		<td>停止录制音频文件，操作成功返回SUCCESS状态码；操作失败，则返错误码</td>          
+	</tr>
+    <tr>
+		<td>stop</td>
+		<td>停止播放音频文件，操作成功返回SUCCESS状态码；操作失败，则返错误码</td>          
+	</tr> 
+	</tr>
+	</tbody>
+</table> 
+
+- options : 为 object 类型，其中包含以下参数：
+
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+   <tbody>
+    <tr>
+        <th>参数</th>
+        <th>类型</th>
+        <th>描述</th>
+    </tr>
+    <tr>
+		<td>onsuccess</td>
+		<td>function(data){}</td>          
+		<td>操作成功，data 返回 Media 对象</td>  
+	</tr>
+    <tr>
+		<td>onfail</td>
+		<td>function(err){}</td>          
+		<td>操作失败，返回错误码</td>  
+	</tr>
+    <tr>
+		<td>onstatus</td>
+		<td>function(data){}</td>          
+		<td>可选，当音频文件状态发生变化的时候调用的回调函数，其返回值如下：<br>
+		- clouda.device.MEDIA_STATUS.NONE = 0;<br>
+		- clouda.device.MEDIA_STATUS.STARTING = 1;<br>
+		- clouda.device.MEDIA_STATUS.RUNNING = 2;<br>
+		- clouda.device.MEDIA_STATUS.PAUSED = 3;<br>
+		- clouda.device.MEDIA_STATUS.STOPPED = 4;
+	</td>  
+	</tr>
+<tbody>
+</table>
 
 ### QRCode ###
      clouda.device.qr
@@ -1672,7 +1927,7 @@ options是一个对象，其中包含以下参数：
 
 **参数说明：**
 
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -1709,7 +1964,7 @@ options是一个对象，其中包含以下参数：
 
 - content：string，二维码内容
 - options：为object类型，其中包含以下参数：
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -1737,9 +1992,9 @@ options是一个对象，其中包含以下参数：
 			<td>是否生成彩色动画二维码，默认：false</td>  
 		</tr>
         <tr>
-			<td>backgroundPath</td>
+			<td>backgroundUrl</td>
 			<td>string</td>           
-			<td>二维码背景文件的本地全路径，可选</td>  
+			<td>二维码背景文件的URL路径，可选</td>  
 		</tr>
     <tbody>
 </table>
@@ -1766,7 +2021,7 @@ options是一个对象，其中包含以下参数：
 
 - options：为 object 类型，其中包括以下参数：
 
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -1799,7 +2054,7 @@ options是一个对象，其中包含以下参数：
 - data : 为 base64 的 string 类型，captureScreen接口中返回的data信息
 - options：为 object 类型，其中包括以下参数：
 
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -1830,7 +2085,7 @@ options是一个对象，其中包含以下参数：
 
 - options：为 object 类型，其中包括以下参数：
 - 
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -1855,13 +2110,13 @@ options是一个对象，其中包含以下参数：
 云服务类API目前支持以下功能：
 
 - 人脸识别（FaceRecognition）
-- 播放器（Player）
+- 播放器（MediaPlayer）
 - 推送服务（Push） 
 - 文本语音服务（TTS）
 - 语音识别服务（VTT）
 
 ### FaceRecognition ###
-    clouda.mbass.face
+    clouda.mbaas.face
 
 人脸识别
 
@@ -1885,7 +2140,7 @@ options是一个对象，其中包含以下参数：
 - uid： 为 string 类型（32个字符以内），开发者为其人脸识别服务的用户所赋予的唯一识别标识
 - options：为 object 类型，其中包括以下参数：
 
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -1917,7 +2172,7 @@ options是一个对象，其中包含以下参数：
 - uid： 为 string 类型（32个字符以内），开发者为其人脸识别服务的用户所赋予的唯一识别标识
 - options：为object类型，其中包括以下参数：
 
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -1949,7 +2204,7 @@ options是一个对象，其中包含以下参数：
 - uid： 为 string 类型（32个字符以内），开发者为其人脸识别服务的用户所赋予的唯一识别标识
 - options：为object类型，其中包括以下参数：
 
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -2012,7 +2267,7 @@ options：为object类型，其中包括以下参数：
 - uid ： 为 string 类型（32个字符以内），开发者为其人脸识别服务的用户所赋予的唯一识别标识
 - options：为object类型，其中包括以下参数：
 
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -2032,8 +2287,8 @@ options：为object类型，其中包括以下参数：
     </tbody>
 </table>
 
-### Player ###
-	clouda.mbaas.player
+### MediaPlayer ###
+	clouda.mbaas.mediaplayer
 
 播放器
 
@@ -2121,7 +2376,7 @@ options：为object类型，其中包括以下参数：
 </table>
 
 **返回的PushInfo对象：**
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -2156,7 +2411,27 @@ options：为object类型，其中包括以下参数：
 
 **参数说明：**
 
-options：为object类型，可选，参数说明同 register(options)。
+- options：为object类型，其中包括以下参数：
+
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>onsuccess</td>
+			<td>function(data){}</td>            
+			<td>解绑成功，返回SUCCESS状态码</td>  
+		</tr>
+        <tr>
+			<td>onfail</td>
+			<td>function(err){}</td>          
+			<td>操作失败，返回错误码信息</td>  
+		</tr>
+    </tbody>
+</table>
 
 #### checkStatus ####
 
@@ -2170,7 +2445,7 @@ options：为object类型，可选，参数说明同 register(options)。
 
 options：为object类型，其中包括以下参数：
 
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -2202,7 +2477,7 @@ options：为object类型，其中包括以下参数：
 
 options：为object类型，其中包括以下参数：
 
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -2262,7 +2537,7 @@ options：为object类型，其中包括以下参数：
 - tags： 广播组标签，为array类型，由广播组标签字符串组成
 - options：为object类型，其中包括以下参数：
 
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -2294,7 +2569,7 @@ options：为object类型，其中包括以下参数：
 
 options：为object类型，其中包括以下参数：
 
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -2335,7 +2610,7 @@ options：为object类型，其中包括以下参数：
 - word： string类型，文本信息
 - options： object类型，其中包括以下参数：
 
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -2383,7 +2658,7 @@ options：为object类型，其中包括以下参数：
 
 **参数说明：**
 
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -2425,7 +2700,7 @@ options：为object类型，其中包括以下参数：
  事件代理方法。
 
 **参数描述：**
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -2465,7 +2740,7 @@ options：为object类型，其中包括以下参数：
 事件绑定方法，根据参数区分事件绑定和事件代理。
 
 **参数描述：**
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -2500,7 +2775,7 @@ options：为object类型，其中包括以下参数：
 解除某元素上的事件代理。
 
 **参数描述：**
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -2539,7 +2814,7 @@ options：为object类型，其中包括以下参数：
 解除某元素上的事件绑定，根据参数区分事件绑定和事件代理。
 
 **参数描述：**
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -2572,7 +2847,7 @@ options：为object类型，其中包括以下参数：
 触发某个元素上的某事件。
 
 **参数描述：**
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>参数</th>
@@ -2599,7 +2874,7 @@ options：为object类型，其中包括以下参数：
 支持的手势事件类型：
 
 **参数描述：**
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>分类</th>
@@ -2708,7 +2983,7 @@ options：为object类型，其中包括以下参数：
 
 以下为手势新增的属性：
 
-<table  style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
             <th>属性</th>

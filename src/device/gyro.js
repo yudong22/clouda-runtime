@@ -34,10 +34,10 @@ define("device",function(module) {
             if ( typeof obj==='object' && typeof obj.alpha !='undefined' && typeof obj.beta !='undefined' && typeof obj.gamma !='undefined'){
                 options.onsuccess.apply(this,arguments);
             }else{
-                lightapp.error(ErrCode.ACC_GET_ERR,ErrCode.UNKNOW_CALLBACK,options);
+                lightapp.error(ErrCode.GYRO_ERR,ErrCode.UNKNOW_CALLBACK,options);
             }
         },function(nativeErr){
-            lightapp.error(ErrCode.ACC_GET_ERR,nativeErr,options);
+            lightapp.error(ErrCode.GYRO_ERR,nativeErr,options);
         },options);
     };
     
@@ -62,10 +62,10 @@ define("device",function(module) {
                 if ( typeof obj==='object' && typeof obj.alpha !='undefined' && typeof obj.beta !='undefined' && typeof obj.gamma !='undefined'){
                     options.onsuccess.apply(this,arguments);
                 }else{
-                    lightapp.error(ErrCode.ACC_GET_ERR,ErrCode.UNKNOW_CALLBACK,options);
+                    lightapp.error(ErrCode.GYRO_ERR,ErrCode.UNKNOW_CALLBACK,options);
                 }
             }, function(error) {
-               lightapp.error(ErrCode.ACC_GET_ERR,error,options);
+               lightapp.error(ErrCode.GYRO_ERR,error,options);
             },options);
         });
     };

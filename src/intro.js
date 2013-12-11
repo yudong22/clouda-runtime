@@ -30,7 +30,7 @@
         AK_UNDEFINED:-4,
         
         RT_GETERROR:5,
-         
+        
         EXEC_ERROR:-5,
         NOT_FINISH:-99,
         //API ERROR
@@ -50,6 +50,7 @@
         SCREEN_ERROR:19,
         FR_ERROR:20,
         PUSH_ERR:21,
+        GYRO_ERR:22
         
     };
     var errorMessage = {

@@ -130,23 +130,63 @@ define("device",function(module) {
      * @memberof clouda.device.media
      * @instance
      *
+     * @param {string} link
+     * @param {string} operator
      * @param {{}} options
      * @param {Function} options.onsuccess
      * @param {Function} options.onfail
-     * @param {int} options.status=clouda.device.MEDIA_STATUS.NONE
+     * @param {Function} options.onstatus
+     * @param {float} volume 设置声音大小 最大1.0 仅限(setVolume)
+     * @param {int} time 从开始到的毫秒数 仅限(getDuration)
      * @returns null
      * 
      */
-    it.createMedia = function(link,options){
+    var media={};
+    it.operateMedia = function(link,operator,options){
         installPlugin("device", function(device) {
-            var media = new device.Media(link,function(id){
-                console.log(id,media);
-                options.onsuccess(media);
-            },function(nativeErr){
-                lightapp.error(ErrCode.MEDIA_ERR,nativeErr,options);
-            },(options.status||clouda.device.MEDIA_STATUS.NONE));
+            if (!media[link]){
+                media[link] = new device.Media(link,function(id){
+                    //options.onsuccess(media);
+                },function(nativeErr){
+                    delete media[link];
+                    lightapp.error(ErrCode.MEDIA_ERR,nativeErr,options);
+                },options.onstatus);
+            }
+            switch(operator){
+                case "getCurrentPosition":
+                    media[link][operator].call(media[link],options.onsuccess,options.onfail);
+                    break;
+                case "getDuration":
+                    var duration = media[link][operator]();
+                    if (duration > -1) {
+                        options.onsuccess(duration);
+                    }else{
+                        options.onfail(duration);
+                    }
+                    break;
+                case "seekTo":
+                    media[link][operator](options.time);
+                    options.onsuccess(clouda.STATUS.SUCCESS);
+                    break;
+                case "setVolume":
+                    media[link][operator](options.volume);
+                    options.onsuccess(clouda.STATUS.SUCCESS);
+                    break;
+                case "play":
+                case "pause":
+                case "release":
+                case "startRecord":
+                case "stopRecord":
+                case "stop":
+                    media[link][operator]();
+                    options.onsuccess(clouda.STATUS.SUCCESS);
+                    break;
+                
+            }
+            
+            
         });
     };
-    
+   
     return module;
 });

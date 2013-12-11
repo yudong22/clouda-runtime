@@ -45,7 +45,7 @@ define("mbaas",function(module) {
                 options.onsuccess.apply(this.arguments);
             }, function(error) {
                lightapp.error(ErrCode.FR_ERROR,error,options);
-            },opt);
+            });
         });
     };
     //uid
@@ -56,11 +56,11 @@ define("mbaas",function(module) {
                 options.onsuccess.apply(this.arguments);
             }, function(error) {
                lightapp.error(ErrCode.FR_ERROR,error,options);
-            },opt);
+            });
         });
     };
     //检查眨眼
-    it.check_blink = function(uid,options){
+    it.checkBlink = function(uid,options){
         installPlugin("facerecognition", function(plg) {
             var face = new plg.FaceRecognition(uid);
             
@@ -68,11 +68,11 @@ define("mbaas",function(module) {
                 options.onsuccess.apply(this.arguments);
             }, function(error) {
                lightapp.error(ErrCode.FR_ERROR,error,options);
-            },opt);
+            });
         });
     };
     //绑定设备
-    it.authorize_device = function(uid,options){
+    it.authorizeDevice = function(uid,options){
         installPlugin("facerecognition", function(plg) {
             var face = new plg.FaceRecognition(uid);
             
@@ -80,11 +80,11 @@ define("mbaas",function(module) {
                 options.onsuccess.apply(this.arguments);
             }, function(error) {
                lightapp.error(ErrCode.FR_ERROR,error,options);
-            },opt);
+            });
         });
     };
     //获取设备列表
-    it.get_device_list = function(uid,options){
+    it.listDevice = function(uid,options){
         installPlugin("facerecognition", function(plg) {
             var face = new plg.FaceRecognition(uid);
             
@@ -92,7 +92,7 @@ define("mbaas",function(module) {
                 options.onsuccess.apply(this.arguments);
             }, function(error) {
                lightapp.error(ErrCode.FR_ERROR,error,options);
-            },opt);
+            });
         });
     };
     

@@ -34,7 +34,9 @@ define("mbaas",function(module) {
      */
     it.register = function(options){
         bind(function(data){
-            data = JSON.parse(data);
+            if (typeof data === 'string') {
+                data = JSON.parse(data);
+            }
             if (data.uid){
                 options.onsuccess(data);
             }else{
@@ -60,7 +62,7 @@ define("mbaas",function(module) {
      */
     it.unregister = function(options){
         unbind(function(){
-            options.onsuccess();
+            options.onsuccess(clouda.STATUS.SUCCESS);
         },function(nativeErr){
             lightapp.error(ErrCode.PUSH_ERR,nativeErr,options);
         },lightapp.ak,options);

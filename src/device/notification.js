@@ -19,7 +19,7 @@ define("device",function(module) {
     var progressStart = new delegateClass("device","notification","progressStart");
     
     /**
-     * 调用系统 alert 方法，接收一个message参数和一个可选的配置
+     * 调用系统 alert 方法，接收一个msg参数和一个可选的配置
      *
      * @function alert
      * @memberof clouda.device.notification
@@ -40,7 +40,7 @@ define("device",function(module) {
         return alert(msg);
     };
     /**
-     * 调用系统 confirm 方法，接收一个message参数和一个可选的配置
+     * 调用系统 confirm 方法，接收一个msg参数和一个可选的配置
      *
      * @function confirm
      * @memberof clouda.device.notification
@@ -86,7 +86,7 @@ define("device",function(module) {
     it.vibrate = vibrate;
     
     /**
-     * 弹出定制化的dialog，接收一个message参数和一个可选的配置
+     * 弹出定制化的dialog，接收一个msg参数和一个可选的配置
      *
      * @function prompt
      * @memberof clouda.device.notification
@@ -123,7 +123,7 @@ define("device",function(module) {
      * 
      */
     it.startLoad = function(title,msg,options){
-        activityStart(title,message,options);
+        activityStart(title,msg,options);
     };
     
      /**
@@ -156,8 +156,8 @@ define("device",function(module) {
      * @returns null
      * 
      */
-    it.progress = function(title,message,options){
-        progressStart(title,message);
+    it.progress = function(title,msg,options){
+        progressStart(title,msg);
     };
     
     return module;
