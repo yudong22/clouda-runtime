@@ -3,6 +3,7 @@
 	width: 242px;
 	height: 389px;
 	overflow: hidden;
+	top: 40px;
 }
 
 #level {
@@ -37,6 +38,7 @@
 	overflow: hidden;
 	width: 100%;
 	text-align: center;
+	bottom: 100px;
 }
 
 #quality{

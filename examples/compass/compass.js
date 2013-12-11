@@ -41,7 +41,7 @@
 		setTimeout(positioning, 200);
 		
 		clouda.touch.on($("back"), 'tap', function(e){
-			location.href = "../index.html";
+			location.href = "http://demoofruntime.duapp.com/demo/";
 		});
 		
 		clouda.device.compass.startListen({

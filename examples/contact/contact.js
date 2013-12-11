@@ -20,21 +20,21 @@
 	clouda.touch.on( doc, "DOMContentLoaded", function(){
 		
 		clouda.touch.on("#back", "tap", function(){
-			location.href = "../index.html";
+			location.href = "http://demoofruntime.duapp.com/demo/";
 		});
 		
-		clouda.device.contact.find(["*"], {
+		clouda.device.contact.getCursor(["*"], 0, 20, {
 			onsuccess : function(data){
 				var contacts = "";
-				data.forEach(function(item){
-					
-					var username = item.displayName;
-					var mobile = item.phoneNumbers;
+				var i = 0, l = data.length;
+				for(var i = 0; i < l; i++){
+					var username = data[i].displayName;
+					var mobile = data[i].phoneNumbers;
 					if(username && mobile && mobile[0]){
 						var c = getContact(username, mobile[0].value);
 						contacts += c;
 					}
-				});
+				}
 				contactbox.innerHTML = contacts;
 			},
 			onfail : function(err){

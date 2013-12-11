@@ -1,6 +1,7 @@
 (function(){
 	
 	var unit = 354 / 100;
+	var bwidth = 242;
 	var $ = function(id){ return document.getElementById(id); };
 	var batterybox =  $("batterybox"),
 		battery = $("battery"),
@@ -13,12 +14,7 @@
 		value = $("value");
 	
 	var positioning = function(){
-		var batteryRect = batterybox.getBoundingClientRect();
-		var offsetTop = (bd.offsetHeight - batteryRect.height) / 4;
-		batterybox.style.top = offsetTop + "px";
-		batterybox.style.left = (bd.offsetWidth - batteryRect.width) / 2 + "px";
-		qualitybox.style.top = batteryRect.bottom + offsetTop + "px";
-		
+		batterybox.style.left = (bd.offsetWidth - bwidth) / 2 + "px";
 	}
 	
 	var showLevel = function(val){
@@ -42,7 +38,7 @@
 		setTimeout(positioning, 0);
 		
 		clouda.touch.on($("back"), 'tap', function(e){
-			location.href = "../index.html";
+			location.href = "http://demoofruntime.duapp.com/demo/";
 		});
 		
 		clouda.device.battery.startListen({
@@ -50,7 +46,7 @@
 				var val = data.level;
 				if(val >=0 && val <= 100){ showLevel(val);}
 			},onfail:function(errno){
-				alert(errno);
+				console.log(errno);
 			}
 		});
 		
