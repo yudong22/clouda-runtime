@@ -182,7 +182,7 @@
 
 - get(options)
 - startListen(options)
-- stopListen()
+- stopListen(options)
 
 #### get ####
     get(options)
@@ -230,7 +230,7 @@
 			<td>电量百分比</td>  
 		</tr>
         <tr>
-			<td>charging</td>
+			<td>isPlugged</td>
 			<td>boolean</td>            
 			<td>电池充电状态，默认false，未充电</td>  
 		</tr>
@@ -250,7 +250,7 @@ options 是一个object，同get(options)中的options说明。
 
 
 #### stopListen ####
-    stopListen()
+    stopListen(options)
 
 **功能描述：**
 
