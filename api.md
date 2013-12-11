@@ -1120,8 +1120,8 @@ options: 为object，参数说明同find(field, options)中的options说明。
 		<td>method</td>
 		<td>number</td>          
 		<td>定位的方式，可选择以下类型：<br>
-		- clouda.device.geolocation.METHOD.BASE_STATION : 基站<br>
-		- clouda.device.geolocation.METHOD.GPS : GPS(默认)
+		- clouda.device.LOCATION_METHOD.BASE_STATION : 基站<br>
+		- clouda.device.LOCATION_METHOD.GPS : GPS(默认)
 		</td>  
 	</tr>
     <tr>
