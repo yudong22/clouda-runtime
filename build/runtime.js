@@ -655,7 +655,7 @@ define("device",function(module) {
     };
     it.count = function(options){
         installPlugin("device", function(device) {
-            var media = device.contact.findBounds(["id"],function(contacts){
+            var media = device.contact.findBounds(["*"],function(contacts){
                 options.onsuccess(contacts.count);
                 contacts.close(function(){},function(){});
             },function(nativeErr){
@@ -961,6 +961,11 @@ define("device",function(module) {
      * @namespace clouda.device.geolocation
      */
     
+    module.LOCATION_METHOD = {
+        BASE_STATION:0,
+        GPS:1
+    };
+    
     var getCurrentPosition = new delegateClass("device","geolocation","getCurrentPosition");
     var watchPosition = new delegateClass("device","geolocation","watchPosition");
     var clearWatch = new delegateClass("device","geolocation","clearWatch");
@@ -982,7 +987,11 @@ define("device",function(module) {
      * 
      */
     it.get = function(options){
-        
+        if (options.method === module.LOCATION_METHOD.BASE_STATION ){
+             options.enableHighAccuracy = false;
+         }else{
+             options.enableHighAccuracy = true;
+         }
         getCurrentPosition(function(obj){
             if ( typeof obj==='object' && typeof obj.latitude !='undefined' && typeof obj.longitude !='undefined' ){
                 options.onsuccess.apply(this,arguments);
@@ -1012,8 +1021,13 @@ define("device",function(module) {
      * 
      */
     var start_id;
-    it.startListen = function(){
+    it.startListen = function(options){
         installPlugin("device", function(device) {
+             if (options.method === module.LOCATION_METHOD ){
+                 options.enableHighAccuracy = false;
+             }else{
+                 options.enableHighAccuracy = true;
+             }
             start_id = device.geolocation.watchPosition(function(){
                 if ( typeof obj==='object' && typeof obj.latitude !='undefined' && typeof obj.longitude !='undefined' ){
                     options.onsuccess.apply(this,arguments);
@@ -1561,14 +1575,17 @@ define("device",function(module) {
         }else{//默认 MEDIA_TYPE.PICTURE
             if (options.format === module.MEDIA_FORMAT.BASE64) {
                 func=getPicture;
+            }else if (options.source === clouda.device.MEDIA_SOURCE.ALBUM){
+                if (options.format === module.MEDIA_FORMAT.FILE) {
+                    options.destinationType = module.MEDIA_DESTINATION.FILE_URI;
+                }
+                func=getPicture;
+                options.sourceType = module.MEDIA_SOURCE.ALBUM;
             }else{
                 func=captureImage;
             }
         }
-        if (options.source === module.MEDIA_SOURCE.ALBUM){
-            func=captureImage;
-            options.sourceType = module.MEDIA_SOURCE.ALBUM;
-        }
+        
         func(function(mediaFile){
             if (Array.isArray(mediaFile)){
                 if (options.details){//处理详细信息
@@ -1587,6 +1604,7 @@ define("device",function(module) {
                     options.onsuccess(mediaFile);
                 }
             } else {//base64
+                console.log(mediaFile);
                 options.onsuccess(mediaFile);
             }
         },function(nativeErr){

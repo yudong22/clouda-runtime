@@ -10,6 +10,11 @@ define("device",function(module) {
      * @namespace clouda.device.geolocation
      */
     
+    module.LOCATION_METHOD = {
+        BASE_STATION:0,
+        GPS:1
+    };
+    
     var getCurrentPosition = new delegateClass("device","geolocation","getCurrentPosition");
     var watchPosition = new delegateClass("device","geolocation","watchPosition");
     var clearWatch = new delegateClass("device","geolocation","clearWatch");
@@ -31,7 +36,11 @@ define("device",function(module) {
      * 
      */
     it.get = function(options){
-        
+        if (options.method === module.LOCATION_METHOD.BASE_STATION ){
+             options.enableHighAccuracy = false;
+         }else{
+             options.enableHighAccuracy = true;
+         }
         getCurrentPosition(function(obj){
             if ( typeof obj==='object' && typeof obj.latitude !='undefined' && typeof obj.longitude !='undefined' ){
                 options.onsuccess.apply(this,arguments);
@@ -61,8 +70,13 @@ define("device",function(module) {
      * 
      */
     var start_id;
-    it.startListen = function(){
+    it.startListen = function(options){
         installPlugin("device", function(device) {
+             if (options.method === module.LOCATION_METHOD ){
+                 options.enableHighAccuracy = false;
+             }else{
+                 options.enableHighAccuracy = true;
+             }
             start_id = device.geolocation.watchPosition(function(){
                 if ( typeof obj==='object' && typeof obj.latitude !='undefined' && typeof obj.longitude !='undefined' ){
                     options.onsuccess.apply(this,arguments);

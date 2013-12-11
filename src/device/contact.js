@@ -121,7 +121,7 @@ define("device",function(module) {
     };
     it.count = function(options){
         installPlugin("device", function(device) {
-            var media = device.contact.findBounds(["id"],function(contacts){
+            var media = device.contact.findBounds(["*"],function(contacts){
                 options.onsuccess(contacts.count);
                 contacts.close(function(){},function(){});
             },function(nativeErr){

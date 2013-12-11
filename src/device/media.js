@@ -119,14 +119,17 @@ define("device",function(module) {
         }else{//默认 MEDIA_TYPE.PICTURE
             if (options.format === module.MEDIA_FORMAT.BASE64) {
                 func=getPicture;
+            }else if (options.source === clouda.device.MEDIA_SOURCE.ALBUM){
+                if (options.format === module.MEDIA_FORMAT.FILE) {
+                    options.destinationType = module.MEDIA_DESTINATION.FILE_URI;
+                }
+                func=getPicture;
+                options.sourceType = module.MEDIA_SOURCE.ALBUM;
             }else{
                 func=captureImage;
             }
         }
-        if (options.source === module.MEDIA_SOURCE.ALBUM){
-            func=captureImage;
-            options.sourceType = module.MEDIA_SOURCE.ALBUM;
-        }
+        
         func(function(mediaFile){
             if (Array.isArray(mediaFile)){
                 if (options.details){//处理详细信息
@@ -145,6 +148,7 @@ define("device",function(module) {
                     options.onsuccess(mediaFile);
                 }
             } else {//base64
+                console.log(mediaFile);
                 options.onsuccess(mediaFile);
             }
         },function(nativeErr){
