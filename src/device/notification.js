@@ -71,7 +71,9 @@ define("device",function(module) {
      * @returns null
      * 
      */
-    it.beep = beep;
+    it.beep = function(time){
+        beep(time);
+    };
      /**
      * 振动
      *
@@ -83,7 +85,9 @@ define("device",function(module) {
      * @returns null
      * 
      */
-    it.vibrate = vibrate;
+    it.vibrate = function(time){
+        vibrate(time);
+    };
     
     /**
      * 弹出定制化的dialog，接收一个msg参数和一个可选的配置
@@ -102,10 +106,8 @@ define("device",function(module) {
      * 
      */
     it.prompt = function(msg,options){
-        if (typeof options === 'object'){
-            prompt(msg,options.onsuccess,options.title,options.buttonLabels,options.defaultText,options);
-        }
-        prompt(msg);
+        //device.notification.prompt("Prompt Message", promptCB, "Hello", ["OK", "Cancel"], "Hello you!");
+        prompt(msg,options.onsuccess,options.title,options.buttonLabels,options.defaultText);
     };
     
     /**

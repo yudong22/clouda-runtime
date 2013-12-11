@@ -29,12 +29,17 @@ define("device",function(module) {
     module.MEDIA_TYPE.AUDIO = 3; //for function captureMedia only
     
     
-    module.MEDIA_SOURCE.PHOTOLIBRARY = 0;
+    module.MEDIA_SOURCE.ALBUM = 0;
     module.MEDIA_SOURCE.CAMERA = 1;
     
     module.MEDIA_DIRECTION.BACK = 0;
     module.MEDIA_DIRECTION.FRONT = 1;
     
+    //MEDIA_FORMAT.FILE
+    module.MEDIA_FORMAT = {
+        FILE : 0,
+        BASE64:1,
+    };
     module.MEDIA_STATUS = {
         NONE : 0,
         STARTING : 1,
@@ -60,13 +65,7 @@ define("device",function(module) {
      * @param {{}} options 可定义
      * @param {function} options.onsuccess 成功
      * @param {function} options.onfail 失败
-     * @param {number} [options.quality] 
-     * @param {number} [options.destinationType]
-     * @param {number} [options.sourceType] 
-     * @param {number} [options.mediaType]
-     * @param {number} [options.mediaDirection]
-     * @param {number} [options.encodingType]
-     * @param {boolen} [options.saveToPhotoAlbum] 
+     
      * @returns null
      * 
      */
@@ -98,6 +97,14 @@ define("device",function(module) {
      * @param {int} options.mediaType=clouda.device.MEDIA_TYPE.PICTURE
      * @param {int} [options.limit=1]
      * @param {int} [options.duration=0]
+     * @param {int} [options.format=FILE]
+     * @param {number} [options.quality] 
+     * @param {number} [options.destinationType]
+     * @param {number} [options.sourceType] 
+     * @param {number} [options.mediaType]
+     * @param {number} [options.mediaDirection]
+     * @param {number} [options.encodingType]
+     * @param {boolen} [options.saveToPhotoAlbum] 
      * @returns null
      * 
      */
@@ -109,15 +116,19 @@ define("device",function(module) {
         }else if (options.mediaType == clouda.device.MEDIA_TYPE.AUDIO){
             func=captureAudio;
         }else{//默认 MEDIA_TYPE.PICTURE
+            if (options.format === module.MEDIA_FORMAT.BASE64) {
+                func=getPicture;
+            }else{
+                func=captureImage;
+            }
+        }
+        if (options.source === module.MEDIA_SOURCE.ALBUM){
             func=captureImage;
+            options.sourceType = module.MEDIA_SOURCE.ALBUM;
         }
         func(function(mediaFile){
-            if (mediaFile && typeof mediaFile=='object'){
-                options.onsuccess.apply(this,arguments);
-            }else{
-                lightapp.error(ErrCode.MEDIA_ERR,ErrCode.UNKNOW_CALLBACK,options);
-            }
-        },options.onsuccess,function(nativeErr){
+            options.onsuccess.apply(this,arguments);
+        },function(nativeErr){
             lightapp.error(ErrCode.MEDIA_ERR,nativeErr,options);
         },options);
     };

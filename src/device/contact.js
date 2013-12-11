@@ -129,9 +129,10 @@ define("device",function(module) {
             });
         });
     };
-    it.getCursor = function(cursorOffset,length,options){
+    it.getCursor = function(fields,cursorOffset,length,options){
         installPlugin("device", function(device) {
-            device.contact.findBounds(["id"],function(contacts){
+            console.log(device.contact.findBounds);
+            device.contact.findBounds(fields,function(contacts){
                 contacts.get(cursorOffset, function(refs){
                     options.onsuccess(refs);
                     contacts.close(function(){},function(){});

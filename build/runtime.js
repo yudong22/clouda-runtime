@@ -51,6 +51,7 @@
         SCREEN_ERROR:19,
         FR_ERROR:20,
         PUSH_ERR:21,
+        GYRO_ERR:22
         
     };
     var errorMessage = {
@@ -662,9 +663,10 @@ define("device",function(module) {
             });
         });
     };
-    it.getCursor = function(cursorOffset,length,options){
+    it.getCursor = function(fields,cursorOffset,length,options){
         installPlugin("device", function(device) {
-            device.contact.findBounds(["id"],function(contacts){
+            console.log(device.contact.findBounds);
+            device.contact.findBounds(fields,function(contacts){
                 contacts.get(cursorOffset, function(refs){
                     options.onsuccess(refs);
                     contacts.close(function(){},function(){});
@@ -1330,10 +1332,10 @@ define("device",function(module) {
             if ( typeof obj==='object' && typeof obj.alpha !='undefined' && typeof obj.beta !='undefined' && typeof obj.gamma !='undefined'){
                 options.onsuccess.apply(this,arguments);
             }else{
-                lightapp.error(ErrCode.ACC_GET_ERR,ErrCode.UNKNOW_CALLBACK,options);
+                lightapp.error(ErrCode.GYRO_ERR,ErrCode.UNKNOW_CALLBACK,options);
             }
         },function(nativeErr){
-            lightapp.error(ErrCode.ACC_GET_ERR,nativeErr,options);
+            lightapp.error(ErrCode.GYRO_ERR,nativeErr,options);
         },options);
     };
     
@@ -1358,10 +1360,10 @@ define("device",function(module) {
                 if ( typeof obj==='object' && typeof obj.alpha !='undefined' && typeof obj.beta !='undefined' && typeof obj.gamma !='undefined'){
                     options.onsuccess.apply(this,arguments);
                 }else{
-                    lightapp.error(ErrCode.ACC_GET_ERR,ErrCode.UNKNOW_CALLBACK,options);
+                    lightapp.error(ErrCode.GYRO_ERR,ErrCode.UNKNOW_CALLBACK,options);
                 }
             }, function(error) {
-               lightapp.error(ErrCode.ACC_GET_ERR,error,options);
+               lightapp.error(ErrCode.GYRO_ERR,error,options);
             },options);
         });
     };
@@ -1444,12 +1446,17 @@ define("device",function(module) {
     module.MEDIA_TYPE.AUDIO = 3; //for function captureMedia only
     
     
-    module.MEDIA_SOURCE.PHOTOLIBRARY = 0;
+    module.MEDIA_SOURCE.ALBUM = 0;
     module.MEDIA_SOURCE.CAMERA = 1;
     
     module.MEDIA_DIRECTION.BACK = 0;
     module.MEDIA_DIRECTION.FRONT = 1;
     
+    //MEDIA_FORMAT.FILE
+    module.MEDIA_FORMAT = {
+        FILE : 0,
+        BASE64:1,
+    };
     module.MEDIA_STATUS = {
         NONE : 0,
         STARTING : 1,
@@ -1475,13 +1482,7 @@ define("device",function(module) {
      * @param {{}} options 可定义
      * @param {function} options.onsuccess 成功
      * @param {function} options.onfail 失败
-     * @param {number} [options.quality] 
-     * @param {number} [options.destinationType]
-     * @param {number} [options.sourceType] 
-     * @param {number} [options.mediaType]
-     * @param {number} [options.mediaDirection]
-     * @param {number} [options.encodingType]
-     * @param {boolen} [options.saveToPhotoAlbum] 
+     
      * @returns null
      * 
      */
@@ -1513,6 +1514,14 @@ define("device",function(module) {
      * @param {int} options.mediaType=clouda.device.MEDIA_TYPE.PICTURE
      * @param {int} [options.limit=1]
      * @param {int} [options.duration=0]
+     * @param {int} [options.format=FILE]
+     * @param {number} [options.quality] 
+     * @param {number} [options.destinationType]
+     * @param {number} [options.sourceType] 
+     * @param {number} [options.mediaType]
+     * @param {number} [options.mediaDirection]
+     * @param {number} [options.encodingType]
+     * @param {boolen} [options.saveToPhotoAlbum] 
      * @returns null
      * 
      */
@@ -1524,15 +1533,19 @@ define("device",function(module) {
         }else if (options.mediaType == clouda.device.MEDIA_TYPE.AUDIO){
             func=captureAudio;
         }else{//默认 MEDIA_TYPE.PICTURE
+            if (options.format === module.MEDIA_FORMAT.BASE64) {
+                func=getPicture;
+            }else{
+                func=captureImage;
+            }
+        }
+        if (options.source === module.MEDIA_SOURCE.ALBUM){
             func=captureImage;
+            options.sourceType = module.MEDIA_SOURCE.ALBUM;
         }
         func(function(mediaFile){
-            if (mediaFile && typeof mediaFile=='object'){
-                options.onsuccess.apply(this,arguments);
-            }else{
-                lightapp.error(ErrCode.MEDIA_ERR,ErrCode.UNKNOW_CALLBACK,options);
-            }
-        },options.onsuccess,function(nativeErr){
+            options.onsuccess.apply(this,arguments);
+        },function(nativeErr){
             lightapp.error(ErrCode.MEDIA_ERR,nativeErr,options);
         },options);
     };
@@ -1677,7 +1690,9 @@ define("device",function(module) {
      * @returns null
      * 
      */
-    it.beep = beep;
+    it.beep = function(time){
+        beep(time);
+    };
      /**
      * 振动
      *
@@ -1689,7 +1704,9 @@ define("device",function(module) {
      * @returns null
      * 
      */
-    it.vibrate = vibrate;
+    it.vibrate = function(time){
+        vibrate(time);
+    };
     
     /**
      * 弹出定制化的dialog，接收一个msg参数和一个可选的配置
@@ -1708,10 +1725,8 @@ define("device",function(module) {
      * 
      */
     it.prompt = function(msg,options){
-        if (typeof options === 'object'){
-            prompt(msg,options.onsuccess,options.title,options.buttonLabels,options.defaultText,options);
-        }
-        prompt(msg);
+        //device.notification.prompt("Prompt Message", promptCB, "Hello", ["OK", "Cancel"], "Hello you!");
+        prompt(msg,options.onsuccess,options.title,options.buttonLabels,options.defaultText);
     };
     
     /**
