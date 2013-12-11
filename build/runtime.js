@@ -660,7 +660,7 @@ define("device",function(module) {
                 contacts.close(function(){},function(){});
             },function(nativeErr){
                 lightapp.error(ErrCode.CONTACT_FIND_ERR,nativeErr,options);
-            });
+            },options);
         });
     };
     it.getCursor = function(fields,cursorOffset,length,options){
