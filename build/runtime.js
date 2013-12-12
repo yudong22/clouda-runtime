@@ -1769,6 +1769,9 @@ define("device",function(module) {
      * 
      */
     it.confirm = function(msg,options){
+        if (options.buttonLabels && options.buttonLabels.length > 2){
+            options.buttonLabels.length = 2;
+        }
         confirm.call(this,msg,function(data){
             if (data === 2){//cancel
                 options.onfail(clouda.STATUS.USER_CANCELED);
@@ -1823,8 +1826,16 @@ define("device",function(module) {
      * 
      */
     it.prompt = function(msg,options){
-        //device.notification.prompt("Prompt Message", promptCB, "Hello", ["OK", "Cancel"], "Hello you!");
-        prompt(msg,options.onsuccess,options.title,options.buttonLabels,options.defaultText);
+        if (options.buttonLabels && options.buttonLabels.length > 2){
+            options.buttonLabels.length = 2;
+        }
+        prompt.call(this,msg,function(data){
+            if (data === 2){//cancel
+                options.onfail(clouda.STATUS.USER_CANCELED);
+            }else{
+                options.onsuccess(clouda.STATUS.SUCCESS);
+            }
+        },options.title,options.buttonLabels,options.defaultText,options);
     };
     
     /**
@@ -3157,7 +3168,7 @@ define("mbaas",function(module) {
             var face = new plg.FaceRecognition(uid);
             
             face.register(function(){
-                options.onsuccess.apply(this.arguments);
+                options.onsuccess(clouda.STATUS.SUCCESS);
             }, function(error) {
                lightapp.error(ErrCode.FR_ERROR,error,options);
             });
@@ -3168,7 +3179,7 @@ define("mbaas",function(module) {
         installPlugin("facerecognition", function(plg) {
             var face = new plg.FaceRecognition(uid);
             face.verify(function(){
-                options.onsuccess.apply(this.arguments);
+                 options.onsuccess(clouda.STATUS.SUCCESS);
             }, function(error) {
                lightapp.error(ErrCode.FR_ERROR,error,options);
             });
@@ -3180,7 +3191,7 @@ define("mbaas",function(module) {
             var face = new plg.FaceRecognition(uid);
             
             face.check_blink(function(){
-                options.onsuccess.apply(this.arguments);
+                options.onsuccess(clouda.STATUS.SUCCESS);
             }, function(error) {
                lightapp.error(ErrCode.FR_ERROR,error,options);
             });
@@ -3422,6 +3433,7 @@ define("mbaas",function(module) {
     
     // var voiceRecognition = new delegateClass("voice","voiceRecognition");
     var say = new delegateClass("voice","tts","say");
+    var showDialog = new delegateClass("voice","vtt","showDialog");
     
     module.VTT_STATUS={};
     module.VTT_STATUS.START_RECORDING = 0;
@@ -3442,13 +3454,37 @@ define("mbaas",function(module) {
         INPUT:1
     };
     
-    // for(var name in module.VTT_STATUS){
-        // module.VTT_STATUS
-    // }
     /**
      * 启动识别
      *
-     * @function scanQrcode
+     * @function startDialog
+     * @memberof clouda.mbaas.vtt
+     * @instance
+     *
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调
+     * @param {function} [options.onfail] 失败的回调
+     * @param {int} [options.speechMode] 
+     * @param {int} [options.dialogTheme] 
+     * @param {function} [options.onfail] 
+     * @returns null
+     * 
+     */
+    vtt.startDialog = function(options){
+        if (!options.speechMode){
+            options.speechMode = module.VTT_SPEECHMODE.SEARCH;
+        }
+        if (!options.dialogTheme){
+            options.dialogTheme = 1;
+        }
+        //var json = {"speechMode":0, "dialogTheme":2};
+        showDialog(options.onsuccess, options.onfail, options);
+    };
+   
+    /**
+     * 启动识别
+     *
+     * @function startCapture
      * @memberof clouda.mbaas.vtt
      * @instance
      *
