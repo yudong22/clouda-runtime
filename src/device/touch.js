@@ -141,7 +141,9 @@ define("touch",function(module, clouda) {
                     __rotation_single_finger = true;
                 };
                 for (var p in e.detail) {
-                    e[p] = e.detail[p];
+                    if(p !== 'type'){
+                        e[p] = e.detail[p];
+                    }
                 }
                 handler.call(e.target, e);
             };
@@ -196,7 +198,9 @@ define("touch",function(module, clouda) {
                     __rotation_single_finger = true;
                 };
                 for (var p in e.detail) {
-                    e[p] = e.detail[p];
+                    if(p !== 'type'){
+                        e[p] = e.detail[p];
+                    }
                 }
                 var integrateSelector = utils.getSelector(el) + " " + sel;
                 var match = utils.matchSelector(e.target, integrateSelector);
