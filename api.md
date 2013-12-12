@@ -1291,13 +1291,13 @@ get(options)
         </tr>
         <tr>
 			<td>onsuccess</td>
-			<td>function(key, value){}</td>           
+			<td>function(){}</td>           
 			<td>操作成功</td>  
 		</tr>
         <tr>
 			<td>onfail</td>
-			<td>function(err, key, value){}</td>          
-			<td>操作失败，返回错误码和尝试保存的数据</td>  
+			<td>function(){}</td>          
+			<td>操作失败</td>  
 		</tr>
 	</tbody>
 </table>
@@ -1321,13 +1321,13 @@ options：为object类型，其中包含以下参数：
         </tr>
         <tr>
 			<td>onsuccess</td>
-			<td>function(key, value){}</td>           
+			<td>function(value){}</td>           
 			<td>操作成功，返回数据</td>  
 		</tr>
         <tr>
 			<td>onfail</td>
-			<td>function(err, key){}</td>          
-			<td>操作失败，返回错误码和尝试读取的Key</td>  
+			<td>function(){}</td>          
+			<td>操作失败，返回错误码</td>  
 		</tr>
 	</tbody>
 </table>
@@ -1341,7 +1341,7 @@ options：为object类型，其中包含以下参数：
 
 **参数说明：**
 
-同get(key,options)中的参数说明
+同set(key,options)中的参数说明
 
 #### count ####
     count(options)
