@@ -1,7 +1,7 @@
 #百度轻应用API参考文档#
 
 ----------
-更新日期： 2013/12/11 20:16:53   
+更新日期： 2013/12/12 17:53:10     
 
 问题反馈： [clouda-support@baidu.com](mailto:clouda-support@baidu.com)
 
@@ -24,7 +24,7 @@
 
 ## APP信息注册及服务开启设置
 
-<font color="red">使用云服务类API，需要先到[开发者中心](http://developer.baidu.com/console)创建应用，获取应用 API Key 及开启或设置相关服务，之后调用以下轻应用注册接口；否则，相关云服务类接口将无法被调用成功。</font>
+<font color="red">使用云服务类API，需要先到[开发者中心管理控制台](http://developer.baidu.com/console)创建应用，获取应用 API Key 及开启或设置相关服务，之后调用以下轻应用注册接口；否则，相关云服务类接口将无法被调用成功。</font>
 
 ### APP信息注册API ###
  
@@ -246,8 +246,7 @@
 
 **参数说明：**
 
-options 是一个object，同get(options)中的options说明。
-
+- options 是一个object，同get(options)中的options说明。
 
 #### stopListen ####
     stopListen(options)
@@ -255,6 +254,10 @@ options 是一个object，同get(options)中的options说明。
 **功能描述：**
 
 清除电池状态信息
+
+**参数说明：**
+
+- options 是一个object，同get(options)中的options说明。
 
 ### Compass ###
 
@@ -1291,13 +1294,13 @@ get(options)
         </tr>
         <tr>
 			<td>onsuccess</td>
-			<td>function(){}</td>           
-			<td>操作成功</td>  
+			<td>function(data){}</td>           
+			<td>操作成功，返回的data为SUCCESS状态码</td>  
 		</tr>
         <tr>
 			<td>onfail</td>
-			<td>function(){}</td>          
-			<td>操作失败</td>  
+			<td>function(err){}</td>          
+			<td>操作失败，返回错误码</td>  
 		</tr>
 	</tbody>
 </table>
@@ -1326,7 +1329,7 @@ options：为object类型，其中包含以下参数：
 		</tr>
         <tr>
 			<td>onfail</td>
-			<td>function(){}</td>          
+			<td>function(err){}</td>          
 			<td>操作失败，返回错误码</td>  
 		</tr>
 	</tbody>
@@ -1341,7 +1344,7 @@ options：为object类型，其中包含以下参数：
 
 **参数说明：**
 
-同set(key,options)中的参数说明
+同set(key, value, options)中的 key 和 options 参数说明
 
 #### count ####
     count(options)
@@ -1631,6 +1634,9 @@ options ：为 object 类型，其中包含以下参数：
 - startLoad(title, msg, options)
 - stopLoad(options)
 - progress(title, msg, options)
+- startProgress(title, msg, options)
+- updateProgress(value)
+- stopProgress()
 
 #### alert ####
     alert(msg, options)
@@ -1877,6 +1883,58 @@ options ：为 object 类型，其中包含以下参数：
 	</tr>
 	</tbody>
 </table>
+
+#### startProgress #### 
+	startProgress(title, msg, options)
+
+**功能描述：**
+
+开始进度显示
+
+**参数说明：**
+
+- title : 为 string 类型， 对话框标题，可选项，默认为：OK
+- msg : 为 string 类型，对话框信息
+- options ：为 object 类型，其中包含以下参数：
+
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+   <tbody>
+    <tr>
+        <th>参数</th>
+        <th>类型</th>
+        <th>描述</th>
+    </tr>
+    <tr>
+		<td>onsuccess</td>
+		<td>function(data){}</td>          
+		<td>操作成功，返回 MediaFile 对象</td>  
+	</tr>
+    <tr>
+		<td>onfail</td>
+		<td>function(err){}</td>          
+		<td>操作失败，返回错误码</td>  
+	</tr>
+	</tbody>
+</table>
+
+#### updateProgress #### 
+	updateProgress(value)
+
+**功能描述：**
+
+更新进度显示
+
+**参数说明：**
+
+- value : 为 int 类型，取值范围为[0,100]，进度数值
+
+#### stopProgress #### 
+	stopProgress()
+
+**功能描述：**
+
+关闭进度显示
+
 
 ### QRCode ###
      clouda.device.qr
@@ -2819,7 +2877,7 @@ options：为object类型，其中包括以下参数：
         <tr>
            <td>types</td>
            <td>string</td>
-           <td>手势事件的类型, 可接受多个事件以空格分开；支持原生事件的透传。目前支持的具体事件类型，详见<a href="#n1">《手势事件类型》</a>。</td>
+           <td>手势事件的类型, 可接受多个事件以空格分开；支持原生事件的透传。目前支持的具体事件类型，详见<a href="#001">《手势事件类型》</a>。</td>
         </tr>
         <tr>
            <td>selector</td>
@@ -2829,11 +2887,181 @@ options：为object类型，其中包括以下参数：
         <tr>
            <td>callback</td>
            <td>function</td>
-           <td>事件处理函数，如需了解手势库支持的新属性，详见<a href="#n2">《事件对象》</a></td>
+           <td>事件处理函数，如需了解手势库支持的新属性，详见<a href="#002">《事件对象》</a></td>
         </tr>
 </tbody>
 </table>
 
+<a id='001'>**手势事件类型**</a>
+
+支持的手势事件类型：
+
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>分类</th>
+            <th>参数</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+            <td rowspan="5">缩放</td>
+            <td>pinchstart</td>
+            <td>缩放手势起点</td>
+        </tr>
+        <tr>
+            <td>pinchend</td>
+            <td>缩放手势终点</td>
+        </tr>
+        <tr>
+            <td>pinch</td>
+            <td>缩放手势</td>
+        </tr>
+        <tr>
+            <td>pinchin</td>
+            <td>收缩</td>
+        </tr>
+        <tr>
+            <td>pinchout</td>
+            <td>放大</td>
+        </tr>
+		<tr>
+            <td rowspan="3">旋转</td>
+            <td>rotateleft</td>
+            <td>向左旋转</td>
+        </tr>
+        <tr>
+            <td>rotateright</td>
+            <td>向右旋转</td>
+        </tr>
+        <tr>
+            <td>rotate</td>
+            <td>旋转</td>
+        </tr>
+		<tr>
+            <td rowspan="8">滑动</td>
+            <td>swipestart</td>
+            <td>滑动手势起点</td>
+        </tr>
+        <tr>
+            <td>swiping</td>
+            <td>滑动中</td>
+        </tr>
+        <tr>
+            <td>swipeend</td>
+            <td>滑动手势终点</td>
+        </tr>
+        <tr>
+            <td>swipeleft</td>
+            <td>向左滑动</td>
+        </tr>
+        <tr>
+            <td>swiperight</td>
+            <td>向右滑动</td>
+        </tr>
+        <tr>
+            <td>swipeup</td>
+            <td>向上滑动</td>
+        </tr>
+        <tr>
+            <td>swipedown</td>
+            <td>向下滑动</td>
+        </tr>
+        <tr>
+            <td>swipe</td>
+            <td>滑动</td>
+        </tr>
+		<tr>
+            <td>拖动</td>
+            <td>drag</td>
+            <td>拖动屏幕</td>
+        </tr>
+		<tr>
+            <td>长按</td>
+            <td>hold</td>
+            <td>长按屏幕</td>
+        </tr>
+		<tr>
+            <td rowspan="2">敲击</td>
+            <td>tap</td>
+            <td>单击屏幕</td>
+        </tr>
+        <tr>
+            <td>doubletap</td>
+            <td>双击屏幕</td>
+        </tr>
+
+</table>
+
+<a id='002'>**事件对象**</a>
+
+事件处理函数的第一个参数为事件对象，除了原生属性之外，百度手势库还提供了部分新属性。
+
+以下为手势新增的属性：
+
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>属性</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+           <td>originEvent</td>
+           <td>触发某事件的原生对象</td>
+        </tr>
+		<tr>
+           <td>type</td>
+           <td>事件的名称</td>
+        </tr>
+		<tr>
+           <td>rotation </td>
+           <td>旋转角度</td>
+        </tr>
+		<tr>
+           <td>scale</td>
+           <td>缩放比例</td>
+        </tr>
+		<tr>
+           <td>direction</td>
+           <td>操作的方向属性</td>
+        </tr>
+		<tr>
+           <td>fingersCount</td>
+           <td>操作的手势数量</td>
+        </tr>
+		<tr>
+           <td>position</td>
+           <td>相关位置信息, 不同的操作产生不同的位置信息</td>
+        </tr>
+		<tr>
+           <td>distance </td>
+           <td>swipe类两点之间的位移</td>
+        </tr>
+		<tr>
+           <td>distanceX</td>
+           <td>swipe类事件x方向的位移</td>
+        </tr>
+		<tr>
+           <td>distanceY</td>
+           <td>swipe类事件y方向的位移</td>
+        </tr>
+		<tr>
+           <td>angle</td>
+           <td>swipe类事件触发时偏移角度</td>
+        </tr>
+		<tr>
+           <td>duration</td>
+           <td>touchstart 与 touchend之间的时间戳</td>
+        </tr>
+		<tr>
+           <td>factor</td>
+           <td>swipe事件加速度因子</td>
+        </tr>
+		<tr>
+           <td>swipe事件加速度因子</td>
+           <td>启动单指旋转方法，在某个元素的touchstart触发时调用</td>
+        </tr>
+    </tbody>
+</table>
 
 ### 事件绑定
 
@@ -2970,185 +3198,3 @@ options：为object类型，其中包括以下参数：
         </tr>
 </tbody>
 </table>
-
-### 参数补充说明 ###
-
-<h4 id='n1'>手势事件类型 </h4>
-
-支持的手势事件类型：
-
-**参数描述：**
-<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
-    <tbody>
-        <tr>
-            <th>分类</th>
-            <th>参数</th>
-            <th>描述</th>
-        </tr>
-        <tr>
-            <td rowspan="5">缩放</td>
-            <td>pinchstart</td>
-            <td>缩放手势起点</td>
-        </tr>
-        <tr>
-            <td>pinchend</td>
-            <td>缩放手势终点</td>
-        </tr>
-        <tr>
-            <td>pinch</td>
-            <td>缩放手势</td>
-        </tr>
-        <tr>
-            <td>pinchin</td>
-            <td>收缩</td>
-        </tr>
-        <tr>
-            <td>pinchout</td>
-            <td>放大</td>
-        </tr>
-		<tr>
-            <td rowspan="3">旋转</td>
-            <td>rotateleft</td>
-            <td>向左旋转</td>
-        </tr>
-        <tr>
-            <td>rotateright</td>
-            <td>向右旋转</td>
-        </tr>
-        <tr>
-            <td>rotate</td>
-            <td>旋转</td>
-        </tr>
-		<tr>
-            <td rowspan="8">滑动</td>
-            <td>swipestart</td>
-            <td>滑动手势起点</td>
-        </tr>
-        <tr>
-            <td>swiping</td>
-            <td>滑动中</td>
-        </tr>
-        <tr>
-            <td>swipeend</td>
-            <td>滑动手势终点</td>
-        </tr>
-        <tr>
-            <td>swipeleft</td>
-            <td>向左滑动</td>
-        </tr>
-        <tr>
-            <td>swiperight</td>
-            <td>向右滑动</td>
-        </tr>
-        <tr>
-            <td>swipeup</td>
-            <td>向上滑动</td>
-        </tr>
-        <tr>
-            <td>swipedown</td>
-            <td>向下滑动</td>
-        </tr>
-        <tr>
-            <td>swipe</td>
-            <td>滑动</td>
-        </tr>
-		<tr>
-            <td>拖动</td>
-            <td>drag</td>
-            <td>拖动屏幕</td>
-        </tr>
-		<tr>
-            <td>长按</td>
-            <td>hold</td>
-            <td>长按屏幕</td>
-        </tr>
-		<tr>
-            <td rowspan="2">敲击</td>
-            <td>tap</td>
-            <td>单击屏幕</td>
-        </tr>
-        <tr>
-            <td>doubletap</td>
-            <td>双击屏幕</td>
-        </tr>
-
-</table>
-
-<h4 id='n2'>事件对象</h4>
-
-**功能描述：**
-
-事件处理函数的第一个参数为事件对象，除了原生属性之外，百度手势库还提供了部分新属性。
-
-了解新属性的相关信息，详见下面的“属性说明”：
-
-
-**属性：**
-
-以下为手势新增的属性：
-
-<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
-    <tbody>
-        <tr>
-            <th>属性</th>
-            <th>描述</th>
-        </tr>
-        <tr>
-           <td>originEvent</td>
-           <td>触发某事件的原生对象</td>
-        </tr>
-		<tr>
-           <td>type</td>
-           <td>事件的名称</td>
-        </tr>
-		<tr>
-           <td>rotation </td>
-           <td>旋转角度</td>
-        </tr>
-		<tr>
-           <td>scale</td>
-           <td>缩放比例</td>
-        </tr>
-		<tr>
-           <td>direction</td>
-           <td>操作的方向属性</td>
-        </tr>
-		<tr>
-           <td>fingersCount</td>
-           <td>操作的手势数量</td>
-        </tr>
-		<tr>
-           <td>position</td>
-           <td>相关位置信息, 不同的操作产生不同的位置信息</td>
-        </tr>
-		<tr>
-           <td>distance </td>
-           <td>swipe类两点之间的位移</td>
-        </tr>
-		<tr>
-           <td>distanceX</td>
-           <td>swipe类事件x方向的位移</td>
-        </tr>
-		<tr>
-           <td>distanceY</td>
-           <td>swipe类事件y方向的位移</td>
-        </tr>
-		<tr>
-           <td>angle</td>
-           <td>swipe类事件触发时偏移角度</td>
-        </tr>
-		<tr>
-           <td>duration</td>
-           <td>touchstart 与 touchend之间的时间戳</td>
-        </tr>
-		<tr>
-           <td>factor</td>
-           <td>swipe事件加速度因子</td>
-        </tr>
-		<tr>
-           <td>swipe事件加速度因子</td>
-           <td>启动单指旋转方法，在某个元素的touchstart触发时调用</td>
-        </tr>
-    </tbody>
-</table>
-
