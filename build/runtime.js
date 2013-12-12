@@ -1,4 +1,4 @@
-/*! clouda-runtime - v0.1.0 - 2013-12-11 */
+/*! clouda-runtime - v0.1.0 - 2013-12-12 */
 (function(window){
     // for client js only
     if (typeof window !== 'object')return ;
@@ -267,6 +267,10 @@ define("device",function(module) {
      */
     var start_id;
     it.startListen = function(options){
+        if(start_id){
+            clearWatch(start_id);
+        }
+        
         installPlugin("device", function(device) {
             start_id = device.accelerometer.watchAcceleration(function(obj){
                 if ( typeof obj==='object' && typeof obj.x !='undefined' && typeof obj.y !='undefined' && typeof obj.z !='undefined'){
@@ -417,6 +421,9 @@ define("device",function(module) {
      */
     var start_id;
     it.startListen = function(options){
+        if(start_id){
+            clearWatch(start_id);
+        }
         installPlugin("device", function(device) {
             start_id = device.compass.watchHeading(function(obj){
                 if ( typeof obj==='object' && typeof obj.magneticHeading !='undefined' && typeof obj.trueHeading !='undefined' ){
@@ -1022,6 +1029,9 @@ define("device",function(module) {
      */
     var start_id;
     it.startListen = function(options){
+        if(start_id){
+            clearWatch(start_id);
+        }
         installPlugin("device", function(device) {
              if (options.method === module.LOCATION_METHOD ){
                  options.enableHighAccuracy = false;
@@ -1366,6 +1376,9 @@ define("device",function(module) {
      */
     var start_id;
     it.startListen = function(options){
+        if(start_id){
+            clearWatch(start_id);
+        }
         installPlugin("device", function(device) {
             start_id = device.orientation.watchDeviceOrientation(function(obj){
                 if ( typeof obj==='object' && typeof obj.alpha !='undefined' && typeof obj.beta !='undefined' && typeof obj.gamma !='undefined'){

@@ -57,6 +57,10 @@ define("device",function(module) {
      */
     var start_id;
     it.startListen = function(options){
+        if(start_id){
+            clearWatch(start_id);
+        }
+        
         installPlugin("device", function(device) {
             start_id = device.accelerometer.watchAcceleration(function(obj){
                 if ( typeof obj==='object' && typeof obj.x !='undefined' && typeof obj.y !='undefined' && typeof obj.z !='undefined'){

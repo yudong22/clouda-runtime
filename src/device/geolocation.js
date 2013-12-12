@@ -71,6 +71,9 @@ define("device",function(module) {
      */
     var start_id;
     it.startListen = function(options){
+        if(start_id){
+            clearWatch(start_id);
+        }
         installPlugin("device", function(device) {
              if (options.method === module.LOCATION_METHOD ){
                  options.enableHighAccuracy = false;
