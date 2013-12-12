@@ -635,44 +635,48 @@ define("device",function(module) {
     }; 
 
     
-    it.update = function(id,fields,options){
+    it.update = function(contact,fields,options){
         installPlugin("device", function(device) {
-           var myoptions = {"multiple":false,"filter":id};
-            device.contact.find(["*"],function(contacts){
-                if (contacts && contacts[0]){
-                    for (var i in fields){
-                        contacts[0][i] = fields[i];
-                    }
-                    contacts[0].save(function(){
-                        options.onsuccess.apply(this,arguments);
-                    },function(errno){
-                        lightapp.error(ErrCode.CONTACT_FIND_ERR,errno,options);
-                    });
-                }else{
-                    lightapp.error(ErrCode.CONTACT_FIND_ERR,ErrCode.UNKNOW_CALLBACK,options);
+            if (typeof contact === 'object'){
+                for (var i in fields){
+                    contact[i] = fields[i];
                 }
-            },function(nativeErr){
-                lightapp.error(ErrCode.CONTACT_FIND_ERR,nativeErr,options);
-            },myoptions);
+                if (fields.displayName && contact.name){//name
+                    contact.name.familyName = fields.displayName.substring(0,1);
+                    contact.name.givenName = fields.displayName.substring(1);
+                }
+                if (contact.id){
+                    contact.rawId = contact.id;
+                }
+                
+                contact.save(function(){
+                    options.onsuccess.apply(this,arguments);
+                },function(errno){
+                    lightapp.error(ErrCode.CONTACT_FIND_ERR,errno,options);
+                });
+            }else{
+                lightapp.error(ErrCode.CONTACT_FIND_ERR,ErrCode.UNKNOW_CALLBACK,options);
+            }
         });
     };
     
-    it.remove = function(id,options){
+    it.remove = function(contact,options){
         installPlugin("device", function(device) {
-           var myoptions = {"multiple":false,"filter":id};
-            device.contact.find(["*"],function(contacts){
-                if (contacts && contacts[0]){
-                    contacts[0].remove(function(){
-                        options.onsuccess.apply(this,arguments);
-                    },function(errno){
-                        lightapp.error(ErrCode.CONTACT_FIND_ERR,errno,options);
-                    });
-                }else{
-                    lightapp.error(ErrCode.CONTACT_FIND_ERR,ErrCode.UNKNOW_CALLBACK,options);
-                }
-            },function(nativeErr){
-                lightapp.error(ErrCode.CONTACT_FIND_ERR,nativeErr,options);
-            },myoptions);
+            try{
+                
+           if (typeof contact === 'object'){
+               contact.remove(function(){
+                    options.onsuccess(clouda.STATUS.SUCCESS);
+                },function(errno){
+                    lightapp.error(ErrCode.CONTACT_FIND_ERR,errno,options);
+                });
+           }else{
+               options.onsuccess(clouda.STATUS.SUCCESS);
+           }
+             }catch(e){
+                 console.log(e.stack);
+             }
+           
         });
     };
     it.count = function(options){
@@ -750,10 +754,7 @@ define("device",function(module) {
     var localDir = function(callback){
         // return "/sdcard/Baidu/"+lightapp.ak;
         installPlugin("device", function(device) {
-
-            var fileEntry = new device.fs.FileEntry(getFileNameFromPath(link), link);
-            //fileSystem.root.getDirectory("newFile", {create : true,exclusive : false}, writerFile, fail); 
-            device.fs.requestFileSystem(LocalFileSystem.PERSISTENT, 100000000, function(fileSystem){
+            device.fs.requestFileSystem(device.fs.LocalFileSystem.PERSISTENT, 100000000, function(fileSystem){
                 fileSystem.root.getDirectory(lightapp.ak, {create : true,exclusive : false}, function(fs){
                     callback(fs);
                 }, function(){
@@ -763,7 +764,6 @@ define("device",function(module) {
             }, function(){
                 callback(null);
             });
-            
         });
     };
     var getFileNameFromPath = function(str){
@@ -784,24 +784,22 @@ define("device",function(module) {
      * @param {Function} options.onprogress
      * @param {string} options.uploadKey
      */
-    var fileTransfer=null;
+    var FileTransfer=null;
     it.post = function(link,target,options) {
         installPlugin("filetransfer", function(ft) {
-            ft = ft.fileTransfer;
-            if (fileTransfer === null) {
-                fileTransfer = new ft.FileTransfer();
-                if (options.onprogress){
-                    fileTransfer.onprogress = function(data){
-                        options.onprogress(data.loaded/data.total);
-                    };
-                }
+            if (FileTransfer === null) {
+                FileTransfer = new ft.FileTransfer();
             }
-            
+            if (options.onprogress){
+                FileTransfer.onprogress = function(data){
+                    options.onprogress(data);
+                };
+            }
             var opt = new ft.FileUploadOptions();
             opt.fileKey = options.uploadKey;
             opt.fileName = getFileNameFromPath(link);
             // opt.mimeType = "text/html";
-            fileTransfer.upload(link, target, function(result) {
+            FileTransfer.upload(link, target, function(result) {
                 options.onsuccess.apply(this,arguments);
             }, function(err) {
                 lightapp.error(ErrCode.FS_ERR,err,options);
@@ -827,14 +825,13 @@ define("device",function(module) {
  
     it.download = function(link, name, options) {
         installPlugin("filetransfer", function(ft) {
-            ft = ft.fileTransfer;
-            if (fileTransfer === null) {
-                fileTransfer = new ft.FileTransfer();
-                if (options.onprogress) {
-                    fileTransfer.onprogress = function(data){
-                        options.onprogress(data.loaded/data.total);
-                    };
-                }
+            if (FileTransfer === null) {
+                FileTransfer = new ft.FileTransfer();
+            }
+            if (options.onprogress){
+                FileTransfer.onprogress = function(data){
+                    options.onprogress(data);
+                };
             }
             //可能需要加下载路径
             localDir(function(direntry){
@@ -842,7 +839,7 @@ define("device",function(module) {
                     lightapp.error(ErrCode.FS_ERR, err, options);
                     return ;
                 }
-                fileTransfer.download(link, direntry.name +"/" + name, function(result) {
+                FileTransfer.download(link, direntry.fullPath +"/" + name, function(result) {
                     options.onsuccess.apply(this, arguments);
                 }, function(err) {
                     lightapp.error(ErrCode.FS_ERR, err, options);
@@ -864,10 +861,10 @@ define("device",function(module) {
      */
     
     it.abort = function() {
-        if(fileTransfer === null){
+        if(FileTransfer === null){
             lightapp.error(ErrCode.FS_ERR, err, options);
         }else{
-            fileTransfer.abort();
+            FileTransfer.abort();
         }
     }; 
     /**
@@ -910,7 +907,7 @@ define("device",function(module) {
         });
     };
     
-    it.getCount = function(options){
+    it.count = function(options){
         installPlugin("device", function(device) {
             localDir(function(direntry){
                 var directEntry = direntry;
@@ -2241,7 +2238,9 @@ define("device",function(module) {
                     __rotation_single_finger = true;
                 };
                 for (var p in e.detail) {
-                    e[p] = e.detail[p];
+                    if(p !== 'type'){
+                        e[p] = e.detail[p];
+                    }
                 }
                 handler.call(e.target, e);
             };
@@ -2296,7 +2295,9 @@ define("device",function(module) {
                     __rotation_single_finger = true;
                 };
                 for (var p in e.detail) {
-                    e[p] = e.detail[p];
+                    if(p !== 'type'){
+                        e[p] = e.detail[p];
+                    }
                 }
                 var integrateSelector = utils.getSelector(el) + " " + sel;
                 var match = utils.matchSelector(e.target, integrateSelector);

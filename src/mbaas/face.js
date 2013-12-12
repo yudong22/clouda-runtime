@@ -42,7 +42,7 @@ define("mbaas",function(module) {
             var face = new plg.FaceRecognition(uid);
             
             face.register(function(){
-                options.onsuccess.apply(this.arguments);
+                options.onsuccess(clouda.STATUS.SUCCESS);
             }, function(error) {
                lightapp.error(ErrCode.FR_ERROR,error,options);
             });
@@ -53,7 +53,7 @@ define("mbaas",function(module) {
         installPlugin("facerecognition", function(plg) {
             var face = new plg.FaceRecognition(uid);
             face.verify(function(){
-                options.onsuccess.apply(this.arguments);
+                 options.onsuccess(clouda.STATUS.SUCCESS);
             }, function(error) {
                lightapp.error(ErrCode.FR_ERROR,error,options);
             });
@@ -65,7 +65,7 @@ define("mbaas",function(module) {
             var face = new plg.FaceRecognition(uid);
             
             face.check_blink(function(){
-                options.onsuccess.apply(this.arguments);
+                options.onsuccess(clouda.STATUS.SUCCESS);
             }, function(error) {
                lightapp.error(ErrCode.FR_ERROR,error,options);
             });

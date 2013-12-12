@@ -56,6 +56,9 @@ define("device",function(module) {
      * 
      */
     it.confirm = function(msg,options){
+        if (options.buttonLabels && options.buttonLabels.length > 2){
+            options.buttonLabels.length = 2;
+        }
         confirm.call(this,msg,function(data){
             if (data === 2){//cancel
                 options.onfail(clouda.STATUS.USER_CANCELED);
@@ -110,8 +113,16 @@ define("device",function(module) {
      * 
      */
     it.prompt = function(msg,options){
-        //device.notification.prompt("Prompt Message", promptCB, "Hello", ["OK", "Cancel"], "Hello you!");
-        prompt(msg,options.onsuccess,options.title,options.buttonLabels,options.defaultText);
+        if (options.buttonLabels && options.buttonLabels.length > 2){
+            options.buttonLabels.length = 2;
+        }
+        prompt.call(this,msg,function(data){
+            if (data === 2){//cancel
+                options.onfail(clouda.STATUS.USER_CANCELED);
+            }else{
+                options.onsuccess(clouda.STATUS.SUCCESS);
+            }
+        },options.title,options.buttonLabels,options.defaultText,options);
     };
     
     /**

@@ -79,44 +79,48 @@ define("device",function(module) {
     }; 
 
     
-    it.update = function(id,fields,options){
+    it.update = function(contact,fields,options){
         installPlugin("device", function(device) {
-           var myoptions = {"multiple":false,"filter":id};
-            device.contact.find(["*"],function(contacts){
-                if (contacts && contacts[0]){
-                    for (var i in fields){
-                        contacts[0][i] = fields[i];
-                    }
-                    contacts[0].save(function(){
-                        options.onsuccess.apply(this,arguments);
-                    },function(errno){
-                        lightapp.error(ErrCode.CONTACT_FIND_ERR,errno,options);
-                    });
-                }else{
-                    lightapp.error(ErrCode.CONTACT_FIND_ERR,ErrCode.UNKNOW_CALLBACK,options);
+            if (typeof contact === 'object'){
+                for (var i in fields){
+                    contact[i] = fields[i];
                 }
-            },function(nativeErr){
-                lightapp.error(ErrCode.CONTACT_FIND_ERR,nativeErr,options);
-            },myoptions);
+                if (fields.displayName && contact.name){//name
+                    contact.name.familyName = fields.displayName.substring(0,1);
+                    contact.name.givenName = fields.displayName.substring(1);
+                }
+                if (contact.id){
+                    contact.rawId = contact.id;
+                }
+                
+                contact.save(function(){
+                    options.onsuccess.apply(this,arguments);
+                },function(errno){
+                    lightapp.error(ErrCode.CONTACT_FIND_ERR,errno,options);
+                });
+            }else{
+                lightapp.error(ErrCode.CONTACT_FIND_ERR,ErrCode.UNKNOW_CALLBACK,options);
+            }
         });
     };
     
-    it.remove = function(id,options){
+    it.remove = function(contact,options){
         installPlugin("device", function(device) {
-           var myoptions = {"multiple":false,"filter":id};
-            device.contact.find(["*"],function(contacts){
-                if (contacts && contacts[0]){
-                    contacts[0].remove(function(){
-                        options.onsuccess.apply(this,arguments);
-                    },function(errno){
-                        lightapp.error(ErrCode.CONTACT_FIND_ERR,errno,options);
-                    });
-                }else{
-                    lightapp.error(ErrCode.CONTACT_FIND_ERR,ErrCode.UNKNOW_CALLBACK,options);
-                }
-            },function(nativeErr){
-                lightapp.error(ErrCode.CONTACT_FIND_ERR,nativeErr,options);
-            },myoptions);
+            try{
+                
+           if (typeof contact === 'object'){
+               contact.remove(function(){
+                    options.onsuccess(clouda.STATUS.SUCCESS);
+                },function(errno){
+                    lightapp.error(ErrCode.CONTACT_FIND_ERR,errno,options);
+                });
+           }else{
+               options.onsuccess(clouda.STATUS.SUCCESS);
+           }
+             }catch(e){
+                 console.log(e.stack);
+             }
+           
         });
     };
     it.count = function(options){

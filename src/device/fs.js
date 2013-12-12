@@ -13,10 +13,7 @@ define("device",function(module) {
     var localDir = function(callback){
         // return "/sdcard/Baidu/"+lightapp.ak;
         installPlugin("device", function(device) {
-
-            var fileEntry = new device.fs.FileEntry(getFileNameFromPath(link), link);
-            //fileSystem.root.getDirectory("newFile", {create : true,exclusive : false}, writerFile, fail); 
-            device.fs.requestFileSystem(LocalFileSystem.PERSISTENT, 100000000, function(fileSystem){
+            device.fs.requestFileSystem(device.fs.LocalFileSystem.PERSISTENT, 100000000, function(fileSystem){
                 fileSystem.root.getDirectory(lightapp.ak, {create : true,exclusive : false}, function(fs){
                     callback(fs);
                 }, function(){
@@ -26,7 +23,6 @@ define("device",function(module) {
             }, function(){
                 callback(null);
             });
-            
         });
     };
     var getFileNameFromPath = function(str){
@@ -47,24 +43,22 @@ define("device",function(module) {
      * @param {Function} options.onprogress
      * @param {string} options.uploadKey
      */
-    var fileTransfer=null;
+    var FileTransfer=null;
     it.post = function(link,target,options) {
         installPlugin("filetransfer", function(ft) {
-            ft = ft.fileTransfer;
-            if (fileTransfer === null) {
-                fileTransfer = new ft.FileTransfer();
-                if (options.onprogress){
-                    fileTransfer.onprogress = function(data){
-                        options.onprogress(data.loaded/data.total);
-                    };
-                }
+            if (FileTransfer === null) {
+                FileTransfer = new ft.FileTransfer();
             }
-            
+            if (options.onprogress){
+                FileTransfer.onprogress = function(data){
+                    options.onprogress(data);
+                };
+            }
             var opt = new ft.FileUploadOptions();
             opt.fileKey = options.uploadKey;
             opt.fileName = getFileNameFromPath(link);
             // opt.mimeType = "text/html";
-            fileTransfer.upload(link, target, function(result) {
+            FileTransfer.upload(link, target, function(result) {
                 options.onsuccess.apply(this,arguments);
             }, function(err) {
                 lightapp.error(ErrCode.FS_ERR,err,options);
@@ -90,14 +84,13 @@ define("device",function(module) {
  
     it.download = function(link, name, options) {
         installPlugin("filetransfer", function(ft) {
-            ft = ft.fileTransfer;
-            if (fileTransfer === null) {
-                fileTransfer = new ft.FileTransfer();
-                if (options.onprogress) {
-                    fileTransfer.onprogress = function(data){
-                        options.onprogress(data.loaded/data.total);
-                    };
-                }
+            if (FileTransfer === null) {
+                FileTransfer = new ft.FileTransfer();
+            }
+            if (options.onprogress){
+                FileTransfer.onprogress = function(data){
+                    options.onprogress(data);
+                };
             }
             //可能需要加下载路径
             localDir(function(direntry){
@@ -105,7 +98,7 @@ define("device",function(module) {
                     lightapp.error(ErrCode.FS_ERR, err, options);
                     return ;
                 }
-                fileTransfer.download(link, direntry.name +"/" + name, function(result) {
+                FileTransfer.download(link, direntry.fullPath +"/" + name, function(result) {
                     options.onsuccess.apply(this, arguments);
                 }, function(err) {
                     lightapp.error(ErrCode.FS_ERR, err, options);
@@ -127,10 +120,10 @@ define("device",function(module) {
      */
     
     it.abort = function() {
-        if(fileTransfer === null){
+        if(FileTransfer === null){
             lightapp.error(ErrCode.FS_ERR, err, options);
         }else{
-            fileTransfer.abort();
+            FileTransfer.abort();
         }
     }; 
     /**
@@ -173,7 +166,7 @@ define("device",function(module) {
         });
     };
     
-    it.getCount = function(options){
+    it.count = function(options){
         installPlugin("device", function(device) {
             localDir(function(direntry){
                 var directEntry = direntry;
