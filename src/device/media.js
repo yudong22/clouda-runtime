@@ -29,8 +29,8 @@ define("device",function(module) {
     module.MEDIA_TYPE.AUDIO = 3; //for function captureMedia only
     
     
-    module.MEDIA_SOURCE.ALBUM = 0;
-    module.MEDIA_SOURCE.CAMERA = 1;
+    module.MEDIA_SOURCE.ALBUM = 1;
+    module.MEDIA_SOURCE.CAMERA = 0;
     
     module.MEDIA_DIRECTION.BACK = 0;
     module.MEDIA_DIRECTION.FRONT = 1;
@@ -111,6 +111,7 @@ define("device",function(module) {
      */
     
     it.captureMedia = function(options){
+        
         var func;
         if (options.mediaType == clouda.device.MEDIA_TYPE.VIDEO){
             func=captureVideo;
@@ -121,39 +122,46 @@ define("device",function(module) {
                 func=getPicture;
             }else if (options.source === clouda.device.MEDIA_SOURCE.ALBUM){
                 if (options.format === module.MEDIA_FORMAT.FILE) {
-                    options.destinationType = module.MEDIA_DESTINATION.FILE_URI;
+                    options.destType = module.MEDIA_DESTINATION.FILE_URI;
                 }
                 func=getPicture;
                 options.sourceType = module.MEDIA_SOURCE.ALBUM;
+        
             }else{
                 func=captureImage;
             }
         }
         
-        func(function(mediaFile){
-            if (Array.isArray(mediaFile)){
-                if (options.details){//处理详细信息
-                    // for(var i=0,len=mediaFile.length;i<len;i++){
+        installPlugin("device", function(device) {
+        
+            func(function(mediaFile){
+                if (Array.isArray(mediaFile)){
+                    if (options.details){//处理详细信息
                         var i = 0;
                         mediaFile[i].getFormatData(function(obj){
                             mediaFile[i].width = obj.width;
                             mediaFile[i].height = obj.height;
                             mediaFile[i].duration = obj.duration;
                         },function(){});
-                    // }
+                    }
+                    if (mediaFile.length == 1){
+                        options.onsuccess(mediaFile[0]);
+                    }else{
+                        options.onsuccess(mediaFile);
+                    }
+                } else {//base64
+                    if (options.format === module.MEDIA_FORMAT.FILE) {
+                        var mediaFile1 = new device.fs.MediaFile("tmpfile",mediaFile);
+                        options.onsuccess(mediaFile1);
+                    }else{
+                        options.onsuccess(mediaFile);
+                    }
+                    
                 }
-                if (mediaFile.length == 1){
-                    options.onsuccess(mediaFile[0]);
-                }else{
-                    options.onsuccess(mediaFile);
-                }
-            } else {//base64
-                console.log(mediaFile);
-                options.onsuccess(mediaFile);
-            }
-        },function(nativeErr){
-            lightapp.error(ErrCode.MEDIA_ERR,nativeErr,options);
-        },options);
+            },function(nativeErr){
+                lightapp.error(ErrCode.MEDIA_ERR,nativeErr,options);
+            },options);
+        });
     };
     
      /**
