@@ -53,9 +53,14 @@ define("device",function(module) {
      * 
      */
     it.stopListen = function(options){
-        stop(options.onsuccess,function(nativeErr){
-            lightapp.error(ErrCode.BTY_ERR,nativeErr,options);
-        },options);
+        if (typeof options == 'undefined') {
+            stop(function(){},function(){});
+        }else{
+            stop(options.onsuccess,function(nativeErr){
+                lightapp.error(ErrCode.BTY_ERR,nativeErr,options);
+            },options);
+        }
+        
     };
     
     return it;

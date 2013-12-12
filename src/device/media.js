@@ -136,16 +136,14 @@ define("device",function(module) {
         
             func(function(mediaFile){
                 if (Array.isArray(mediaFile)){
-                    if (options.details){//处理详细信息
+                    if (mediaFile.length == 1 && options.details){//处理详细信息
                         var i = 0;
                         mediaFile[i].getFormatData(function(obj){
                             mediaFile[i].width = obj.width;
                             mediaFile[i].height = obj.height;
                             mediaFile[i].duration = obj.duration;
+                            options.onsuccess(mediaFile[0]);
                         },function(){});
-                    }
-                    if (mediaFile.length == 1){
-                        options.onsuccess(mediaFile[0]);
                     }else{
                         options.onsuccess(mediaFile);
                     }
@@ -188,10 +186,8 @@ define("device",function(module) {
         installPlugin("device", function(device) {
             if (!media[link]){
                 media[link] = new device.Media(link,function(id){
-                    //options.onsuccess(media);
                 },function(nativeErr){
-                    delete media[link];
-                    lightapp.error(ErrCode.MEDIA_ERR,nativeErr,options);
+                    lightapp.error(ErrCode.MEDIA_ERR,nativeErr.code,options);
                 },options.onstatus);
             }
             switch(operator){
@@ -216,13 +212,16 @@ define("device",function(module) {
                     break;
                 case "play":
                 case "pause":
-                case "release":
                 case "startRecord":
                 case "stopRecord":
                 case "stop":
                     media[link][operator]();
                     options.onsuccess(clouda.STATUS.SUCCESS);
                     break;
+                case "release":
+                    media[link][operator]();
+                    options.onsuccess(clouda.STATUS.SUCCESS);
+                    delete media[link];
                 
             }
             

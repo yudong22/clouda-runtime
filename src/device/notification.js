@@ -17,7 +17,8 @@ define("device",function(module) {
     var activityStart = new delegateClass("device","notification","activityStart");
     var activityStop = new delegateClass("device","notification","activityStop");
     var progressStart = new delegateClass("device","notification","progressStart");
-    
+    var progressValue = new delegateClass("device","notification","progressValue");
+    var progressStop = new delegateClass("device","notification","progressStop");
     /**
      * 调用系统 alert 方法，接收一个msg参数和一个可选的配置
      *
@@ -55,10 +56,13 @@ define("device",function(module) {
      * 
      */
     it.confirm = function(msg,options){
-        if (typeof options === 'object'){
-            return confirm.call(this,msg,options.onsuccess,options.title,options.buttonLabels,options);
-        }
-        return confirm(msg);
+        confirm.call(this,msg,function(data){
+            if (data === 2){//cancel
+                options.onfail(clouda.STATUS.USER_CANCELED);
+            }else{
+                options.onsuccess(clouda.STATUS.SUCCESS);
+            }
+        },options.title,options.buttonLabels,options);
     };
     /**
      * 滴滴声
@@ -158,9 +162,14 @@ define("device",function(module) {
      * @returns null
      * 
      */
-    it.progress = function(title,msg,options){
+    it.startProgress = function(title,msg,options){
         progressStart(title,msg);
     };
-    
+    it.updateProgress = function(value){
+        progressValue(value);
+    };
+    it.stopProgress = function(){
+        progressStop();
+    };
     return module;
 });

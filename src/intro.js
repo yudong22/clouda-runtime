@@ -80,7 +80,17 @@
             throw new Error();
         }catch(e){
             var stackStr = (e.stack.split('\n'));
-            console.error(errorMessage[errno]+ (apperrno?" app错误号"+apperrno:"")+ stackStr[2].replace(/\s*/,""));
+            var word = errorMessage[errno];
+            if (!word){
+                for(var c in ErrCode){
+                    if (ErrCode[c] === errno) {
+                        word = c + ":" + errno;
+                        break;
+                    }
+                }
+                
+            }
+            console.error(word + (apperrno?" app错误号"+apperrno:"")+ stackStr[2].replace(/\s*/,""));
         }
     };
     

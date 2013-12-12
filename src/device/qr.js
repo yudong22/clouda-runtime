@@ -68,7 +68,7 @@ define("device",function(module) {
     
     var QR_DESTTYPE = {};
     QR_DESTTYPE.GIF = "gif";
-    QR_DESTTYPE.PNG = "png";
+    QR_DESTTYPE.JPEG = "jpeg";
     
     /**
      * 生成二维码
@@ -94,10 +94,10 @@ define("device",function(module) {
             options.destType = QR_DESTTYPE.GIF;
             options.type = QR_TYPE.DYNAMIC;
         }else{
-            options.destType = QR_DESTTYPE.PNG;
+            options.destType = QR_DESTTYPE.JPEG;
         }
         //2.判断黑白与否
-        if (options.destType === QR_DESTTYPE.PNG){// png在判断是否为黑白
+        if (options.destType === QR_DESTTYPE.JPEG){// png在判断是否为黑白
             if ( options.mono === false ) {//默认是mono是true，即是黑白
                 options.type = QR_TYPE.COLOR;
             }else{

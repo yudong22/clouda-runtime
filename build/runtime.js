@@ -81,7 +81,17 @@
             throw new Error();
         }catch(e){
             var stackStr = (e.stack.split('\n'));
-            console.error(errorMessage[errno]+ (apperrno?" app错误号"+apperrno:"")+ stackStr[2].replace(/\s*/,""));
+            var word = errorMessage[errno];
+            if (!word){
+                for(var c in ErrCode){
+                    if (ErrCode[c] === errno) {
+                        word = c + ":" + errno;
+                        break;
+                    }
+                }
+                
+            }
+            console.error(word + (apperrno?" app错误号"+apperrno:"")+ stackStr[2].replace(/\s*/,""));
         }
     };
     
@@ -354,9 +364,14 @@ define("device",function(module) {
      * 
      */
     it.stopListen = function(options){
-        stop(options.onsuccess,function(nativeErr){
-            lightapp.error(ErrCode.BTY_ERR,nativeErr,options);
-        },options);
+        if (typeof options == 'undefined') {
+            stop(function(){},function(){});
+        }else{
+            stop(options.onsuccess,function(nativeErr){
+                lightapp.error(ErrCode.BTY_ERR,nativeErr,options);
+            },options);
+        }
+        
     };
     
     return it;
@@ -1605,16 +1620,14 @@ define("device",function(module) {
         
             func(function(mediaFile){
                 if (Array.isArray(mediaFile)){
-                    if (options.details){//处理详细信息
+                    if (mediaFile.length == 1 && options.details){//处理详细信息
                         var i = 0;
                         mediaFile[i].getFormatData(function(obj){
                             mediaFile[i].width = obj.width;
                             mediaFile[i].height = obj.height;
                             mediaFile[i].duration = obj.duration;
+                            options.onsuccess(mediaFile[0]);
                         },function(){});
-                    }
-                    if (mediaFile.length == 1){
-                        options.onsuccess(mediaFile[0]);
                     }else{
                         options.onsuccess(mediaFile);
                     }
@@ -1657,10 +1670,8 @@ define("device",function(module) {
         installPlugin("device", function(device) {
             if (!media[link]){
                 media[link] = new device.Media(link,function(id){
-                    //options.onsuccess(media);
                 },function(nativeErr){
-                    delete media[link];
-                    lightapp.error(ErrCode.MEDIA_ERR,nativeErr,options);
+                    lightapp.error(ErrCode.MEDIA_ERR,nativeErr.code,options);
                 },options.onstatus);
             }
             switch(operator){
@@ -1685,13 +1696,16 @@ define("device",function(module) {
                     break;
                 case "play":
                 case "pause":
-                case "release":
                 case "startRecord":
                 case "stopRecord":
                 case "stop":
                     media[link][operator]();
                     options.onsuccess(clouda.STATUS.SUCCESS);
                     break;
+                case "release":
+                    media[link][operator]();
+                    options.onsuccess(clouda.STATUS.SUCCESS);
+                    delete media[link];
                 
             }
             
@@ -1719,7 +1733,8 @@ define("device",function(module) {
     var activityStart = new delegateClass("device","notification","activityStart");
     var activityStop = new delegateClass("device","notification","activityStop");
     var progressStart = new delegateClass("device","notification","progressStart");
-    
+    var progressValue = new delegateClass("device","notification","progressValue");
+    var progressStop = new delegateClass("device","notification","progressStop");
     /**
      * 调用系统 alert 方法，接收一个msg参数和一个可选的配置
      *
@@ -1757,10 +1772,13 @@ define("device",function(module) {
      * 
      */
     it.confirm = function(msg,options){
-        if (typeof options === 'object'){
-            return confirm.call(this,msg,options.onsuccess,options.title,options.buttonLabels,options);
-        }
-        return confirm(msg);
+        confirm.call(this,msg,function(data){
+            if (data === 2){//cancel
+                options.onfail(clouda.STATUS.USER_CANCELED);
+            }else{
+                options.onsuccess(clouda.STATUS.SUCCESS);
+            }
+        },options.title,options.buttonLabels,options);
     };
     /**
      * 滴滴声
@@ -1860,10 +1878,15 @@ define("device",function(module) {
      * @returns null
      * 
      */
-    it.progress = function(title,msg,options){
+    it.startProgress = function(title,msg,options){
         progressStart(title,msg);
     };
-    
+    it.updateProgress = function(value){
+        progressValue(value);
+    };
+    it.stopProgress = function(){
+        progressStop();
+    };
     return module;
 });
 define("device",function(module) {
@@ -1936,7 +1959,7 @@ define("device",function(module) {
     
     var QR_DESTTYPE = {};
     QR_DESTTYPE.GIF = "gif";
-    QR_DESTTYPE.PNG = "png";
+    QR_DESTTYPE.JPEG = "jpeg";
     
     /**
      * 生成二维码
@@ -1962,10 +1985,10 @@ define("device",function(module) {
             options.destType = QR_DESTTYPE.GIF;
             options.type = QR_TYPE.DYNAMIC;
         }else{
-            options.destType = QR_DESTTYPE.PNG;
+            options.destType = QR_DESTTYPE.JPEG;
         }
         //2.判断黑白与否
-        if (options.destType === QR_DESTTYPE.PNG){// png在判断是否为黑白
+        if (options.destType === QR_DESTTYPE.JPEG){// png在判断是否为黑白
             if ( options.mono === false ) {//默认是mono是true，即是黑白
                 options.type = QR_TYPE.COLOR;
             }else{
