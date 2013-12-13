@@ -15,20 +15,20 @@ define("mbaas",function(module) {
     var say = new delegateClass("voice","tts","say");
     var showDialog = new delegateClass("voice","vtt","showDialog");
     
-    module.VTT_STATUS={};
-    module.VTT_STATUS.START_RECORDING = 0;
-    module.VTT_STATUS.NONE = 1;
-    module.VTT_STATUS.SPEECH_START = 2;
-    module.VTT_STATUS.SPEECH_END = 4;
-    module.VTT_STATUS.FINISH = 5;
-    module.VTT_STATUS.PLAY_BEGINE_TONE_START = 6;
-    module.VTT_STATUS.PLAY_BEGINE_TONE_END = 7;
-    module.VTT_STATUS.PLAY_END_TONE_START = 8;
-    module.VTT_STATUS.PLAY_END_TONE_END = 9;
-    module.VTT_STATUS.UPDATE_RESULTS = 10;
-    module.VTT_STATUS.AUDIO_DATA = 11;
-    module.VTT_STATUS.USER_CANCELED = 61440;
-    module.VTT_STATUS.ERROR = 65535;
+    // module.VTT_STATUS={};
+    // module.VTT_STATUS.START_RECORDING = 0;
+    // module.VTT_STATUS.NONE = 1;
+    // module.VTT_STATUS.SPEECH_START = 2;
+    // module.VTT_STATUS.SPEECH_END = 4;
+    // module.VTT_STATUS.FINISH = 5;
+    // module.VTT_STATUS.PLAY_BEGINE_TONE_START = 6;
+    // module.VTT_STATUS.PLAY_BEGINE_TONE_END = 7;
+    // module.VTT_STATUS.PLAY_END_TONE_START = 8;
+    // module.VTT_STATUS.PLAY_END_TONE_END = 9;
+    // module.VTT_STATUS.UPDATE_RESULTS = 10;
+    // module.VTT_STATUS.AUDIO_DATA = 11;
+    // module.VTT_STATUS.USER_CANCELED = 61440;
+    // module.VTT_STATUS.ERROR = 65535;
     module.VTT_SPEECHMODE = {
         SEARCH:0,
         INPUT:1
@@ -37,7 +37,7 @@ define("mbaas",function(module) {
     /**
      * 启动识别
      *
-     * @function startDialog
+     * @function showDialog
      * @memberof clouda.mbaas.vtt
      * @instance
      *
@@ -50,7 +50,7 @@ define("mbaas",function(module) {
      * @returns null
      * 
      */
-    vtt.startDialog = function(options){
+    vtt.showDialog = function(options){
         if (!options.speechMode){
             options.speechMode = module.VTT_SPEECHMODE.SEARCH;
         }
@@ -61,76 +61,76 @@ define("mbaas",function(module) {
         showDialog(options.onsuccess, options.onfail, options);
     };
    
-    /**
-     * 启动识别
-     *
-     * @function startCapture
-     * @memberof clouda.mbaas.vtt
-     * @instance
-     *
-     * @param {{}} options 由onsuccess 和 onfail组成
-     * @param {function} options.onsuccess 成功的回调
-     * @param {function} [options.onfail] 失败的回调
-     * @param {boolen} [options.voicePower] 
-     * @param {int} [options.speechMode] 
-     * @param {function} [options.onfail] 
-     * @returns null
-     * 
-     */
-     vtt.startCapture = function(options){
-         installPlugin("voice",function(plg){
-             var voiceRecognition = plg.vtt;
-             if (options.voicePower){
-                 voiceRecognition.enableVoicePower(function(){}, function(){}, options.voicePower);
-            }
-            if (options.speechMode){
-                 voiceRecognition.setSpeechMode(function(){}, function(){}, options.speechMode);
-            }
-            voiceRecognition.startVoiceRecognition(function(string){//success callback
-                    // options.onsuccess.apply(this,arguments);
-                    voiceRecognition.setStatusChangeListener(
-                      function(result) {
-                        if (result.status === module.VTT_STATUS.FINISH ){
-                            options.onsuccess.apply(this,arguments);
-                        }else if (result.status === module.VTT_STATUS.USER_CANCELED) {
-                            options.onfail.call(this,clouda.STATUS.USER_CANCELED);
-                        }else if (result.status === module.VTT_STATUS.ERROR) {
-                            options.onfail.call(this,result.status);
-                        }
-                      },
-                      function(error) {
-                        lightapp.error(ErrCode.vtt_ERR,error.code,options);
-                      }
-                    );
-                
-            },function(nativeErr){
-                lightapp.error(ErrCode.BTY_ERROR,nativeErr,options);
-            },options);
-         });
-        
-     };
-     
-     vtt.speakFinish = function(options){
-         installPlugin("voice",function(plg){
-            var voiceRecognition = plg.vtt;
-            voiceRecognition.speakFinish(function(string){//success callback
-                options.onsuccess(clouda.STATUS.SUCCESS);
-            },function(nativeErr){
-                lightapp.error(ErrCode.BTY_ERROR,nativeErr,options);
-            },options);
-       });
-     };
-     
-     vtt.terminateCapture = function(options){
-         installPlugin("voice",function(plg){
-            var voiceRecognition = plg.vtt;
-            voiceRecognition.stopVoiceRecognition(function(string){//success callback
-                options.onsuccess(clouda.STATUS.SUCCESS);
-            },function(nativeErr){
-                lightapp.error(ErrCode.BTY_ERROR,nativeErr,options);
-            },options);
-        });
-     };
+    // /**
+     // * 启动识别
+     // *
+     // * @function startCapture
+     // * @memberof clouda.mbaas.vtt
+     // * @instance
+     // *
+     // * @param {{}} options 由onsuccess 和 onfail组成
+     // * @param {function} options.onsuccess 成功的回调
+     // * @param {function} [options.onfail] 失败的回调
+     // * @param {boolen} [options.voicePower] 
+     // * @param {int} [options.speechMode] 
+     // * @param {function} [options.onfail] 
+     // * @returns null
+     // * 
+     // */
+     // vtt.startCapture = function(options){
+         // installPlugin("voice",function(plg){
+             // var voiceRecognition = plg.vtt;
+             // if (options.voicePower){
+                 // voiceRecognition.enableVoicePower(function(){}, function(){}, options.voicePower);
+            // }
+            // if (options.speechMode){
+                 // voiceRecognition.setSpeechMode(function(){}, function(){}, options.speechMode);
+            // }
+            // voiceRecognition.startVoiceRecognition(function(string){//success callback
+                    // // options.onsuccess.apply(this,arguments);
+                    // voiceRecognition.setStatusChangeListener(
+                      // function(result) {
+                        // if (result.status === module.VTT_STATUS.FINISH ){
+                            // options.onsuccess.apply(this,arguments);
+                        // }else if (result.status === module.VTT_STATUS.USER_CANCELED) {
+                            // options.onfail.call(this,clouda.STATUS.USER_CANCELED);
+                        // }else if (result.status === module.VTT_STATUS.ERROR) {
+                            // options.onfail.call(this,result.status);
+                        // }
+                      // },
+                      // function(error) {
+                        // lightapp.error(ErrCode.vtt_ERR,error.code,options);
+                      // }
+                    // );
+//                 
+            // },function(nativeErr){
+                // lightapp.error(ErrCode.BTY_ERROR,nativeErr,options);
+            // },options);
+         // });
+//         
+     // };
+//      
+     // vtt.speakFinish = function(options){
+         // installPlugin("voice",function(plg){
+            // var voiceRecognition = plg.vtt;
+            // voiceRecognition.speakFinish(function(string){//success callback
+                // options.onsuccess(clouda.STATUS.SUCCESS);
+            // },function(nativeErr){
+                // lightapp.error(ErrCode.BTY_ERROR,nativeErr,options);
+            // },options);
+       // });
+     // };
+//      
+     // vtt.terminateCapture = function(options){
+         // installPlugin("voice",function(plg){
+            // var voiceRecognition = plg.vtt;
+            // voiceRecognition.stopVoiceRecognition(function(string){//success callback
+                // options.onsuccess(clouda.STATUS.SUCCESS);
+            // },function(nativeErr){
+                // lightapp.error(ErrCode.BTY_ERROR,nativeErr,options);
+            // },options);
+        // });
+     // };
      
      /**
      * @object tts
