@@ -1,7 +1,7 @@
 #百度轻应用API参考文档#
 
 ----------
-更新日期： 2013/12/12 17:53:10     
+更新日期： 2013/12/13 12:50:49    
 
 问题反馈： [clouda-support@baidu.com](mailto:clouda-support@baidu.com)
 
@@ -463,8 +463,8 @@ options：参数说明同clouda.device.connection.get(options)中的options说�
 - count(options)    
 - getCursor(field, cursorOffset, length， options)    
 - insert(data, options)
-- update(id, data, options)
-- remove(id, options)
+- update(contact, data, options)
+- remove(contact, options)
 
 #### find ####
     find(field, options)
@@ -745,7 +745,7 @@ options: 为object，参数说明同find(field, options)中的options说明。
 - options：参数说明同clouda.device.contact.find(field, options)中的options说明。
 
 #### update ####
-    update(id, data, options)
+    update(contact, data, options)
 
 **功能描述：**
 
@@ -753,12 +753,12 @@ options: 为object，参数说明同find(field, options)中的options说明。
 
 **参数说明：**
 
-- id： find(field, options)接口中返回的Contact对象中的id信息。
+- contact： 为 array 类型，即 find(field, options)接口中所返回的Contact对象中的参数所组成的数组
 - data： find(field, options)接口中返回的Contact对象中的data信息。
 - options：参数说明同clouda.device.contact.find(field, options)中的options说明。
 
 #### remove ####
-    remove(id, options)
+    remove(contact, options)
 
 **功能描述：**
 
@@ -766,7 +766,7 @@ options: 为object，参数说明同find(field, options)中的options说明。
 
 **参数说明：**
 
-- id： find(field, options)接口中返回的Contact对象中的id信息。
+- contact： 为 array 类型，即 find(field, options)接口中所返回的Contact对象中的参数所组成的数组
 - options：参数说明同find(field, options)中的options说明。
 
 ### Device ###
@@ -863,12 +863,36 @@ options: 为object，参数说明同find(field, options)中的options说明。
         <tr>
 			<td>onprogress</td>
 			<td>function(data){}</td>           
-			<td>上传进度，返回的 data 是 float 类型的数值</td>  
+			<td>上传进度，返回的 data 是 Progress 对象</td>  
 		</tr>
         <tr>
 			<td>uploadKey</td>
 			<td>string</td>           
 			<td>上传表单中的key</td>  
+		</tr>
+	</tbody>
+</table>
+
+**返回的 Progress 对象：**
+
+文件上传或下载进度信息
+
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>total</td>
+			<td>int</td>           
+			<td>文件大小总长，单位：字节；如果无法获取，则返回 -1 </td>  
+		</tr>
+        <tr>
+			<td>loaded</td>
+			<td>int</td>          
+			<td>已传输的文件大小，单位：字节</td>  
 		</tr>
 	</tbody>
 </table>
@@ -905,7 +929,31 @@ options: 为object，参数说明同find(field, options)中的options说明。
         <tr>
 			<td>onprogress</td>
 			<td>function(data){}</td>           
-			<td>下载进度，返回的 data 是 float 类型的数值</td>  
+			<td>下载进度，返回的 data 是 Progress 对象</td>  
+		</tr>
+	</tbody>
+</table>
+
+**返回的 Progress 对象：**
+
+文件上传或下载进度信息
+
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>total</td>
+			<td>int</td>           
+			<td>文件大小总长，单位：字节；如果无法获取，则返回 -1 </td>  
+		</tr>
+        <tr>
+			<td>loaded</td>
+			<td>int</td>          
+			<td>已传输的文件大小，单位：字节</td>  
 		</tr>
 	</tbody>
 </table>
@@ -2312,7 +2360,7 @@ options ：为 object 类型，其中包含以下参数：
         <tr>
 			<td>onsuccess</td>
 			<td>function(data){}</td>            
-			<td>获取成功，data返回string类型Device UUID信息（uuid）列表</td>  
+			<td>获取成功，data 返回 string 类型设备UUID信息，以逗号分隔</td>  
 		</tr>
         <tr>
 			<td>onfail</td>
@@ -2550,12 +2598,12 @@ options：为object类型，其中包括以下参数：
         <tr>
 			<td>onsuccess</td>
 			<td>function(data){}</td>            
-			<td>设置成功，返回的data为SUCCESS状态码</td>  
+			<td>设置成功，返回的data为设置成功的标签数据</td>  
 		</tr>
         <tr>
 			<td>onfail</td>
 			<td>function(err){}</td>          
-			<td>设置失败，返回错误码信息</td>  
+			<td>设置失败，返回错误码信息或设置失败的标签数据</td>  
 		</tr>
     </tbody>
 </table>
@@ -2583,12 +2631,12 @@ options：为object类型，其中包括以下参数：
         <tr>
 			<td>onsuccess</td>
 			<td>function(data){}</td>            
-			<td>删除成功，返回SUCCESS状态码</td>  
+			<td>删除成功，返回删除信息</td>  
 		</tr>
         <tr>
 			<td>onfail</td>
 			<td>function(err){}</td>          
-			<td>删除失败，返回错误码信息</td>  
+			<td>操作失败，返回错误码信息</td>  
 		</tr>
     </tbody>
 </table>
@@ -2734,16 +2782,14 @@ options：为object类型，其中包括以下参数：
 
 **方法：**
 
-- startCapture(options)
-- stopCapture(options)
-- speakFinish(options)
+- showDialog(options)
 
-#### startCapture ####
-    startCapture(options)
+#### showDialog ####
+    showDialog(options)
 
 **功能描述：**
 
-启动语音识别
+显示语音识别对话框，实现语音输入识别
 
 **参数说明：**
 
@@ -2767,11 +2813,6 @@ options：为object类型，其中包括以下参数：
 			</td>  
 		</tr>
         <tr>
-			<td>voicePower</td>
-			<td>boolean</td>            
-			<td>是否启用计算声音强度，默认：false，不启用</td>  
-		</tr>
-        <tr>
 			<td>speechMode</td>
 			<td>int</td>            
 			<td>设置识别模式，可选，其参数如下：<br>
@@ -2779,67 +2820,15 @@ options：为object类型，其中包括以下参数：
 			- clouda.mbaas.VTT_SPEECHMODE.INPUT  ：文本输入模式
 		</td>  
 		</tr>
+        <tr>
+			<td>dialogTheme</td>
+			<td>int</td>            
+			<td>语音识别对话框主题样式，取值如下：<br>
+				
+			</td>  
+		</tr>
+
     </tbody>
-</table>
-
-#### stopCapture ####
-    stopCapture(options)
-
-**功能描述：**
-
-终止语音识别
-
-**参数说明：**
-
-<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
-    <tbody>
-        <tr>
-            <th>参数</th>
-            <th>类型</th>
-            <th>描述</th>
-        </tr>
-        <tr>
-			<td>onsuccess</td>
-			<td>function(data){}</td>            
-			<td>操作成功，返回SUCCESS状态码</td>  
-		</tr>
-        <tr>
-			<td>onfail</td>
-			<td>function(err){}</td>          
-			<td>操作失败，返回错误码
-			</td>  
-		</tr>
-	</tbody>
-</table>
-
-#### speakFinish ####
-	speakFinish(options)
-
-**功能描述：**
-
-语音输入完成，开始识别
-
-**参数说明：**
-
-<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
-    <tbody>
-        <tr>
-            <th>参数</th>
-            <th>类型</th>
-            <th>描述</th>
-        </tr>
-        <tr>
-			<td>onsuccess</td>
-			<td>function(data){}</td>            
-			<td>操作成功，返回SUCCESS状态码</td>  
-		</tr>
-        <tr>
-			<td>onfail</td>
-			<td>function(err){}</td>          
-			<td>操作失败，返回错误码
-			</td>  
-		</tr>
-	</tbody>
 </table>
 
 ## 手势事件处理类API ##
