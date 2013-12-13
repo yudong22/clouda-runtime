@@ -1,7 +1,7 @@
 #百度轻应用API参考文档#
 
 ----------
-更新日期： 2013/12/13 12:50:49    
+更新日期： 2013/12/13 14:34:58    
 
 问题反馈： [clouda-support@baidu.com](mailto:clouda-support@baidu.com)
 
@@ -2824,10 +2824,16 @@ options：为object类型，其中包括以下参数：
 			<td>dialogTheme</td>
 			<td>int</td>            
 			<td>语音识别对话框主题样式，取值如下：<br>
-				
+				- 0 ： 浅蓝色  <br>
+				- 1 ： 深蓝色  <br>
+				- 2 ： 浅绿色  <br>
+				- 3 ： 深绿色  <br>
+				- 4 ： 浅橘黄色 <br>
+				- 5 ： 橘黄色  <br>
+				- 6 ： 浅红色  <br>
+				- 7 ： 红色 
 			</td>  
 		</tr>
-
     </tbody>
 </table>
 
