@@ -3215,7 +3215,7 @@ define("mbaas",function(module) {
             var face = new plg.FaceRecognition(uid);
             
             face.get_device_list(function(){
-                options.onsuccess.apply(this.arguments);
+                options.onsuccess.apply(this,arguments);
             }, function(error) {
                lightapp.error(ErrCode.FR_ERROR,error,options);
             });
