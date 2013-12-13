@@ -138,13 +138,10 @@ define("mbaas",function(module) {
      * @instance
      * @namespace clouda.mbaas.vtt clouda.mbaas.tts
      */
-    module.TTS_TYPE = {
-      TYPE_DICT_US: 'dict_en',
-      TYPE_DICT_UK: 'dict_uk',
-      // TRANS_EN: 'trans_en',
-      TYPE_DICT_ZH: 'trans_zh',
-    };
-   
+    tts.TYPE_DICT_US =  'dict_en';
+    tts.TYPE_DICT_UK =  'dict_uk';
+    tts.TYPE_DICT_ZH =  'trans_zh';
+ 
    /**
      * 语音外放
      *
