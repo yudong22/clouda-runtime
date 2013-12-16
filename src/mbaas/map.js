@@ -77,9 +77,15 @@ define("mbaas",function(module) {
     };
     
     it.locationRequest = function(options){
-        //{longitude,latitude,loctype:161}
         locationRequest(function(data){
-            options.onsuccess(data);
+            //{longitude,latitude,loctype:161}
+            var gpsPoint = new BMap.Point(data.longitude, data.latitude);
+            it.Convertor.translate(gpsPoint, 2,
+            function(point) {
+                options.onsuccess(point);
+           
+            }); //真实经纬度转成百度坐标
+            // options.onsuccess(data);
         },function(nativeErr){
             lightapp.error(ErrCode.MAP_ERROR,nativeErr,options);
         },options);

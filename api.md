@@ -2192,6 +2192,7 @@ options ：为 object 类型，其中包含以下参数：
 云服务类API目前支持以下功能：
 
 - 人脸识别（FaceRecognition）
+- 百度地图LBS（Map）
 - 播放器（MediaPlayer）
 - 推送服务（Push） 
 - 文本语音服务（TTS）
@@ -2369,6 +2370,207 @@ options ：为 object 类型，其中包含以下参数：
 		</tr>
     </tbody>
 </table>
+
+### Map ###
+    clouda.mbaas.map
+
+百度地图LBS
+注：使用lbs接口需要事先在页面内引入js，
+http://api.map.baidu.com/api?v=2.0&ak=your_lbs_ak_here
+目前lbs的ak不同于clouda的ak，需额外申请：[申请地址](http://lbsyun.baidu.com/apiconsole/key?application=key)
+
+**方法：**
+
+- start(options)
+- stop(options)
+- locationRequest(options)
+- poiRequest(options)
+
+#### start ####
+    start(options)
+
+**功能描述：**
+
+开启定位获取经纬度信息
+
+**参数说明：**
+
+- options：为 object 类型，其中包括以下参数：
+
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+            <td>onsuccess</td>
+            <td>function(data){}</td>            
+            <td>启动成功，返回百度地图坐标对象</td>  
+        </tr>
+        <tr>
+            <td>onfail</td>
+            <td>function(err){}</td>          
+            <td>操作失败，返回错误码信息</td>  
+        </tr>
+    </tbody>
+</table>
+**返回的百度地图坐标对象：**
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+            <td>lng</td>
+            <td>float</td>            
+            <td>经度</td>  
+        </tr>
+        <tr>
+            <td>lat</td>
+            <td>float</td>          
+            <td>纬度</td>  
+        </tr>
+    </tbody>
+</table>
+
+#### stop ####
+    stop(options)
+
+**功能描述：**
+
+定位开启后，可以停止定位开启状态
+
+**参数说明：**
+
+- options：为 object 类型，其中包括以下参数：
+
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+            <td>onsuccess</td>
+            <td>function(data){}</td>            
+            <td>操作成功，返回SUCCESS状态码</td>  
+        </tr>
+        <tr>
+            <td>onfail</td>
+            <td>function(err){}</td>          
+            <td>操作失败，返回错误码信息</td>  
+        </tr>
+    </tbody>
+</table>
+
+#### locationRequest ####
+    locationRequest(options)
+
+**功能描述：**
+
+定位开启后，可以立即获取一次经纬度信息
+
+**参数说明：**
+
+- options：为 object 类型，其中包括以下参数：
+
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+            <td>onsuccess</td>
+            <td>function(data){}</td>            
+            <td>启动成功，返回百度地图坐标对象</td>  
+        </tr>
+        <tr>
+            <td>onfail</td>
+            <td>function(err){}</td>          
+            <td>操作失败，返回错误码信息</td>  
+        </tr>
+    </tbody>
+</table>
+**返回的百度地图坐标对象：**
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+            <td>lng</td>
+            <td>float</td>            
+            <td>经度</td>  
+        </tr>
+        <tr>
+            <td>lat</td>
+            <td>float</td>          
+            <td>纬度</td>  
+        </tr>
+    </tbody>
+</table>
+
+#### poiRequest ####
+    poiRequest(options)
+
+**功能描述：**
+
+定位开启后，可以通过此方法获取周边商家信息
+
+**参数说明：**
+
+- options：为 object 类型，其中包括以下参数：
+
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+            <td>onsuccess</td>
+            <td>function(data){}</td>            
+            <td>启动成功，返回百度地图坐标对象</td>  
+        </tr>
+        <tr>
+            <td>onfail</td>
+            <td>function(err){}</td>          
+            <td>操作失败，返回错误码信息</td>  
+        </tr>
+    </tbody>
+</table>
+**返回的百度地图坐标对象：**
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+            <td>lng</td>
+            <td>float</td>            
+            <td>经度</td>  
+        </tr>
+        <tr>
+            <td>lat</td>
+            <td>float</td>          
+            <td>纬度</td>  
+        </tr>
+    </tbody>
+</table>
+
+
 
 ### MediaPlayer ###
 	clouda.mbaas.mediaplayer
