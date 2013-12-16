@@ -2524,7 +2524,7 @@ http://api.map.baidu.com/api?v=2.0&ak=your_lbs_ak_here
 
 **功能描述：**
 
-定位开启后，可以通过此方法获取周边商家信息
+定位开启后，可以通过此方法获取周边商家信息对象
 
 **参数说明：**
 
@@ -2540,7 +2540,7 @@ http://api.map.baidu.com/api?v=2.0&ak=your_lbs_ak_here
         <tr>
             <td>onsuccess</td>
             <td>function(data){}</td>            
-            <td>启动成功，返回百度地图坐标对象</td>  
+            <td>获取成功，返回对象{poi:{p:[{商家对象},{商家对象}]}}</td>  
         </tr>
         <tr>
             <td>onfail</td>
@@ -2549,7 +2549,7 @@ http://api.map.baidu.com/api?v=2.0&ak=your_lbs_ak_here
         </tr>
     </tbody>
 </table>
-**返回的百度地图坐标对象：**
+**返回的商家对象：**
 <table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
@@ -2558,14 +2558,24 @@ http://api.map.baidu.com/api?v=2.0&ak=your_lbs_ak_here
             <th>描述</th>
         </tr>
         <tr>
-            <td>lng</td>
+            <td>x</td>
             <td>float</td>            
             <td>经度</td>  
         </tr>
         <tr>
-            <td>lat</td>
+            <td>y</td>
             <td>float</td>          
             <td>纬度</td>  
+        </tr>
+        <tr>
+            <td>dis</td>
+            <td>float</td>            
+            <td>距离，单位米</td>  
+        </tr>
+        <tr>
+            <td>name</td>
+            <td>string</td>            
+            <td>商家名称</td>  
         </tr>
     </tbody>
 </table>
