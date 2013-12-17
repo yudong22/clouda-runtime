@@ -2376,15 +2376,13 @@ options ：为 object 类型，其中包含以下参数：
 
 百度地图
 
-** 注意： **
-** 您需先申请百度地图密钥（API Key）才可使用 **
-** 目前百度地图的密钥（API Key）需额外申请：[申请地址](http://lbsyun.baidu.com/apiconsole/key?application=key) **
+**注意：**
+**您需先申请百度地图密钥（API Key）才可使用**
+**目前百度地图的密钥（API Key）需额外申请：[申请地址](http://lbsyun.baidu.com/apiconsole/key?application=key)**
 
-** 在页面内引入 **
+**在页面内引入**
 ```code
-
 <script src="http://api.map.baidu.com/api?v=2.0&ak=your_lbs_apikey_here"></script>
-
 ```
 
 **方法：**
