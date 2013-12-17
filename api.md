@@ -1,7 +1,7 @@
 #百度轻应用API参考文档#
 
 ----------
-更新日期： 2013/12/13 14:34:58    
+更新日期：2013/12/17 18:53:28   
 
 问题反馈： [clouda-support@baidu.com](mailto:clouda-support@baidu.com)
 
@@ -24,7 +24,7 @@
 
 ## APP信息注册及服务开启设置
 
-<font color="red">使用云服务类API，需要先到[开发者中心管理控制台](http://developer.baidu.com/console)创建应用，获取应用 API Key 及开启或设置相关服务，之后调用以下轻应用注册接口；否则，相关云服务类接口将无法被调用成功。</font>
+<font color="red">使用云服务类API，需要先到[百度开放云管理控制台](http://developer.baidu.com/console)创建应用，获取应用 API Key 及开启或设置相关服务，</font>之后调用以下轻应用注册接口；否则，相关云服务类接口将无法被调用成功。
 
 ### APP信息注册API ###
  
@@ -32,11 +32,13 @@
 
 ### 服务开启及设置 ###
 
-如需使用以下云服务的相关API，请点击[开发者中心管理控制台](http://developer.baidu.com/console)所创建的应用下的相关服务的管理控制台进行服务开启及设置相关操作（<font color="red">无需等待审核通过，即可使用</font>）：
-
+如需使用以下云服务的相关API，请点击[百度开放云管理控制台](http://developer.baidu.com/console)所创建的应用下的相关服务的管理控制台进行服务开启及设置相关操作（<font color="red">无需等待审核通过，即可使用</font>）：
+	
 - **人脸识别（FaceRecognition）**：申请开启服务，详见：[《人脸识别管理控制台》](http://developer.baidu.com/wiki/index.php?title=docs/cplat/media/face/console)
-- **推送服务（Push）**： 无需申请开启服务，但需要通过管理控制台进行推送，详见：[《Push服务Android集成指南》](http://developer.baidu.com/wiki/index.php?title=docs/cplat/push/guide)
+- **推送服务（Push）**： 无需申请开启服务，但需要通过管理控制台进行推送，详见：[《轻应用推送操作手册》](http://bcs.duapp.com/clouda-api/%E8%BD%BB%E5%BA%94%E7%94%A8%E6%8E%A8%E9%80%81%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8C.pdf)
 - **语音识别服务（VTT）**：申请开启服务，详见：[《语音技术管理控制台》](http://developer.baidu.com/wiki/index.php?title=docs/cplat/media/voice/console)
+- **百度地图（Map）**: 申请百度地图的密钥（API Key）：[申请地址](http://lbsyun.baidu.com/apiconsole/key?application=key）
+
 
 ##部署JS API文件
 
