@@ -2192,7 +2192,7 @@ options ：为 object 类型，其中包含以下参数：
 云服务类API目前支持以下功能：
 
 - 人脸识别（FaceRecognition）
-- 百度地图LBS（Map）
+- 百度地图（Map）
 - 播放器（MediaPlayer）
 - 推送服务（Push） 
 - 文本语音服务（TTS）
@@ -2374,10 +2374,18 @@ options ：为 object 类型，其中包含以下参数：
 ### Map ###
     clouda.mbaas.map
 
-百度地图LBS
-注：使用lbs接口需要事先在页面内引入js，
-http://api.map.baidu.com/api?v=2.0&ak=your_lbs_ak_here
-目前lbs的ak不同于clouda的ak，需额外申请：[申请地址](http://lbsyun.baidu.com/apiconsole/key?application=key)
+百度地图
+
+** 注意： **
+** 您需先申请百度地图密钥（API Key）才可使用 **
+** 目前百度地图的密钥（API Key）需额外申请：[申请地址](http://lbsyun.baidu.com/apiconsole/key?application=key) **
+
+** 在页面内引入 **
+```code
+
+<script src="http://api.map.baidu.com/api?v=2.0&ak=your_lbs_apikey_here"></script>
+
+```
 
 **方法：**
 
@@ -2391,7 +2399,7 @@ http://api.map.baidu.com/api?v=2.0&ak=your_lbs_ak_here
 
 **功能描述：**
 
-开启定位获取经纬度信息
+开启定位获取经纬度信息，由于已知原因（不同坐标系），不能与geolocation混合使用
 
 **参数说明：**
 
@@ -2473,7 +2481,7 @@ http://api.map.baidu.com/api?v=2.0&ak=your_lbs_ak_here
 
 **功能描述：**
 
-定位开启后，可以立即获取一次经纬度信息
+定位开启后，可以立即获取一次经纬度信息，由于已知原因（不同坐标系），不能与geolocation混合使用
 
 **参数说明：**
 
