@@ -2640,7 +2640,6 @@ options ：为 object 类型，其中包含以下参数：
 - register(options)
 - unregister(options)
 - checkStatus(options)
-- onreceive(options) 
 - setTag(tags, options)  
 - removeTag(tags, options)
 - listTag(options)
@@ -2767,32 +2766,6 @@ options：为object类型，其中包括以下参数：
     </tbody>
 </table>
 
-#### onreceive ####
-
-    onreceive(options)
-
-**功能描述：**
-
-接收到推送消息时的事件 
-
-**参数说明：**
-
-options：为object类型，其中包括以下参数：
-
-<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
-    <tbody>
-        <tr>
-            <th>参数</th>
-            <th>类型</th>
-            <th>描述</th>
-        </tr>
-        <tr>
-			<td>onsuccess</td>
-			<td>function(data){}</td>            
-			<td>接收成功，返回的data为string类型</td>  
-		</tr>
-    </tbody>
-</table>
 
 #### setTag ####
     setTag(tags, options)
