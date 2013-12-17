@@ -27,10 +27,12 @@
 			onsuccess : function(data){
 				var contacts = "";
 				var i = 0, l = data.length;
+				alert(l);
 				for(var i = 0; i < l; i++){
 					var username = data[i].displayName;
 					var mobile = data[i].phoneNumbers;
 					if(username && mobile && mobile[0]){
+						alert(3);
 						var c = getContact(username, mobile[0].value);
 						contacts += c;
 					}
