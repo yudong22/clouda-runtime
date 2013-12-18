@@ -1,7 +1,7 @@
 #百度轻应用API参考文档#
 
 ----------
-更新日期： 2013/12/13 14:34:58    
+更新日期：2013/12/17 18:53:28   
 
 问题反馈： [clouda-support@baidu.com](mailto:clouda-support@baidu.com)
 
@@ -24,7 +24,7 @@
 
 ## APP信息注册及服务开启设置
 
-<font color="red">使用云服务类API，需要先到[开发者中心管理控制台](http://developer.baidu.com/console)创建应用，获取应用 API Key 及开启或设置相关服务，之后调用以下轻应用注册接口；否则，相关云服务类接口将无法被调用成功。</font>
+<font color="red">使用云服务类API，需要先到[百度开放云管理控制台](http://developer.baidu.com/console)创建应用，获取应用 API Key 及开启或设置相关服务，</font>之后调用以下轻应用注册接口；否则，相关云服务类接口将无法被调用成功。
 
 ### APP信息注册API ###
  
@@ -32,11 +32,13 @@
 
 ### 服务开启及设置 ###
 
-如需使用以下云服务的相关API，请点击[开发者中心管理控制台](http://developer.baidu.com/console)所创建的应用下的相关服务的管理控制台进行服务开启及设置相关操作（<font color="red">无需等待审核通过，即可使用</font>）：
-
+如需使用以下云服务的相关API，请点击[百度开放云管理控制台](http://developer.baidu.com/console)所创建的应用下的相关服务的管理控制台进行服务开启及设置相关操作（<font color="red">无需等待审核通过，即可使用</font>）：
+	
 - **人脸识别（FaceRecognition）**：申请开启服务，详见：[《人脸识别管理控制台》](http://developer.baidu.com/wiki/index.php?title=docs/cplat/media/face/console)
-- **推送服务（Push）**： 无需申请开启服务，但需要通过管理控制台进行推送，详见：[《Push服务Android集成指南》](http://developer.baidu.com/wiki/index.php?title=docs/cplat/push/guide)
+- **推送服务（Push）**： 无需申请开启服务，但需要通过管理控制台进行推送，详见：[《轻应用推送操作手册》](http://bcs.duapp.com/clouda-api/%E8%BD%BB%E5%BA%94%E7%94%A8%E6%8E%A8%E9%80%81%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8C.pdf)
 - **语音识别服务（VTT）**：申请开启服务，详见：[《语音技术管理控制台》](http://developer.baidu.com/wiki/index.php?title=docs/cplat/media/voice/console)
+- **百度地图（Map）**: 申请百度地图的密钥（API Key）：[申请地址](http://lbsyun.baidu.com/apiconsole/key?application=key）
+
 
 ##部署JS API文件
 
@@ -2192,6 +2194,7 @@ options ：为 object 类型，其中包含以下参数：
 云服务类API目前支持以下功能：
 
 - 人脸识别（FaceRecognition）
+- 百度地图（Map）
 - 播放器（MediaPlayer）
 - 推送服务（Push） 
 - 文本语音服务（TTS）
@@ -2370,6 +2373,223 @@ options ：为 object 类型，其中包含以下参数：
     </tbody>
 </table>
 
+### Map ###
+    clouda.mbaas.map
+
+百度地图
+
+**注意：**
+**您需先申请百度地图密钥（API Key）才可使用**
+**目前百度地图的密钥（API Key）需额外申请：[申请地址](http://lbsyun.baidu.com/apiconsole/key?application=key)**
+
+**在页面内引入**
+```code
+<script src="http://api.map.baidu.com/api?v=2.0&ak=your_lbs_apikey_here"></script>
+```
+
+**方法：**
+
+- start(options)
+- stop(options)
+- locationRequest(options)
+- poiRequest(options)
+
+#### start ####
+    start(options)
+
+**功能描述：**
+
+开启定位获取经纬度信息，由于已知原因（不同坐标系），不能与geolocation混合使用
+
+**参数说明：**
+
+- options：为 object 类型，其中包括以下参数：
+
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+            <td>onsuccess</td>
+            <td>function(data){}</td>            
+            <td>启动成功，返回百度地图坐标对象</td>  
+        </tr>
+        <tr>
+            <td>onfail</td>
+            <td>function(err){}</td>          
+            <td>操作失败，返回错误码信息</td>  
+        </tr>
+    </tbody>
+</table>
+**返回的百度地图坐标对象：**
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+            <td>lng</td>
+            <td>float</td>            
+            <td>经度</td>  
+        </tr>
+        <tr>
+            <td>lat</td>
+            <td>float</td>          
+            <td>纬度</td>  
+        </tr>
+    </tbody>
+</table>
+
+#### stop ####
+    stop(options)
+
+**功能描述：**
+
+定位开启后，可以停止定位开启状态
+
+**参数说明：**
+
+- options：为 object 类型，其中包括以下参数：
+
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+            <td>onsuccess</td>
+            <td>function(data){}</td>            
+            <td>操作成功，返回SUCCESS状态码</td>  
+        </tr>
+        <tr>
+            <td>onfail</td>
+            <td>function(err){}</td>          
+            <td>操作失败，返回错误码信息</td>  
+        </tr>
+    </tbody>
+</table>
+
+#### locationRequest ####
+    locationRequest(options)
+
+**功能描述：**
+
+定位开启后，可以立即获取一次经纬度信息，由于已知原因（不同坐标系），不能与geolocation混合使用
+
+**参数说明：**
+
+- options：为 object 类型，其中包括以下参数：
+
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+            <td>onsuccess</td>
+            <td>function(data){}</td>            
+            <td>启动成功，返回百度地图坐标对象</td>  
+        </tr>
+        <tr>
+            <td>onfail</td>
+            <td>function(err){}</td>          
+            <td>操作失败，返回错误码信息</td>  
+        </tr>
+    </tbody>
+</table>
+**返回的百度地图坐标对象：**
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+            <td>lng</td>
+            <td>float</td>            
+            <td>经度</td>  
+        </tr>
+        <tr>
+            <td>lat</td>
+            <td>float</td>          
+            <td>纬度</td>  
+        </tr>
+    </tbody>
+</table>
+
+#### poiRequest ####
+    poiRequest(options)
+
+**功能描述：**
+
+定位开启后，可以通过此方法获取周边商家信息对象
+
+**参数说明：**
+
+- options：为 object 类型，其中包括以下参数：
+
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+            <td>onsuccess</td>
+            <td>function(data){}</td>            
+            <td>获取成功，返回对象{poi:{p:[{商家对象},{商家对象}]}}</td>  
+        </tr>
+        <tr>
+            <td>onfail</td>
+            <td>function(err){}</td>          
+            <td>操作失败，返回错误码信息</td>  
+        </tr>
+    </tbody>
+</table>
+**返回的商家对象：**
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+            <td>x</td>
+            <td>float</td>            
+            <td>经度</td>  
+        </tr>
+        <tr>
+            <td>y</td>
+            <td>float</td>          
+            <td>纬度</td>  
+        </tr>
+        <tr>
+            <td>dis</td>
+            <td>float</td>            
+            <td>距离，单位米</td>  
+        </tr>
+        <tr>
+            <td>name</td>
+            <td>string</td>            
+            <td>商家名称</td>  
+        </tr>
+    </tbody>
+</table>
+
+
+
 ### MediaPlayer ###
 	clouda.mbaas.mediaplayer
 
@@ -2422,7 +2642,6 @@ options ：为 object 类型，其中包含以下参数：
 - register(options)
 - unregister(options)
 - checkStatus(options)
-- onreceive(options) 
 - setTag(tags, options)  
 - removeTag(tags, options)
 - listTag(options)
@@ -2549,32 +2768,6 @@ options：为object类型，其中包括以下参数：
     </tbody>
 </table>
 
-#### onreceive ####
-
-    onreceive(options)
-
-**功能描述：**
-
-接收到推送消息时的事件 
-
-**参数说明：**
-
-options：为object类型，其中包括以下参数：
-
-<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
-    <tbody>
-        <tr>
-            <th>参数</th>
-            <th>类型</th>
-            <th>描述</th>
-        </tr>
-        <tr>
-			<td>onsuccess</td>
-			<td>function(data){}</td>            
-			<td>接收成功，返回的data为string类型</td>  
-		</tr>
-    </tbody>
-</table>
 
 #### setTag ####
     setTag(tags, options)

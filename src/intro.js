@@ -21,7 +21,7 @@
         UNKNOW_CALLBACK:-1,
         
         //不符合预期的input
-        UNKNOW_INPUT:-1,
+        UNKNOW_INPUT:-99,
         
         //用户取消
         // USER_CANCEL:-2,
@@ -50,7 +50,8 @@
         SCREEN_ERROR:19,
         FR_ERROR:20,
         PUSH_ERR:21,
-        GYRO_ERR:22
+        GYRO_ERR:22,
+        MAP_ERROR:23
         
     };
     var errorMessage = {
