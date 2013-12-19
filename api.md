@@ -2645,7 +2645,6 @@ options ：为 object 类型，其中包含以下参数：
 - setTag(tags, options)  
 - removeTag(tags, options)
 - listTag(options)
-- pushMsg(options)
 
 #### register ####
     register(options)
@@ -2862,57 +2861,6 @@ options：为object类型，其中包括以下参数：
 			<td>onfail</td>
 			<td>function(err){}</td>          
 			<td>获取失败，返回错误码信息</td>  
-		</tr>
-    </tbody>
-</table>
-
-#### pushMsg ####
-	pushMsg()
-
-**功能描述：**
-
-推送消息
-
-**参数说明：**
-
-- options：为object类型，其中包括以下参数：
-
-<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
-    <tbody>
-        <tr>
-            <th>参数</th>
-            <th>类型</th>
-            <th>描述</th>
-        </tr>
-        <tr>
-			<td>onsuccess</td>
-			<td>function(data){}</td>            
-			<td>推送成功，返回 SUCCESS 状态码</td>  
-		</tr>
-        <tr>
-			<td>onfail</td>
-			<td>function(err){}</td>          
-			<td>推送失败，返回错误码信息</td>  
-		</tr>
-        <tr>
-			<td>title</td>
-			<td>string</td>          
-			<td>推送消息的标题</td>  
-		</tr>
-        <tr>
-			<td>uid</td>
-			<td>string</td>          
-			<td>用户ID信息</td>  
-		</tr>
-        <tr>
-			<td>channelId</td>
-			<td>string</td>          
-			<td>Channel ID信息</td>  
-		</tr>
-        <tr>
-			<td>description</td>
-			<td>string</td>          
-			<td>推送消息的内容</td>  
 		</tr>
     </tbody>
 </table>
