@@ -51,7 +51,8 @@
         FR_ERROR:20,
         PUSH_ERR:21,
         GYRO_ERR:22,
-        MAP_ERROR:23
+        MAP_ERROR:23,
+        LOGIN_ERROR:24,
         
     };
     var errorMessage = {
@@ -217,4 +218,5 @@
     };
     clouda.device = {};
     clouda.mbaas = {};
+    clouda.lib = {};
     // clouda.ui={};
