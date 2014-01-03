@@ -22,7 +22,7 @@ define("mbaas",function( module ) {
      it.login = function(options){
         login(options.onsuccess,function(nativeErr){
             lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
-        },word,options.type);
+        });
      };
     
     /**
@@ -41,7 +41,7 @@ define("mbaas",function( module ) {
     it.logout = function(options){
         logout(options.onsuccess,function(nativeErr){
             lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
-        },word,options.type);
+        });
     };
      
     return module;

@@ -3631,8 +3631,6 @@ define("device",function(module) {
                 lightapp.error(ErrCode.QR_ERR,999,options);
             }else{
                 try{
-                    // /2/2/2/2
-                    // var t=10;
                     var len = content.length;
                     for(var t=1;t<9;t++){
                         if (len/2 < 1){
@@ -3647,7 +3645,6 @@ define("device",function(module) {
                     qr.make();
                     options.onsuccess(qr.createImgTag());
                 }catch(e){
-                    // console.log(e.stack);
                     lightapp.error(ErrCode.QR_ERR,998,options);
                 }
       
@@ -4912,7 +4909,7 @@ define("mbaas",function(module) {
      it.login = function(options){
         login(options.onsuccess,function(nativeErr){
             lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
-        },word,options.type);
+        });
      };
     
     /**
@@ -4931,7 +4928,7 @@ define("mbaas",function(module) {
     it.logout = function(options){
         logout(options.onsuccess,function(nativeErr){
             lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
-        },word,options.type);
+        });
     };
      
     return module;
