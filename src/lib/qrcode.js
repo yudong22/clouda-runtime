@@ -1604,27 +1604,28 @@ define("lib",function( module ) {
             base64.writeByte(bytes[i]);
         }
         base64.flush();
-
-        var img = '';
-        img += '<img';
-        img += '\u0020src="';
-        img += 'data:image/gif;base64,';
-        img += base64;
-        img += '"';
-        img += '\u0020width="';
-        img += width;
-        img += '"';
-        img += '\u0020height="';
-        img += height;
-        img += '"';
-        if (alt) {
-            img += '\u0020alt="';
-            img += alt;
-            img += '"';
-        }
-        img += '/>';
-
-        return img;
+        return base64;
+        
+        // var img = '';
+        // img += '<img';
+        // img += '\u0020src="';
+        // img += 'data:image/gif;base64,';
+        // img += base64;
+        // img += '"';
+        // img += '\u0020width="';
+        // img += width;
+        // img += '"';
+        // img += '\u0020height="';
+        // img += height;
+        // img += '"';
+        // if (alt) {
+            // img += '\u0020alt="';
+            // img += alt;
+            // img += '"';
+        // }
+        // img += '/>';
+// 
+        // return img;
     };
 
     //---------------------------------------------------------------------

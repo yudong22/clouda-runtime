@@ -81,14 +81,41 @@ define("device",function(module) {
      * @param {{}} options 由onsuccess 和 onfail组成
      * @param {function} options.onsuccess 成功的回调
      * @param {function} [options.onfail] 失败的回调
-     * @param {int} [options.animate] 
+     * @param {boolen} [options.animate] 
      * @param {string} [options.backgroundUrl] 
-     * @param {int} [options.mono] 
+     * @param {boolen} [options.mono] 
+     * @param {boolen} [options.offline] 离线生成二维码，不支持多余配置
      * @returns null
      * 
      */
     it.generate = function(content,options){
         //function(sucessCallback, errorCallback, type, content, backgroundUrl, destType){
+        //0. 先判断是否使用离线生成能力
+        if (options.offline){
+            if (content.length > 255){
+                lightapp.error(ErrCode.QR_ERR,999,options);
+            }else{
+                try{
+                    var len = content.length;
+                    for(var t=1;t<9;t++){
+                        if (len/2 < 1){
+                            break;
+                        }else{
+                            len = len/2;
+                        }
+                    }
+                    var qr = clouda.lib.qrcode(t+2,'M');
+                    // var qr = qrcode(typeNumber || 4, errorCorrectLevel || 'M');
+                    qr.addData(content);
+                    qr.make();
+                    options.onsuccess(qr.createImgTag());
+                }catch(e){
+                    lightapp.error(ErrCode.QR_ERR,998,options);
+                }
+      
+            }
+            return ;
+        }
         //1.判断动画与否
         if ( options.animate ){//设定生成图片的类型
             options.destType = QR_DESTTYPE.GIF;
