@@ -62,7 +62,7 @@
       "-3":"接口的运行环境不存在。",
       "-4":"错误，您需要在调用api前设置ak。 clouda.lightapp(your_ak_here);",
       "-5":"执行接口出错。",
-      "-99":"功能开发中。",
+      "-99":"输入参数错误。",
       5:"接口的运行环境准备中出错。",
       6:"accelerometer 接口返回错误",
       7:"geolocation 接口返回错误",
@@ -111,6 +111,9 @@
         var _this = this;
         installPlugin(this.module,function(module){
             try{
+                for (var i in module){
+                    console.log(i);
+                }
                 if (!_this.func){//二级目录
                     module[_this.submodule].apply(_this,args);
                 }else{
@@ -128,6 +131,7 @@
                         args[args.length-1].onfail(code);
                     }
                 }
+                console.error(e.stack);
                 _this.error(code);
             }
             
