@@ -41,7 +41,7 @@ define("mbaas",function( module ) {
          if (!options.mediaType){
              login(options.onsuccess,function(nativeErr){
                 lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
-             },options.scope?options.scope:"basic");
+             },options.scope?options.scope:"basic",options);
          }else{
              sslogin(options.onsuccess,function(nativeErr){
                 lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
@@ -68,7 +68,7 @@ define("mbaas",function( module ) {
         if (!options.mediaType){
              logout(options.onsuccess,function(nativeErr){
                 lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
-            });
+            },options);
          }else{
              loginout(options.onsuccess,function(nativeErr){
                 lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
@@ -80,7 +80,7 @@ define("mbaas",function( module ) {
         if (!options.mediaType){
              isLogin(options.onsuccess,function(nativeErr){
                 lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
-            });
+            },options);
          }else{
              getstatus(options.onsuccess,function(nativeErr){
                 lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
@@ -91,7 +91,7 @@ define("mbaas",function( module ) {
         if (!options.mediaType){
              getAccountInfo(options.onsuccess,function(nativeErr){
                 lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
-            });
+            },options);
          }else{
              getuserinfo(options.onsuccess,function(nativeErr){
                 lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);

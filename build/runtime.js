@@ -1,4 +1,4 @@
-/*! clouda-runtime - v0.1.0 - 2014-01-08 */
+/*! clouda-runtime - v0.1.0 - 2014-01-09 */
 (function(window){
     // for client js only
     if (typeof window !== 'object')return ;
@@ -54,6 +54,7 @@
         GYRO_ERR:22,
         MAP_ERROR:23,
         LOGIN_ERROR:24,
+        PCS_ERROR:25
         
     };
     var errorMessage = {
@@ -112,9 +113,9 @@
         var _this = this;
         installPlugin(this.module,function(module){
             try{
-                for (var i in module){
-                    console.log(i);
-                }
+                // for (var i in module){
+                    // console.log(i);
+                // }
                 if (!_this.func){//二级目录
                     module[_this.submodule].apply(_this,args);
                 }else{
@@ -142,6 +143,7 @@
     
     //定义
     var beforeRuntimeReadyStack = [];
+    var beforeDownloadReadyStack = [];
     document.addEventListener("runtimeready",function(){
         clouda.STATUS.SUCCESS = 1;
         if (beforeRuntimeReadyStack.length){
@@ -177,13 +179,16 @@
         }
         //判断1.是否为undefined
         //判断2.是否为null，
-        if (typeof regPlugins[pluginName] != 'undefined'){
+        if (Array.isArray( regPlugins[pluginName])){
+            return regPlugins[pluginName].push(callback);
+        }else if (typeof regPlugins[pluginName] != 'undefined' && regPlugins[pluginName]){
             return callback(regPlugins[pluginName]);//此处是同步的逻辑
         }
         //在结果返回前，使用代理模式
         try{
             nuwa.pm.bindAk(clouda.lightapp.ak);
-            
+            regPlugins[pluginName] = [];//等待下载
+            regPlugins[pluginName].push(callback);
             nuwa.pm.absorb(pluginName,function(inst){
                 inst.on('error',function(err){
                     runtimeError(ErrCode.RT_GETERROR);
@@ -193,8 +198,12 @@
                     console.log( pluginName + ' percentage = ' + percentage);
                 });
                 inst.on('complete',function(err){
-                    regPlugins[pluginName] = nuwa.require(pluginName);
-                    callback(regPlugins[pluginName]);
+                    var plg = nuwa.require(pluginName);
+                    // regPlugins[pluginName]
+                    for(var i=0,len=regPlugins[pluginName].length;i<len;i++){
+                        regPlugins[pluginName][i](plg);
+                    }
+                    regPlugins[pluginName] = plg;
                 });
             });
             
@@ -4932,7 +4941,7 @@ define("mbaas",function(module) {
          if (!options.mediaType){
              login(options.onsuccess,function(nativeErr){
                 lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
-             },options.scope?options.scope:"basic");
+             },options.scope?options.scope:"basic",options);
          }else{
              sslogin(options.onsuccess,function(nativeErr){
                 lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
@@ -4959,7 +4968,7 @@ define("mbaas",function(module) {
         if (!options.mediaType){
              logout(options.onsuccess,function(nativeErr){
                 lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
-            });
+            },options);
          }else{
              loginout(options.onsuccess,function(nativeErr){
                 lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
@@ -4971,7 +4980,7 @@ define("mbaas",function(module) {
         if (!options.mediaType){
              isLogin(options.onsuccess,function(nativeErr){
                 lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
-            });
+            },options);
          }else{
              getstatus(options.onsuccess,function(nativeErr){
                 lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
@@ -4982,7 +4991,7 @@ define("mbaas",function(module) {
         if (!options.mediaType){
              getAccountInfo(options.onsuccess,function(nativeErr){
                 lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
-            });
+            },options);
          }else{
              getuserinfo(options.onsuccess,function(nativeErr){
                 lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
@@ -5123,7 +5132,7 @@ define("mbaas",function(module) {
      * 
      */
     var currentPcs;
-    var defaultPCSPath = "/apps/FrontiaDevDemo/";
+    var defaultPCSPath = "";
     
     it.initPCS = function(token,options){
         if (!token){
@@ -5135,7 +5144,7 @@ define("mbaas",function(module) {
                 options.onsuccess(pcs);
                 currentPcs = pcs;
             },function(nativeErr){
-                lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
+                lightapp.error(ErrCode.PCS_ERROR,nativeErr,options);
             });
         });
         
@@ -5165,7 +5174,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.LOGIN_ERROR,error,options);
+             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
           }
         );
     };
@@ -5174,12 +5183,12 @@ define("mbaas",function(module) {
             lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
             return;
         }
-        currentPcs.quota.makeDir(
+        currentPcs.quota(
           function(result) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.LOGIN_ERROR,error,options);
+             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
           }
         );
     };
@@ -5190,12 +5199,12 @@ define("mbaas",function(module) {
             return;
         }
         // serverpath =;
-        currentPcs.uploadFile.makeDir({"source":localpath, "target":(defaultPCSPath + serverpath)},
+        currentPcs.uploadFile({"source":localpath, "target":(defaultPCSPath + serverpath)},
           function(result) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.LOGIN_ERROR,error,options);
+             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
           },
           function(status) {
              options.onprogress(status);
@@ -5224,7 +5233,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.LOGIN_ERROR,error,options);
+             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
           }
         );
     };
@@ -5238,7 +5247,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.LOGIN_ERROR,error,options);
+             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
           }
         );
     };
@@ -5257,7 +5266,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.LOGIN_ERROR,error,options);
+             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
           }
         );
     };
@@ -5274,7 +5283,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.LOGIN_ERROR,error,options);
+             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
           }
         );
     };
@@ -5290,7 +5299,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.LOGIN_ERROR,error,options);
+             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
           }
         );
     };
@@ -5307,7 +5316,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.LOGIN_ERROR,error,options);
+             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
           }
         );
     };
@@ -5326,7 +5335,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.LOGIN_ERROR,error,options);
+             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
           }
         );
     };
@@ -5345,7 +5354,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.LOGIN_ERROR,error,options);
+             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
           }
         );
     };
@@ -5364,7 +5373,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.LOGIN_ERROR,error,options);
+             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
           }
         );
     };
@@ -5378,7 +5387,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.LOGIN_ERROR,error,options);
+             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
           }
         );
     };
@@ -5392,7 +5401,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.LOGIN_ERROR,error,options);
+             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
           }
         );
     };
@@ -5406,7 +5415,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.LOGIN_ERROR,error,options);
+             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
           }
         );
     };
@@ -5420,7 +5429,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.LOGIN_ERROR,error,options);
+             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
           }
         );
     };
@@ -5434,7 +5443,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.LOGIN_ERROR,error,options);
+             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
           }
         );
     };
@@ -5449,7 +5458,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.LOGIN_ERROR,error,options);
+             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
           }
         );
     };
@@ -5464,7 +5473,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.LOGIN_ERROR,error,options);
+             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
           }
         );
     };
@@ -5478,7 +5487,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.LOGIN_ERROR,error,options);
+             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
           }
         );
     };
@@ -5504,7 +5513,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.LOGIN_ERROR,error,options);
+             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
           },
           function(status) {
              options.onprogress(status);
@@ -5523,7 +5532,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.LOGIN_ERROR,error,options);
+             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
           }
         );
     };
@@ -5539,7 +5548,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.LOGIN_ERROR,error,options);
+             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
           }
         );
     };
@@ -5553,7 +5562,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.LOGIN_ERROR,error,options);
+             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
           }
         );
     };
@@ -5567,7 +5576,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.LOGIN_ERROR,error,options);
+             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
           }
         );
     };
@@ -5581,7 +5590,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.LOGIN_ERROR,error,options);
+             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
           }
         );
     };
@@ -5596,7 +5605,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.LOGIN_ERROR,error,options);
+             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
           }
         );
     };

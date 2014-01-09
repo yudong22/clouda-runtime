@@ -53,6 +53,7 @@
         GYRO_ERR:22,
         MAP_ERROR:23,
         LOGIN_ERROR:24,
+        PCS_ERROR:25
         
     };
     var errorMessage = {
@@ -111,9 +112,9 @@
         var _this = this;
         installPlugin(this.module,function(module){
             try{
-                for (var i in module){
-                    console.log(i);
-                }
+                // for (var i in module){
+                    // console.log(i);
+                // }
                 if (!_this.func){//二级目录
                     module[_this.submodule].apply(_this,args);
                 }else{
@@ -141,6 +142,7 @@
     
     //定义
     var beforeRuntimeReadyStack = [];
+    var beforeDownloadReadyStack = [];
     document.addEventListener("runtimeready",function(){
         clouda.STATUS.SUCCESS = 1;
         if (beforeRuntimeReadyStack.length){
@@ -176,13 +178,16 @@
         }
         //判断1.是否为undefined
         //判断2.是否为null，
-        if (typeof regPlugins[pluginName] != 'undefined'){
+        if (Array.isArray( regPlugins[pluginName])){
+            return regPlugins[pluginName].push(callback);
+        }else if (typeof regPlugins[pluginName] != 'undefined' && regPlugins[pluginName]){
             return callback(regPlugins[pluginName]);//此处是同步的逻辑
         }
         //在结果返回前，使用代理模式
         try{
             nuwa.pm.bindAk(clouda.lightapp.ak);
-            
+            regPlugins[pluginName] = [];//等待下载
+            regPlugins[pluginName].push(callback);
             nuwa.pm.absorb(pluginName,function(inst){
                 inst.on('error',function(err){
                     runtimeError(ErrCode.RT_GETERROR);
@@ -192,8 +197,12 @@
                     console.log( pluginName + ' percentage = ' + percentage);
                 });
                 inst.on('complete',function(err){
-                    regPlugins[pluginName] = nuwa.require(pluginName);
-                    callback(regPlugins[pluginName]);
+                    var plg = nuwa.require(pluginName);
+                    // regPlugins[pluginName]
+                    for(var i=0,len=regPlugins[pluginName].length;i<len;i++){
+                        regPlugins[pluginName][i](plg);
+                    }
+                    regPlugins[pluginName] = plg;
                 });
             });
             
