@@ -40,7 +40,7 @@ define("mbaas",function( module ) {
     var currentPcs;
     var defaultPCSPath = "";
     
-    it.initPCS = function(token,options){
+    it.init = function(token,options){
         if (!token){
             lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
             return;
@@ -56,9 +56,9 @@ define("mbaas",function( module ) {
         
     };
     /**
-     * makeDir
+     * mkdir
      *
-     * @function makeDir
+     * @function mkdir
      * @memberof clouda.mbaas.pcs
      * @instance
      * @param {string} pcs pcs实例
@@ -70,7 +70,7 @@ define("mbaas",function( module ) {
      * @returns null
      * 
      */
-    it.makeDir = function(path,options){
+    it.mkdir = function(path,options){
         if (!currentPcs){
             lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
             return;
@@ -84,7 +84,7 @@ define("mbaas",function( module ) {
           }
         );
     };
-    it.quota = function(options){
+    it.getQuota = function(options){
         if (!currentPcs){
             lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
             return;
@@ -143,7 +143,7 @@ define("mbaas",function( module ) {
           }
         );
     };
-    it.meta = function(path,options){
+    it.getMeta = function(path,options){
         if (!currentPcs){
             lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
             return;
@@ -158,7 +158,7 @@ define("mbaas",function( module ) {
         );
     };
     //by order FIXME ORDERBY
-    it.list = function(path,options){
+    it.getList = function(path,options){
         if (!currentPcs){
             lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
             return;
@@ -286,7 +286,7 @@ define("mbaas",function( module ) {
           }
         );
     };
-    it.listByType = function(mediaType,options){
+    it.getListByCategory = function(mediaType,options){
         if (!currentPcs){
             lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
             return;

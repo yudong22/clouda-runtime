@@ -1,7 +1,7 @@
 define("mbaas",function( module ) {
     var lightapp = this;
     //deal with clouda.mbaas
-    var it = module.login = {};
+    var it = module.account = {};
     
     var login = new delegateClass("device","login","login");
     var logout = new delegateClass("device","login","logout");
@@ -40,7 +40,11 @@ define("mbaas",function( module ) {
      it.login = function(options){
          if (!options.mediaType){
              login(options.onsuccess,function(nativeErr){
-                lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
+                if (typeof nativeErr === 'object' && nativeErr.error_code === 1){
+                    options.onfail(clouda.STATUS.USER_CANCELED);
+                }else{
+                    lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
+                }
              },options.scope?options.scope:"basic",options);
          }else{
              sslogin(options.onsuccess,function(nativeErr){
@@ -78,7 +82,7 @@ define("mbaas",function( module ) {
          }
         
     };
-    it.getstatus = function(options){
+    it.getStatus = function(options){
         if (!options.mediaType){
              isLogin(options.onsuccess,function(nativeErr){
                 lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
@@ -89,7 +93,7 @@ define("mbaas",function( module ) {
              },options);
          }
     };
-    it.getuserinfo = function(options){
+    it.getUserInfo = function(options){
         if (!options.mediaType){
              getAccountInfo(options.onsuccess,function(nativeErr){
                 lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
@@ -100,6 +104,6 @@ define("mbaas",function( module ) {
              },options);
          }
     };
-    return module;
+    // return module;
     
 });

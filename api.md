@@ -2198,9 +2198,11 @@ options：是一个object类型，其中包含以下参数：
 云服务类API目前支持以下功能：
 
 - 人脸识别（FaceRecognition）
-- 帐号登录（Login）- 百度地图（Map）
+- 帐号登录（Account）
+- 百度地图（Map）
 - 播放器（MediaPlayer）
-- 个人云存储（Pcs）- 推送服务（Push） 
+- 个人云存储（Pcs）
+- 推送服务（Push） 
 - 文本语音服务（TTS）
 - 语音识别服务（VTT）
 
@@ -2376,8 +2378,8 @@ options：是一个object类型，其中包含以下参数：
 		</tr>
     </tbody>
 </table>
-### Login ###
-    clouda.mbaas.login
+### Account ###
+    clouda.mbaas.account
 
 帐号登录
 
@@ -2385,8 +2387,8 @@ options：是一个object类型，其中包含以下参数：
 
 - login(options)
 - logout(options)
-- getstatus(options)
-- getuserinfo(options)
+- getStatus(options)
+- getUserInfo(options)
 
 #### login ####
 	login(options)
@@ -2422,8 +2424,8 @@ scrope | string,默认"basic" | 权限以空格分隔，例子：获取个人云
 onsuccess | function(data){} | 操作成功，返回成功状态码
 onfail | function(err){} | 操作失败，返回错误码信息
 
-#### getstatus ####
-	getstatus(options)
+#### getStatus ####
+	getStatus(options)
 
 **功能描述：**
 
@@ -2438,8 +2440,8 @@ onfail | function(err){} | 操作失败，返回错误码信息
 onsuccess | function(data){} | 操作成功，返回登录状态
 onfail | function(err){} | 操作失败，返回错误码信息
 
-#### getuserinfo ####
-	getuserinfo(options)
+#### getUserInfo ####
+	getUserInfo(options)
 
 **功能描述：**
 
@@ -2714,25 +2716,25 @@ onfail | function(err){} | 操作失败，返回错误码信息
     </tbody>
 </table>
 
-### Pcs ###
+### 个人云存储(Pcs) ###
     clouda.mbaas.pcs
 
-使用pcs接口实现文件上传，文件操作，文件下载，离线下载等功能，步骤如下：
+使用个人云存储(Pcs)接口实现文件上传，文件操作，文件下载，离线下载等功能，步骤如下：
 
 - 用户登录授权得到密钥（token）
 - 使用密钥（token）执行初始化函数initPCS
 
-**方法： **
+**方法：**
 
-- initPCS(token,options)
-- makeDir(path,options)
-- quota(options)
+- init(token,options)
+- mkdir(path,options)
+- getQuota(options)
 - uploadFile(localpath,serverpath,options)
 - downloadFile(serverpath,localpath,options)
 - deleteFiles(patharr,options)
-- meta(path,options)
-- list(path,options)
-- listByType(mediaType,options)
+- getMeta(path,options)
+- getList(path,options)
+- getListByCategory(mediaType,options)
 - getStreamingURL(serverpath,codeType,options)
 - search(serverpath,key,recursive,options)
 - thumbnail(serverpath,options)
@@ -2754,12 +2756,12 @@ onfail | function(err){} | 操作失败，返回错误码信息
 - diff(cursor,options)
 
 
-#### initPCS ####
-	initPCS(token,options)
+#### init####
+	init(token,options)
 
 **功能描述：**
 
-通过帐号登录（login）获得的token，初始化pcs
+通过帐号登录（Account）获得的token，初始化个人云存储（pcs）
 
 **参数说明：**
 - token：为 string 类型，
@@ -2770,8 +2772,8 @@ onfail | function(err){} | 操作失败，返回错误码信息
 onsuccess | function(data){} | 操作成功，返回登录用户信息
 onfail | function(err){} | 操作失败，返回错误码信息
 
-#### makeDir ####
-	makeDir(path,options)
+#### mkdir ####
+	mkdir(path,options)
 
 **功能描述：**
 
@@ -2786,8 +2788,8 @@ onfail | function(err){} | 操作失败，返回错误码信息
 onsuccess | function(data){} | 操作成功，返回成功状态码
 onfail | function(err){} | 操作失败，返回错误码信息
 
-#### quota ####
-	quota(options)
+#### getQuota ####
+	getQuota(options)
 
 **功能描述：**
 
@@ -2875,8 +2877,8 @@ codecType | string | 可选参数，默认为空，可选值如下：
 onsuccess | function(data){} | 操作成功，返回登录用户信息
 onfail | function(err){} | 操作失败，返回错误码信息
 
-#### meta ####
-	meta(path,options)
+#### getMeta ####
+	getMeta(path,options)
 
 
 **功能描述：**
@@ -2907,8 +2909,8 @@ mediaType | int | 媒体类型
 cTime | string | 创建时间戳
 size | int | 文件大小，单位字节
 
-#### list ####
-	list(path,options)
+#### getList ####
+	getList(path,options)
 
 
 **功能描述：**
@@ -2927,8 +2929,8 @@ order | string | 可选参数asc,desc
 by | string | 可选参数time,size
 
 
-#### listByType ####
-	listByType(mediaType,options)
+#### getListByCategory ####
+	getListByCategory(mediaType,options)
 
 **功能描述：**
 
@@ -3012,7 +3014,7 @@ height | int | 缩略图高度，单位像素
 移动文件，权限仅限于token所获得的路径下`/apps/your_app_dir/`
 
 **参数说明：**
-- patharr：为 Array 类型，由**Move **对象组成
+- patharr：为 Array 类型，由**Move**对象组成
 
 
 参数 | 类型 | 描述
@@ -3036,7 +3038,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 重命名文件，权限仅限于token所获得的路径下`/apps/your_app_dir/`
 
 **参数说明：**
-- patharr：为 Array 类型，由**Rename **对象组成
+- patharr：为 Array 类型，由**Rename**对象组成
 
 
 参数 | 类型 | 描述
@@ -3060,7 +3062,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 移动文件，权限仅限于token所获得的路径下`/apps/your_app_dir/`
 
 **参数说明：**
-- patharr：为 Array 类型，由**Copy **对象组成
+- patharr：为 Array 类型，由**Copy**对象组成
 
 
 参数 | 类型 | 描述
@@ -3283,7 +3285,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 list | Array | 由Meta对象组成
 cursor | string | 供函数diff对比的句柄
 
-**Meta对象： **
+**Meta对象：**
 
 
 参数 | 类型 | 描述
