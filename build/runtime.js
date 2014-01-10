@@ -5492,7 +5492,7 @@ define("mbaas",function( module ) {
         );
     };
     //["1874002074"] 
-    it.restoreRecycle = function(filesukarr,options){
+    it.restore = function(filesukarr,options){
         if (!currentPcs || !Array.isArray(filesukarr)){
             lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
             return;
