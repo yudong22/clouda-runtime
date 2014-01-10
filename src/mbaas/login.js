@@ -70,7 +70,9 @@ define("mbaas",function( module ) {
                 lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
             },options);
          }else{
-             loginout(options.onsuccess,function(nativeErr){
+             loginout(function(){
+                 options.onsuccess(clouda.STATUS.SUCCESS);
+             },function(nativeErr){
                 lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
              },options);
          }

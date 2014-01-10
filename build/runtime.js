@@ -1,4 +1,4 @@
-/*! clouda-runtime - v0.1.0 - 2014-01-09 */
+/*! clouda-runtime - v0.1.0 - 2014-01-10 */
 (function(window){
     // for client js only
     if (typeof window !== 'object')return ;
@@ -4970,7 +4970,9 @@ define("mbaas",function(module) {
                 lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
             },options);
          }else{
-             loginout(options.onsuccess,function(nativeErr){
+             loginout(function(){
+                 options.onsuccess(clouda.STATUS.SUCCESS);
+             },function(nativeErr){
                 lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
              },options);
          }
@@ -5116,8 +5118,25 @@ define("mbaas",function(module) {
     
     // var login = new delegateClass("device","login","login");
     // var logout = new delegateClass("device","login","logout");
-    
-    
+    module.VIDEO_STREAM = {
+        "P360":"MP4_360P",
+        "P480":"MP4_480P",
+    };
+    module.MEDIA_TYPE = {
+        "IMG":"image",
+        "AUD":"audio",
+        "VID":"video",
+        "DOC":"doc",
+    };
+    //M3U8_320_240、M3U8_480_224、M3U8_480_360、M3U8_640_480 和 M3U8_854_480
+
+    module.CODEC_TYPE = {
+        "M320":"M3U8_320_240",
+        "M480224":"M3U8_480_224",
+        "M480360":"M3U8_480_360",
+        "M640":"M3U8_640_480",
+        "M854":"M3U8_854_480"
+    };
     /**
      * initPCS
      *
@@ -5156,7 +5175,7 @@ define("mbaas",function(module) {
      * @memberof clouda.mbaas.pcs
      * @instance
      * @param {string} pcs pcs实例
-     * @param {string} dirName 创建路径
+     * @param {string} path 创建路径
      * @param {{}} options 由onsuccess 和 onfail组成
      * @param {function} options.onsuccess 成功的回调，返回pcs
      * @param {function} [options.onfail] 失败的回调
@@ -5164,17 +5183,17 @@ define("mbaas",function(module) {
      * @returns null
      * 
      */
-    it.makeDir = function(dirName,options){
+    it.makeDir = function(path,options){
         if (!currentPcs){
             lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
             return;
         }
-        currentPcs.makeDir(defaultPCSPath + dirName, 
+        currentPcs.makeDir(defaultPCSPath + path, 
           function(result) {
-             options.onsuccess(result);
+             options.onsuccess(clouda.STATUS.SUCCESS);
           },
           function (error) {
-             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
+             lightapp.error(ErrCode.PCS_ERROR,error,options);
           }
         );
     };
@@ -5188,7 +5207,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
+             lightapp.error(ErrCode.PCS_ERROR,error,options);
           }
         );
     };
@@ -5204,7 +5223,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
+             lightapp.error(ErrCode.PCS_ERROR,error,options);
           },
           function(status) {
              options.onprogress(status);
@@ -5233,7 +5252,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
+             lightapp.error(ErrCode.PCS_ERROR,error,options);
           }
         );
     };
@@ -5247,11 +5266,11 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
+             lightapp.error(ErrCode.PCS_ERROR,error,options);
           }
         );
     };
-    //by order
+    //by order FIXME ORDERBY
     it.list = function(path,options){
         if (!currentPcs){
             lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
@@ -5266,7 +5285,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
+             lightapp.error(ErrCode.PCS_ERROR,error,options);
           }
         );
     };
@@ -5277,13 +5296,16 @@ define("mbaas",function(module) {
             lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
             return;
         }
+        if (typeof codeType !== 'string'){
+            codeType = module.VIDEO_STREAM.P360;
+        }
         var params = {"source":defaultPCSPath + serverpath, "type":codeType};
         currentPcs.getStreamingURL(params,
           function(result) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
+             lightapp.error(ErrCode.PCS_ERROR,error,options);
           }
         );
     };
@@ -5299,7 +5321,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
+             lightapp.error(ErrCode.PCS_ERROR,error,options);
           }
         );
     };
@@ -5316,7 +5338,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
+             lightapp.error(ErrCode.PCS_ERROR,error,options);
           }
         );
     };
@@ -5332,10 +5354,10 @@ define("mbaas",function(module) {
         }
         currentPcs.move(patharr,
           function(result) {
-             options.onsuccess(result);
+             options.onsuccess(clouda.STATUS.SUCCESS);
           },
           function (error) {
-             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
+             lightapp.error(ErrCode.PCS_ERROR,error,options);
           }
         );
     };
@@ -5351,10 +5373,10 @@ define("mbaas",function(module) {
         }
         currentPcs.rename(patharr,
           function(result) {
-             options.onsuccess(result);
+             options.onsuccess(clouda.STATUS.SUCCESS);
           },
           function (error) {
-             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
+             lightapp.error(ErrCode.PCS_ERROR,error,options);
           }
         );
     };
@@ -5370,14 +5392,14 @@ define("mbaas",function(module) {
         }
         currentPcs.copy(patharr,
           function(result) {
-             options.onsuccess(result);
+             options.onsuccess(clouda.STATUS.SUCCESS);
           },
           function (error) {
-             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
+             lightapp.error(ErrCode.PCS_ERROR,error,options);
           }
         );
     };
-    it.streamWithSpecificMediaType = function(mediaType,options){
+    it.listByType = function(mediaType,options){
         if (!currentPcs){
             lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
             return;
@@ -5387,7 +5409,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
+             lightapp.error(ErrCode.PCS_ERROR,error,options);
           }
         );
     };
@@ -5398,10 +5420,10 @@ define("mbaas",function(module) {
         }
         currentPcs.createFileLink(defaultPCSPath + path,
           function(result) {
-             options.onsuccess(result);
+             options.onsuccess(clouda.STATUS.SUCCESS);
           },
           function (error) {
-             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
+             lightapp.error(ErrCode.PCS_ERROR,error,options);
           }
         );
     };
@@ -5412,10 +5434,10 @@ define("mbaas",function(module) {
         }
         currentPcs.deleteFileLink(defaultPCSPath + path,
           function(result) {
-             options.onsuccess(result);
+             options.onsuccess(clouda.STATUS.SUCCESS);
           },
           function (error) {
-             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
+             lightapp.error(ErrCode.PCS_ERROR,error,options);
           }
         );
     };
@@ -5429,7 +5451,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
+             lightapp.error(ErrCode.PCS_ERROR,error,options);
           }
         );
     };
@@ -5443,7 +5465,10 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
+             lightapp.error(ErrCode.PCS_ERROR,error,options);
+          },
+          function (status) {
+             options.onprogress(status);
           }
         );
     };
@@ -5458,7 +5483,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
+             lightapp.error(ErrCode.PCS_ERROR,error,options);
           }
         );
     };
@@ -5473,7 +5498,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
+             lightapp.error(ErrCode.PCS_ERROR,error,options);
           }
         );
     };
@@ -5484,10 +5509,10 @@ define("mbaas",function(module) {
         }
         currentPcs.cleanRecycle(
           function(result) {
-             options.onsuccess(result);
+             options.onsuccess(clouda.STATUS.SUCCESS);
           },
           function (error) {
-             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
+             lightapp.error(ErrCode.PCS_ERROR,error,options);
           }
         );
     };
@@ -5500,9 +5525,11 @@ define("mbaas",function(module) {
         var params = {"source":serverpath, "target":localpath};
         if (Array.isArray(serverpath)){
             func = currentPcs.batchDownloadFiles;
-        }else if (options.codeType){
+            delete params.source;
+            params.sourceList = serverpath;
+        }else if (options.codecType){
             func = currentPcs.downloadFileAsSpecificCodecType;
-            params.type = options.codeType;
+            params.type = options.codecType;
         }else if (options.asStream){
             func = currentPcs.downloadFileFromStream;
         }else{
@@ -5513,7 +5540,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
+             lightapp.error(ErrCode.PCS_ERROR,error,options);
           },
           function(status) {
              options.onprogress(status);
@@ -5529,10 +5556,10 @@ define("mbaas",function(module) {
         var params = {"sourceUrl":url, "serverPath":serverpath, "rateLimit":options.rateLimit?options.rateLimit:0, "timeOut":options.timeout?options.timeout:0};
         currentPcs.cloudDownload(params,
           function(result) {
-             options.onsuccess(result);
+             options.onsuccess(clouda.STATUS.SUCCESS);
           },
           function (error) {
-             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
+             lightapp.error(ErrCode.PCS_ERROR,error,options);
           }
         );
     };
@@ -5542,13 +5569,15 @@ define("mbaas",function(module) {
             return;
         }
         //TODO params
-        var params = {"start":options.start?options.start:0, "limit":options.limit?options.limit:0, "asc":options.order?options.order:0,"status":options.status?options.status:-1, "needTaskInfo":options.needTaskInfo?options.needTaskInfo:true};
+        options.asc = (options.order === 'desc')?0:1;
+        
+        var params = {"start":options.start?options.start:0, "limit":options.limit?options.limit:0, "asc":options.asc,"status":options.status?options.status:-1, "needTaskInfo":options.needTaskInfo?options.needTaskInfo:true};
         currentPcs.cloudDownloadTaskList(params,
           function(result) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
+             lightapp.error(ErrCode.PCS_ERROR,error,options);
           }
         );
     };
@@ -5562,7 +5591,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
+             lightapp.error(ErrCode.PCS_ERROR,error,options);
           }
         );
     };
@@ -5576,25 +5605,24 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
+             lightapp.error(ErrCode.PCS_ERROR,error,options);
           }
         );
     };
-    it.cancelCloudDownload = function(path,options){
+    it.cancelCloudDownload = function(serverpath,options){
         if (!currentPcs|| !Array.isArray(filesukarr)){
             lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
             return;
         }
-        currentPcs.cancelCloudDownload(path,
+        currentPcs.cancelCloudDownload(serverpath,
           function(result) {
-             options.onsuccess(result);
+             options.onsuccess(clouda.STATUS.SUCCESS);
           },
           function (error) {
-             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
+             lightapp.error(ErrCode.PCS_ERROR,error,options);
           }
         );
     };
-    //FIXME 
     it.diff = function(cursor,options){
         if (!currentPcs){
             lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
@@ -5605,7 +5633,7 @@ define("mbaas",function(module) {
              options.onsuccess(result);
           },
           function (error) {
-             lightapp.error(ErrCode.PCS_ERROR,clouda.STATUS.SYSTEM_FAILURE,options);
+             lightapp.error(ErrCode.PCS_ERROR,error,options);
           }
         );
     };
