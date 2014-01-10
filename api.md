@@ -2398,6 +2398,8 @@ options：是一个object类型，其中包含以下参数：
 **参数说明：**
 
 - options：为 object 类型，其中包括以下参数：
+
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回登录用户信息
@@ -2414,6 +2416,7 @@ scrope | string,默认"basic" | 权限以空格分隔，例子：获取个人云
 **参数说明：**
 
 - options：为 object 类型，其中包括以下参数：
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回成功状态码
@@ -2429,6 +2432,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 **参数说明：**
 
 - options：为 object 类型，其中包括以下参数：
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回登录状态
@@ -2444,6 +2448,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 **参数说明：**
 
 - options：为 object 类型，其中包括以下参数：
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回登录用户信息
@@ -2717,7 +2722,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 - 用户登录授权得到密钥（token）
 - 使用密钥（token）执行初始化函数initPCS
 
-** 方法：**
+** 方法： **
 
 - initPCS(token,options)
 - makeDir(path,options)
@@ -2744,19 +2749,10 @@ onfail | function(err){} | 操作失败，返回错误码信息
 - cloudDownload(url,serverpath,options)
 - cancelCloudDownload(path,options)
 - cloudDownloadTaskList(options)
-
-
-- diff(cursor,options)
-- 
-- 
-- 
 - queryCloudDownloadTaskProgress(filesukarr,options)
 - queryCloudDownloadTaskStatus(filesukarr,options)
-- 
-- 
-- 
-- 
-- 
+- diff(cursor,options)
+
 
 #### initPCS ####
 	initPCS(token,options)
@@ -2768,6 +2764,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 **参数说明：**
 - token：为 string 类型，
 - options：为 object 类型，其中包括以下参数：
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回登录用户信息
@@ -2783,6 +2780,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 **参数说明：**
 - path：为 string 类型，位于个人云存储的绝对路径
 - options：为 object 类型，其中包括以下参数：
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回成功状态码
@@ -2798,12 +2796,14 @@ onfail | function(err){} | 操作失败，返回错误码信息
 **参数说明：**
 - options：为 object 类型，其中包括以下参数：
 
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回空间使用情况Quota对象
 onfail | function(err){} | 操作失败，返回错误码信息
 
 **返回的Quota对象：**
+
 
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
@@ -2822,6 +2822,7 @@ total | int | 空间总大小，单位字节
 - localpath：为 string 类型，位于手机文件系统的绝对路径
 - serverpath：为 string 类型，位于个人云存储的绝对路径
 - options：为 object 类型，其中包括以下参数：
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回成功状态码
@@ -2829,6 +2830,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 onprogress | function(status){} | 返回上传进度Progress对象
 
 **返回的Progress对象：**
+
 
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
@@ -2842,6 +2844,7 @@ total | int | 空间总大小，单位字节
 下载文件到本地，权限仅限于token所获得的路径下`/apps/your_app_dir/`
 **参数说明：**
 - serverpath：为 string或Array 类型，位于个人云存储的绝对路径，若是Array类型，则自动打包下载- localpath：为 string 类型，位于本地的绝对路径- options：为 object 类型，其中包括以下参数：
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回成功状态码
@@ -2866,6 +2869,7 @@ codecType | string | 可选参数，默认为空，可选值如下：
 **参数说明：**
 - patharr：为 Array 类型，由个人云存储上文件或文件夹的绝对路径组成
 - options：为 object 类型，其中包括以下参数：
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回登录用户信息
@@ -2882,12 +2886,14 @@ onfail | function(err){} | 操作失败，返回错误码信息
 **参数说明：**
 - path：为 string 类型，位于个人云存储的绝对路径
 - options：为 object 类型，其中包括以下参数：
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回meta对象
 onfail | function(err){} | 操作失败，返回错误码信息
 
 **返回的Meta对象：**
+
 
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
@@ -2912,6 +2918,7 @@ size | int | 文件大小，单位字节
 **参数说明：**
 - path：为 string 类型，位于个人云存储的绝对路径
 - options：为 object 类型，其中包括以下参数： 
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回文件列表，由Meta对象组成的数组
@@ -2934,6 +2941,7 @@ by | string | 可选参数time,size
 		 - clouda.mbaas.MEDIA_TYPE.VID
 		 - clouda.mbaas.MEDIA_TYPE.DOC 
 - options：为 object 类型，其中包括以下参数：
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回文件列表，由Meta对象组成的数组
@@ -2955,6 +2963,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 		 - clouda.mbaas.VIDEO_STREAM.P480  
 		
 - options： object 类型，其中包括以下参数：
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回文件流信息
@@ -2970,6 +2979,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 **参数说明：**
 - serverpath：为 string 类型，位于个人云存储的绝对路径
 - key：为 string 类型，搜索关键字- recursive：为 boolean 类型，是否递归查询- options：为 object 类型，其中包括以下参数：
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回文件列表，由Meta对象组成的数组
@@ -2985,6 +2995,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 **参数说明：**
 - serverpath：为 string 类型，位于个人云存储的绝对路径
 - options：为 object 类型，其中包括以下参数：
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回图片base64
@@ -3003,6 +3014,7 @@ height | int | 缩略图高度，单位像素
 **参数说明：**
 - patharr：为 Array 类型，由** Move **对象组成
 
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 from | string | 源文件的绝对路径
@@ -3010,6 +3022,7 @@ to | string | 目标地址的绝对路径
 
 
 - options：为 object 类型，其中包括以下参数：
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回成功状态码
@@ -3025,6 +3038,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 **参数说明：**
 - patharr：为 Array 类型，由** Rename **对象组成
 
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 oldName | string | 源文件的绝对路径
@@ -3032,6 +3046,7 @@ newName | string | 新文件名
 
 
 - options：为 object 类型，其中包括以下参数：
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回成功状态码
@@ -3047,6 +3062,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 **参数说明：**
 - patharr：为 Array 类型，由** Copy **对象组成
 
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 from | string | 源文件的绝对路径
@@ -3054,6 +3070,7 @@ to | string | 目标地址的绝对路径
 
 
 - options：为 object 类型，其中包括以下参数：
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回成功状态码
@@ -3071,6 +3088,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 **参数说明：**
 - path：为 string 类型，位于个人云存储的绝对路径
 - options：为 object 类型，其中包括以下参数：
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回成功状态码
@@ -3086,6 +3104,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 **参数说明：**
 - path：为 string 类型，位于个人云存储的绝对路径
 - options：为 object 类型，其中包括以下参数：
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回成功状态码
@@ -3103,6 +3122,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 **参数说明：**
 - localpath：为 string 类型，位于本地的绝对路径- serverpath：为 string 类型，位于个人云存储的绝对路径
 - options：为 object 类型，其中包括以下参数：
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回是否匹配
@@ -3118,6 +3138,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 **参数说明：**
 - localpath：为 string 类型，位于本地的绝对路径- serverpath：为 string 类型，位于个人云存储的绝对路径
 - options：为 object 类型，其中包括以下参数：
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回操作成功状态码
@@ -3125,6 +3146,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 onprogress | function(status){} | 返回上传进度Progress对象
 
 **返回的Progress对象：**
+
 
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
@@ -3137,6 +3159,7 @@ total | int | 空间总大小，单位字节
 列出回收站的文件列表
 **参数说明：**
 - options：为 object 类型，其中包括以下参数：
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回文件列表，由Meta对象组成的数组
@@ -3148,6 +3171,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 回收站还原文件，权限仅限于token所获得的路径下`/apps/your_app_dir/`
 **参数说明：**
 - filesukarr：为 Array 类型，由fsId字符串组成- options：为 object 类型，其中包括以下参数：
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回成功信息
@@ -3159,6 +3183,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 清空回收站，权限仅限于token所获得的路径下`/apps/your_app_dir/`
 **参数说明：**
 - options：为 object 类型，其中包括以下参数：
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回成功状态码
@@ -3172,6 +3197,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 **参数说明：**
 - url：为 string 类型，外网地址- serverpath：为 string 类型，位于个人云存储的绝对路径
 - options：为 object 类型，其中包括以下参数：
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回成功状态码
@@ -3184,6 +3210,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 **参数说明：**
 - serverpath：为 string 类型，位于个人云存储的绝对路径
 - options：为 object 类型，其中包括以下参数：
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回成功状态码
@@ -3195,6 +3222,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 获取离线下载任务列表，权限仅限于token所获得的路径下`/apps/your_app_dir/`
 **参数说明：**
 - options：为 object 类型，其中包括以下参数：
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回cloudDownloadList对象
@@ -3212,6 +3240,7 @@ status | int | 0-10
 **参数说明：**
 - filesukarr：为 Array 类型，由下载任务id组成
 - options：为 object 类型，其中包括以下参数：
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回所查询任务的状态
@@ -3225,6 +3254,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 **参数说明：**
 - filesukarr：为 Array 类型，由下载任务id组成
 - options：为 object 类型，其中包括以下参数：
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，所查询任务的进度
@@ -3239,6 +3269,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 **参数说明：**
 - serverpath：为 string 类型，位于个人云存储的绝对路径
 - options：为 object 类型，其中包括以下参数：
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回Diff对象
@@ -3246,12 +3277,14 @@ onfail | function(err){} | 操作失败，返回错误码信息
 
 **返回的Diff对象：**
 
+
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
 list | Array | 由Meta对象组成
 cursor | string | 供函数diff对比的句柄
 
 ** Meta对象： **
+
 
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
