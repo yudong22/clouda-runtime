@@ -2406,7 +2406,7 @@ options：是一个object类型，其中包含以下参数：
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回登录用户信息
 onfail | function(err){} | 操作失败，返回错误码信息
-scrope | string,默认"basic" | 权限以空格分隔，例子：获取个人云权限"basic netdisk" [更多权限](http://developer.baidu.com/wiki/index.php?title=docs/oauth#.E6.8E.88.E6.9D.83.E6.9D.83.E9.99.90.E5.88.97.E8.A1.A8)
+scope | string,默认"basic" | 权限以空格分隔，例子：获取个人云权限"basic netdisk" [更多权限](http://developer.baidu.com/wiki/index.php?title=docs/oauth#.E6.8E.88.E6.9D.83.E6.9D.83.E9.99.90.E5.88.97.E8.A1.A8)
 
 #### logout ####
 	logout(options)
@@ -2716,13 +2716,13 @@ onfail | function(err){} | 操作失败，返回错误码信息
     </tbody>
 </table>
 
-### 个人云存储(Pcs) ###
+### 个人云存储(PCS) ###
     clouda.mbaas.pcs
 
-使用个人云存储(Pcs)接口实现文件上传，文件操作，文件下载，离线下载等功能，步骤如下：
+使用PCS接口实现文件上传，文件操作，文件下载，离线下载等功能，步骤如下：
 
 - 用户登录授权得到密钥（token）
-- 使用密钥（token）执行初始化函数initPCS
+- 使用密钥（token）执行初始化函数init
 
 **方法：**
 
@@ -2746,7 +2746,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 - cloudMatch(localpath,serverpath,options)
 - cloudMatchAndUploadFile(localpath,serverpath,options)
 - listRecycle(options)
-- restoreRecycle(filesukarr,options)
+- restore(filesukarr,options)
 - cleanRecycle(options)
 - cloudDownload(url,serverpath,options)
 - cancelCloudDownload(path,options)
@@ -2761,7 +2761,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 
 **功能描述：**
 
-通过帐号登录（Account）获得的token，初始化个人云存储（pcs）
+通过帐号登录（Account）获得的token，初始化PCS
 
 **参数说明：**
 - token：为 string 类型，
@@ -3014,7 +3014,7 @@ height | int | 缩略图高度，单位像素
 移动文件，权限仅限于token所获得的路径下`/apps/your_app_dir/`
 
 **参数说明：**
-- patharr：为 Array 类型，由**Move**对象组成
+- patharr：为 Array 类型，由**Path**对象组成:
 
 
 参数 | 类型 | 描述
@@ -3038,8 +3038,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 重命名文件，权限仅限于token所获得的路径下`/apps/your_app_dir/`
 
 **参数说明：**
-- patharr：为 Array 类型，由**Rename**对象组成
-
+- patharr：为 Array 类型，由**PathRename**对象组成:
 
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
@@ -3062,8 +3061,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 移动文件，权限仅限于token所获得的路径下`/apps/your_app_dir/`
 
 **参数说明：**
-- patharr：为 Array 类型，由**Copy**对象组成
-
+- patharr：为 Array 类型，由**Path**对象组成:
 
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
@@ -3167,8 +3165,8 @@ total | int | 空间总大小，单位字节
 onsuccess | function(data){} | 操作成功，返回文件列表，由Meta对象组成的数组
 onfail | function(err){} | 操作失败，返回错误码信息
 
-#### restoreRecycle ####
-	restoreRecycle(filesukarr,options)
+#### restore####
+	restore(filesukarr,options)
 **功能描述：**
 回收站还原文件，权限仅限于token所获得的路径下`/apps/your_app_dir/`
 **参数说明：**
