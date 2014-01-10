@@ -2722,7 +2722,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 - 用户登录授权得到密钥（token）
 - 使用密钥（token）执行初始化函数initPCS
 
-** 方法： **
+**方法： **
 
 - initPCS(token,options)
 - makeDir(path,options)
@@ -3012,7 +3012,7 @@ height | int | 缩略图高度，单位像素
 移动文件，权限仅限于token所获得的路径下`/apps/your_app_dir/`
 
 **参数说明：**
-- patharr：为 Array 类型，由** Move **对象组成
+- patharr：为 Array 类型，由**Move **对象组成
 
 
 参数 | 类型 | 描述
@@ -3036,7 +3036,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 重命名文件，权限仅限于token所获得的路径下`/apps/your_app_dir/`
 
 **参数说明：**
-- patharr：为 Array 类型，由** Rename **对象组成
+- patharr：为 Array 类型，由**Rename **对象组成
 
 
 参数 | 类型 | 描述
@@ -3060,7 +3060,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 移动文件，权限仅限于token所获得的路径下`/apps/your_app_dir/`
 
 **参数说明：**
-- patharr：为 Array 类型，由** Copy **对象组成
+- patharr：为 Array 类型，由**Copy **对象组成
 
 
 参数 | 类型 | 描述
@@ -3283,7 +3283,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 list | Array | 由Meta对象组成
 cursor | string | 供函数diff对比的句柄
 
-** Meta对象： **
+**Meta对象： **
 
 
 参数 | 类型 | 描述
