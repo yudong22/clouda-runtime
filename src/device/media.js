@@ -219,7 +219,7 @@ define("device",function(module) {
         if (clouda.RUNTIME === clouda.RUNTIMES.KUANG){
             switch(operator){
                 case "startRecord":
-                    BLightApp.startRecording("("+options.onsuccess.toString()+")",
+                    BLightApp.startRecording(link,"("+options.onsuccess.toString()+")",
                             "("+options.onfail.toString()+")");
                     break;
                 case "stopRecord":
@@ -231,7 +231,7 @@ define("device",function(module) {
                             "("+options.onfail.toString()+")");
                     break;
                 case "stop":
-                    BLightApp.stopAudio(link,'lightapp.device.AUDIO_TYPE.STOP',"("+options.onsuccess.toString()+")",
+                    BLightApp.playAudio(link,'lightapp.device.AUDIO_TYPE.STOP',"("+options.onsuccess.toString()+")",
                             "("+options.onfail.toString()+")");
                     break;
                 default:

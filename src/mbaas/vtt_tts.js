@@ -33,6 +33,13 @@ define("mbaas",function(module) {
         SEARCH:0,
         INPUT:1
     };
+    var mykey = {};
+    
+    
+    vtt.init = function(ak,sk){
+        mykey.ak = ak;
+        mykey.sk = sk;
+    };
     
     /**
      * 启动识别
@@ -50,14 +57,28 @@ define("mbaas",function(module) {
      * @returns null
      * 
      */
+    
     vtt.showDialog = function(options){
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
-             BLightApp.launchSeniorVoiceRecognition(JSON.stringify({
+             // if (!options.uuid){
+                 // options.uuid = 'uuid-uuid';
+             // }
+             if (!options.speechMode){
+                 options.speechMode = '0';
+             }else{
+                 options.speechMode = ''+options.speechMode;
+             }
+             // if (!options.filename){
+                 // options.filename = '2000000.wav';
+             // }
+            BLightApp.launchSeniorVoiceRecognition(JSON.stringify({
                 config : {
-                    pid : '789',
-                    enablePower : 'false',
-                    key : 'XXX',
-                    uuid : 'jf-xx-xx-jj-uu-id'
+                    uuid : 'uuid-uuid',
+                    enablePower: 'true',
+                    key: mykey.ak,
+                    secKey: mykey.sk,
+                    speechMode: options.speechMode,
+                    filename: '2000000.wav'
                 }
             }),"("+options.onsuccess.toString()+")",
                             "("+options.onfail.toString()+")");
