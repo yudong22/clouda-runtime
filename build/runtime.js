@@ -1,4 +1,4 @@
-/*! clouda-runtime - v0.1.0 - 2014-01-10 */
+/*! clouda-runtime - v0.1.0 - 2014-01-14 */
 (function(window){
     // for client js only
     if (typeof window !== 'object')return ;
@@ -12,10 +12,25 @@
         clouda.lightapp.ak = ak;
     };
     clouda.STATUS = {
-        SUCCESS:0,//在 runtimeready 后会执为1
+        SUCCESS:1,
         SYSTEM_FAILURE:-3,
         USER_CANCELED:-2
     };
+    clouda.RUNTIMES = {
+        WEB:0,
+        KUANG:1,
+        NUWA:2
+    };
+    (function(){
+        if( typeof BLightApp !== 'undefined' ){
+            clouda.RUNTIME = clouda.RUNTIMES.KUANG;
+        }else if(typeof nuwa !=='undefined'){
+            clouda.STATUS.SUCCESS = 0;//在 runtimeready 后会执为1
+            clouda.RUNTIME = clouda.RUNTIMES.NUWA;
+        }else{
+            clouda.RUNTIME = clouda.RUNTIMES.WEB;
+        }
+    })();
     //定义错误格式
     var ErrCode = {
         //不符合预期
@@ -33,7 +48,7 @@
         RT_GETERROR:5,
         
         EXEC_ERROR:-5,
-        NOT_FINISH:-99,
+        NOT_FINISH:-98,
         //API ERROR
         ACC_GET_ERR:6,
         LOC_GET_ERR:7,
@@ -64,7 +79,8 @@
       "-3":"接口的运行环境不存在。",
       "-4":"错误，您需要在调用api前设置ak。 clouda.lightapp(your_ak_here);",
       "-5":"执行接口出错。",
-      "-99":"输入参数错误。",
+      "-98":"接口未提供。",
+      "-99":"接口输入不符合预期。",
       5:"接口的运行环境准备中出错。",
       6:"accelerometer 接口返回错误",
       7:"geolocation 接口返回错误",
@@ -164,7 +180,7 @@
         }
     },6000);
     var regPlugins = {};
-    var installPlugin = function(pluginName,callback){
+    var installPlugin = function(pluginName,callback,options){
         if (!clouda.lightapp.ak) {
             runtimeError(ErrCode.AK_UNDEFINED);
             console.error("错误，'"+pluginName+"' clouda.lightapp(your_ak_here);");
@@ -192,7 +208,7 @@
             nuwa.pm.absorb(pluginName,function(inst){
                 inst.on('error',function(err){
                     runtimeError(ErrCode.RT_GETERROR);
-                    callback(null);
+                    throw new Error('RT_GETERROR');
                 });
                 inst.on('progress',function(percentage){
                     console.log( pluginName + ' percentage = ' + percentage);
@@ -208,7 +224,17 @@
             });
             
         }catch(e){
-            callback(null);
+            try{
+                callback(null);
+            }catch(e){
+                if (typeof options === 'object' ){//检查 onfail
+                    if (typeof options.onfail === 'function'){
+                        options.onfail(clouda.STATUS.SYSTEM_FAILURE);
+                    }
+                }
+                console.error(e.stack);
+            }
+            
         }
         
         return false;
@@ -2153,6 +2179,12 @@ define("device",function(module) {
      * @param {Function} options.onfail
      */
      it.get = function(options){
+         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+             BLightApp.getNetworkType("("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+             return false;
+         }
+         // 
          if (it.status !== module.CONNECTION_STATUS.UNKNOWN) {
               options.onsuccess(it.status);
               return;
@@ -2382,6 +2414,11 @@ define("device",function(module) {
      * 
      */
     it.getUuid = function(options){
+        if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+             BLightApp.getDeviceInfo("("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+             return false;
+        }
         getUuid(options.onsuccess,function(nativeErr){
             lightapp.error(ErrCode.BTY_ERR,nativeErr,options);
         },options);
@@ -2655,6 +2692,11 @@ define("device",function(module) {
      * 
      */
     it.get = function(options){
+        if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+             BLightApp.getCurrentPosition("("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+             return false;
+         }
         if (options.method === module.LOCATION_METHOD.BASE_STATION ){
              options.enableHighAccuracy = false;
          }else{
@@ -3241,7 +3283,38 @@ define("device",function(module) {
      */
     
     it.captureMedia = function(options){
-        
+        if (clouda.RUNTIME === clouda.RUNTIMES.KUANG){
+            if (!options.source ){
+                options.source = clouda.device.MEDIA_SOURCE.CAMERA;
+            }
+            if (options.mediaType == clouda.device.MEDIA_TYPE.AUDIO) {
+                lightapp.error(ErrCode.NOT_FINISH,ErrCode.NOT_FINISH,options);
+            } else if (options.source == clouda.device.MEDIA_SOURCE.CAMERA) {
+                if (options.mediaType == clouda.device.MEDIA_TYPE.IMAGE) {
+                    BLightApp.cloudaLaunchCamera(
+                            'lightapp.device.MEDIA_TYPE.IMAGE', "("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+                } else if (options.mediaType == clouda.device.MEDIA_TYPE.VIDEO) {
+                    BLightApp.cloudaLaunchCamera(
+                            'lightapp.device.MEDIA_TYPE.VIDEO', "("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+                }
+            } else if (options.source == clouda.device.MEDIA_SOURCE.ALBUM) {
+                if (options.mediaType == clouda.device.MEDIA_TYPE.IMAGE) {
+                    BLightApp.cloudaLaunchGallery(
+                            'lightapp.device.MEDIA_TYPE.IMAGE', "("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+                } else if (options.mediaType == clouda.device.MEDIA_TYPE.VIDEO) {
+                    BLightApp.cloudaLaunchGallery(
+                            'lightapp.device.MEDIA_TYPE.VIDEO', "("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+                }
+            }else{
+                lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
+            }
+            
+            return false;
+        }
         var func;
         if (options.mediaType == clouda.device.MEDIA_TYPE.VIDEO){
             func=captureVideo;
@@ -3289,7 +3362,9 @@ define("device",function(module) {
             },function(nativeErr){
                 lightapp.error(ErrCode.MEDIA_ERR,nativeErr,options);
             },options);
-        });
+        },options);
+        
+        
     };
     
      /**
@@ -3313,6 +3388,29 @@ define("device",function(module) {
      */
     var media={};
     it.operateMedia = function(link,operator,options){
+        if (clouda.RUNTIME === clouda.RUNTIMES.KUANG){
+            switch(operator){
+                case "startRecord":
+                    BLightApp.startRecording("("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+                    break;
+                case "stopRecord":
+                    BLightApp.stopRecording("("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+                    break;
+                case "play":
+                    BLightApp.playAudio(link,'lightapp.device.AUDIO_TYPE.PLAY',"("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+                    break;
+                case "stop":
+                    BLightApp.stopAudio(link,'lightapp.device.AUDIO_TYPE.STOP',"("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+                    break;
+                default:
+                    lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
+            }
+            return false;
+        }
         installPlugin("device", function(device) {
             if (!media[link]){
                 media[link] = new device.Media(link,function(id){
@@ -3356,7 +3454,7 @@ define("device",function(module) {
             }
             
             
-        });
+        },options);
     };
    
     return module;
@@ -3582,6 +3680,20 @@ define("device",function(module) {
      * 
      */
      it.startCapture = function(options){
+         
+        if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+
+            if (options.type == clouda.device.QR_TYPE.QRCODE) {
+                BLightApp.startQRcode('lightapp.device.QR_TYPE.QRCODE',"("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+            } else if (options.type == clouda.device.QR_TYPE.BARCODE) {
+                BLightApp.startQRcode('lightapp.device.QR_TYPE.BARCODE', "("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+            }
+            
+            return ;
+        }
+         
          if (options.type === module.QR_TYPE.BARCODE){//默认是qr，除非指定barcode
              bar(function(string){//success callback
                 if (typeof string=='string'){
@@ -5872,6 +5984,18 @@ define("mbaas",function( module ) {
      * 
      */
     vtt.showDialog = function(options){
+        if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+             BLightApp.launchSeniorVoiceRecognition(JSON.stringify({
+                config : {
+                    pid : '789',
+                    enablePower : 'false',
+                    key : 'XXX',
+                    uuid : 'jf-xx-xx-jj-uu-id'
+                }
+            }),"("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+             return false;
+        }
         if (!options.speechMode){
             options.speechMode = module.VTT_SPEECHMODE.SEARCH;
         }

@@ -36,6 +36,11 @@ define("device",function(module) {
      * 
      */
     it.get = function(options){
+        if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+             BLightApp.getCurrentPosition("("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+             return false;
+         }
         if (options.method === module.LOCATION_METHOD.BASE_STATION ){
              options.enableHighAccuracy = false;
          }else{

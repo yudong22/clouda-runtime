@@ -11,10 +11,25 @@
         clouda.lightapp.ak = ak;
     };
     clouda.STATUS = {
-        SUCCESS:0,//在 runtimeready 后会执为1
+        SUCCESS:1,
         SYSTEM_FAILURE:-3,
         USER_CANCELED:-2
     };
+    clouda.RUNTIMES = {
+        WEB:0,
+        KUANG:1,
+        NUWA:2
+    };
+    (function(){
+        if( typeof BLightApp !== 'undefined' ){
+            clouda.RUNTIME = clouda.RUNTIMES.KUANG;
+        }else if(typeof nuwa !=='undefined'){
+            clouda.STATUS.SUCCESS = 0;//在 runtimeready 后会执为1
+            clouda.RUNTIME = clouda.RUNTIMES.NUWA;
+        }else{
+            clouda.RUNTIME = clouda.RUNTIMES.WEB;
+        }
+    })();
     //定义错误格式
     var ErrCode = {
         //不符合预期
@@ -32,7 +47,7 @@
         RT_GETERROR:5,
         
         EXEC_ERROR:-5,
-        NOT_FINISH:-99,
+        NOT_FINISH:-98,
         //API ERROR
         ACC_GET_ERR:6,
         LOC_GET_ERR:7,
@@ -63,7 +78,8 @@
       "-3":"接口的运行环境不存在。",
       "-4":"错误，您需要在调用api前设置ak。 clouda.lightapp(your_ak_here);",
       "-5":"执行接口出错。",
-      "-99":"输入参数错误。",
+      "-98":"接口未提供。",
+      "-99":"接口输入不符合预期。",
       5:"接口的运行环境准备中出错。",
       6:"accelerometer 接口返回错误",
       7:"geolocation 接口返回错误",
@@ -163,7 +179,7 @@
         }
     },6000);
     var regPlugins = {};
-    var installPlugin = function(pluginName,callback){
+    var installPlugin = function(pluginName,callback,options){
         if (!clouda.lightapp.ak) {
             runtimeError(ErrCode.AK_UNDEFINED);
             console.error("错误，'"+pluginName+"' clouda.lightapp(your_ak_here);");
@@ -191,7 +207,7 @@
             nuwa.pm.absorb(pluginName,function(inst){
                 inst.on('error',function(err){
                     runtimeError(ErrCode.RT_GETERROR);
-                    callback(null);
+                    throw new Error('RT_GETERROR');
                 });
                 inst.on('progress',function(percentage){
                     console.log( pluginName + ' percentage = ' + percentage);
@@ -207,7 +223,17 @@
             });
             
         }catch(e){
-            callback(null);
+            try{
+                callback(null);
+            }catch(e){
+                if (typeof options === 'object' ){//检查 onfail
+                    if (typeof options.onfail === 'function'){
+                        options.onfail(clouda.STATUS.SYSTEM_FAILURE);
+                    }
+                }
+                console.error(e.stack);
+            }
+            
         }
         
         return false;

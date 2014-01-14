@@ -111,7 +111,38 @@ define("device",function(module) {
      */
     
     it.captureMedia = function(options){
-        
+        if (clouda.RUNTIME === clouda.RUNTIMES.KUANG){
+            if (!options.source ){
+                options.source = clouda.device.MEDIA_SOURCE.CAMERA;
+            }
+            if (options.mediaType == clouda.device.MEDIA_TYPE.AUDIO) {
+                lightapp.error(ErrCode.NOT_FINISH,ErrCode.NOT_FINISH,options);
+            } else if (options.source == clouda.device.MEDIA_SOURCE.CAMERA) {
+                if (options.mediaType == clouda.device.MEDIA_TYPE.IMAGE) {
+                    BLightApp.cloudaLaunchCamera(
+                            'lightapp.device.MEDIA_TYPE.IMAGE', "("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+                } else if (options.mediaType == clouda.device.MEDIA_TYPE.VIDEO) {
+                    BLightApp.cloudaLaunchCamera(
+                            'lightapp.device.MEDIA_TYPE.VIDEO', "("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+                }
+            } else if (options.source == clouda.device.MEDIA_SOURCE.ALBUM) {
+                if (options.mediaType == clouda.device.MEDIA_TYPE.IMAGE) {
+                    BLightApp.cloudaLaunchGallery(
+                            'lightapp.device.MEDIA_TYPE.IMAGE', "("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+                } else if (options.mediaType == clouda.device.MEDIA_TYPE.VIDEO) {
+                    BLightApp.cloudaLaunchGallery(
+                            'lightapp.device.MEDIA_TYPE.VIDEO', "("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+                }
+            }else{
+                lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
+            }
+            
+            return false;
+        }
         var func;
         if (options.mediaType == clouda.device.MEDIA_TYPE.VIDEO){
             func=captureVideo;
@@ -159,7 +190,9 @@ define("device",function(module) {
             },function(nativeErr){
                 lightapp.error(ErrCode.MEDIA_ERR,nativeErr,options);
             },options);
-        });
+        },options);
+        
+        
     };
     
      /**
@@ -183,6 +216,29 @@ define("device",function(module) {
      */
     var media={};
     it.operateMedia = function(link,operator,options){
+        if (clouda.RUNTIME === clouda.RUNTIMES.KUANG){
+            switch(operator){
+                case "startRecord":
+                    BLightApp.startRecording("("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+                    break;
+                case "stopRecord":
+                    BLightApp.stopRecording("("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+                    break;
+                case "play":
+                    BLightApp.playAudio(link,'lightapp.device.AUDIO_TYPE.PLAY',"("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+                    break;
+                case "stop":
+                    BLightApp.stopAudio(link,'lightapp.device.AUDIO_TYPE.STOP',"("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+                    break;
+                default:
+                    lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
+            }
+            return false;
+        }
         installPlugin("device", function(device) {
             if (!media[link]){
                 media[link] = new device.Media(link,function(id){
@@ -226,7 +282,7 @@ define("device",function(module) {
             }
             
             
-        });
+        },options);
     };
    
     return module;

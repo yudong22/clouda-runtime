@@ -35,6 +35,12 @@ define("device",function(module) {
      * @param {Function} options.onfail
      */
      it.get = function(options){
+         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+             BLightApp.getNetworkType("("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+             return false;
+         }
+         // 
          if (it.status !== module.CONNECTION_STATUS.UNKNOWN) {
               options.onsuccess(it.status);
               return;

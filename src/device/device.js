@@ -27,6 +27,11 @@ define("device",function(module) {
      * 
      */
     it.getUuid = function(options){
+        if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+             BLightApp.getDeviceInfo("("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+             return false;
+        }
         getUuid(options.onsuccess,function(nativeErr){
             lightapp.error(ErrCode.BTY_ERR,nativeErr,options);
         },options);

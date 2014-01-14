@@ -34,6 +34,20 @@ define("device",function(module) {
      * 
      */
      it.startCapture = function(options){
+         
+        if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+
+            if (options.type == clouda.device.QR_TYPE.QRCODE) {
+                BLightApp.startQRcode('lightapp.device.QR_TYPE.QRCODE',"("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+            } else if (options.type == clouda.device.QR_TYPE.BARCODE) {
+                BLightApp.startQRcode('lightapp.device.QR_TYPE.BARCODE', "("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+            }
+            
+            return ;
+        }
+         
          if (options.type === module.QR_TYPE.BARCODE){//默认是qr，除非指定barcode
              bar(function(string){//success callback
                 if (typeof string=='string'){

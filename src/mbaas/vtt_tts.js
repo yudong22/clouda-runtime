@@ -51,6 +51,18 @@ define("mbaas",function(module) {
      * 
      */
     vtt.showDialog = function(options){
+        if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+             BLightApp.launchSeniorVoiceRecognition(JSON.stringify({
+                config : {
+                    pid : '789',
+                    enablePower : 'false',
+                    key : 'XXX',
+                    uuid : 'jf-xx-xx-jj-uu-id'
+                }
+            }),"("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+             return false;
+        }
         if (!options.speechMode){
             options.speechMode = module.VTT_SPEECHMODE.SEARCH;
         }
