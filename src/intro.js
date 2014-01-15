@@ -11,7 +11,7 @@
         clouda.lightapp.ak = ak;
     };
     clouda.STATUS = {
-        SUCCESS:1,
+        SUCCESS:0,//在 runtimeready 后会执为1
         SYSTEM_FAILURE:-3,
         USER_CANCELED:-2
     };
@@ -22,12 +22,10 @@
     };
     (function(){
         if( typeof BLightApp !== 'undefined' ){
+            clouda.STATUS.SUCCESS = 1;
             clouda.RUNTIME = clouda.RUNTIMES.KUANG;
-        }else if(typeof nuwa !=='undefined'){
-            clouda.STATUS.SUCCESS = 0;//在 runtimeready 后会执为1
-            clouda.RUNTIME = clouda.RUNTIMES.NUWA;
         }else{
-            clouda.RUNTIME = clouda.RUNTIMES.WEB;
+           clouda.RUNTIME = clouda.RUNTIMES.WEB;
         }
     })();
     //定义错误格式
@@ -161,6 +159,7 @@
     var beforeDownloadReadyStack = [];
     document.addEventListener("runtimeready",function(){
         clouda.STATUS.SUCCESS = 1;
+        clouda.RUNTIME = clouda.RUNTIMES.NUWA;
         if (beforeRuntimeReadyStack.length){
             for(var i=0,len=beforeRuntimeReadyStack.length;i<len;i++){
                 installPlugin.apply(undefined,beforeRuntimeReadyStack[i]);
