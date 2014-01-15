@@ -1116,7 +1116,7 @@ options: 为object，参数说明同find(field, options)中的options说明。
 			<td>文件的MIME类型</td>  
 		</tr>
         <tr>
-			<td>lastModified</td>
+			<td>lastModifiedDate</td>
 			<td>date</td>            
 			<td>文件最后修改时间</td>  
 		</tr>
@@ -1538,7 +1538,7 @@ options：是一个object类型，其中包含以下参数：
 			<td>文件的MIME类型</td>  
 		</tr>
         <tr>
-			<td>lastModified</td>
+			<td>lastModifiedDate</td>
 			<td>date</td>            
 			<td>文件最后修改时间</td>  
 		</tr>
@@ -2764,7 +2764,8 @@ onfail | function(err){} | 操作失败，返回错误码信息
 通过帐号登录（Account）获得的token，初始化PCS
 
 **参数说明：**
-- token：为 string 类型，
+- token：为 string 类型，
+
 - options：为 object 类型，其中包括以下参数：
 
 参数 | 类型 | 描述
@@ -2845,7 +2846,9 @@ total | int | 空间总大小，单位字节
 **功能描述：**
 下载文件到本地，权限仅限于token所获得的路径下`/apps/your_app_dir/`
 **参数说明：**
-- serverpath：为 string或Array 类型，位于个人云存储的绝对路径，若是Array类型，则自动打包下载- localpath：为 string 类型，位于本地的绝对路径- options：为 object 类型，其中包括以下参数：
+- serverpath：为 string或Array 类型，位于个人云存储的绝对路径，若是Array类型，则自动打包下载
+- localpath：为 string 类型，位于本地的绝对路径
+- options：为 object 类型，其中包括以下参数：
 
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
@@ -2980,7 +2983,9 @@ onfail | function(err){} | 操作失败，返回错误码信息
 
 **参数说明：**
 - serverpath：为 string 类型，位于个人云存储的绝对路径
-- key：为 string 类型，搜索关键字- recursive：为 boolean 类型，是否递归查询- options：为 object 类型，其中包括以下参数：
+- key：为 string 类型，搜索关键字
+- recursive：为 boolean 类型，是否递归查询
+- options：为 object 类型，其中包括以下参数：
 
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
@@ -3120,7 +3125,8 @@ onfail | function(err){} | 操作失败，返回错误码信息
 云端匹配，权限仅限于token所获得的路径下`/apps/your_app_dir/`
 
 **参数说明：**
-- localpath：为 string 类型，位于本地的绝对路径- serverpath：为 string 类型，位于个人云存储的绝对路径
+- localpath：为 string 类型，位于本地的绝对路径
+- serverpath：为 string 类型，位于个人云存储的绝对路径
 - options：为 object 类型，其中包括以下参数：
 
 参数 | 类型 | 描述
@@ -3136,7 +3142,8 @@ onfail | function(err){} | 操作失败，返回错误码信息
 云端匹配文件并上传，权限仅限于token所获得的路径下`/apps/your_app_dir/`
 
 **参数说明：**
-- localpath：为 string 类型，位于本地的绝对路径- serverpath：为 string 类型，位于个人云存储的绝对路径
+- localpath：为 string 类型，位于本地的绝对路径
+- serverpath：为 string 类型，位于个人云存储的绝对路径
 - options：为 object 类型，其中包括以下参数：
 
 参数 | 类型 | 描述
@@ -3170,7 +3177,8 @@ onfail | function(err){} | 操作失败，返回错误码信息
 **功能描述：**
 回收站还原文件，权限仅限于token所获得的路径下`/apps/your_app_dir/`
 **参数说明：**
-- filesukarr：为 Array 类型，由fsId字符串组成- options：为 object 类型，其中包括以下参数：
+- filesukarr：为 Array 类型，由fsId字符串组成
+- options：为 object 类型，其中包括以下参数：
 
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
@@ -3195,7 +3203,8 @@ onfail | function(err){} | 操作失败，返回错误码信息
 **功能描述：**
 启动离线下载任务，权限仅限于token所获得的路径下`/apps/your_app_dir/`
 **参数说明：**
-- url：为 string 类型，外网地址- serverpath：为 string 类型，位于个人云存储的绝对路径
+- url：为 string 类型，外网地址
+- serverpath：为 string 类型，位于个人云存储的绝对路径
 - options：为 object 类型，其中包括以下参数：
 
 参数 | 类型 | 描述
@@ -3265,7 +3274,8 @@ onfail | function(err){} | 操作失败，返回错误码信息
 	diff(cursor,options)
 **功能描述：**
 历史版本库变更的查询管理
-功能第一次调用时，传入的参数为null。后续调用，需要使用前一次调用返回的data.cursor作为参数传入查询，两次diff调用之间，有哪些操作被执行了
+功能第一次调用时，传入的参数为null。后续调用，需要使用前一次调用返回的data.cursor作为参数传入
+查询，两次diff调用之间，有哪些操作被执行了
 **参数说明：**
 - serverpath：为 string 类型，位于个人云存储的绝对路径
 - options：为 object 类型，其中包括以下参数：
