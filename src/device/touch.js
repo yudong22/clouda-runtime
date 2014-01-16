@@ -104,17 +104,21 @@ define("touch",function(module, clouda) {
                 detail: detail
             };
 
-            if (typeof CustomEvent !== 'undefined') {
-                e = new CustomEvent(evt, opt);
-                if (el) {
-                    el.dispatchEvent(e);
+            try{
+                if (typeof CustomEvent !== 'undefined') {
+                    e = new CustomEvent(evt, opt);
+                    if (el) {
+                        el.dispatchEvent(e);
+                    }
+                } else {
+                    e = document.createEvent("CustomEvent");
+                    e.initCustomEvent(evt, true, true, detail);
+                    if (el) {
+                        el.dispatchEvent(e);
+                    }
                 }
-            } else {
-                e = document.createEvent("CustomEvent");
-                e.initCustomEvent(evt, true, true, detail);
-                if (el) {
-                    el.dispatchEvent(e);
-                }
+            }catch(err){
+                console.error("touch not support");
             }
 
         };

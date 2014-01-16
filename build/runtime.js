@@ -1,4 +1,4 @@
-/*! clouda-runtime - v0.1.0 - 2014-01-15 */
+/*! clouda-runtime - v0.1.0 - 2014-01-16 */
 (function(window){
     // for client js only
     if (typeof window !== 'object')return ;
@@ -3999,17 +3999,21 @@ define("device",function(module) {
                 detail: detail
             };
 
-            if (typeof CustomEvent !== 'undefined') {
-                e = new CustomEvent(evt, opt);
-                if (el) {
-                    el.dispatchEvent(e);
+            try{
+                if (typeof CustomEvent !== 'undefined') {
+                    e = new CustomEvent(evt, opt);
+                    if (el) {
+                        el.dispatchEvent(e);
+                    }
+                } else {
+                    e = document.createEvent("CustomEvent");
+                    e.initCustomEvent(evt, true, true, detail);
+                    if (el) {
+                        el.dispatchEvent(e);
+                    }
                 }
-            } else {
-                e = document.createEvent("CustomEvent");
-                e.initCustomEvent(evt, true, true, detail);
-                if (el) {
-                    el.dispatchEvent(e);
-                }
+            }catch(err){
+                console.error("touch not support");
             }
 
         };
