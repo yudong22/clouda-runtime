@@ -36,9 +36,10 @@ define("mbaas",function(module) {
     var mykey = {};
     
     
-    vtt.init = function(ak,sk){
+    vtt.init = function(ak,sk,pid){
         mykey.ak = ak;
         mykey.sk = sk;
+        mykey.pid = '' + pid ;
     };
     
     /**
@@ -73,6 +74,7 @@ define("mbaas",function(module) {
              // }
             BLightApp.launchSeniorVoiceRecognition(JSON.stringify({
                 config : {
+                    pid : mykey.pid,
                     uuid : 'uuid-uuid',
                     enablePower: 'true',
                     key: mykey.ak,

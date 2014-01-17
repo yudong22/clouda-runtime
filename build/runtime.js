@@ -1,4 +1,4 @@
-/*! clouda-runtime - v0.1.0 - 2014-01-16 */
+/*! clouda-runtime - v0.1.0 - 2014-01-17 */
 (function(window){
     // for client js only
     if (typeof window !== 'object')return ;
@@ -5972,9 +5972,10 @@ define("mbaas",function( module ) {
     var mykey = {};
     
     
-    vtt.init = function(ak,sk){
+    vtt.init = function(ak,sk,pid){
         mykey.ak = ak;
         mykey.sk = sk;
+        mykey.pid = '' + pid ;
     };
     
     /**
@@ -6009,6 +6010,7 @@ define("mbaas",function( module ) {
              // }
             BLightApp.launchSeniorVoiceRecognition(JSON.stringify({
                 config : {
+                    pid : mykey.pid,
                     uuid : 'uuid-uuid',
                     enablePower: 'true',
                     key: mykey.ak,
