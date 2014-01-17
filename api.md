@@ -3598,10 +3598,25 @@ options：为object类型，其中包括以下参数：
     clouda.mbaas.vtt
 
 语音识别服务
+开发轻应用前，需要先申请语音服务的ak，sk和pid，并执行初始化init方法
 
 **方法：**
 
+- init(ak,sk,pid)
 - showDialog(options)
+
+#### init ####
+	init(ak,sk,pid)
+
+**功能描述：**
+
+调起帐号登出功能，成功返回成功状态吗
+
+**参数说明：**
+
+- ak ：所申请的语音服务的ak
+- sk ：所申请的语音服务的sk
+- pid：所申请的语音服务的pid
 
 #### showDialog ####
     showDialog(options)
