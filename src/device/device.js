@@ -11,12 +11,12 @@ define("device",function(module) {
      */
     
     var getUuid = new delegateClass("device","getUuid");
-    
+    var getHostAppKey = new  delegateClass("device","device","getHostAppKey");
    
     /**
      * 获取uuid
      *
-     * @function startListen
+     * @function getUuid
      * @memberof clouda.device.device
      * @instance
      *
@@ -33,9 +33,27 @@ define("device",function(module) {
              return false;
         }
         getUuid(options.onsuccess,function(nativeErr){
-            lightapp.error(ErrCode.BTY_ERR,nativeErr,options);
+            lightapp.error(ErrCode.DEVICE_ERR,nativeErr,options);
         },options);
     };
     
+    /**
+     * 获取 hostappkey
+     *
+     * @function getHostAppKey
+     * @memberof clouda.device.device
+     * @instance
+     *
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调
+     * @param {function} [options.onfail] 失败的回调
+     * @returns null
+     * 
+     */
+    it.getHostAppKey = function(options){
+        getHostAppKey(options.onsuccess,function(nativeErr){
+            lightapp.error(ErrCode.DEVICE_ERR,nativeErr,options);
+        },options);
+    };
     return it;
 });

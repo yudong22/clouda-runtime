@@ -66,7 +66,8 @@
         GYRO_ERR:22,
         MAP_ERROR:23,
         LOGIN_ERROR:24,
-        PCS_ERROR:25
+        PCS_ERROR:25,
+        DEVICE_ERR:26
         
     };
     var errorMessage = {
