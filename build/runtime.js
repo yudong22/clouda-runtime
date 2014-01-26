@@ -1,4 +1,4 @@
-/*! clouda-runtime - v0.1.0 - 2014-01-21 */
+/*! clouda-runtime - v0.1.0 - 2014-01-26 */
 (function(window){
     // for client js only
     if (typeof window !== 'object')return ;
@@ -68,7 +68,8 @@
         MAP_ERROR:23,
         LOGIN_ERROR:24,
         PCS_ERROR:25,
-        DEVICE_ERR:26
+        DEVICE_ERR:26,
+        PAY_ERROR:27,
         
     };
     var errorMessage = {
@@ -5248,6 +5249,64 @@ define("mbaas",function( module ) {
     module.share = {};
     
     return module;
+    
+});define("mbaas",function( module ) {
+    var lightapp = this;
+    //deal with clouda.mbaas
+    var it = module.pay = {};
+    
+    var init = new delegateClass("lightpay","init");
+    var doPay = new delegateClass("lightpay","doPay");
+    
+    /**
+     * init
+     *
+     * @function init
+     * @memberof clouda.mbaas.pay
+     * @instance
+     *
+     * @param {string} parter_id 初始化parter_id
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调
+     * @param {function} [options.onfail] 失败的回调
+     * @returns null
+     * 
+     */
+     it.init = function(parter_id,options){
+         if (!parter_id || typeof parter_id !='string'){
+             lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
+             return false;
+         }
+         init(options.onsuccess,function(nativeErr){
+            lightapp.error(ErrCode.PAY_ERROR,nativeErr,options);
+         },parter_id,options);
+         
+        
+     };
+    /**
+     * pay
+     *
+     * @function login
+     * @memberof clouda.mbaas.login
+     * @instance
+     *
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调
+     * @param {function} [options.onfail] 失败的回调
+     * @param {string} [options.orderInfo] 订单信息
+     * @param {boolen} [options.showdDialog] 展示加载中的dialog,默认true
+     * @returns null
+     * 
+     */
+     it.pay = function(options){
+         if (!options.showdDialog){
+             options.showdDialog = true;
+         }
+         doPay(options.onsuccess,function(nativeErr){
+            lightapp.error(ErrCode.PAY_ERROR,nativeErr,options);
+         },options.orderInfo,options.showdDialog,options);
+        
+     };
     
 });define("mbaas",function( module ) {
     var lightapp = this;

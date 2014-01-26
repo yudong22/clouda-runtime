@@ -67,7 +67,8 @@
         MAP_ERROR:23,
         LOGIN_ERROR:24,
         PCS_ERROR:25,
-        DEVICE_ERR:26
+        DEVICE_ERR:26,
+        PAY_ERROR:27,
         
     };
     var errorMessage = {
