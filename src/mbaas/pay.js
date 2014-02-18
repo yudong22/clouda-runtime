@@ -4,7 +4,7 @@ define("mbaas",function( module ) {
     var it = module.pay = {};
     
     var init = new delegateClass("lightpay","init");
-    var doPay = new delegateClass("lightpay","doPay");
+    var dopay = new delegateClass("lightpay","dopay");
     
     /**
      * init
@@ -50,7 +50,7 @@ define("mbaas",function( module ) {
          if (!options.showdDialog){
              options.showdDialog = true;
          }
-         doPay(options.onsuccess,function(nativeErr){
+         dopay(options.onsuccess,function(nativeErr){
             lightapp.error(ErrCode.PAY_ERROR,nativeErr,options);
          },options.orderInfo,options.showdDialog,options);
         
