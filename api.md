@@ -2201,6 +2201,7 @@ options：是一个object类型，其中包含以下参数：
 - 帐号登录（Account）
 - 百度地图（Map）
 - 播放器（MediaPlayer）
+- 轻支付（Pay）
 - 个人云存储（Pcs）
 - 推送服务（Push） 
 - 文本语音服务（TTS）
@@ -2715,6 +2716,33 @@ onfail | function(err){} | 操作失败，返回错误码信息
 		</tr>
     </tbody>
 </table>
+
+### 轻支付(PAY) ###
+    clouda.mbaas.pay
+    
+PAY接口提供支付功能。
+
+**方法：**
+
+- init(parter_id,options)
+- pay(path,options)
+
+#### init####
+	init(parter_id,options)
+
+**功能描述：**
+
+传入parter_id ，初始化PCS
+
+**参数说明：**
+- parter_id：为 string 类型，初始化合作方id
+- options：为 object 类型，其中包括以下参数：
+
+参数 | 类型 | 描述
+------------ | ------------- | ------------
+onsuccess | function(data){} | 操作成功，返回登录用户信息
+onfail | function(err){} | 操作失败，返回错误码信息
+
 
 ### 个人云存储(PCS) ###
     clouda.mbaas.pcs
