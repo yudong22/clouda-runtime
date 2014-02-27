@@ -17,7 +17,7 @@
     };
     clouda.RUNTIMES = {
         WEB:0,
-        KUANG:1,
+        KUANG:1,//高优先级
         NUWA:2
     };
     (function(){
@@ -161,7 +161,10 @@
     var beforeDownloadReadyStack = [];
     document.addEventListener("runtimeready",function(){
         clouda.STATUS.SUCCESS = 1;
-        clouda.RUNTIME = clouda.RUNTIMES.NUWA;
+        if (clouda.RUNTIME != clouda.RUNTIME.KUANG){//高优先级
+            clouda.RUNTIME = clouda.RUNTIMES.NUWA;
+        }
+        
         if (beforeRuntimeReadyStack.length){
             for(var i=0,len=beforeRuntimeReadyStack.length;i<len;i++){
                 installPlugin.apply(undefined,beforeRuntimeReadyStack[i]);

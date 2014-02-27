@@ -61,26 +61,26 @@ define("mbaas",function(module) {
     
     vtt.showDialog = function(options){
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
-             // if (!options.uuid){
-                 // options.uuid = 'uuid-uuid';
-             // }
+             if (!options.uuid){
+                 options.uuid = 'uuid-uuid';
+             }
              if (!options.speechMode){
                  options.speechMode = '0';
              }else{
                  options.speechMode = ''+options.speechMode;
              }
-             // if (!options.filename){
-                 // options.filename = '2000000.wav';
-             // }
+             if (!options.filename){
+                 options.filename = '2000000.wav';
+             }
             BLightApp.launchSeniorVoiceRecognition(JSON.stringify({
                 config : {
                     pid : mykey.pid,
-                    uuid : 'uuid-uuid',
+                    uuid : options.uuid,
                     enablePower: 'true',
                     key: mykey.ak,
                     secKey: mykey.sk,
                     speechMode: options.speechMode,
-                    filename: '2000000.wav'
+                    filename: options.filename
                 }
             }),"("+options.onsuccess.toString()+")",
                             "("+options.onfail.toString()+")");
