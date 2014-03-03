@@ -263,6 +263,7 @@ options：参数说明同clouda.device.connection.get(options)中的options说�
 **方法：**
 
 - getUuid(options)
+- getSysVersion(options)- getDeviceModelName(options)- getScreenSize(options)
 
 #### getUuid ####
 	getUuid(options)
@@ -293,6 +294,58 @@ options：参数说明同clouda.device.connection.get(options)中的options说�
 		</tr>
 	</tbody>
 </table>
+
+#### getSysVersion ####
+	getSysVersion(options)
+
+**功能描述：**
+
+获取设备的系统版本信息
+
+**参数说明：** 
+
+- options：为 object 类型，其中包括以下参数： 
+
+
+参数 | 类型 | 描述 
+------------ | ------------- | ------------
+onsuccess | function(data){} | 操作成功，返回成功信息
+onfail | function(err){} | 操作失败，返回错误码信息 
+
+#### getDeviceModelName ####
+	getDeviceModelName(options)
+
+**功能描述：**
+
+获取设备的名称
+
+**参数说明：** 
+
+- options：为 object 类型，其中包括以下参数： 
+
+
+参数 | 类型 | 描述 
+------------ | ------------- | ------------
+onsuccess | function(data){} | 操作成功，返回成功信息
+onfail | function(err){} | 操作失败，返回错误码信息 
+
+#### getScreenSize ####
+	getScreenSize(options)
+
+**功能描述：**
+
+获取设备的屏幕分辨率
+
+**参数说明：** 
+
+- options：为 object 类型，其中包括以下参数： 
+
+
+参数 | 类型 | 描述 
+------------ | ------------- | ------------
+onsuccess | function(data){} | 操作成功，返回成功信息
+onfail | function(err){} | 操作失败，返回错误码信息 
+
 
 ### FileSystem ###
 
