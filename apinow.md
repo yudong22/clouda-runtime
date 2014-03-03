@@ -26,13 +26,7 @@
 
 开发轻应用前，需要先到百度开放云[管理控制台](http://developer.baidu.com/console)<font color="red">创建应用，获取应用 API Key，并开启或设置相关服务</font>。
 
-如需使用以下云服务的相关API，请点击百度开放云[管理控制台](http://developer.baidu.com/console)所创建的应用下的相关服务的管理控制台进行服务开启及设置相关操作（<font color="red">无需等待审核通过，即可使用</font>）：
 	
-- **人脸识别（FaceRecognition）**：申请开启服务，详见：[《人脸识别管理控制台》](http://developer.baidu.com/wiki/index.php?title=docs/cplat/media/face/console)
-- **推送服务（Push）**： 无需申请开启服务，但需要通过管理控制台进行推送，详见：[《轻应用推送操作手册》](http://bcs.duapp.com/clouda-api/%E8%BD%BB%E5%BA%94%E7%94%A8%E6%8E%A8%E9%80%81%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8C.pdf)
-- **语音识别服务（VTT）**：申请开启服务，详见：[《语音技术管理控制台》](http://developer.baidu.com/wiki/index.php?title=docs/cplat/media/voice/console)
-- **百度地图（Map）**: 申请百度地图的密钥（API Key）：[申请地址](http://lbsyun.baidu.com/apiconsole/key?application=key）
-
 ## 引用JS API文件
 
 在HTML页面中添加以下代码：
