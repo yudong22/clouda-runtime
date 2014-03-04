@@ -26,6 +26,9 @@
 
 开发轻应用前，需要先到百度开放云[管理控制台](http://developer.baidu.com/console)<font color="red">创建应用，获取应用 API Key，并开启或设置相关服务</font>。
 
+如需使用以下云服务的相关API，请点击百度开放云[管理控制台](http://developer.baidu.com/console)所创建的应用下的相关服务的管理控制台进行服务开启及设置相关操作（<font color="red">无需等待审核通过，即可使用</font>）：
+	
+- **语音识别服务（VTT）**：申请开启服务，详见：[《语音技术管理控制台》](http://developer.baidu.com/wiki/index.php?title=docs/cplat/media/voice/console)
 	
 ## 引用JS API文件
 
@@ -1098,6 +1101,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 云服务类API目前支持以下功能： 
 
 - 订阅应用 (Scribe)
+- 语音识别服务（VTT）
 
 ### Scribe
     clouda.mbaas.scribe
@@ -1153,6 +1157,81 @@ onfail | function(err){} | 操作失败，返回错误码信息
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回成功信息
 onfail | function(err){} | 操作失败，返回错误码信息 
+
+### VTT ###
+
+    clouda.mbaas.vtt
+
+语音识别服务
+开发轻应用前，需要先申请语音服务的ak，sk和pid，并执行初始化init方法
+
+**方法：**
+
+- init(ak,sk,pid)
+- showDialog(options)
+
+#### init ####
+	init(ak,sk,pid)
+
+**功能描述：**
+
+初始化所申请的ak，sk，pid等参数，然后方可使用语音识别服务
+
+**参数说明：**
+
+- ak ：所申请的语音服务的ak
+- sk ：所申请的语音服务的sk
+- pid：所申请的语音服务的pid
+
+#### showDialog ####
+    showDialog(options)
+
+**功能描述：**
+
+显示语音识别对话框，实现语音输入识别
+
+**参数说明：**
+
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>onsuccess</td>
+			<td>function(data){}</td>            
+			<td>识别成功，返回语音文字字符串</td>  
+		</tr>
+        <tr>
+			<td>onfail</td>
+			<td>function(err){}</td>          
+			<td>识别失败<br>
+			- clouda.mbaas.VTT_STATUS.FAILED ：语音识别失败
+			</td>  
+		</tr>
+        <tr>
+			<td>speechMode</td>
+			<td>int</td>            
+			<td>设置识别模式，可选，其参数如下：<br>
+			- clouda.mbaas.VTT_SPEECHMODE.SEARCH ：搜索模式 （默认）<br>
+			- clouda.mbaas.VTT_SPEECHMODE.INPUT  ：文本输入模式
+		</td>  
+		</tr>
+		<tr>
+			<td>filename</td>
+			<td>string</td>            
+			<td>语音识别保存的文件名（可选）</td>  
+			</td>  
+		</tr>
+		<tr>
+			<td>uuid</td>
+			<td>string</td>            
+			<td>语音识别标识的uuid（可选）</td>  
+		</tr>
+    </tbody>
+</table>
 
 
 
