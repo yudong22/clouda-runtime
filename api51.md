@@ -1,7 +1,7 @@
 #百度轻应用API参考文档#
 
 ----------
-更新日期： 2014/03/03 16:27:32  
+更新日期： 2014/03/04 17:07:32  
 
 问题反馈： [clouda-support@baidu.com](mailto:clouda-support@baidu.com)
 
@@ -34,7 +34,7 @@
 
 在HTML页面中添加以下代码：
 
-    <script type="text/javascript" src="http://bcscdn.baidu.com/bcs-cdn/clouda/api-0.2.4.js"></script>
+    <script type="text/javascript" src="http://bcscdn.baidu.com/bcs-cdn/clouda/api-0.2.6.js"></script>
 
 ## App信息注册API ##
 
