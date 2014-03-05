@@ -10,9 +10,13 @@ define("device",function(module) {
      * @namespace clouda.device.device
      */
     
-    var getUuid = new delegateClass("device","getUuid");
+    var getUuid = new delegateClass("device","device","getUuid");
     var getHostAppKey = new  delegateClass("device","device","getHostAppKey");
-   
+    
+    var getSysVersion = new delegateClass("device","device","getAndroidVersion");
+    var getDeviceModelName = new delegateClass("device","device","getProductModel");
+    var getScreenSize = new delegateClass("device","device","getScreenResolution");
+    
     /**
      * 获取uuid
      *
@@ -36,7 +40,75 @@ define("device",function(module) {
             lightapp.error(ErrCode.DEVICE_ERR,nativeErr,options);
         },options);
     };
-    
+    /**
+     * 获取系统版本
+     *
+     * @function getSysVersion
+     * @memberof clouda.device.device
+     * @instance
+     *
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调
+     * @param {function} [options.onfail] 失败的回调
+     * @returns null
+     * 
+     */
+    it.getSysVersion = function(options){
+        if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+             BLightApp.getDeviceInfo("("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+             return false;
+        }
+        getSysVersion(options.onsuccess,function(nativeErr){
+            lightapp.error(ErrCode.DEVICE_ERR,nativeErr,options);
+        },options);
+    };
+    /**
+     * 获取设备名称
+     *
+     * @function getDeviceModelName
+     * @memberof clouda.device.device
+     * @instance
+     *
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调
+     * @param {function} [options.onfail] 失败的回调
+     * @returns null
+     * 
+     */
+    it.getDeviceModelName = function(options){
+        if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+             BLightApp.getDeviceInfo("("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+             return false;
+        }
+        getDeviceModelName(options.onsuccess,function(nativeErr){
+            lightapp.error(ErrCode.DEVICE_ERR,nativeErr,options);
+        },options);
+    };
+    /**
+     * 获取屏幕分辨率
+     *
+     * @function getScreenSize
+     * @memberof clouda.device.device
+     * @instance
+     *
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调
+     * @param {function} [options.onfail] 失败的回调
+     * @returns null
+     * 
+     */
+    it.getScreenSize = function(options){
+        if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+             BLightApp.getDeviceInfo("("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+             return false;
+        }
+        getScreenSize(options.onsuccess,function(nativeErr){
+            lightapp.error(ErrCode.DEVICE_ERR,nativeErr,options);
+        },options);
+    };
     /**
      * 获取 hostappkey
      *

@@ -3307,8 +3307,13 @@ define("device",function(module) {
      */
     it.getLocaleName = function (options) {
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
-             BLightApp.getNetworkType("("+options.onsuccess.toString()+")",
-                            "("+options.onfail.toString()+")");
+            try{
+                var info = BLightApp.getGlobalizationInfo();
+                options.onsuccess({"value":info});
+            }catch(e){
+                lightapp.error(ErrCode.GLO_ERR,e.stack,options);
+            }
+            
              return false;
          }
         getLocaleName(options.onsuccess,function(){
