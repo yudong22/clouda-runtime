@@ -28,11 +28,10 @@ define("device",function(module) {
     var getFileNameFromPath = function(str){
         return str.substring(str.lastIndexOf("/")+1);
     };
-    //TODO
     /**
      * 上传文件
      *
-     * @function postFile
+     * @function post
      * @memberof clouda.device.fs
      * @instance
      * @param {string} filelink
@@ -42,9 +41,27 @@ define("device",function(module) {
      * @param {Function} options.onfail
      * @param {Function} options.onprogress
      * @param {string} options.uploadKey
+     * @param {string} options.param
+     * 
      */
     var FileTransfer=null;
     it.post = function(link,target,options) {
+        if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+            var params = {};
+            params.param = [];
+            if (options.param){
+                for(var nn in options.param){
+                    params.param.push({key:nn,value:options.param[nn]});
+                }
+            }
+            params.file = [];
+            params.file.push({key:options.uploadKey,value:link});
+            
+            BLightApp.postFile(target,JSON.stringify(params),"("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+           
+             return false;
+         }
         installPlugin("filetransfer", function(ft) {
             if (FileTransfer === null) {
                 FileTransfer = new ft.FileTransfer();
@@ -57,6 +74,9 @@ define("device",function(module) {
             var opt = new ft.FileUploadOptions();
             opt.fileKey = options.uploadKey;
             opt.fileName = getFileNameFromPath(link);
+            if (options.param){
+                opt.params = options.param;
+            }
             // opt.mimeType = "text/html";
             FileTransfer.upload(link, target, function(result) {
                 options.onsuccess.apply(this,arguments);

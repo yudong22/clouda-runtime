@@ -1,4 +1,4 @@
-/*! clouda-runtime - v0.1.0 - 2014-02-27 */
+/*! clouda-runtime - v0.1.0 - 2014-03-05 */
 (function(window){
     // for client js only
     if (typeof window !== 'object')return ;
@@ -162,7 +162,7 @@
     var beforeDownloadReadyStack = [];
     document.addEventListener("runtimeready",function(){
         clouda.STATUS.SUCCESS = 1;
-        if (clouda.RUNTIME != clouda.RUNTIME.KUANG){//高优先级
+        if (clouda.RUNTIME != clouda.RUNTIMES.KUANG){//高优先级
             clouda.RUNTIME = clouda.RUNTIMES.NUWA;
         }
         
@@ -2774,9 +2774,13 @@ define("device",function(module) {
      * @namespace clouda.device.device
      */
     
-    var getUuid = new delegateClass("device","getUuid");
+    var getUuid = new delegateClass("device","device","getUuid");
     var getHostAppKey = new  delegateClass("device","device","getHostAppKey");
-   
+    
+    var getSysVersion = new delegateClass("device","device","getAndroidVersion");
+    var getDeviceModelName = new delegateClass("device","device","getProductModel");
+    var getScreenSize = new delegateClass("device","device","getScreenResolution");
+    
     /**
      * 获取uuid
      *
@@ -2800,7 +2804,75 @@ define("device",function(module) {
             lightapp.error(ErrCode.DEVICE_ERR,nativeErr,options);
         },options);
     };
-    
+    /**
+     * 获取系统版本
+     *
+     * @function getSysVersion
+     * @memberof clouda.device.device
+     * @instance
+     *
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调
+     * @param {function} [options.onfail] 失败的回调
+     * @returns null
+     * 
+     */
+    it.getSysVersion = function(options){
+        if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+             BLightApp.getDeviceInfo("("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+             return false;
+        }
+        getSysVersion(options.onsuccess,function(nativeErr){
+            lightapp.error(ErrCode.DEVICE_ERR,nativeErr,options);
+        },options);
+    };
+    /**
+     * 获取设备名称
+     *
+     * @function getDeviceModelName
+     * @memberof clouda.device.device
+     * @instance
+     *
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调
+     * @param {function} [options.onfail] 失败的回调
+     * @returns null
+     * 
+     */
+    it.getDeviceModelName = function(options){
+        if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+             BLightApp.getDeviceInfo("("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+             return false;
+        }
+        getDeviceModelName(options.onsuccess,function(nativeErr){
+            lightapp.error(ErrCode.DEVICE_ERR,nativeErr,options);
+        },options);
+    };
+    /**
+     * 获取屏幕分辨率
+     *
+     * @function getScreenSize
+     * @memberof clouda.device.device
+     * @instance
+     *
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调
+     * @param {function} [options.onfail] 失败的回调
+     * @returns null
+     * 
+     */
+    it.getScreenSize = function(options){
+        if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+             BLightApp.getDeviceInfo("("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+             return false;
+        }
+        getScreenSize(options.onsuccess,function(nativeErr){
+            lightapp.error(ErrCode.DEVICE_ERR,nativeErr,options);
+        },options);
+    };
     /**
      * 获取 hostappkey
      *
@@ -2850,11 +2922,10 @@ define("device",function(module) {
     var getFileNameFromPath = function(str){
         return str.substring(str.lastIndexOf("/")+1);
     };
-    //TODO
     /**
      * 上传文件
      *
-     * @function postFile
+     * @function post
      * @memberof clouda.device.fs
      * @instance
      * @param {string} filelink
@@ -2864,9 +2935,27 @@ define("device",function(module) {
      * @param {Function} options.onfail
      * @param {Function} options.onprogress
      * @param {string} options.uploadKey
+     * @param {string} options.param
+     * 
      */
     var FileTransfer=null;
     it.post = function(link,target,options) {
+        if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+            var params = {};
+            params.param = [];
+            if (options.param){
+                for(var nn in options.param){
+                    params.param.push({key:nn,value:options.param[nn]});
+                }
+            }
+            params.file = [];
+            params.file.push({key:options.uploadKey,value:link});
+            
+            BLightApp.postFile(target,JSON.stringify(params),"("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+           
+             return false;
+         }
         installPlugin("filetransfer", function(ft) {
             if (FileTransfer === null) {
                 FileTransfer = new ft.FileTransfer();
@@ -2879,6 +2968,9 @@ define("device",function(module) {
             var opt = new ft.FileUploadOptions();
             opt.fileKey = options.uploadKey;
             opt.fileName = getFileNameFromPath(link);
+            if (options.param){
+                opt.params = options.param;
+            }
             // opt.mimeType = "text/html";
             FileTransfer.upload(link, target, function(result) {
                 options.onsuccess.apply(this,arguments);
@@ -3175,14 +3267,14 @@ define("device",function(module) {
      * @namespace clouda.device.globalization
      */
     
-     var boot = ['dateToString','getCurrencyPattern','getDateNames','getDatePattern','getFirstDayOfWeek',
-        'getLocaleName','getNumberPattern','getPreferredLanguage','isDayLightSavingsTime','numberToString',
-        'stringToDate','stringToNumber'];
-     var toolKit={};
-     for(var i=0,len=boot.length;i<len;i++){
-         toolKit[boot[i]] = new delegateClass("device","globalization",boot[i]);
-     }
-    
+     // var boot = ['dateToString','getCurrencyPattern','getDateNames','getDatePattern','getFirstDayOfWeek',
+        // 'getLocaleName','getNumberPattern','getPreferredLanguage','isDayLightSavingsTime','numberToString',
+        // 'stringToDate','stringToNumber'];
+     // var toolKit={};
+     // for(var i=0,len=boot.length;i<len;i++){
+         // toolKit[boot[i]] = new delegateClass("device","globalization",boot[i]);
+     // }
+    var getLocaleName = new delegateClass("device","globalization",'getLocaleName');
     
     /**
      *
@@ -3194,15 +3286,15 @@ define("device",function(module) {
      * @param {Function} options.onsuccess
      * @param {Function} options.onfail
      */
-     it.getPreferredLanguage = function (options) {
-        toolKit.getPreferredLanguage(options.onsuccess,function(){
-            if (options && typeof options.onfail == 'function'){
-                options.onfail(ErrCode.GLO_ERR);
-            }else{
-                lightapp.error(ErrCode.GLO_ERR);
-            }
-        },options);
-     };
+     // it.getPreferredLanguage = function (options) {
+        // toolKit.getPreferredLanguage(options.onsuccess,function(){
+            // if (options && typeof options.onfail == 'function'){
+                // options.onfail(ErrCode.GLO_ERR);
+            // }else{
+                // lightapp.error(ErrCode.GLO_ERR);
+            // }
+        // },options);
+     // };
     /**
      *
      * @function getLocaleName
@@ -3214,7 +3306,12 @@ define("device",function(module) {
      * @param {Function} options.onfail
      */
     it.getLocaleName = function (options) {
-        toolKit.getLocaleName(options.onsuccess,function(){
+        if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+             BLightApp.getNetworkType("("+options.onsuccess.toString()+")",
+                            "("+options.onfail.toString()+")");
+             return false;
+         }
+        getLocaleName(options.onsuccess,function(){
             if (options && typeof options.onfail == 'function'){
                 options.onfail(ErrCode.GLO_ERR);
             }else{
@@ -3222,197 +3319,197 @@ define("device",function(module) {
             }
         },options);
     };
-    /**
-     * @function dateToString
-     * @memberof clouda.device.globalization
-     * @instance
-     *
-     * @param {Date} date
-     * @param {{}} options
-     * @param {Function} options.onsuccess
-     * @param {Function} options.onfail
-     */
-    it.dateToString = function (date, options) {
-        toolKit.dateToString(date,options.onsuccess,function(){
-            if (options && typeof options.onfail == 'function'){
-                options.onfail(ErrCode.GLO_ERR);
-            }else{
-                lightapp.error(ErrCode.GLO_ERR);
-            }
-        },options);
-    };
-    /**
-     * @function stringToDate
-     * @memberof clouda.device.globalization
-     * @instance
-     *
-     * @param {string} dateString
-     * @param {{}} options
-     * @param {Function} options.onsuccess
-     * @param {Function} options.onfail
-     */
-    it.stringToDate = function (dateString, options) {
-        toolKit.stringToDate(dateString,options.onsuccess,function(){
-            if (options && typeof options.onfail == 'function'){
-                options.onfail(ErrCode.GLO_ERR);
-            }else{
-                lightapp.error(ErrCode.GLO_ERR);
-            }
-        },options);
-    };
-    /**
-     *
-     * @function getDatePattern
-     * @memberof clouda.device.globalization
-     * @instance
-     *
-     * @param {{}} options
-     * @param {Function} options.onsuccess
-     * @param {Function} options.onfail
-     */
-    it.getDatePattern = function (options) {
-        toolKit.getDatePattern(options.onsuccess,function(){
-            if (options && typeof options.onfail == 'function'){
-                options.onfail(ErrCode.GLO_ERR);
-            }else{
-                lightapp.error(ErrCode.GLO_ERR);
-            }
-        },options);
-    };
-    /**
-     *
-     * @function getDateNames
-     * @memberof clouda.device.globalization
-     * @instance
-     *
-     * @param {{}} options
-     * @param {Function} options.onsuccess
-     * @param {Function} options.onfail
-     */
-    it.getDateNames = function (options) {
-        toolKit.getDateNames(options.onsuccess,function(){
-            if (options && typeof options.onfail == 'function'){
-                options.onfail(ErrCode.GLO_ERR);
-            }else{
-                lightapp.error(ErrCode.GLO_ERR);
-            }
-        },options);
-    };
-    /**
-     * @function isDayLightSavingsTime
-     * @memberof clouda.device.globalization
-     * @instance
-     *
-     * @param {Date} date
-     * @param {{}} options
-     * @param {Function} options.onsuccess
-     * @param {Function} options.onfail
-     */
-    it.isDayLightSavingsTime = function (date, options) {
-        toolKit.isDayLightSavingsTime(date,options.onsuccess,function(){
-            if (options && typeof options.onfail == 'function'){
-                options.onfail(ErrCode.GLO_ERR);
-            }else{
-                lightapp.error(ErrCode.GLO_ERR);
-            }
-        },options);
-    };
-    /**
-     *
-     * @function getFirstDayOfWeek
-     * @memberof clouda.device.globalization
-     * @instance
-     *
-     * @param {{}} options
-     * @param {Function} options.onsuccess
-     * @param {Function} options.onfail
-     */
-    it.getFirstDayOfWeek = function (options) {
-        toolKit.getFirstDayOfWeek(options.onsuccess,function(){
-            if (options && typeof options.onfail == 'function'){
-                options.onfail(ErrCode.GLO_ERR);
-            }else{
-                lightapp.error(ErrCode.GLO_ERR);
-            }
-        },options);
-    };
-    /**
-     *
-     * @function numberToString
-     * @memberof clouda.device.globalization
-     * @instance
-     *
-     * @param {int} number
-     * @param {{}} options
-     * @param {Function} options.onsuccess
-     * @param {Function} options.onfail
-     */
-    it.numberToString = function (number, options) {
-        toolKit.numberToString(options.onsuccess,function(){
-            if (options && typeof options.onfail == 'function'){
-                options.onfail(ErrCode.GLO_ERR);
-            }else{
-                lightapp.error(ErrCode.GLO_ERR);
-            }
-        },options);
-    };
-    /**
-     * @function stringToNumber
-     * @memberof clouda.device.globalization
-     * @instance
-     *
-     * @param {string} numberString
-     * @param {{}} options
-     * @param {Function} options.onsuccess
-     * @param {Function} options.onfail
-     */
-    it.stringToNumber = function (numberString, options) {
-        toolKit.stringToNumber(numberString,options.onsuccess,function(){
-            if (options && typeof options.onfail == 'function'){
-                options.onfail(ErrCode.GLO_ERR);
-            }else{
-                lightapp.error(ErrCode.GLO_ERR);
-            }
-        },options);
-    };
-    /**
-     *
-     * @function getNumberPattern
-     * @memberof clouda.device.globalization
-     * @instance
-     *
-     * @param {{}} options
-     * @param {Function} options.onsuccess
-     * @param {Function} options.onfail
-     */
-    it.getNumberPattern = function (options) {
-        toolKit.getNumberPattern(options.onsuccess,function(){
-            if (options && typeof options.onfail == 'function'){
-                options.onfail(ErrCode.GLO_ERR);
-            }else{
-                lightapp.error(ErrCode.GLO_ERR);
-            }
-        },options);
-    };
-    /**
-     * @function getCurrencyPattern
-     * @memberof clouda.device.globalization
-     * @instance
-     *
-     * @param {string} currencyCode
-     * @param {{}} options
-     * @param {Function} options.onsuccess
-     * @param {Function} options.onfail
-     */
-    it.getCurrencyPattern = function (currencyCode, options) {
-        toolKit.getCurrencyPattern(currencyCode,options.onsuccess,function(){
-            if (options && typeof options.onfail == 'function'){
-                options.onfail(ErrCode.GLO_ERR);
-            }else{
-                lightapp.error(ErrCode.GLO_ERR);
-            }
-        },options);
-    };
+    // /**
+     // * @function dateToString
+     // * @memberof clouda.device.globalization
+     // * @instance
+     // *
+     // * @param {Date} date
+     // * @param {{}} options
+     // * @param {Function} options.onsuccess
+     // * @param {Function} options.onfail
+     // */
+    // it.dateToString = function (date, options) {
+        // toolKit.dateToString(date,options.onsuccess,function(){
+            // if (options && typeof options.onfail == 'function'){
+                // options.onfail(ErrCode.GLO_ERR);
+            // }else{
+                // lightapp.error(ErrCode.GLO_ERR);
+            // }
+        // },options);
+    // };
+    // /**
+     // * @function stringToDate
+     // * @memberof clouda.device.globalization
+     // * @instance
+     // *
+     // * @param {string} dateString
+     // * @param {{}} options
+     // * @param {Function} options.onsuccess
+     // * @param {Function} options.onfail
+     // */
+    // it.stringToDate = function (dateString, options) {
+        // toolKit.stringToDate(dateString,options.onsuccess,function(){
+            // if (options && typeof options.onfail == 'function'){
+                // options.onfail(ErrCode.GLO_ERR);
+            // }else{
+                // lightapp.error(ErrCode.GLO_ERR);
+            // }
+        // },options);
+    // };
+    // /**
+     // *
+     // * @function getDatePattern
+     // * @memberof clouda.device.globalization
+     // * @instance
+     // *
+     // * @param {{}} options
+     // * @param {Function} options.onsuccess
+     // * @param {Function} options.onfail
+     // */
+    // it.getDatePattern = function (options) {
+        // toolKit.getDatePattern(options.onsuccess,function(){
+            // if (options && typeof options.onfail == 'function'){
+                // options.onfail(ErrCode.GLO_ERR);
+            // }else{
+                // lightapp.error(ErrCode.GLO_ERR);
+            // }
+        // },options);
+    // };
+    // /**
+     // *
+     // * @function getDateNames
+     // * @memberof clouda.device.globalization
+     // * @instance
+     // *
+     // * @param {{}} options
+     // * @param {Function} options.onsuccess
+     // * @param {Function} options.onfail
+     // */
+    // it.getDateNames = function (options) {
+        // toolKit.getDateNames(options.onsuccess,function(){
+            // if (options && typeof options.onfail == 'function'){
+                // options.onfail(ErrCode.GLO_ERR);
+            // }else{
+                // lightapp.error(ErrCode.GLO_ERR);
+            // }
+        // },options);
+    // };
+    // /**
+     // * @function isDayLightSavingsTime
+     // * @memberof clouda.device.globalization
+     // * @instance
+     // *
+     // * @param {Date} date
+     // * @param {{}} options
+     // * @param {Function} options.onsuccess
+     // * @param {Function} options.onfail
+     // */
+    // it.isDayLightSavingsTime = function (date, options) {
+        // toolKit.isDayLightSavingsTime(date,options.onsuccess,function(){
+            // if (options && typeof options.onfail == 'function'){
+                // options.onfail(ErrCode.GLO_ERR);
+            // }else{
+                // lightapp.error(ErrCode.GLO_ERR);
+            // }
+        // },options);
+    // };
+    // /**
+     // *
+     // * @function getFirstDayOfWeek
+     // * @memberof clouda.device.globalization
+     // * @instance
+     // *
+     // * @param {{}} options
+     // * @param {Function} options.onsuccess
+     // * @param {Function} options.onfail
+     // */
+    // it.getFirstDayOfWeek = function (options) {
+        // toolKit.getFirstDayOfWeek(options.onsuccess,function(){
+            // if (options && typeof options.onfail == 'function'){
+                // options.onfail(ErrCode.GLO_ERR);
+            // }else{
+                // lightapp.error(ErrCode.GLO_ERR);
+            // }
+        // },options);
+    // };
+    // /**
+     // *
+     // * @function numberToString
+     // * @memberof clouda.device.globalization
+     // * @instance
+     // *
+     // * @param {int} number
+     // * @param {{}} options
+     // * @param {Function} options.onsuccess
+     // * @param {Function} options.onfail
+     // */
+    // it.numberToString = function (number, options) {
+        // toolKit.numberToString(options.onsuccess,function(){
+            // if (options && typeof options.onfail == 'function'){
+                // options.onfail(ErrCode.GLO_ERR);
+            // }else{
+                // lightapp.error(ErrCode.GLO_ERR);
+            // }
+        // },options);
+    // };
+    // /**
+     // * @function stringToNumber
+     // * @memberof clouda.device.globalization
+     // * @instance
+     // *
+     // * @param {string} numberString
+     // * @param {{}} options
+     // * @param {Function} options.onsuccess
+     // * @param {Function} options.onfail
+     // */
+    // it.stringToNumber = function (numberString, options) {
+        // toolKit.stringToNumber(numberString,options.onsuccess,function(){
+            // if (options && typeof options.onfail == 'function'){
+                // options.onfail(ErrCode.GLO_ERR);
+            // }else{
+                // lightapp.error(ErrCode.GLO_ERR);
+            // }
+        // },options);
+    // };
+    // /**
+     // *
+     // * @function getNumberPattern
+     // * @memberof clouda.device.globalization
+     // * @instance
+     // *
+     // * @param {{}} options
+     // * @param {Function} options.onsuccess
+     // * @param {Function} options.onfail
+     // */
+    // it.getNumberPattern = function (options) {
+        // toolKit.getNumberPattern(options.onsuccess,function(){
+            // if (options && typeof options.onfail == 'function'){
+                // options.onfail(ErrCode.GLO_ERR);
+            // }else{
+                // lightapp.error(ErrCode.GLO_ERR);
+            // }
+        // },options);
+    // };
+    // /**
+     // * @function getCurrencyPattern
+     // * @memberof clouda.device.globalization
+     // * @instance
+     // *
+     // * @param {string} currencyCode
+     // * @param {{}} options
+     // * @param {Function} options.onsuccess
+     // * @param {Function} options.onfail
+     // */
+    // it.getCurrencyPattern = function (currencyCode, options) {
+        // toolKit.getCurrencyPattern(currencyCode,options.onsuccess,function(){
+            // if (options && typeof options.onfail == 'function'){
+                // options.onfail(ErrCode.GLO_ERR);
+            // }else{
+                // lightapp.error(ErrCode.GLO_ERR);
+            // }
+        // },options);
+    // };
     
     return module;
 });define("device",function(module) {
@@ -6476,6 +6573,10 @@ define("mbaas",function( module ) {
      */
     
     vtt.showDialog = function(options){
+        if (!mykey.ak){
+            lightapp.error(ErrCode.vtt_ERR,'api need init first',options);
+            return false;
+        }
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
              if (!options.uuid){
                  options.uuid = 'uuid-uuid';
@@ -6508,6 +6609,9 @@ define("mbaas",function( module ) {
         if (!options.dialogTheme){
             options.dialogTheme = 1;
         }
+        options.ak = mykey.ak;
+        options.sk = mykey.sk;
+        options.pid = mykey.pid;
         //var json = {"speechMode":0, "dialogTheme":2};
         showDialog(options.onsuccess, options.onfail, options);
     };

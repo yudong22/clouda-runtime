@@ -161,7 +161,7 @@
     var beforeDownloadReadyStack = [];
     document.addEventListener("runtimeready",function(){
         clouda.STATUS.SUCCESS = 1;
-        if (clouda.RUNTIME != clouda.RUNTIME.KUANG){//高优先级
+        if (clouda.RUNTIME != clouda.RUNTIMES.KUANG){//高优先级
             clouda.RUNTIME = clouda.RUNTIMES.NUWA;
         }
         

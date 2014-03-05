@@ -60,6 +60,10 @@ define("mbaas",function(module) {
      */
     
     vtt.showDialog = function(options){
+        if (!mykey.ak){
+            lightapp.error(ErrCode.vtt_ERR,'api need init first',options);
+            return false;
+        }
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
              if (!options.uuid){
                  options.uuid = 'uuid-uuid';
@@ -92,6 +96,9 @@ define("mbaas",function(module) {
         if (!options.dialogTheme){
             options.dialogTheme = 1;
         }
+        options.ak = mykey.ak;
+        options.sk = mykey.sk;
+        options.pid = mykey.pid;
         //var json = {"speechMode":0, "dialogTheme":2};
         showDialog(options.onsuccess, options.onfail, options);
     };
