@@ -1,4 +1,4 @@
-/*! clouda-runtime - v0.1.0 - 2014-03-05 */
+/*! clouda-runtime - v0.1.0 - 2014-03-06 */
 (function(window){
     // for client js only
     if (typeof window !== 'object')return ;
@@ -4247,6 +4247,12 @@ define("device",function(module) {
      */
     it.generate = function(content,options){
         //function(sucessCallback, errorCallback, type, content, backgroundUrl, destType){
+        
+        //目前生成使用js能力
+        if (typeof options.offline == 'undefined'){
+            options.offline = true;
+        }
+        
         //0. 先判断是否使用离线生成能力
         if (options.offline){
             if (content.length > 255){
@@ -6550,6 +6556,10 @@ define("mbaas",function( module ) {
     module.VTT_SPEECHMODE = {
         SEARCH:0,
         INPUT:1
+    };
+    module.VTT_RATE = {
+        K8:8000,
+        K16:16000
     };
     var mykey = {};
     

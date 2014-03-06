@@ -70,8 +70,6 @@
 **方法：**
 
 - get(options)
-- startListen(options)
-- stopListen()   
 
 #### get ####
 
@@ -114,26 +112,6 @@
     clouda.device.CONNECTION_STATUS.CELL_4G // 移动数据4G连通状态
 	clouda.device.CONNECTION_STATUS.CELL // 移动数据通连通状态
 	clouda.device.CONNECTION_STATUS.ETHERNET // 以太网连通状态
-
-
-#### startListen ####
-    startListen(options)
-
-**功能描述：**
-
-监听网络连接状态
-
-**参数说明：**
-
-options：参数说明同clouda.device.connection.get(options)中的options说明。
-
-#### stopListen ####
-    stopListen()
-
-**功能描述：**
-
-停止监听网络连接状态
-
 
 
 ### Device ###
@@ -414,7 +392,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 
 **功能描述：**
 
-调取本地录音、照相、视频功能；拍摄、录制、拍照及读取本地图片文件。
+调取本地照相、视频功能；拍摄、录制、拍照及读取本地图片文件。
 
 **参数说明：**
 
@@ -442,7 +420,6 @@ onfail | function(err){} | 操作失败，返回错误码信息
 		<td>string</td>          
 		<td> 媒体类型，其值如下： <br>
 		 - clouda.device.MEDIA_TYPE.IMAGE(默认) <br>
-		 - clouda.device.MEDIA_TYPE.AUDIO  <br>  
 		 - clouda.device.MEDIA_TYPE.VIDEO</td>  
 	</tr>
 	<tr>
@@ -461,7 +438,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
     <tr>
 		<td>duration</td>
 		<td>number</td>      
-		<td>录音或拍摄最大时长，单位为秒。仅AUDIO和VIDEO可用，默认为0，即不限时长</td>  
+		<td>拍摄最大时长，单位为秒。仅VIDEO可用，默认为0，即不限时长</td>  
 	</tr>
     <tr>
 		<td>format</td>
@@ -783,6 +760,13 @@ onfail | function(err){} | 操作失败，返回错误码信息
 			<td>uuid</td>
 			<td>string</td>            
 			<td>语音识别标识的uuid（可选）</td>  
+		</tr>
+		<tr>
+			<td>sampleRate</td>
+			<td>int</td>            
+			<td>语音识别录音采样率（可选），其参数如下：<br>
+			- clouda.mbaas.VTT_RATE.K8 ： （采样率8k）<br>
+			- clouda.mbaas.VTT_RATE.K16  ：（采样率16k）</td>  
 		</tr>
     </tbody>
 </table>

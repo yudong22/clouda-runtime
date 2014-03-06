@@ -104,6 +104,12 @@ define("device",function(module) {
      */
     it.generate = function(content,options){
         //function(sucessCallback, errorCallback, type, content, backgroundUrl, destType){
+        
+        //目前生成使用js能力
+        if (typeof options.offline == 'undefined'){
+            options.offline = true;
+        }
+        
         //0. 先判断是否使用离线生成能力
         if (options.offline){
             if (content.length > 255){

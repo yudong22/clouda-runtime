@@ -33,6 +33,10 @@ define("mbaas",function(module) {
         SEARCH:0,
         INPUT:1
     };
+    module.VTT_RATE = {
+        K8:8000,
+        K16:16000
+    };
     var mykey = {};
     
     
