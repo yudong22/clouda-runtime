@@ -32,7 +32,8 @@ define("device",function(module) {
      */
     it.getUuid = function(options){
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
-             BLightApp.getDeviceInfo("("+options.onsuccess.toString()+")",
+             BLightApp.getDeviceInfo(
+                 "(function(result){("+options.onsuccess.toString()+")(JSON.parse(result.device_info).imei);})",
                             "("+options.onfail.toString()+")");
              return false;
         }
@@ -55,7 +56,8 @@ define("device",function(module) {
      */
     it.getSysVersion = function(options){
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
-             BLightApp.getDeviceInfo("("+options.onsuccess.toString()+")",
+             BLightApp.getDeviceInfo(
+                 "(function(result){("+options.onsuccess.toString()+")(JSON.parse(result.device_info).os_version);})",
                             "("+options.onfail.toString()+")");
              return false;
         }
@@ -78,7 +80,8 @@ define("device",function(module) {
      */
     it.getDeviceModelName = function(options){
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
-             BLightApp.getDeviceInfo("("+options.onsuccess.toString()+")",
+             BLightApp.getDeviceInfo(
+                 "(function(result){("+options.onsuccess.toString()+")(JSON.parse(result.device_info).model);})",
                             "("+options.onfail.toString()+")");
              return false;
         }
@@ -101,9 +104,16 @@ define("device",function(module) {
      */
     it.getScreenSize = function(options){
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
-             BLightApp.getDeviceInfo("("+options.onsuccess.toString()+")",
-                            "("+options.onfail.toString()+")");
-             return false;
+            if (window.screen){
+                options.onsuccess(window.screen);
+            }else{
+                lightapp.error(ErrCode.DEVICE_ERR,ErrCode.DEVICE_ERR,options);
+            }
+            return ;
+             // BLightApp.getDeviceInfo(
+                 // "(function(result){("+options.onsuccess.toString()+")(window.screen);})",
+                            // "("+options.onfail.toString()+")");
+             // return false;
         }
         getScreenSize(options.onsuccess,function(nativeErr){
             lightapp.error(ErrCode.DEVICE_ERR,nativeErr,options);

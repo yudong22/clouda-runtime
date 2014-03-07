@@ -39,7 +39,7 @@ define("device",function(module) {
      // };
     /**
      *
-     * @function getLocaleName
+     * @function getlocale
      * @memberof clouda.device.globalization
      * @instance
      *
@@ -47,7 +47,7 @@ define("device",function(module) {
      * @param {Function} options.onsuccess
      * @param {Function} options.onfail
      */
-    it.getLocaleName = function (options) {
+    it.getlocale = function (options) {
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
             try{
                 var info = BLightApp.getGlobalizationInfo();

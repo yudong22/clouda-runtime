@@ -7,9 +7,11 @@
     }
     var clouda = window.clouda;
     
-    clouda.lightapp = function(ak){
-        clouda.lightapp.ak = ak;
-    };
+    if (typeof clouda.lightapp !== 'function') {//可能异步加载
+        clouda.lightapp = function(ak){
+            clouda.lightapp.ak = ak;
+        };
+    }
     clouda.STATUS = {
         SUCCESS:0,//在 runtimeready 后会执为1
         SYSTEM_FAILURE:-3,

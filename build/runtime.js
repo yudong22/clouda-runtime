@@ -1,4 +1,4 @@
-/*! clouda-runtime - v0.1.0 - 2014-03-06 */
+/*! clouda-runtime - v0.1.0 - 2014-03-07 */
 (function(window){
     // for client js only
     if (typeof window !== 'object')return ;
@@ -8,9 +8,11 @@
     }
     var clouda = window.clouda;
     
-    clouda.lightapp = function(ak){
-        clouda.lightapp.ak = ak;
-    };
+    if (typeof clouda.lightapp !== 'function') {//可能异步加载
+        clouda.lightapp = function(ak){
+            clouda.lightapp.ak = ak;
+        };
+    }
     clouda.STATUS = {
         SUCCESS:0,//在 runtimeready 后会执为1
         SYSTEM_FAILURE:-3,
@@ -2796,7 +2798,8 @@ define("device",function(module) {
      */
     it.getUuid = function(options){
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
-             BLightApp.getDeviceInfo("("+options.onsuccess.toString()+")",
+             BLightApp.getDeviceInfo(
+                 "(function(result){("+options.onsuccess.toString()+")(JSON.parse(result.device_info).imei);})",
                             "("+options.onfail.toString()+")");
              return false;
         }
@@ -2819,7 +2822,8 @@ define("device",function(module) {
      */
     it.getSysVersion = function(options){
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
-             BLightApp.getDeviceInfo("("+options.onsuccess.toString()+")",
+             BLightApp.getDeviceInfo(
+                 "(function(result){("+options.onsuccess.toString()+")(JSON.parse(result.device_info).os_version);})",
                             "("+options.onfail.toString()+")");
              return false;
         }
@@ -2842,7 +2846,8 @@ define("device",function(module) {
      */
     it.getDeviceModelName = function(options){
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
-             BLightApp.getDeviceInfo("("+options.onsuccess.toString()+")",
+             BLightApp.getDeviceInfo(
+                 "(function(result){("+options.onsuccess.toString()+")(JSON.parse(result.device_info).model);})",
                             "("+options.onfail.toString()+")");
              return false;
         }
@@ -2865,9 +2870,16 @@ define("device",function(module) {
      */
     it.getScreenSize = function(options){
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
-             BLightApp.getDeviceInfo("("+options.onsuccess.toString()+")",
-                            "("+options.onfail.toString()+")");
-             return false;
+            if (window.screen){
+                options.onsuccess(window.screen);
+            }else{
+                lightapp.error(ErrCode.DEVICE_ERR,ErrCode.DEVICE_ERR,options);
+            }
+            return ;
+             // BLightApp.getDeviceInfo(
+                 // "(function(result){("+options.onsuccess.toString()+")(window.screen);})",
+                            // "("+options.onfail.toString()+")");
+             // return false;
         }
         getScreenSize(options.onsuccess,function(nativeErr){
             lightapp.error(ErrCode.DEVICE_ERR,nativeErr,options);
@@ -3297,7 +3309,7 @@ define("device",function(module) {
      // };
     /**
      *
-     * @function getLocaleName
+     * @function getlocale
      * @memberof clouda.device.globalization
      * @instance
      *
@@ -3305,7 +3317,7 @@ define("device",function(module) {
      * @param {Function} options.onsuccess
      * @param {Function} options.onfail
      */
-    it.getLocaleName = function (options) {
+    it.getlocale = function (options) {
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
             try{
                 var info = BLightApp.getGlobalizationInfo();
