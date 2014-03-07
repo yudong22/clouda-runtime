@@ -47,8 +47,8 @@ define("device",function(module) {
              options.enableHighAccuracy = true;
          }
         getCurrentPosition(function(obj){
-            if ( typeof obj==='object' && typeof obj.latitude !='undefined' && typeof obj.longitude !='undefined' ){
-                options.onsuccess.apply(this,arguments);
+            if ( typeof obj==='object' ){
+                options.onsuccess.apply(this,obj.coords);
             }else{
                 lightapp.error(ErrCode.LOC_GET_ERR,ErrCode.UNKNOW_CALLBACK,options);
             }
@@ -86,8 +86,8 @@ define("device",function(module) {
                  options.enableHighAccuracy = true;
              }
             start_id = device.geolocation.watchPosition(function(){
-                if ( typeof obj==='object' && typeof obj.latitude !='undefined' && typeof obj.longitude !='undefined' ){
-                    options.onsuccess.apply(this,arguments);
+                if ( typeof obj==='object' ){
+                    options.onsuccess.apply(this,obj.coords);
                 }else{
                     lightapp.error(ErrCode.LOC_GET_ERR,ErrCode.UNKNOW_CALLBACK,options);
                 }
