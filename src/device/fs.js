@@ -71,9 +71,7 @@ define("device",function(module) {
                     options.onprogress(data);
                 };
             }else{
-                // FileTransfer.onprogress = function(){
-                    // // options.onprogress(data);
-                // };
+                FileTransfer.onprogress = function(){};
             }
             var opt = new ft.FileUploadOptions();
             opt.fileKey = options.uploadKey;
