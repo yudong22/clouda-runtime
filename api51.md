@@ -394,7 +394,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 	<tr>
 		<td>source</td>
 		<td>string</td>
-		<td>仅在mediaType为IMAGE或VIDEO时可设置：<br>
+		<td>媒体文件来源，其值如下：：<br>
 		- clouda.device.MEDIA_SOURCE.CAMERA<br>
 		- clouda.device.MEDIA_SOURCE.ALBUM 
 		</td>  
