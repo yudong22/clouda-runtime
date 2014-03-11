@@ -70,6 +70,10 @@ define("device",function(module) {
                 FileTransfer.onprogress = function(data){
                     options.onprogress(data);
                 };
+            }else{
+                // FileTransfer.onprogress = function(){
+                    // // options.onprogress(data);
+                // };
             }
             var opt = new ft.FileUploadOptions();
             opt.fileKey = options.uploadKey;

@@ -48,7 +48,11 @@ define("device",function(module) {
          }
         getCurrentPosition(function(obj){
             if ( typeof obj==='object' ){
-                options.onsuccess.apply(this,obj.coords);
+                if (!obj.coords){
+                    lightapp.error(ErrCode.LOC_GET_ERR,obj,options);
+                    return ;
+                }
+                options.onsuccess(obj.coords);
             }else{
                 lightapp.error(ErrCode.LOC_GET_ERR,ErrCode.UNKNOW_CALLBACK,options);
             }
@@ -87,7 +91,11 @@ define("device",function(module) {
              }
             start_id = device.geolocation.watchPosition(function(){
                 if ( typeof obj==='object' ){
-                    options.onsuccess.apply(this,obj.coords);
+                    if (!obj.coords){
+                        lightapp.error(ErrCode.LOC_GET_ERR,obj,options);
+                        return ;
+                    }
+                    options.onsuccess(obj.coords);
                 }else{
                     lightapp.error(ErrCode.LOC_GET_ERR,ErrCode.UNKNOW_CALLBACK,options);
                 }

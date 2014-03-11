@@ -252,11 +252,6 @@ onfail | function(err){} | 操作失败，返回错误码信息
 			<td>伴随文件上传，传递的POST数据（可选）</td>  
 		</tr>
         <tr>
-			<td>onprogress</td>
-			<td>function(data){}</td>           
-			<td>上传进度，返回的 data 是 Progress 对象</td>  
-		</tr>
-        <tr>
 			<td>uploadKey</td>
 			<td>string</td>           
 			<td>上传表单中的key</td>  
@@ -382,7 +377,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
     <tr>
 		<td>onsuccess</td>
 		<td>function(data){}</td>          
-		<td>操作成功，返回 MediaFile 对象（适用于功能操作对象唯一，且options.details参数为true的情况下）或其组成的数组，如[MediaFile, MediaFile]</td>  
+		<td>操作成功，返回 MediaFile 对象或其组成的数组，如[MediaFile, MediaFile]</td>  
 	</tr>
     <tr>
 		<td>onfail</td>
@@ -422,12 +417,6 @@ onfail | function(err){} | 操作失败，返回错误码信息
 		- clouda.device.MEDIA_FORMAT.BASE64：仅适用于image，即Base64编码字符串
 		</td>  
 	</tr>
-    <tr>
-		<td>details</td>
-		<td>boolean</td>
-		<td>是否返回文件的所有属性信息，默认：false，返回的 MediaFile 对象只显示5个基本信息
-		</td>  
-	</tr>
 <tbody>
 </table>
 
@@ -464,21 +453,6 @@ onfail | function(err){} | 操作失败，返回错误码信息
 			<td>size</td>
 			<td>number</td>            
 			<td>文件大小，单位：字节(bytes)</td>  
-		</tr>
-        <tr>
-			<td>height</td>
-			<td>number</td>            
-			<td>图像或视频高度，音频文件时该值为0，单位：像素, 仅在options.details为true时返回</td>  
-		</tr>
-        <tr>
-			<td>width</td>
-			<td>number</td>            
-			<td>图像或视频宽度，音频文件时该值为0，单位：像素，仅在options.details为true时返回</td>  
-		</tr>
-        <tr>
-			<td>duration</td>
-			<td>number</td>            
-			<td>视频或音频文件时长，图像文件时该值为0，单位：秒，仅在options.details为true时返回</td>  
 		</tr>
     <tbody>
 </table>
