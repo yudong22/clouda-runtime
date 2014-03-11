@@ -405,11 +405,6 @@ onfail | function(err){} | 操作失败，返回错误码信息
 		<td>媒体文件个数限制，仅当source为ALBUM时可用，默认为1</td>  
 	</tr>
     <tr>
-		<td>duration</td>
-		<td>number</td>      
-		<td>拍摄最大时长，单位为秒。仅VIDEO可用，默认为0，即不限时长</td>  
-	</tr>
-    <tr>
 		<td>format</td>
 		<td>string</td>
 		<td>返回数据格式，参数如下：<br>
