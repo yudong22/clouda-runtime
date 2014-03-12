@@ -122,15 +122,15 @@
 
 **方法：**
 
-- getUuid(options)
+- getImei(options)
 - getSysVersion(options)- getDeviceModelName(options)- getScreenSize(options)
 
-#### getUuid ####
-	getUuid(options)
+#### getImei ####
+	getImei(options)
 
 **功能描述：**
 
-获取设备的全球唯一标识符（UUID），UUID由设备生产商及特定设备平台或型号所决定
+获取设备的imei号，imei由设备生产商及特定设备平台或型号所决定
 
 **参数说明：**
 
