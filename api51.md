@@ -445,25 +445,12 @@ onfail | function(err){} | 操作失败，返回错误码信息
         <th>描述</th>
     </tr>
     <tr>
-		<td>getCurrentPosition</td>      
-		<td>返回音频文件的当前播放位置，操作成功的返回值为 int 类型的当前秒数（s）；操作失败，则返错误码
-		</td>  
-	</tr>
-    <tr>
-		<td>getDuration</td>         
-		<td>返回音频文件的总时长，操作成功的返回值为 int 类型的总时长（单位：秒数）；操作失败，则返错误码</td>  
-	</tr>
-    <tr>
 		<td>play</td>
 		<td>开始或继续播放音频文件，操作成功返回SUCCESS状态码；操作失败，则返错误码</td>           
 	</tr>
     <tr>
-		<td>pause</td>
-		<td>暂停播放音频文件，操作成功返回SUCCESS状态码；操作失败，则返错误码</td>          
-	</tr>
-    <tr>
-		<td>release</td>
-		<td>释放底层操作系统的音频资源，操作成功返回SUCCESS状态码；操作失败，则返错误码</td>          
+		<td>stop</td>
+		<td>停止播放音频文件，操作成功返回SUCCESS状态码；操作失败，则返错误码</td>          
 	</tr>
     <tr>
 		<td>startRecord</td>
@@ -472,11 +459,6 @@ onfail | function(err){} | 操作失败，返回错误码信息
     <tr>
 		<td>stopRecord</td>
 		<td>停止录制音频文件，操作成功返回SUCCESS状态码；操作失败，则返错误码</td>          
-	</tr>
-    <tr>
-		<td>stop</td>
-		<td>停止播放音频文件，操作成功返回SUCCESS状态码；操作失败，则返错误码</td>          
-	</tr> 
 	</tr>
 	</tbody>
 </table> 
