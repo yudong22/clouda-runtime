@@ -378,14 +378,6 @@ onfail | function(err){} | 操作失败，返回错误码信息
 		<td>number</td>
 		<td>媒体文件个数限制，仅当source为ALBUM时可用，默认为1</td>  
 	</tr>
-    <tr>
-		<td>format</td>
-		<td>string</td>
-		<td>返回数据格式，参数如下：<br>
-		- clouda.device.MEDIA_FORMAT.FILE：  MediaFile对象 (默认) <br>
-		- clouda.device.MEDIA_FORMAT.BASE64：仅适用于image，即Base64编码字符串
-		</td>  
-	</tr>
 <tbody>
 </table>
 
