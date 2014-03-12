@@ -13,6 +13,8 @@ define("device",function(module) {
     var getUuid = new delegateClass("device","device","getUuid");
     var getHostAppKey = new  delegateClass("device","device","getHostAppKey");
     
+    var getImei = new delegateClass("device","device","getImei");
+    
     var getSysVersion = new delegateClass("device","device","getAndroidVersion");
     var getDeviceModelName = new delegateClass("device","device","getProductModel");
     var getScreenSize = new delegateClass("device","device","getScreenResolution");
@@ -30,6 +32,18 @@ define("device",function(module) {
      * @returns null
      * 
      */
+    it.getImei = function(options){
+        if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+             BLightApp.getDeviceInfo(
+                 "(function(result){("+options.onsuccess.toString()+")(JSON.parse(result.device_info).imei);})",
+                            "("+options.onfail.toString()+")");
+             return false;
+        }
+        getImei(options.onsuccess,function(nativeErr){
+            lightapp.error(ErrCode.DEVICE_ERR,nativeErr,options);
+        },options);
+    };
+    
     it.getUuid = function(options){
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
              BLightApp.getDeviceInfo(

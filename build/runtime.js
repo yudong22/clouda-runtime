@@ -2543,7 +2543,13 @@ define("device",function(module) {
         CELL:"cellular",
         NONE: "none"
     };
-    
+    module.kconnection = {
+        'lightapp.device.CONNECT_UNKNOWN':module.CONNECTION_STATUS.UNKNOWN,
+        'lightapp.device.CONNECT_NONE':module.CONNECTION_STATUS.NONE,
+        'lightapp.device.CONNECT_WIFI':module.CONNECTION_STATUS.WIFI,
+        'lightapp.device.CONNECT_MOBILE':module.CONNECTION_STATUS.CELL,
+        'lightapp.device.CONNECT_CONNECTED':module.CONNECTION_STATUS.UNKNOWN,//connected
+    };
     
     it.status = module.CONNECTION_STATUS.UNKNOWN;
     
@@ -2560,7 +2566,7 @@ define("device",function(module) {
      */
      it.get = function(options){
          if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
-             BLightApp.getNetworkType("("+options.onsuccess.toString()+")",
+             BLightApp.getNetworkType("(function(result){result = clouda.device.kconnection[result.net_result]||clouda.device.CONNECTION_STATUS.UNKNOWN;("+options.onsuccess.toString()+")(result);})",
                             "("+options.onfail.toString()+")");
              return false;
          }
@@ -2780,6 +2786,8 @@ define("device",function(module) {
     var getUuid = new delegateClass("device","device","getUuid");
     var getHostAppKey = new  delegateClass("device","device","getHostAppKey");
     
+    var getImei = new delegateClass("device","device","getImei");
+    
     var getSysVersion = new delegateClass("device","device","getAndroidVersion");
     var getDeviceModelName = new delegateClass("device","device","getProductModel");
     var getScreenSize = new delegateClass("device","device","getScreenResolution");
@@ -2797,6 +2805,18 @@ define("device",function(module) {
      * @returns null
      * 
      */
+    it.getImei = function(options){
+        if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+             BLightApp.getDeviceInfo(
+                 "(function(result){("+options.onsuccess.toString()+")(JSON.parse(result.device_info).imei);})",
+                            "("+options.onfail.toString()+")");
+             return false;
+        }
+        getImei(options.onsuccess,function(nativeErr){
+            lightapp.error(ErrCode.DEVICE_ERR,nativeErr,options);
+        },options);
+    };
+    
     it.getUuid = function(options){
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
              BLightApp.getDeviceInfo(

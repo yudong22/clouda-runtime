@@ -19,7 +19,13 @@ define("device",function(module) {
         CELL:"cellular",
         NONE: "none"
     };
-    
+    module.kconnection = {
+        'lightapp.device.CONNECT_UNKNOWN':module.CONNECTION_STATUS.UNKNOWN,
+        'lightapp.device.CONNECT_NONE':module.CONNECTION_STATUS.NONE,
+        'lightapp.device.CONNECT_WIFI':module.CONNECTION_STATUS.WIFI,
+        'lightapp.device.CONNECT_MOBILE':module.CONNECTION_STATUS.CELL,
+        'lightapp.device.CONNECT_CONNECTED':module.CONNECTION_STATUS.UNKNOWN,//connected
+    };
     
     it.status = module.CONNECTION_STATUS.UNKNOWN;
     
@@ -36,7 +42,7 @@ define("device",function(module) {
      */
      it.get = function(options){
          if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
-             BLightApp.getNetworkType("("+options.onsuccess.toString()+")",
+             BLightApp.getNetworkType("(function(result){result = clouda.device.kconnection[result.net_result]||clouda.device.CONNECTION_STATUS.UNKNOWN;("+options.onsuccess.toString()+")(result);})",
                             "("+options.onfail.toString()+")");
              return false;
          }
