@@ -1,4 +1,4 @@
-/*! clouda-runtime - v0.1.0 - 2014-03-11 */
+/*! clouda-runtime - v0.1.0 - 2014-03-12 */
 (function(window){
     // for client js only
     if (typeof window !== 'object')return ;
@@ -186,6 +186,7 @@
         }
     },6000);
     var regPlugins = {};
+    var regCallbacks={};
     var installPlugin = function(pluginName,callback,options){
         if (!clouda.lightapp.ak) {
             runtimeError(ErrCode.AK_UNDEFINED);
@@ -201,16 +202,16 @@
         }
         //判断1.是否为undefined
         //判断2.是否为null，
-        if (Array.isArray( regPlugins[pluginName])){
-            return regPlugins[pluginName].push(callback);
-        }else if (typeof regPlugins[pluginName] != 'undefined' && regPlugins[pluginName]){
+        if (typeof regPlugins[pluginName] != 'undefined' && regPlugins[pluginName]){
             return callback(regPlugins[pluginName]);//此处是同步的逻辑
+        }else if (Array.isArray( regCallbacks[pluginName])){
+            return regCallbacks[pluginName].push(callback);
         }
         //在结果返回前，使用代理模式
         try{
             nuwa.pm.bindAk(clouda.lightapp.ak);
-            regPlugins[pluginName] = [];//等待下载
-            regPlugins[pluginName].push(callback);
+            regCallbacks[pluginName] = [];//等待下载
+            regCallbacks[pluginName].push(callback);
             nuwa.pm.absorb(pluginName,function(inst){
                 inst.on('error',function(err){
                     runtimeError(ErrCode.RT_GETERROR);
@@ -221,11 +222,11 @@
                 });
                 inst.on('complete',function(err){
                     var plg = nuwa.require(pluginName);
-                    // regPlugins[pluginName]
-                    for(var i=0,len=regPlugins[pluginName].length;i<len;i++){
-                        regPlugins[pluginName][i](plg);
-                    }
                     regPlugins[pluginName] = plg;
+                    for(var i=0,len=regCallbacks[pluginName].length;i<len;i++){
+                        regCallbacks[pluginName][i](plg);
+                    }
+                    delete regCallbacks[pluginName];
                 });
             });
             
@@ -2977,9 +2978,7 @@ define("device",function(module) {
                     options.onprogress(data);
                 };
             }else{
-                // FileTransfer.onprogress = function(){
-                    // // options.onprogress(data);
-                // };
+                FileTransfer.onprogress = function(){};
             }
             var opt = new ft.FileUploadOptions();
             opt.fileKey = options.uploadKey;
@@ -3836,28 +3835,38 @@ define("device",function(module) {
             
             return false;
         }
-        var func;
-        if (options.mediaType == clouda.device.MEDIA_TYPE.VIDEO){
-            func=captureVideo;
-        }else if (options.mediaType == clouda.device.MEDIA_TYPE.AUDIO){
-            func=captureAudio;
-        }else{//默认 MEDIA_TYPE.PICTURE
-            if (options.format === module.MEDIA_FORMAT.BASE64) {
-                func=getPicture;
-            }else if (options.source === clouda.device.MEDIA_SOURCE.ALBUM){
-                if (options.format === module.MEDIA_FORMAT.FILE) {
-                    options.destType = module.MEDIA_DESTINATION.FILE_URI;
-                }
-                func=getPicture;
-                options.sourceType = module.MEDIA_SOURCE.ALBUM;
         
-            }else{
-                func=captureImage;
-            }
-        }
-        
+        /*
+
+var getPicture = new delegateClass("device","camera","getPicture");
+    // var cleanup = new delegateClass("device","camera","cleanup");
+    var captureAudio = new delegateClass("device","capture","captureAudio");
+    var captureImage = new delegateClass("device","capture","captureImage");
+    var captureVideo = new delegateClass("device","capture","captureVideo");
+             */
         installPlugin("device", function(device) {
-        
+            var func;
+            if (options.mediaType == clouda.device.MEDIA_TYPE.VIDEO){
+                func=device.capture.captureVideo;
+                if (options.source === clouda.device.MEDIA_SOURCE.ALBUM){
+                    options.sourceType = module.MEDIA_SOURCE.ALBUM;
+                }
+            }else if (options.mediaType == clouda.device.MEDIA_TYPE.AUDIO){
+                func=device.capture.captureAudio;
+            }else{//默认 MEDIA_TYPE.PICTURE
+                if (options.format === module.MEDIA_FORMAT.BASE64) {
+                    func=device.camera.getPicture;
+                }else if (options.source === clouda.device.MEDIA_SOURCE.ALBUM){
+                    if (options.format === module.MEDIA_FORMAT.FILE) {
+                        options.destType = module.MEDIA_DESTINATION.FILE_URI;
+                    }
+                    func=device.camera.getPicture;
+                    options.sourceType = module.MEDIA_SOURCE.ALBUM;
+            
+                }else{
+                    func=device.capture.captureImage;
+                }
+            }
             func(function(mediaFile){
                 if (Array.isArray(mediaFile)){
                     if (mediaFile.length == 1 && options.details){//处理详细信息

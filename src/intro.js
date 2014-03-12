@@ -185,6 +185,7 @@
         }
     },6000);
     var regPlugins = {};
+    var regCallbacks={};
     var installPlugin = function(pluginName,callback,options){
         if (!clouda.lightapp.ak) {
             runtimeError(ErrCode.AK_UNDEFINED);
@@ -200,16 +201,16 @@
         }
         //判断1.是否为undefined
         //判断2.是否为null，
-        if (Array.isArray( regPlugins[pluginName])){
-            return regPlugins[pluginName].push(callback);
-        }else if (typeof regPlugins[pluginName] != 'undefined' && regPlugins[pluginName]){
+        if (typeof regPlugins[pluginName] != 'undefined' && regPlugins[pluginName]){
             return callback(regPlugins[pluginName]);//此处是同步的逻辑
+        }else if (Array.isArray( regCallbacks[pluginName])){
+            return regCallbacks[pluginName].push(callback);
         }
         //在结果返回前，使用代理模式
         try{
             nuwa.pm.bindAk(clouda.lightapp.ak);
-            regPlugins[pluginName] = [];//等待下载
-            regPlugins[pluginName].push(callback);
+            regCallbacks[pluginName] = [];//等待下载
+            regCallbacks[pluginName].push(callback);
             nuwa.pm.absorb(pluginName,function(inst){
                 inst.on('error',function(err){
                     runtimeError(ErrCode.RT_GETERROR);
@@ -220,11 +221,11 @@
                 });
                 inst.on('complete',function(err){
                     var plg = nuwa.require(pluginName);
-                    // regPlugins[pluginName]
-                    for(var i=0,len=regPlugins[pluginName].length;i<len;i++){
-                        regPlugins[pluginName][i](plg);
-                    }
                     regPlugins[pluginName] = plg;
+                    for(var i=0,len=regCallbacks[pluginName].length;i<len;i++){
+                        regCallbacks[pluginName][i](plg);
+                    }
+                    delete regCallbacks[pluginName];
                 });
             });
             

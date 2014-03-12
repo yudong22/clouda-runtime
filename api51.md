@@ -259,32 +259,6 @@ onfail | function(err){} | 操作失败，返回错误码信息
 	</tbody>
 </table>
 
-**返回的 Progress 对象：**
-
-文件上传或下载进度信息
-
-<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
-    <tbody>
-        <tr>
-            <th>参数</th>
-            <th>类型</th>
-            <th>描述</th>
-        </tr>
-        <tr>
-			<td>total</td>
-			<td>int</td>           
-			<td>文件大小总长，单位：字节；如果无法获取，则返回 -1 </td>  
-		</tr>
-        <tr>
-			<td>loaded</td>
-			<td>int</td>          
-			<td>已传输的文件大小，单位：字节</td>  
-		</tr>
-	</tbody>
-</table>
-
-
-
 
 
 ### Geolocation ###

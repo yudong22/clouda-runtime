@@ -143,28 +143,38 @@ define("device",function(module) {
             
             return false;
         }
-        var func;
-        if (options.mediaType == clouda.device.MEDIA_TYPE.VIDEO){
-            func=captureVideo;
-        }else if (options.mediaType == clouda.device.MEDIA_TYPE.AUDIO){
-            func=captureAudio;
-        }else{//默认 MEDIA_TYPE.PICTURE
-            if (options.format === module.MEDIA_FORMAT.BASE64) {
-                func=getPicture;
-            }else if (options.source === clouda.device.MEDIA_SOURCE.ALBUM){
-                if (options.format === module.MEDIA_FORMAT.FILE) {
-                    options.destType = module.MEDIA_DESTINATION.FILE_URI;
-                }
-                func=getPicture;
-                options.sourceType = module.MEDIA_SOURCE.ALBUM;
         
-            }else{
-                func=captureImage;
-            }
-        }
-        
+        /*
+
+var getPicture = new delegateClass("device","camera","getPicture");
+    // var cleanup = new delegateClass("device","camera","cleanup");
+    var captureAudio = new delegateClass("device","capture","captureAudio");
+    var captureImage = new delegateClass("device","capture","captureImage");
+    var captureVideo = new delegateClass("device","capture","captureVideo");
+             */
         installPlugin("device", function(device) {
-        
+            var func;
+            if (options.mediaType == clouda.device.MEDIA_TYPE.VIDEO){
+                func=device.capture.captureVideo;
+                if (options.source === clouda.device.MEDIA_SOURCE.ALBUM){
+                    options.sourceType = module.MEDIA_SOURCE.ALBUM;
+                }
+            }else if (options.mediaType == clouda.device.MEDIA_TYPE.AUDIO){
+                func=device.capture.captureAudio;
+            }else{//默认 MEDIA_TYPE.PICTURE
+                if (options.format === module.MEDIA_FORMAT.BASE64) {
+                    func=device.camera.getPicture;
+                }else if (options.source === clouda.device.MEDIA_SOURCE.ALBUM){
+                    if (options.format === module.MEDIA_FORMAT.FILE) {
+                        options.destType = module.MEDIA_DESTINATION.FILE_URI;
+                    }
+                    func=device.camera.getPicture;
+                    options.sourceType = module.MEDIA_SOURCE.ALBUM;
+            
+                }else{
+                    func=device.capture.captureImage;
+                }
+            }
             func(function(mediaFile){
                 if (Array.isArray(mediaFile)){
                     if (mediaFile.length == 1 && options.details){//处理详细信息
