@@ -78,7 +78,6 @@
 		           clouda.device.media.captureMedia({
 				   		mediaType : clouda.device.MEDIA_TYPE.IMAGE,
 						source : clouda.device.MEDIA_SOURCE.CAMERA,
-						format : 'file',
 						onfail : function(err){},
 						onsuccess : function(mediaFile){
 							//返回读取到的图片文件的本地全路径
