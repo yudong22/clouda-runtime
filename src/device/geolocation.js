@@ -37,7 +37,7 @@ define("device",function(module) {
      */
     it.get = function(options){
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
-             BLightApp.getCurrentPosition("("+options.onsuccess.toString()+")",
+             BLightApp.getCurrentPosition("(function(result){("+options.onsuccess.toString()+")(result.coords);})",
                             "("+options.onfail.toString()+")");
              return false;
          }

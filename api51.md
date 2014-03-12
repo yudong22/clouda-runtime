@@ -298,24 +298,6 @@ onfail | function(err){} | 操作失败，返回错误码信息
 		<td>function(err){}</td>            
 		<td>获取地理信息失败，返回错误码</td>  
 	</tr>
-    <tr>
-		<td>method</td>
-		<td>number</td>          
-		<td>定位的方式，可选择以下类型：<br>
-		- clouda.device.LOCATION_METHOD.BASE_STATION : 基站<br>
-		- clouda.device.LOCATION_METHOD.GPS : GPS(默认)
-		</td>  
-	</tr>
-    <tr>
-		<td>timeout</td>
-		<td>number</td>          
-		<td>接口超时最大时间，单位毫秒，超时后会执行onfail</td>  
-	</tr>
-    <tr>
-		<td>maximumAge</td>
-		<td>number</td>          
-		<td>获取某个缓存地理位置信息的最大时间段，单位：毫秒，超出则进行重新获取</td>  
-	</tr>
 </tbody>
 </table>
 

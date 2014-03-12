@@ -38,10 +38,11 @@ define("device",function(module) {
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
 
             if (options.type == clouda.device.QR_TYPE.QRCODE) {
-                BLightApp.startQRcode('lightapp.device.QR_TYPE.QRCODE',"("+options.onsuccess.toString()+")",
+                //"(function(result){("+options.onfail.toString()+")(JSON.parse(result.device_info).os_version);})"
+                BLightApp.startQRcode('lightapp.device.QR_TYPE.QRCODE',"(function(result){("+options.onsuccess.toString()+")(result.qr_result);})",
                             "("+options.onfail.toString()+")");
             } else if (options.type == clouda.device.QR_TYPE.BARCODE) {
-                BLightApp.startQRcode('lightapp.device.QR_TYPE.BARCODE', "("+options.onsuccess.toString()+")",
+                BLightApp.startQRcode('lightapp.device.QR_TYPE.BARCODE',"(function(result){("+options.onsuccess.toString()+")(result.qr_result);})",
                             "("+options.onfail.toString()+")");
             }
             
