@@ -2,7 +2,23 @@ define("device",function(module) {
     var lightapp = this;
     //定义 network 空间，clouda.device.reachability 使用nuwa.network 
     var it = module.fs = {};
-    
+    //FileTransferError.FILE_NOT_FOUND_ERR = 1;
+    // FileTransferError.INVALID_URL_ERR = 2;
+    // FileTransferError.CONNECTION_ERR = 3;
+    // FileTransferError.ABORT_ERR = 4;
+    var ftmsg = {
+        1:"FILE NOT FOUND.",
+        2:"INVALID URL.",
+        3:"CONNECTION ERR.",
+        4:"ABORT_ERR.",
+    };
+    var fterror = function(first,err,options){
+        //deal with err
+        if (ftmsg[err.code]){
+            err.error = ftmsg[err.code];
+        }
+        lightapp.error(first,err,options);
+    };
     /**
      * @object fs
      * @memberof clouda.device
@@ -83,7 +99,7 @@ define("device",function(module) {
             FileTransfer.upload(link, target, function(result) {
                 options.onsuccess.apply(this,arguments);
             }, function(err) {
-                lightapp.error(ErrCode.FS_ERR,err,options);
+                fterror(ErrCode.FS_ERR,err,options);
             }, opt,options);
 
         });
@@ -123,7 +139,7 @@ define("device",function(module) {
                 FileTransfer.download(link, direntry.fullPath +"/" + name, function(result) {
                     options.onsuccess.apply(this, arguments);
                 }, function(err) {
-                    lightapp.error(ErrCode.FS_ERR, err, options);
+                    fterror(ErrCode.FS_ERR, err, options);
                 },options);
             });
             
@@ -143,7 +159,7 @@ define("device",function(module) {
     
     it.abort = function() {
         if(FileTransfer === null){
-            lightapp.error(ErrCode.FS_ERR, err, options);
+            lightapp.error(ErrCode.FS_ERR, clouda.STATUS.SYSTEM_FAILURE, options);
         }else{
             FileTransfer.abort();
         }

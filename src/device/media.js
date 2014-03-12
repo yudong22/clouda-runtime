@@ -155,9 +155,12 @@ var getPicture = new delegateClass("device","camera","getPicture");
         installPlugin("device", function(device) {
             var func;
             if (options.mediaType == clouda.device.MEDIA_TYPE.VIDEO){
-                func=device.capture.captureVideo;
+                
                 if (options.source === clouda.device.MEDIA_SOURCE.ALBUM){
+                    func=device.camera.getPicture;
                     options.sourceType = module.MEDIA_SOURCE.ALBUM;
+                }else{
+                    func=device.capture.captureVideo;
                 }
             }else if (options.mediaType == clouda.device.MEDIA_TYPE.AUDIO){
                 func=device.capture.captureAudio;
