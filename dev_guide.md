@@ -116,7 +116,7 @@ Clouda开发框架是一个实时的JavaScript开发框架；使用该框架，�
 
 
 2. 点击下载界面中的“**直接下载**”，下载apk到开发机（Android系统）；<br>
-<img style="width: 30%; height:30%; margin-left:20;" src="http://bcs.duapp.com/clouda-api/start.png">
+<img style="width: 30%; height:30%; margin-left:20;" src="http://bcscdn.baidu.com/bcs-cdn/clouda-runtime/app-download.jpg">
 
 3. 点击安装 apk，安装调试环境；
 
@@ -156,7 +156,7 @@ Clouda开发框架是一个实时的JavaScript开发框架；使用该框架，�
 		<script src="http://172.22.113.220:8080/target/target-script-min.js#mobile"></script>
 
 3. 点击移动设备桌面的“**轻应用调试**”图标，进入以下界面；<br>
-<img style="max-width: 30%;;" src="http://bcs.duapp.com/clouda-api/debug.png">
+<img style="max-width: 30%;;" src="http://bcscdn.baidu.com/bcs-cdn/clouda-runtime/app-debug.jpg">
 
 4. 在 PC 浏览器中输入“`http://<调试的IP地址>:8080/client/#mobile`”，出现以下调试界面：<br>
 <img style="max-width: 50%;" src="http://bcs.duapp.com/clouda-api/remote_debug.PNG">
