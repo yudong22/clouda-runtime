@@ -2,6 +2,28 @@ define("device",function(module) {
     var lightapp = this;
     //定义 camera 空间，clouda.device.media 支持退化
     var it = module.media = {};
+    
+    module.media.mediamsg = {
+        0:"NONE ACTIVE.",
+        1:"ABORT_ERR.",
+        2:"CONNECTION ERR.",
+        3:"DECODE ERR.",
+        4:"SRC NOT SUPPORT.",
+    };
+    var mediaerror = function(first,err,options){
+        //deal with err
+        if (module.media.mediamsg[err.code]){
+            err.error = module.media.mediamsg[err.code];
+        }
+        err.result = err.code;
+        delete err.code;
+        lightapp.error(first,err,options);
+    };
+    // _MediaError.MEDIA_ERR_NONE_ACTIVE = _MediaError.MEDIA_ERR_NONE_ACTIVE || 0, 
+    // _MediaError.MEDIA_ERR_ABORTED = _MediaError.MEDIA_ERR_ABORTED || 1, _MediaError.MEDIA_ERR_NETWORK = _MediaError.MEDIA_ERR_NETWORK || 2, 
+    // _MediaError.MEDIA_ERR_DECODE = _MediaError.MEDIA_ERR_DECODE || 3, _MediaError.MEDIA_ERR_NONE_SUPPORTED = _MediaError.MEDIA_ERR_NONE_SUPPORTED || 4, 
+    // _MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED = _MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED || 4;
+            
     /**
      * @object media
      * @memberof clouda.device
@@ -165,15 +187,17 @@ var getPicture = new delegateClass("device","camera","getPicture");
             }else if (options.mediaType == clouda.device.MEDIA_TYPE.AUDIO){
                 func=device.capture.captureAudio;
             }else{//默认 MEDIA_TYPE.PICTURE
-                if (options.format === module.MEDIA_FORMAT.BASE64) {
-                    func=device.camera.getPicture;
-                }else if (options.source === clouda.device.MEDIA_SOURCE.ALBUM){
-                    if (options.format === module.MEDIA_FORMAT.FILE) {
-                        options.destType = module.MEDIA_DESTINATION.FILE_URI;
-                    }
+                if (options.format === module.MEDIA_FORMAT.BASE64){
+                    options.destType = module.MEDIA_DESTINATION.DATA_URL;
+                }else if (options.format === module.MEDIA_FORMAT.FILE) {
+                    options.destType = module.MEDIA_DESTINATION.FILE_URI;
+                }
+                
+                if (options.source === clouda.device.MEDIA_SOURCE.ALBUM){
                     func=device.camera.getPicture;
                     options.sourceType = module.MEDIA_SOURCE.ALBUM;
-            
+                }else if (options.format === module.MEDIA_FORMAT.BASE64){//base 64 should
+                    func=device.camera.getPicture;
                 }else{
                     func=device.capture.captureImage;
                 }
@@ -189,7 +213,11 @@ var getPicture = new delegateClass("device","camera","getPicture");
                             options.onsuccess(mediaFile[0]);
                         },function(){});
                     }else{
-                        options.onsuccess(mediaFile);
+                        if (mediaFile.length === 1){
+                            options.onsuccess(mediaFile[0]);
+                        }else{
+                            options.onsuccess(mediaFile);
+                        }
                     }
                 } else {//base64
                     if (options.format === module.MEDIA_FORMAT.FILE) {
@@ -230,22 +258,23 @@ var getPicture = new delegateClass("device","camera","getPicture");
     var media={};
     it.operateMedia = function(link,operator,options){
         if (clouda.RUNTIME === clouda.RUNTIMES.KUANG){
+            var failstring = "(function(result){result.error=clouda.device.media.mediamsg[result.result];("+options.onfail.toString()+")(result);})";
             switch(operator){
                 case "startRecord":
                     BLightApp.startRecording(link,"("+options.onsuccess.toString()+")",
-                            "("+options.onfail.toString()+")");
+                            failstring);
                     break;
                 case "stopRecord":
                     BLightApp.stopRecording("("+options.onsuccess.toString()+")",
-                            "("+options.onfail.toString()+")");
+                            failstring);
                     break;
                 case "play":
                     BLightApp.playAudio(link,'lightapp.device.AUDIO_TYPE.PLAY',"("+options.onsuccess.toString()+")",
-                            "("+options.onfail.toString()+")");
+                            failstring);
                     break;
                 case "stop":
                     BLightApp.playAudio(link,'lightapp.device.AUDIO_TYPE.STOP',"("+options.onsuccess.toString()+")",
-                            "("+options.onfail.toString()+")");
+                            failstring);
                     break;
                 default:
                     lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
@@ -256,7 +285,7 @@ var getPicture = new delegateClass("device","camera","getPicture");
             if (!media[link]){
                 media[link] = new device.Media(link,function(id){
                 },function(nativeErr){
-                    lightapp.error(ErrCode.MEDIA_ERR,nativeErr.code,options);
+                    mediaerror(ErrCode.MEDIA_ERR,nativeErr,options);
                 },options.onstatus);
             }
             switch(operator){

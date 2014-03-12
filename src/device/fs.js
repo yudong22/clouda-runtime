@@ -6,7 +6,7 @@ define("device",function(module) {
     // FileTransferError.INVALID_URL_ERR = 2;
     // FileTransferError.CONNECTION_ERR = 3;
     // FileTransferError.ABORT_ERR = 4;
-    var ftmsg = {
+    module.fs.ftmsg = {
         1:"FILE NOT FOUND.",
         2:"INVALID URL.",
         3:"CONNECTION ERR.",
@@ -14,9 +14,11 @@ define("device",function(module) {
     };
     var fterror = function(first,err,options){
         //deal with err
-        if (ftmsg[err.code]){
-            err.error = ftmsg[err.code];
+        if (module.fs.ftmsg[err.code]){
+            err.error = module.fs.ftmsg[err.code];
         }
+        err.result = err.code;
+        delete err.code;
         lightapp.error(first,err,options);
     };
     /**
@@ -74,8 +76,8 @@ define("device",function(module) {
             params.file.push({key:options.uploadKey,value:link});
             
             BLightApp.postFile(target,JSON.stringify(params),"("+options.onsuccess.toString()+")",
-                            "("+options.onfail.toString()+")");
-           
+                            "(function(result){result.error=clouda.device.fs.ftmsg[result.result];("+options.onfail.toString()+")(result);})");
+           //"(function(result){("+options.onfail.toString()+")(JSON.parse(result.device_info).os_version);})"
              return false;
          }
         installPlugin("filetransfer", function(ft) {
