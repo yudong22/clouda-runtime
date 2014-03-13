@@ -55,7 +55,6 @@
 - 网络连接状态(Connection)
 - 设备信息（Device）
 - 文件管理（FileSystem）
-- 地理位置（Geolocation）
 - 本地媒体功能（Media）
 - 二维码（QRCode）
 
@@ -259,47 +258,6 @@ onfail | function(err){} | 操作失败，返回错误码信息
 	</tbody>
 </table>
 
-
-
-### Geolocation ###
-	clouda.device.geolocation
-
-地理位置
-
-**方法：**
-
-- get(options)
-
-#### get ####
-    get(options)
-
-**功能描述：**
-
-获取当前地理位置信息。
-
-**参数说明：**
-
-- options是一个object，其中包括以下参数：
-
-<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
-<tbody>
-    <tr>
-        <th>参数</th>
-        <th>类型</th>
-        <th>描述</th>
-    </tr>
-    <tr>
-		<td>onsuccess</td>
-		<td>function(data){}</td>          
-		<td>获取地理信息成功</td>  
-	</tr>
-    <tr>
-		<td>onfail</td>
-		<td>function(err){}</td>            
-		<td>获取地理信息失败，返回错误码</td>  
-	</tr>
-</tbody>
-</table>
 
 
 ### Media ###

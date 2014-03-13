@@ -15,7 +15,10 @@ define("device",function(module) {
         GPS:1
     };
     
-    var getCurrentPosition = new delegateClass("device","geolocation","getCurrentPosition");
+    var mapstart = new delegateClass("map","start");
+    var mapstop = new delegateClass("map","stop");
+    var maplocation = new delegateClass("map","locationRequest");
+    
     var watchPosition = new delegateClass("device","geolocation","watchPosition");
     var clearWatch = new delegateClass("device","geolocation","clearWatch");
     
@@ -41,21 +44,18 @@ define("device",function(module) {
                             "("+options.onfail.toString()+")");
              return false;
          }
-        if (options.method === module.LOCATION_METHOD.BASE_STATION ){
-             options.enableHighAccuracy = false;
-         }else{
-             options.enableHighAccuracy = true;
-         }
-        getCurrentPosition(function(obj){
+        // if (options.method === module.LOCATION_METHOD.BASE_STATION ){
+             // options.enableHighAccuracy = false;
+         // }else{
+             // options.enableHighAccuracy = true;
+         // }
+        mapstart(function(obj){
             if ( typeof obj==='object' ){
-                if (!obj.coords){
-                    lightapp.error(ErrCode.LOC_GET_ERR,obj,options);
-                    return ;
-                }
-                options.onsuccess(obj.coords);
+                options.onsuccess(obj);
             }else{
                 lightapp.error(ErrCode.LOC_GET_ERR,ErrCode.UNKNOW_CALLBACK,options);
             }
+            mapstop(function(){},function(){});
         },function(nativeErr){
             lightapp.error(ErrCode.LOC_GET_ERR,nativeErr,options);
         },options);

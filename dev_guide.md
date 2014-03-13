@@ -105,66 +105,24 @@ Clouda开发框架是一个实时的JavaScript开发框架；使用该框架，�
 
 ### 调试轻应用 ###
 
-开发轻应用时，在将该应用部署到 Web 服务器之前，您可以方便地在本地计算机上对应用进行测试。
+开发轻应用时，在将该应用部署到 Web 服务器之前，您可以方便地在本地计算机上对应用进行测试。需要注意的是，调试工具必须联网才能正确运行。
 
 您的本地计算机的 Web 服务器很可能使用类似 http://localhost 的默认地址。
 
 #### 安装调试环境 ####
 
-1. 点击[这里](http://bcscdn.baidu.com/bcs-cdn/clouda-runtime/SplashScreenActivity03111706.apk)下载.apk或使用移动设备扫描下面的二维码，进入轻应用调试环境安装文件（.apk）下载界面；<br>
-<img style="width: 20%; height:30%; margin-left:20;" src="http://bcscdn.baidu.com/bcs-cdn/clouda-runtime/qr140312.png">
+1. 点击[这里](http://bcscdn.baidu.com/bcs-cdn/clouda-runtime/lightapp_debug_1.0.apk)下载.apk或使用移动设备扫描下面的二维码，进入轻应用调试环境安装文件（.apk）下载界面；<br>
+<img style="width: 20%; height:30%; margin-left:20;" src="http://bcscdn.baidu.com/bcs-cdn/clouda-runtime/qr1.png">
 
 
 2. 点击下载界面中的“**直接下载**”，下载apk到开发机（Android系统）；<br>
-<img style="width: 30%; height:30%; margin-left:20;" src="http://bcscdn.baidu.com/bcs-cdn/clouda-runtime/app-download.jpg">
 
 3. 点击安装 apk，安装调试环境；
 
 4. 安装成功会在桌面生成“**轻应用调试**”图标。<br>
 <img style="max-width: 10%;margin-left:20;" src="http://bcscdn.baidu.com/bcs-cdn/clouda-runtime/icon20140312.png">
 
-#### 远程调试 ####
 
-#### 安装远程调试工具 ####
-
-安装调试工具Weinre：
-
-**在 Windows下安装 Weinre：**
-
-1. 首先，访问 [http://nodejs.org/download/](http://nodejs.org/download/)，下载并安装Node.js;
-
-2. 安装好后，在 Windows 命令行中运行：
-
-     npm install weinre
-
-**其他安装说明：**
-
-可参考： [http://people.apache.org/~pmuellr/weinre/docs/latest/Installing.html](http://people.apache.org/~pmuellr/weinre/docs/latest/Installing.html)
-
-#### 远程调试操作 ####
-
-1. 在 PC 上启动运行 Weinre 命令：
-
-		node_modules\.bin\weinre\weinre --boundHost <调试的IP地址>
-
-  	 例如： 若本地IP地址为172.22.113.220,则命令如下：
-
-		node_modules\.bin\weinre\weinre --boundHost 172.22.113.220
-
-2. 在需要调试的页面中添加以下调试代码（<font color="red">**调试完成后请删除**</font>）：
-
-		<script src="http://172.22.113.220:8080/target/target-script-min.js#mobile"></script>
-
-3. 点击移动设备桌面的“**轻应用调试**”图标，进入以下界面；<br>
-<img style="max-width: 30%;;" src="http://bcscdn.baidu.com/bcs-cdn/clouda-runtime/app-debug.jpg">
-
-4. 在 PC 浏览器中输入“`http://<调试的IP地址>:8080/client/#mobile`”，出现以下调试界面：<br>
-<img style="max-width: 50%;" src="http://bcs.duapp.com/clouda-api/remote_debug.PNG">
-
-5. 点击调试界面的顶部的“Elements”，即可进行页面调试（效果如下图所示）：<br>
-<img style="max-width: 50%;" src="http://bcs.duapp.com/clouda-api/debugUI.png">
-
-6. 调试完成时，请删除调试代码。
 
 ### 部署轻应用 ###
 
