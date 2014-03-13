@@ -2792,6 +2792,30 @@ sign | 签名结果 | 取决于签名方法 | 是
 sign_method | 签名方法 | 取值范围参见附录 | 是
 extra  | 商户自定义数据 | 不超过255个字符 | 否
 
+##### 返回值
+支付结束后返回一个字符串，格式如下
+```
+statecode={状态码};order_no={商户传入的订单号};notify={订单签名}
+```
+Statecode为状态码，表示支付结果，如下表
+
+stateCode | 描述 
+---------- | ------------- 
+0 | 成功
+1 | 支付中
+2 | 取消
+3 | 不支持此种支付方式（收银台前置的情况下才会出现）
+4 | token失效（外部带登陆状态才会出现）
+5 | 登陆失败
+
+order_no为商户传入的订单号
+
+notify为订单签名，需要通过notify以判断并确定支付结果。例如
+```
+notify="currency=1&extra=&order_no=1372852640712&pay_result=1&pay_time=20130703200113&pay_type=2&sign_method=1&sp_no=1210010002&total_amount=1&transport_amount=0&unit_amount=1&unit_count=1&sign=b3e35d180b747d5302d5ccbab6410c53"
+```
+在stateCode =0，并且验签成功的情况下，证明支付成功。如果是安全级别低的情况下可以只用stateCode =0证明支付成功。其它情况归为失败。
+
 ##### 说明： 
 1. 商户通过上述参数拼成订单信息。如果只有1个商品，那么goods_desc和goods_url可以使该商品的名称和展现URL；如果包括多个商品，那么goods_desc和goods_url不可能与每个商品一一对应，具体内容由商户定义。
 2. 该接口“可能包含中文”的参数包括：goods_name、goods_desc、buyer_sp_username，因此指定了input_charset参数。这三个参数值必须按input_charset编码后，才能参与签名。
