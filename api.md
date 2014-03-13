@@ -2798,6 +2798,7 @@ extra  | 商户自定义数据 | 不超过255个字符 | 否
 statecode={状态码};order_no={商户传入的订单号};notify={订单签名}
 ```
 Statecode为状态码，表示支付结果，如下表
+
 stateCode | 描述 
 ---------- | ------------- 
 0 | 成功
@@ -2811,8 +2812,9 @@ order_no为商户传入的订单号
 
 notify为订单签名，需要通过notify以判断并确定支付结果。例如
 ```
-notify=” currency=1&extra=&order_no=1372852640712&pay_result=1&pay_time=20130703200113&pay_type=2&sign_method=1&sp_no=1210010002&total_amount=1&transport_amount=0&unit_amount=1&unit_count=1&sign=b3e35d180b747d5302d5ccbab6410c53”, 在stateCode =0，并且验签成功的情况下，证明支付成功。如果是安全级别低的情况下可以只用stateCode =0证明支付成功。其它情况归为失败。
+notify="currency=1&extra=&order_no=1372852640712&pay_result=1&pay_time=20130703200113&pay_type=2&sign_method=1&sp_no=1210010002&total_amount=1&transport_amount=0&unit_amount=1&unit_count=1&sign=b3e35d180b747d5302d5ccbab6410c53"
 ```
+在stateCode =0，并且验签成功的情况下，证明支付成功。如果是安全级别低的情况下可以只用stateCode =0证明支付成功。其它情况归为失败。
 
 ##### 说明： 
 1. 商户通过上述参数拼成订单信息。如果只有1个商品，那么goods_desc和goods_url可以使该商品的名称和展现URL；如果包括多个商品，那么goods_desc和goods_url不可能与每个商品一一对应，具体内容由商户定义。
