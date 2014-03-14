@@ -22,7 +22,7 @@ define("mbaas",function( module ) {
      */
      var PARTNER_ID,MD5_PRIVATE;
      
-     it.init = function(partner_id,sk,options){
+     it.init = function(partner_id,options){
          if (!partner_id || typeof partner_id !='string'){
              lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
              return false;
@@ -36,7 +36,6 @@ define("mbaas",function( module ) {
 			return false;
          } else {
 			 PARTNER_ID = partner_id;
-			 MD5_PRIVATE = sk;
 			 init(partner_id,options.onsuccess,function(nativeErr){
 				lightapp.error(ErrCode.PAY_ERROR,nativeErr,options);
 			 },partner_id,options);
