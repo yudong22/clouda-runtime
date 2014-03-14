@@ -1,4 +1,4 @@
-/*! clouda-runtime - v0.1.0 - 2014-03-13 */
+/*! clouda-runtime - v0.1.0 - 2014-03-14 */
 (function(window){
     // for client js only
     if (typeof window !== 'object')return ;
@@ -233,13 +233,13 @@
         }catch(e){
             try{
                 callback(null);
-            }catch(e){
+            }catch(ee){
                 if (typeof options === 'object' ){//检查 onfail
                     if (typeof options.onfail === 'function'){
                         options.onfail(clouda.STATUS.SYSTEM_FAILURE);
                     }
                 }
-                console.error(e.stack);
+                console.error(ee.stack);
             }
             
         }
@@ -2890,21 +2890,26 @@ define("device",function(module) {
      * 
      */
     it.getScreenSize = function(options){
-        if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
-            if (window.screen){
-                options.onsuccess(window.screen);
-            }else{
-                lightapp.error(ErrCode.DEVICE_ERR,ErrCode.DEVICE_ERR,options);
-            }
-            return ;
-             // BLightApp.getDeviceInfo(
-                 // "(function(result){("+options.onsuccess.toString()+")(window.screen);})",
-                            // "("+options.onfail.toString()+")");
-             // return false;
+        if (window.screen){
+            options.onsuccess(window.screen);
+        }else{
+            lightapp.error(ErrCode.DEVICE_ERR,ErrCode.DEVICE_ERR,options);
         }
-        getScreenSize(options.onsuccess,function(nativeErr){
-            lightapp.error(ErrCode.DEVICE_ERR,nativeErr,options);
-        },options);
+        // if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+            // if (window.screen){
+                // options.onsuccess(window.screen);
+            // }else{
+                // lightapp.error(ErrCode.DEVICE_ERR,ErrCode.DEVICE_ERR,options);
+            // }
+            // return ;
+             // // BLightApp.getDeviceInfo(
+                 // // "(function(result){("+options.onsuccess.toString()+")(window.screen);})",
+                            // // "("+options.onfail.toString()+")");
+             // // return false;
+        // }
+        // getScreenSize(options.onsuccess,function(nativeErr){
+            // lightapp.error(ErrCode.DEVICE_ERR,nativeErr,options);
+        // },options);
     };
     /**
      * 获取 hostappkey
@@ -5862,18 +5867,25 @@ define("mbaas",function( module ) {
      */
      var PARTNER_ID,MD5_PRIVATE;
      
-     it.init = function(partner_id,sk,options){
+     it.init = function(partner_id,options){
          if (!partner_id || typeof partner_id !='string'){
              lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
              return false;
          }
-         PARTNER_ID = partner_id;
-         MD5_PRIVATE = sk;
-         init(partner_id,options.onsuccess,function(nativeErr){
-            lightapp.error(ErrCode.PAY_ERROR,nativeErr,options);
-         },partner_id,options);
-         
-        
+		 if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+		 
+		 /**
+		  * void initpay(final String successCallback, final String errorCallback, String sp)
+		  */
+			BLightApp.initpay("(function(result){("+options.onsuccess.toString()+")(result);})", "("+options.onfail.toString()+")", partner_id);
+			return false;
+         } else {
+			 PARTNER_ID = partner_id;
+			 init(partner_id,options.onsuccess,function(nativeErr){
+				lightapp.error(ErrCode.PAY_ERROR,nativeErr,options);
+			 },partner_id,options);
+		 }
+		 
      };
      // function createOrder($goodsname,$price){
             // var orderNO = time()*1000;
@@ -5916,9 +5928,19 @@ define("mbaas",function( module ) {
          if (!options.hideLoading){
              options.hideLoading = false;
          }
-         dopay(options.onsuccess,function(nativeErr){
-            lightapp.error(ErrCode.PAY_ERROR,nativeErr,options);
-         },options.orderInfo,options.showdDialog,options);
+		 /**
+		  * void dopay(final String successCallback, final String errorCallback, String orderInfo, final String hideLoadingDialog)
+		  */
+		 if (clouda.RUNTIME === clouda.RUNTIMES.KUANG) {
+			BLightApp.initpay("(function(result){("+options.onsuccess.toString()+")(result);})",
+                            "("+options.onfail.toString()+")", options.orderInfo,options.hideLoading);
+			return false;
+		 } else {
+			dopay(options.onsuccess,function(nativeErr){
+				lightapp.error(ErrCode.PAY_ERROR,nativeErr,options);
+			 },options.orderInfo,options.showdDialog,options);
+		 }
+         
         
      };
     
