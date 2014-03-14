@@ -27,20 +27,20 @@ define("mbaas",function( module ) {
              lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
              return false;
          }
-		 if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
-		 
-		 /**
-		  * void initpay(final String successCallback, final String errorCallback, String sp)
-		  */
-			BLightApp.initpay("(function(result){("+options.onsuccess.toString()+")(result);})", "("+options.onfail.toString()+")", partner_id);
-			return false;
+         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+         
+         /**
+          * void initpay(final String successCallback, final String errorCallback, String sp)
+          */
+            BLightApp.initpay("(function(result){("+options.onsuccess.toString()+")(result);})", "("+options.onfail.toString()+")", partner_id);
+            return false;
          } else {
-			 PARTNER_ID = partner_id;
-			 init(partner_id,options.onsuccess,function(nativeErr){
-				lightapp.error(ErrCode.PAY_ERROR,nativeErr,options);
-			 },partner_id,options);
-		 }
-		 
+             PARTNER_ID = partner_id;
+             init(partner_id,options.onsuccess,function(nativeErr){
+                lightapp.error(ErrCode.PAY_ERROR,nativeErr,options);
+             },partner_id,options);
+         }
+         
      };
      // function createOrder($goodsname,$price){
             // var orderNO = time()*1000;
@@ -83,18 +83,18 @@ define("mbaas",function( module ) {
          if (!options.hideLoading){
              options.hideLoading = false;
          }
-		 /**
-		  * void dopay(final String successCallback, final String errorCallback, String orderInfo, final String hideLoadingDialog)
-		  */
-		 if (clouda.RUNTIME === clouda.RUNTIMES.KUANG) {
-			BLightApp.initpay("(function(result){("+options.onsuccess.toString()+")(result);})",
+         /**
+          * void dopay(final String successCallback, final String errorCallback, String orderInfo, final String hideLoadingDialog)
+          */
+         if (clouda.RUNTIME === clouda.RUNTIMES.KUANG) {
+            BLightApp.dopay("(function(result){("+options.onsuccess.toString()+")(result);})",
                             "("+options.onfail.toString()+")", options.orderInfo,options.hideLoading);
-			return false;
-		 } else {
-			dopay(options.onsuccess,function(nativeErr){
-				lightapp.error(ErrCode.PAY_ERROR,nativeErr,options);
-			 },options.orderInfo,options.showdDialog,options);
-		 }
+            return false;
+         } else {
+            dopay(options.onsuccess,function(nativeErr){
+                lightapp.error(ErrCode.PAY_ERROR,nativeErr,options);
+             },options.orderInfo,options.showdDialog,options);
+         }
          
         
      };
