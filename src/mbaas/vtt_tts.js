@@ -72,11 +72,10 @@ define("mbaas",function(module) {
              if (!options.uuid){
                  options.uuid = 'uuid-uuid';
              }
-             if (!options.speechMode){
-                 options.speechMode = '0';
-             }else{
-                 options.speechMode = ''+options.speechMode;
+             if (options.speechMode !== module.VTT_SPEECHMODE.SEARCH){
+                 options.speechMode = module.VTT_SPEECHMODE.INPUT;
              }
+             options.speechMode = options.speechMode+'';
              if (!options.filename){
                  options.filename = '2000000.wav';
              }
@@ -94,8 +93,8 @@ define("mbaas",function(module) {
                             "("+options.onfail.toString()+")");
              return false;
         }
-        if (!options.speechMode){
-            options.speechMode = module.VTT_SPEECHMODE.SEARCH;
+        if (options.speechMode !== module.VTT_SPEECHMODE.SEARCH){
+             options.speechMode = module.VTT_SPEECHMODE.INPUT;
         }
         if (!options.dialogTheme){
             options.dialogTheme = 1;

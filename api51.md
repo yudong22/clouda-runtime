@@ -205,6 +205,16 @@ onfail | function(err){} | 操作失败，返回错误码信息
 onsuccess | function(data){} | 操作成功，返回成功信息
 onfail | function(err){} | 操作失败，返回错误码信息 
 
+**返回的screen对象
+
+参数 | 类型 | 描述 
+------------ | ------------- | ------------
+width | int | 宽度
+height | int | 高度
+pixelDepth | int | 颜色分辨率
+colorDepth | int | 色深
+
+
 
 ### FileSystem ###
 
@@ -564,7 +574,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
         <tr>
 			<td>onsuccess</td>
 			<td>function(data){}</td>            
-			<td>识别成功，返回语音文字字符串</td>  
+			<td>识别成功，返回语音识别结果对象</td>  
 		</tr>
         <tr>
 			<td>onfail</td>
@@ -574,14 +584,6 @@ onfail | function(err){} | 操作失败，返回错误码信息
 			</td>  
 		</tr>
         <tr>
-			<td>speechMode</td>
-			<td>int</td>            
-			<td>设置识别模式，可选，其参数如下：<br>
-			- clouda.mbaas.VTT_SPEECHMODE.SEARCH ：搜索模式 （默认）<br>
-			- clouda.mbaas.VTT_SPEECHMODE.INPUT  ：文本输入模式
-		</td>  
-		</tr>
-		<tr>
 			<td>filename</td>
 			<td>string</td>            
 			<td>语音识别保存的文件名（可选）</td>  
@@ -602,6 +604,12 @@ onfail | function(err){} | 操作失败，返回错误码信息
     </tbody>
 </table>
 
+**返回的语音识别结果对象
+
+参数 | 类型 | 描述 
+------------ | ------------- | ------------
+record_time | int | 时长
+str_result | string | 语音识别的文字信息
 
 
 ## 手势事件处理类API ##

@@ -137,27 +137,27 @@ define("device",function(module) {
             if (!options.source ){
                 options.source = clouda.device.MEDIA_SOURCE.CAMERA;
             }
+            var successstring = "(function(result){if(result.lastModified){result.lastModifiedDate=result.lastModified;}("+options.onsuccess.toString()+")(result);})";
+            var failstring = "(function(result){if(result.error_info=='cancel'){result.result=clouda.STATUS.USER_CANCELED};("+options.onfail.toString()+")(result);})";
+            // var failstring = "("+options.onfail.toString()+")";
+            
             if (options.mediaType == clouda.device.MEDIA_TYPE.AUDIO) {
                 lightapp.error(ErrCode.NOT_FINISH,ErrCode.NOT_FINISH,options);
             } else if (options.source == clouda.device.MEDIA_SOURCE.CAMERA) {
                 if (options.mediaType == clouda.device.MEDIA_TYPE.IMAGE) {
                     BLightApp.cloudaLaunchCamera(
-                            'lightapp.device.MEDIA_TYPE.IMAGE', "("+options.onsuccess.toString()+")",
-                            "("+options.onfail.toString()+")");
+                            'lightapp.device.MEDIA_TYPE.IMAGE', successstring,failstring);
                 } else if (options.mediaType == clouda.device.MEDIA_TYPE.VIDEO) {
                     BLightApp.cloudaLaunchCamera(
-                            'lightapp.device.MEDIA_TYPE.VIDEO', "("+options.onsuccess.toString()+")",
-                            "("+options.onfail.toString()+")");
+                            'lightapp.device.MEDIA_TYPE.VIDEO',  successstring,failstring);
                 }
             } else if (options.source == clouda.device.MEDIA_SOURCE.ALBUM) {
                 if (options.mediaType == clouda.device.MEDIA_TYPE.IMAGE) {
                     BLightApp.cloudaLaunchGallery(
-                            'lightapp.device.MEDIA_TYPE.IMAGE', "("+options.onsuccess.toString()+")",
-                            "("+options.onfail.toString()+")");
+                            'lightapp.device.MEDIA_TYPE.IMAGE',  successstring,failstring);
                 } else if (options.mediaType == clouda.device.MEDIA_TYPE.VIDEO) {
                     BLightApp.cloudaLaunchGallery(
-                            'lightapp.device.MEDIA_TYPE.VIDEO', "("+options.onsuccess.toString()+")",
-                            "("+options.onfail.toString()+")");
+                            'lightapp.device.MEDIA_TYPE.VIDEO',  successstring,failstring);
                 }
             }else{
                 lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
@@ -229,7 +229,16 @@ var getPicture = new delegateClass("device","camera","getPicture");
                     
                 }
             },function(nativeErr){
-                lightapp.error(ErrCode.MEDIA_ERR,nativeErr,options);
+                if (nativeErr.code){
+                    nativeErr.result = nativeErr.code;
+                    nativeErr.error_info = nativeErr.message;
+                }
+                if(nativeErr.result == 3){// 取消code hack对齐
+                    lightapp.error(ErrCode.MEDIA_ERR,{result:clouda.STATUS.USER_CANCELED,error_info:"cancel"},options);
+                }else{
+                    lightapp.error(ErrCode.MEDIA_ERR,nativeErr,options);
+                }
+                
             },options);
         },options);
         
@@ -258,22 +267,23 @@ var getPicture = new delegateClass("device","camera","getPicture");
     var media={};
     it.operateMedia = function(link,operator,options){
         if (clouda.RUNTIME === clouda.RUNTIMES.KUANG){
+            var successstring = "(function(result){if(result.lastModified){result.lastModifiedDate=result.lastModified;}("+options.onsuccess.toString()+")(result);})";
             var failstring = "(function(result){result.error=clouda.device.media.mediamsg[result.result];("+options.onfail.toString()+")(result);})";
             switch(operator){
                 case "startRecord":
-                    BLightApp.startRecording(link,"("+options.onsuccess.toString()+")",
+                    BLightApp.startRecording(link,successstring,"("+options.onsuccess.toString()+")",
                             failstring);
                     break;
                 case "stopRecord":
-                    BLightApp.stopRecording("("+options.onsuccess.toString()+")",
+                    BLightApp.stopRecording(successstring,
                             failstring);
                     break;
                 case "play":
-                    BLightApp.playAudio(link,'lightapp.device.AUDIO_TYPE.PLAY',"("+options.onsuccess.toString()+")",
+                    BLightApp.playAudio(link,'lightapp.device.AUDIO_TYPE.PLAY',successstring,
                             failstring);
                     break;
                 case "stop":
-                    BLightApp.playAudio(link,'lightapp.device.AUDIO_TYPE.STOP',"("+options.onsuccess.toString()+")",
+                    BLightApp.playAudio(link,'lightapp.device.AUDIO_TYPE.STOP',successstring,
                             failstring);
                     break;
                 default:

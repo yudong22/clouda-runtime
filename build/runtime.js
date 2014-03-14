@@ -3872,27 +3872,27 @@ define("device",function(module) {
             if (!options.source ){
                 options.source = clouda.device.MEDIA_SOURCE.CAMERA;
             }
+            var successstring = "(function(result){if(result.lastModified){result.lastModifiedDate=result.lastModified;}("+options.onsuccess.toString()+")(result);})";
+            var failstring = "(function(result){if(result.error_info=='cancel'){result.result=clouda.STATUS.USER_CANCELED};("+options.onfail.toString()+")(result);})";
+            // var failstring = "("+options.onfail.toString()+")";
+            
             if (options.mediaType == clouda.device.MEDIA_TYPE.AUDIO) {
                 lightapp.error(ErrCode.NOT_FINISH,ErrCode.NOT_FINISH,options);
             } else if (options.source == clouda.device.MEDIA_SOURCE.CAMERA) {
                 if (options.mediaType == clouda.device.MEDIA_TYPE.IMAGE) {
                     BLightApp.cloudaLaunchCamera(
-                            'lightapp.device.MEDIA_TYPE.IMAGE', "("+options.onsuccess.toString()+")",
-                            "("+options.onfail.toString()+")");
+                            'lightapp.device.MEDIA_TYPE.IMAGE', successstring,failstring);
                 } else if (options.mediaType == clouda.device.MEDIA_TYPE.VIDEO) {
                     BLightApp.cloudaLaunchCamera(
-                            'lightapp.device.MEDIA_TYPE.VIDEO', "("+options.onsuccess.toString()+")",
-                            "("+options.onfail.toString()+")");
+                            'lightapp.device.MEDIA_TYPE.VIDEO',  successstring,failstring);
                 }
             } else if (options.source == clouda.device.MEDIA_SOURCE.ALBUM) {
                 if (options.mediaType == clouda.device.MEDIA_TYPE.IMAGE) {
                     BLightApp.cloudaLaunchGallery(
-                            'lightapp.device.MEDIA_TYPE.IMAGE', "("+options.onsuccess.toString()+")",
-                            "("+options.onfail.toString()+")");
+                            'lightapp.device.MEDIA_TYPE.IMAGE',  successstring,failstring);
                 } else if (options.mediaType == clouda.device.MEDIA_TYPE.VIDEO) {
                     BLightApp.cloudaLaunchGallery(
-                            'lightapp.device.MEDIA_TYPE.VIDEO', "("+options.onsuccess.toString()+")",
-                            "("+options.onfail.toString()+")");
+                            'lightapp.device.MEDIA_TYPE.VIDEO',  successstring,failstring);
                 }
             }else{
                 lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
@@ -3964,7 +3964,16 @@ var getPicture = new delegateClass("device","camera","getPicture");
                     
                 }
             },function(nativeErr){
-                lightapp.error(ErrCode.MEDIA_ERR,nativeErr,options);
+                if (nativeErr.code){
+                    nativeErr.result = nativeErr.code;
+                    nativeErr.error_info = nativeErr.message;
+                }
+                if(nativeErr.result == 3){// 取消code hack对齐
+                    lightapp.error(ErrCode.MEDIA_ERR,{result:clouda.STATUS.USER_CANCELED,error_info:"cancel"},options);
+                }else{
+                    lightapp.error(ErrCode.MEDIA_ERR,nativeErr,options);
+                }
+                
             },options);
         },options);
         
@@ -3993,22 +4002,23 @@ var getPicture = new delegateClass("device","camera","getPicture");
     var media={};
     it.operateMedia = function(link,operator,options){
         if (clouda.RUNTIME === clouda.RUNTIMES.KUANG){
+            var successstring = "(function(result){if(result.lastModified){result.lastModifiedDate=result.lastModified;}("+options.onsuccess.toString()+")(result);})";
             var failstring = "(function(result){result.error=clouda.device.media.mediamsg[result.result];("+options.onfail.toString()+")(result);})";
             switch(operator){
                 case "startRecord":
-                    BLightApp.startRecording(link,"("+options.onsuccess.toString()+")",
+                    BLightApp.startRecording(link,successstring,"("+options.onsuccess.toString()+")",
                             failstring);
                     break;
                 case "stopRecord":
-                    BLightApp.stopRecording("("+options.onsuccess.toString()+")",
+                    BLightApp.stopRecording(successstring,
                             failstring);
                     break;
                 case "play":
-                    BLightApp.playAudio(link,'lightapp.device.AUDIO_TYPE.PLAY',"("+options.onsuccess.toString()+")",
+                    BLightApp.playAudio(link,'lightapp.device.AUDIO_TYPE.PLAY',successstring,
                             failstring);
                     break;
                 case "stop":
-                    BLightApp.playAudio(link,'lightapp.device.AUDIO_TYPE.STOP',"("+options.onsuccess.toString()+")",
+                    BLightApp.playAudio(link,'lightapp.device.AUDIO_TYPE.STOP',successstring,
                             failstring);
                     break;
                 default:
@@ -5843,14 +5853,14 @@ define("mbaas",function( module ) {
     
     return module;
     
-});define("mbaas", function(module) {
+});define("mbaas",function( module ) {
     var lightapp = this;
     //deal with clouda.mbaas
     var it = module.pay = {};
-
-    var init = new delegateClass("lightpay", "init");
-    var dopay = new delegateClass("lightpay", "dopay");
-
+    
+    var init = new delegateClass("lightpay","init");
+    var dopay = new delegateClass("lightpay","dopay");
+    
     /**
      * init
      *
@@ -5863,52 +5873,52 @@ define("mbaas",function( module ) {
      * @param {function} options.onsuccess 成功的回调
      * @param {function} [options.onfail] 失败的回调
      * @returns null
-     *
+     * 
      */
-    var PARTNER_ID, MD5_PRIVATE;
-
-    it.init = function(partner_id, options) {
-        if (!partner_id || typeof partner_id != 'string') {
-            lightapp.error(ErrCode.UNKNOW_INPUT, ErrCode.UNKNOW_INPUT, options);
+     var PARTNER_ID,MD5_PRIVATE;
+     
+     it.init = function(partner_id,options){
+         if (!partner_id || typeof partner_id !='string'){
+             lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
+             return false;
+         }
+         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+         
+         /**
+          * void initpay(final String successCallback, final String errorCallback, String sp)
+          */
+            BLightApp.initpay("(function(result){("+options.onsuccess.toString()+")(result);})", "("+options.onfail.toString()+")", partner_id);
             return false;
-        }
-        if (clouda.RUNTIME === clouda.RUNTIMES.KUANG) {
-
-            /**
-             * void initpay(final String successCallback, final String errorCallback, String sp)
-             */
-            BLightApp.initpay("(function(result){(" + options.onsuccess.toString() + ")(result);})", "(" + options.onfail.toString() + ")", partner_id);
-            return false;
-        } else {
-            PARTNER_ID = partner_id;
-            init(partner_id, options.onsuccess, function(nativeErr) {
-                lightapp.error(ErrCode.PAY_ERROR, nativeErr, options);
-            }, partner_id, options);
-        }
-
-    };
-    // function createOrder($goodsname,$price){
-    // var orderNO = time()*1000;
-    // var tmpOrder = "currency=1&extra=";
-    // tmpOrder = tmpOrder+"&goods_desc="+goodsname;
-    // tmpOrder = tmpOrder+"&goods_name="+goodsname;
-    // tmpOrder = tmpOrder+"&goods_url=http://item.jd.com/736610.html";
-    // tmpOrder = tmpOrder+"&input_charset=1&order_create_time="+date(YmdHis)+"&order_no=";
-    // tmpOrder = tmpOrder+orderNO;
-    // tmpOrder = tmpOrder+"&pay_type=2&return_url=http://item.jd.com/736610.html";
-    // tmpOrder = tmpOrder+"&service_code=1&sign_method=1&sp_no="+PARTNER_ID;
-    // tmpOrder = tmpOrder+"&total_amount=".price;
-    // tmpOrder = tmpOrder+"&transport_amount=0&unit_amount=".price;
-    // tmpOrder = tmpOrder+"&unit_count=1";
-    //
-    // signed =md5(tmpOrder+"&key="+MD5_PRIVATE);
-    //
-    // tmpOrder = tmpOrder+"&sign="+signed+"&goods_channel=";
-    // tmpOrder = tmpOrder+"&goods_channel_sp=0001";
-    //
-    // return $tmpOrder;
-    //
-    // }
+         } else {
+             PARTNER_ID = partner_id;
+             init(partner_id,options.onsuccess,function(nativeErr){
+                lightapp.error(ErrCode.PAY_ERROR,nativeErr,options);
+             },partner_id,options);
+         }
+         
+     };
+     // function createOrder($goodsname,$price){
+            // var orderNO = time()*1000;
+            // var tmpOrder = "currency=1&extra=";
+            // tmpOrder = tmpOrder+"&goods_desc="+goodsname;
+            // tmpOrder = tmpOrder+"&goods_name="+goodsname;
+            // tmpOrder = tmpOrder+"&goods_url=http://item.jd.com/736610.html";
+            // tmpOrder = tmpOrder+"&input_charset=1&order_create_time="+date(YmdHis)+"&order_no=";
+            // tmpOrder = tmpOrder+orderNO;
+            // tmpOrder = tmpOrder+"&pay_type=2&return_url=http://item.jd.com/736610.html";
+            // tmpOrder = tmpOrder+"&service_code=1&sign_method=1&sp_no="+PARTNER_ID;
+            // tmpOrder = tmpOrder+"&total_amount=".price;
+            // tmpOrder = tmpOrder+"&transport_amount=0&unit_amount=".price;
+            // tmpOrder = tmpOrder+"&unit_count=1";
+//             
+            // signed =md5(tmpOrder+"&key="+MD5_PRIVATE);
+//             
+            // tmpOrder = tmpOrder+"&sign="+signed+"&goods_channel=";
+            // tmpOrder = tmpOrder+"&goods_channel_sp=0001";
+//           
+          // return $tmpOrder; 
+//       
+      // }
     /**
      * pay
      *
@@ -5922,27 +5932,29 @@ define("mbaas",function( module ) {
      * @param {string} [options.orderInfo] 订单信息
      * @param {boolen} [options.hideLoading] 隐藏加载中的dialog,默认false
      * @returns null
-     *
+     * 
      */
-    it.pay = function(options) {
-        if (!options.hideLoading) {
-            options.hideLoading = false;
-        }
-        /**
-         * void dopay(final String successCallback, final String errorCallback, String orderInfo, final String hideLoadingDialog)
-         */
-        if (clouda.RUNTIME === clouda.RUNTIMES.KUANG) {
-            BLightApp.initpay("(function(result){(" + options.onsuccess.toString() + ")(result);})", "(" + options.onfail.toString() + ")", options.orderInfo, options.hideLoading);
+     it.pay = function(options){
+         if (!options.hideLoading){
+             options.hideLoading = false;
+         }
+         /**
+          * void dopay(final String successCallback, final String errorCallback, String orderInfo, final String hideLoadingDialog)
+          */
+         if (clouda.RUNTIME === clouda.RUNTIMES.KUANG) {
+            BLightApp.dopay("(function(result){("+options.onsuccess.toString()+")(result);})",
+                            "("+options.onfail.toString()+")", options.orderInfo,options.hideLoading);
             return false;
-        } else {
-            dopay(options.onsuccess, function(nativeErr) {
-                lightapp.error(ErrCode.PAY_ERROR, nativeErr, options);
-            }, options.orderInfo, options.showdDialog, options);
-        }
-
-    };
-
-}); define("mbaas",function( module ) {
+         } else {
+            dopay(options.onsuccess,function(nativeErr){
+                lightapp.error(ErrCode.PAY_ERROR,nativeErr,options);
+             },options.orderInfo,options.showdDialog,options);
+         }
+         
+        
+     };
+    
+});define("mbaas",function( module ) {
     var lightapp = this;
     //deal with clouda.mbaas
     var it = module.pcs = {};
@@ -6720,11 +6732,10 @@ define("mbaas",function( module ) {
              if (!options.uuid){
                  options.uuid = 'uuid-uuid';
              }
-             if (!options.speechMode){
-                 options.speechMode = '0';
-             }else{
-                 options.speechMode = ''+options.speechMode;
+             if (options.speechMode !== module.VTT_SPEECHMODE.SEARCH){
+                 options.speechMode = module.VTT_SPEECHMODE.INPUT;
              }
+             options.speechMode = options.speechMode+'';
              if (!options.filename){
                  options.filename = '2000000.wav';
              }
@@ -6742,8 +6753,8 @@ define("mbaas",function( module ) {
                             "("+options.onfail.toString()+")");
              return false;
         }
-        if (!options.speechMode){
-            options.speechMode = module.VTT_SPEECHMODE.SEARCH;
+        if (options.speechMode !== module.VTT_SPEECHMODE.SEARCH){
+             options.speechMode = module.VTT_SPEECHMODE.INPUT;
         }
         if (!options.dialogTheme){
             options.dialogTheme = 1;
