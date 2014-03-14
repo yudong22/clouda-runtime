@@ -81,7 +81,7 @@
         <tr>
 			<td>onsuccess</td>
 			<td>function(data){}</td>           
-			<td>操作成功，data是返回的ConnectionStatus</td>  
+			<td>操作成功，data是返回的当前网络的字符串</td>  
 		</tr>
         <tr>
 			<td>onfail</td>
@@ -91,9 +91,9 @@
 	</tbody>
 </table>
 
-**返回的ConnectionStatus对象**
+**返回的网络类型字符串**
 
-网络连接状态类型：
+网络连接状态类型可能的取值：
 
 	clouda.device.CONNECTION_STATUS.UNKNOWN // 未知状态
     clouda.device.CONNECTION_STATUS.NONE // 断开状态
@@ -348,7 +348,7 @@ colorDepth | int | 色深
     <tr>
 		<td>onsuccess</td>
 		<td>function(data){}</td>          
-		<td>操作成功，data返回信息，详见 operate 参数说明</td>  
+		<td>操作成功，data返回信息，详见前诉 operator 的参数说明</td>  
 	</tr>
     <tr>
 		<td>onfail</td>
