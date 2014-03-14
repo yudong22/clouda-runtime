@@ -47,7 +47,6 @@
 
 - 网络连接状态(Connection)
 - 设备信息（Device）
-- 文件管理（FileSystem）
 - 本地媒体功能（Media）
 - 二维码（QRCode）
 
