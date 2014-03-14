@@ -61,35 +61,35 @@
 
 示例： 获取本地相机图片
 
-```
-<!DOCTYPE html>     
-<html>
-    <head>
-        <title>轻应用开发JavaScript代码示例</title>
-        <!-- 引用轻应用API的JS文件 -->
-        <script type="text/javascript" src="http://bcscdn.baidu.com/bcs-cdn/clouda/api-0.2.6.js"></script>
-    </head>
-    <body>
-        <img id="photo" />
-        <script>
-           //首先输入工程的ak
-           clouda.lightapp("iUQs1O9pmkIvfZ1zmy8sm7Gk"); 
-           //读取本地相机图片
-           clouda.device.media.captureMedia({
-                mediaType : clouda.device.MEDIA_TYPE.IMAGE,
-                source : clouda.device.MEDIA_SOURCE.CAMERA,
-                onfail : function(err){
-                    alert(JSON.stringify(err));
-                },
-                onsuccess : function(mediaFile){
-                    //返回读取到的图片文件的本地全信息
-                    alert(JSON.stringify(mediaFile));
-                } 
-           });
-        </script>
-    </body>
-</html>
-```
+
+	<!DOCTYPE html>     
+	<html>
+	    <head>
+	        <title>轻应用开发JavaScript代码示例</title>
+	        <!-- 引用轻应用API的JS文件 -->
+	        <script type="text/javascript" src="http://bcscdn.baidu.com/bcs-cdn/clouda/api-0.2.6.js"></script>
+	    </head>
+	    <body>
+	        <img id="photo" />
+	        <script>
+	           //首先输入工程的ak
+	           clouda.lightapp("iUQs1O9pmkIvfZ1zmy8sm7Gk"); 
+	           //读取本地相机图片
+	           clouda.device.media.captureMedia({
+	                mediaType : clouda.device.MEDIA_TYPE.IMAGE,
+	                source : clouda.device.MEDIA_SOURCE.CAMERA,
+	                onfail : function(err){
+	                    alert(JSON.stringify(err));
+	                },
+	                onsuccess : function(mediaFile){
+	                    //返回读取到的图片文件的本地全信息
+	                    alert(JSON.stringify(mediaFile));
+	                } 
+	           });
+	        </script>
+	    </body>
+	</html>
+
 
 #### 使用Clouda开发框架 ####
 
@@ -194,4 +194,3 @@ Clouda开发框架是一个实时的JavaScript开发框架；使用该框架，�
 ### 轻应用API参考文档
 
 请参考：[百度轻应用API参考文档](http://cloudajs.org/lightapp/docs/api "《百度轻应用API参考文档》")
-
