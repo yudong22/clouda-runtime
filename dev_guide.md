@@ -25,16 +25,14 @@
 
 开发轻应用，请先完成以下操作：
 
-1. 访问百度开放云[管理控制台](http://developer.baidu.com/console)，获取应用API Key；了解详细信息，请参考[ "《帮助文档》"](http://developer.baidu.com/wiki/index.php?title=docs/cplat/bae/start#.E5.88.9B.E5.BB.BA.E5.BA.94.E7.94.A8)。
+1. 访问百度开放云[管理控制台](http://developer.baidu.com/console#app/project)，
+2. 创建工程或者进入已有工程，到基本信息页中，获取应用API Key。
 	
-2. 开启或设置相关服务（<font color="red">无需等待审核通过，即可使用</font>）：
+3. 如需要使用以下相关服务，需先开启或设置相关服务（<font color="red">无需等待审核通过，即可使用</font>）：
 	
-	- **人脸识别（FaceRecognition）**：申请开启服务，详见：[《人脸识别管理控制台》](http://developer.baidu.com/wiki/index.php?title=docs/cplat/media/face/console)
-	- **推送服务（Push）**： 无需申请开启服务，但需要通过管理控制台进行推送，详见：[《轻应用推送操作手册》](http://bcs.duapp.com/clouda-api/%E8%BD%BB%E5%BA%94%E7%94%A8%E6%8E%A8%E9%80%81%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8C.pdf)
 	- **语音识别服务（VTT）**：申请开启服务，详见：[《语音技术管理控制台》](http://developer.baidu.com/wiki/index.php?title=docs/cplat/media/voice/console)
-	- **百度地图（Map）**: 申请百度地图的密钥（API Key）：[申请地址](http://lbsyun.baidu.com/apiconsole/key?application=key）
 
-3. 目前只支持Android端
+4. 目前只支持Android端
 
 ### 开发轻应用 ###
 
@@ -63,30 +61,35 @@
 为帮助开发者入门，下面提供了一些基本代码，介绍如何引用轻应用API，获取系统信息。
 
 示例： 获取本地相机图片
-
-		<!DOCTYPE html>		
-		<html>
-		    <head>
-		        <title>轻应用开发JavaScript代码示例</title>
-				// 引用轻应用API的JS文件
-		        <script type="text/javascript" src="http://bcscdn.baidu.com/bcs-cdn/clouda/api-latest.js"></script>
-		    </head>
-		    <body>
-		        <img id="photo"></img>
-		        <script>
-					//读取本地相机图片
-		           clouda.device.media.captureMedia({
-				   		mediaType : clouda.device.MEDIA_TYPE.IMAGE,
-						source : clouda.device.MEDIA_SOURCE.CAMERA,
-						onfail : function(err){},
-						onsuccess : function(mediaFile){
-							//返回读取到的图片文件的本地全路径
-							document.getElementById('photo').src= mediaFile[0].fullPath;
-						} 
-				   })
-		        </script>                   
-		    </body>
-		</html>
+```
+<!DOCTYPE html>     
+<html>
+    <head>
+        <title>轻应用开发JavaScript代码示例</title>
+        <!-- 引用轻应用API的JS文件 -->
+        <script type="text/javascript" src="http://bcscdn.baidu.com/bcs-cdn/clouda/api-0.2.6.js"></script>
+    </head>
+    <body>
+        <img id="photo" />
+        <script>
+           //首先输入工程的ak
+           clouda.lightapp("iUQs1O9pmkIvfZ1zmy8sm7Gk"); 
+           //读取本地相机图片
+           clouda.device.media.captureMedia({
+                mediaType : clouda.device.MEDIA_TYPE.IMAGE,
+                source : clouda.device.MEDIA_SOURCE.CAMERA,
+                onfail : function(err){
+                    alert(JSON.stringify(err));
+                },
+                onsuccess : function(mediaFile){
+                    //返回读取到的图片文件的本地全信息
+                    alert(JSON.stringify(mediaFile));
+                } 
+           });
+        </script>
+    </body>
+</html>
+```
 
 #### 使用Clouda开发框架 ####
 
@@ -107,7 +110,6 @@ Clouda开发框架是一个实时的JavaScript开发框架；使用该框架，�
 
 开发轻应用时，在将该应用部署到 Web 服务器之前，您可以方便地在本地计算机上对应用进行测试。需要注意的是，调试工具必须联网才能正确运行。
 
-您的本地计算机的 Web 服务器很可能使用类似 http://localhost 的默认地址。
 
 #### 安装调试环境 ####
 
@@ -122,17 +124,24 @@ Clouda开发框架是一个实时的JavaScript开发框架；使用该框架，�
 4. 安装成功会在桌面生成“**轻应用调试**”图标。<br>
 <img style="max-width: 10%;margin-left:20;" src="http://bcscdn.baidu.com/bcs-cdn/clouda-runtime/icon20140312.png">
 
-
+#### 调试轻应用
+1. 点击移动设备桌面的“**轻应用调试**”图标，进入以下界面；<br>
+<img style="max-width: 30%;;" src="http://bcscdn.baidu.com/bcs-cdn/clouda-runtime/app-debug.jpg">
+2. 可以通过二维码扫码调试链接或输入url开始调试
+3. 本地调试通过后，可以部署或者接入轻应用
 
 ### 部署轻应用 ###
 
-1.	登录百度开放云“[管理控制台](http://developer.baidu.com/console)”；
+可以使用百度云提供的应用托管引擎托管，如果你已部署到自己的服务器，可以跳过这一步直接接入轻应用。
 
-2.	创建一个轻应用，并将该应用托管到BAE3.0的Node.js执行环境下；
+1.	登录百度开放云“[管理控制台]((http://developer.baidu.com/console#app/project))”；
+
+2.	创建一个工程，并将该应用托管到BAE3.0的Node.js执行环境下；
 
 3.	发布版本，并获取应用对应的URL；
 
 4.	通过“运行轻应用”按钮访问该应用的URL，验证发布效果。
+
 
 ### 接入轻应用 ###
 
@@ -140,16 +149,11 @@ Clouda开发框架是一个实时的JavaScript开发框架；使用该框架，�
 
 如果您是第一次将开发的应用**接入轻应用，**请按照下面步骤操作：
 
-1. 如果您的应用还没有托管到BAE，请先将您的[应用托管到BAE](http://cloudajs.org/docs/upload_to_BAE_3.0)上，然后进入第二步；
+1. 进入[百度开放云的轻应用管理界面](http://developer.baidu.com/console#app/light)，点击**“接入轻应用”**按钮<br>
 
-2. 进入[百度开放云的应用管理界面](http://developer.baidu.com/console)，在应用列表中找到托管的应用，并点击轻应用的**“接入”**按钮<br>
-<img style="max-width: 50%;margin-left:20;" src="http://cloudajs.org/assets/md/docs/images/accesslightapp.png">
+2. 在“接入轻应用”页面填入相关的信息，完成后点击**“保存”**；<br>
 
-3. 在“接入轻应用”页面填入相关的信息，完成后点击**“保存”**；<br>
-<img style="max-width: 50%; margin-left:20;" src="http://cloudajs.org/assets/md/docs/images/addinformation.png">
-
-4. 当看到下面信息时，表示保存成功，后面大家可以根据自己的实际需求选择“**对接移动搜索**”。<br>
-<img style="max-width: 50%;margin-left:20;" src="http://cloudajs.org/assets/md/docs/images/access_success.png">
+3. 保存成功后，后面大家可以根据自己的实际需求，管理“**渠道分发**”。<br>
 
 ## 附录 ##
 
@@ -191,58 +195,3 @@ Clouda开发框架是一个实时的JavaScript开发框架；使用该框架，�
 
 请参考：[百度轻应用API参考文档](http://cloudajs.org/lightapp/docs/api "《百度轻应用API参考文档》")
 
-
-##如何推送消息
-
-###登陆开放云平台
-访问百度开放云平台官网：http://developer.baidu.com/
-
-![dev](http://bs.baidu.com/runtime-images/dev.jpg "开放云平台")
-
-###进入管理控制台
-点击管理控制台，进入云推送服务的管理控制台，点击您使用推送服务的轻应用，进入基本信息页。进入应用基本信息页，点击左侧边栏中的 “__开发者服务__”->“__云推送__”.
-
-![appinfo](http://bs.baidu.com/runtime-images/app_detial.jpg "应用信息")
-
-###推送设置
-点击“__云推送__”->“__推送设置__”，进入推送设置页面
-
-![setting1](http://bs.baidu.com/runtime-images/setting1.jpg)
-
-![setting2](http://bs.baidu.com/runtime-images/setting2.jpg)
-
-进入推送设置页面，您需要随意设置一个android包名（可参考包名：com.light.hackathon），点击保存设置，进入云推送管理控制界面，才可进行轻应用的推送。
-
-###轻应用推送
-进入云推送管理控制界面（如下图），点击“__+通知__”，即可进行推送轻应用的通知（目前轻应用仅支持推送通知）：
-
-![console](http://bs.baidu.com/runtime-images/push_console.jpg "云推送管理控制台")
-
-轻应用推送您需关注以下几点：
-
-* 标题、消息内容填写
-* 设备范围：选择Android
-* 用户范围：选择所有人（目前不支持广播）
-* 发送时间：即时发送
-* 高级设置
-
-![notification](http://bs.baidu.com/runtime-images/notification.jpg "轻应用通知")
-
-高级设置：
-
-你需要设置通知后续行为，其它设置项保持默认，可不做任何修改和设置。
-
-* 通知后续行为：现在只支持使用打开网页方式，您需要输入应用的入口URL，或者也可以指定你想要打开的其它URL。用户在通知栏点击通知时，将用Runtime打开该URL。
-* 轻应用推送仅支持（如下图）红色框中的选项，不支持以下三点：
-    * Android平台下
-        * 通知栏样式：自定义样式不可用，轻应用不支持自定义样式
-        * 通知后续行为：自定义打开行为不可用，轻应用不支持自定义打开行为
-    * iOS平台：轻应用暂不支持iOS平台推送，不用做任何设置
-    * 附件字段：轻应用不支持自定义字段，不用做任何设置
-
-
-![advance](http://bs.baidu.com/runtime-images/advance.jpg "高级设置")
-
-点击发送，即完成轻应用的通知推送，在云推送主界面可查看推送消息记录，目前暂不支持轻应用推送报表的查看。
-
-![msglist](http://bs.baidu.com/runtime-images/msg_list.jpg "消息记录")
