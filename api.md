@@ -2756,7 +2756,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
-onsuccess | function(data){} | 操作成功，返回字符串。
+onsuccess | function(data){} | 操作成功，返回一个对象。
 onfail | function(err){} | 操作失败，返回错误码信息
 hide_loading | bool | 表示是否要隐藏加载支付插件的页面
 orderInfo | string | 其中参数以“key=value”形式呈现，参数之间以“&”分割，所有参数不可缺。示例如下：（具体参数说明请见参数列表）
@@ -2793,9 +2793,13 @@ sign_method | 签名方法 | 取值范围参见附录 | 是
 extra  | 商户自定义数据 | 不超过255个字符 | 否
 
 ##### 返回值
-支付结束后返回一个字符串，格式如下
+支付结束后返回一个对象(onsuccess的data信息)，格式如下
 ```
-statecode={状态码};order_no={商户传入的订单号};notify={订单签名}
+{
+	statecode : {状态码},
+	order_no : {商户传入的订单号},
+	notify : {订单签名}
+}
 ```
 Statecode为状态码，表示支付结果，如下表
 
