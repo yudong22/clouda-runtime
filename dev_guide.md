@@ -24,14 +24,14 @@
 
 开发轻应用，请先完成以下操作：
 
-1. 访问百度开放云[管理控制台](http://developer.baidu.com/console#app/project)，
-2. 创建工程或者进入已有工程，到基本信息页中，获取应用API Key。
+ 1. 访问百度开放云[管理控制台](http://developer.baidu.com/console#app/project)，
+ 2. 创建工程或者进入已有工程，到基本信息页中，获取应用API Key。
 	
-3. 如需要使用以下相关服务，需先开启或设置相关服务（<font color="red">无需等待审核通过，即可使用</font>）：
+ 3. 如需要使用以下相关服务，需先开启或设置相关服务（<font color="red">无需等待审核通过，即可使用</font>）：
 	
 	- **语音识别服务（VTT）**：申请开启服务，详见：[《语音技术管理控制台》](http://developer.baidu.com/wiki/index.php?title=docs/cplat/media/voice/console)
 
-4. 目前只支持Android端
+ 4. 目前只支持Android端
 
 ### 开发轻应用 ###
 
