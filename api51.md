@@ -1,8 +1,5 @@
 #百度轻应用API参考文档#
 
-----------
-更新日期： 2014/03/04 17:07:32  
-
 问题反馈： [clouda-support@baidu.com](mailto:clouda-support@baidu.com)
 
 
@@ -24,17 +21,13 @@
 
 ## 服务开启及设置
 
-开发轻应用前，需要先到百度开放云[管理控制台](http://developer.baidu.com/console)<font color="red">创建应用，获取应用 API Key，并开启或设置相关服务</font>。
-
-如需使用以下云服务的相关API，请点击百度开放云[管理控制台](http://developer.baidu.com/console)所创建的应用下的相关服务的管理控制台进行服务开启及设置相关操作（<font color="red">无需等待审核通过，即可使用</font>）：
-	
-- **语音识别服务（VTT）**：申请开启服务，详见：[《语音技术管理控制台》](http://developer.baidu.com/wiki/index.php?title=docs/cplat/media/voice/console)
+参考[开发指南](http://cloudajs.org/lightapp/docs/dev_guide#h2_1)
 	
 ## 引用JS API文件
 
 在HTML页面中添加以下代码：
 
-    <script type="text/javascript" src="http://bcscdn.baidu.com/bcs-cdn/clouda/api-0.2.6.js"></script>
+    <script type="text/javascript" src="http://bcscdn.baidu.com/bcs-cdn/clouda/api-0.2.7.js"></script>
 
 ## App信息注册API ##
 
@@ -216,60 +209,6 @@ colorDepth | int | 色深
 
 
 
-### FileSystem ###
-
-    clouda.device.fs
-
-文件管理
-
-**方法：**
-
-- post(path,target,options)
-
-#### post ####
-    post(path,target,options)
-
-**功能描述：**
-
-将本地文件以POST方式上传至指定URL
-
-**参数说明：**
-
-- path : 为 string 类型，本地文件的path(全路径，包含文件名)
-- target : 为 string 类型，目标地址URL(仅HTTP/HTTPS)
-- options : 为 object 类型，其中包含以下参数：
-<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
-    <tbody>
-        <tr>
-            <th>参数</th>
-            <th>类型</th>
-            <th>描述</th>
-        </tr>
-        <tr>
-			<td>onsuccess</td>
-			<td>function(data){}</td>           
-			<td>操作成功，返回的 data 是目标URL返回的结果</td>  
-		</tr>
-        <tr>
-			<td>onfail</td>
-			<td>function(err){}</td>          
-			<td>操作失败，返回错误码</td>  
-		</tr>
-        <tr>
-			<td>param</td>
-			<td>object</td>           
-			<td>伴随文件上传，传递的POST数据（可选）</td>  
-		</tr>
-        <tr>
-			<td>uploadKey</td>
-			<td>string</td>           
-			<td>上传表单中的key</td>  
-		</tr>
-	</tbody>
-</table>
-
-
-
 ### Media ###
 	clouda.device.media
 
@@ -386,21 +325,14 @@ colorDepth | int | 色深
         <th>方法</th>
         <th>描述</th>
     </tr>
-    <tr>
-		<td>play</td>
-		<td>开始或继续播放音频文件，操作成功返回SUCCESS状态码；操作失败，则返错误码</td>           
-	</tr>
-    <tr>
-		<td>stop</td>
-		<td>停止播放音频文件，操作成功返回SUCCESS状态码；操作失败，则返错误码</td>          
-	</tr>
+    
     <tr>
 		<td>startRecord</td>
 		<td>开始录制音频文件，操作成功返回SUCCESS状态码；操作失败，则返错误码</td>            
 	</tr>
     <tr>
 		<td>stopRecord</td>
-		<td>停止录制音频文件，操作成功返回SUCCESS状态码；操作失败，则返错误码</td>          
+		<td>停止录制音频文件，操作成功返回文件的绝对路径；操作失败，则返错误码</td>          
 	</tr>
 	</tbody>
 </table> 
@@ -424,17 +356,7 @@ colorDepth | int | 色深
 		<td>function(err){}</td>          
 		<td>操作失败，返回错误码</td>  
 	</tr>
-    <tr>
-		<td>onstatus</td>
-		<td>function(data){}</td>          
-		<td>可选，当音频文件状态发生变化的时候调用的回调函数，其返回值如下：<br>
-		- clouda.device.MEDIA_STATUS.NONE = 0;<br>
-		- clouda.device.MEDIA_STATUS.STARTING = 1;<br>
-		- clouda.device.MEDIA_STATUS.RUNNING = 2;<br>
-		- clouda.device.MEDIA_STATUS.PAUSED = 3;<br>
-		- clouda.device.MEDIA_STATUS.STOPPED = 4;
-	</td>  
-	</tr>
+   
 <tbody>
 </table>
 
@@ -522,94 +444,6 @@ colorDepth | int | 色深
     <tbody>
 </table>
 
-
-## 云服务类API ##
-	clouda.mbaas
-
-云服务类API目前支持以下功能： 
-
-- 语音识别服务（VTT）
-
-### VTT ###
-
-    clouda.mbaas.vtt
-
-语音识别服务
-开发轻应用前，需要先申请语音服务的ak，sk和pid，并执行初始化init方法
-
-**方法：**
-
-- init(ak,sk,pid)
-- showDialog(options)
-
-#### init ####
-	init(ak,sk,pid)
-
-**功能描述：**
-
-初始化所申请的ak，sk，pid等参数，然后方可使用语音识别服务
-
-**参数说明：**
-
-- ak ：所申请的语音服务的ak
-- sk ：所申请的语音服务的sk
-- pid：所申请的语音服务的pid
-
-#### showDialog ####
-    showDialog(options)
-
-**功能描述：**
-
-显示语音识别对话框，实现语音输入识别
-
-**参数说明：**
-
-<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
-    <tbody>
-        <tr>
-            <th>参数</th>
-            <th>类型</th>
-            <th>描述</th>
-        </tr>
-        <tr>
-			<td>onsuccess</td>
-			<td>function(data){}</td>            
-			<td>识别成功，返回语音识别结果对象</td>  
-		</tr>
-        <tr>
-			<td>onfail</td>
-			<td>function(err){}</td>          
-			<td>识别失败<br>
-			- clouda.mbaas.VTT_STATUS.FAILED ：语音识别失败
-			</td>  
-		</tr>
-        <tr>
-			<td>filename</td>
-			<td>string</td>            
-			<td>语音识别保存的文件名（可选）</td>  
-			</td>  
-		</tr>
-		<tr>
-			<td>uuid</td>
-			<td>string</td>            
-			<td>语音识别标识的uuid（可选）</td>  
-		</tr>
-		<tr>
-			<td>sampleRate</td>
-			<td>int</td>            
-			<td>语音识别录音采样率（可选），其参数如下：<br>
-			- clouda.mbaas.VTT_RATE.K8 ： （采样率8k）<br>
-			- clouda.mbaas.VTT_RATE.K16  ：（采样率16k）</td>  
-		</tr>
-    </tbody>
-</table>
-
-**返回的语音识别结果对象
-
-参数 | 类型 | 描述 
------------- | ------------- | ------------
-record_time | int | 时长
-str_result | string | 语音识别的文字信息
 
 
 ## 手势事件处理类API ##
