@@ -258,13 +258,7 @@ colorDepth | int | 色深
 		<td>string</td>
 		<td>媒体文件来源，其值如下：：<br>
 		- clouda.device.MEDIA_SOURCE.CAMERA<br>
-		- clouda.device.MEDIA_SOURCE.ALBUM 
 		</td>  
-	</tr>
-    <tr>
-		<td>limit</td>
-		<td>number</td>
-		<td>媒体文件个数限制，仅当source为ALBUM时可用，默认为1</td>  
 	</tr>
 <tbody>
 </table>
