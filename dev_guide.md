@@ -25,13 +25,10 @@
 开发轻应用，请先完成以下操作：
 
  1. 访问百度开放云[管理控制台](http://developer.baidu.com/console#app/project)，
- 2. 创建工程或者进入已有工程，到基本信息页中，获取应用API Key。
+ 2. 创建轻应用或者进入已有轻应用，在手机端能力页面中获取手机端能力的API key。
 	
- 3. 如需要使用以下相关服务，需先开启或设置相关服务（<font color="red">无需等待审核通过，即可使用</font>）：
-	
-	- **语音识别服务（VTT）**：申请开启服务，详见：[《语音技术管理控制台》](http://developer.baidu.com/wiki/index.php?title=docs/cplat/media/voice/console)
 
- 4. 目前只支持Android端
+ 3. 目前只支持Android端
 
 ### 开发轻应用 ###
 
@@ -48,7 +45,7 @@
 
 2. 引用轻应用API地址，通过CDN公共库地址访问示例如下：
 
-		<script type="text/javascript" src="http://bcscdn.baidu.com/bcs-cdn/clouda/api-0.2.6.js"></script>
+		<script type="text/javascript" src="http://bcscdn.baidu.com/bcs-cdn/clouda/api-0.2.7.js"></script>
 
 3. 调用轻应用App信息注册接口；详见[ "《轻应用API参考文档》"](http://cloudajs.org/lightapp/docs/api)。
 
@@ -67,12 +64,12 @@
 	    <head>
 	        <title>轻应用开发JavaScript代码示例</title>
 	        <!-- 引用轻应用API的JS文件 -->
-	        <script type="text/javascript" src="http://bcscdn.baidu.com/bcs-cdn/clouda/api-0.2.6.js"></script>
+	        <script type="text/javascript" src="http://bcscdn.baidu.com/bcs-cdn/clouda/api-0.2.7.js"></script>
 	    </head>
 	    <body>
 	        <img id="photo" />
 	        <script>
-	           //首先输入工程的ak
+	           //首先输入轻应用的ak
 	           clouda.lightapp("iUQs1O9pmkIvfZ1zmy8sm7Gk"); 
 	           //读取本地相机图片
 	           clouda.device.media.captureMedia({
@@ -136,7 +133,7 @@ Clouda开发框架是一个实时的JavaScript开发框架；使用该框架，�
 
 1.	登录百度开放云“[管理控制台]((http://developer.baidu.com/console#app/project))”；
 
-2.	创建一个工程，并将该应用托管到BAE3.0的Node.js执行环境下；
+2.	创建一个轻应用，并将该应用托管到BAE3.0的Node.js执行环境下；
 
 3.	发布版本，并获取应用对应的URL；
 

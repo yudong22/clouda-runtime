@@ -3747,11 +3747,14 @@ define("device",function(module) {
     };
     var mediaerror = function(first,err,options){
         //deal with err
-        if (module.media.mediamsg[err.code]){
-            err.error = module.media.mediamsg[err.code];
+        if (err.code){
+            if (module.media.mediamsg[err.code]){
+                err.error_info = module.media.mediamsg[err.code];
+            }
+            err.result = err.code;
+            delete err.code;
         }
-        err.result = err.code;
-        delete err.code;
+        
         lightapp.error(first,err,options);
     };
     // _MediaError.MEDIA_ERR_NONE_ACTIVE = _MediaError.MEDIA_ERR_NONE_ACTIVE || 0, 
@@ -4003,22 +4006,24 @@ var getPicture = new delegateClass("device","camera","getPicture");
     it.operateMedia = function(link,operator,options){
         if (clouda.RUNTIME === clouda.RUNTIMES.KUANG){
             var successstring = "(function(result){if(result.lastModified){result.lastModifiedDate=result.lastModified;}("+options.onsuccess.toString()+")(result);})";
-            var failstring = "(function(result){result.error=clouda.device.media.mediamsg[result.result];("+options.onfail.toString()+")(result);})";
+            var recordsuccess = "(function(result){("+options.onsuccess.toString()+")(result.fullPath);})";
+            var failstring = "(function(result){if (!result.error_info){result.error_info=clouda.device.media.mediamsg[result.result]};("+options.onfail.toString()+")(result);})";
+            var emptystring = "(function(){})";
             switch(operator){
                 case "startRecord":
-                    BLightApp.startRecording(link,successstring,"("+options.onsuccess.toString()+")",
+                    BLightApp.startRecording(link,recordsuccess,
                             failstring);
                     break;
                 case "stopRecord":
-                    BLightApp.stopRecording(successstring,
+                    BLightApp.stopRecording(recordsuccess,
                             failstring);
                     break;
                 case "play":
-                    BLightApp.playAudio(link,'lightapp.device.AUDIO_TYPE.PLAY',successstring,
+                    BLightApp.playAudio(link,'lightapp.device.AUDIO_TYPE.PLAY',emptystring,
                             failstring);
                     break;
                 case "stop":
-                    BLightApp.playAudio(link,'lightapp.device.AUDIO_TYPE.STOP',successstring,
+                    BLightApp.playAudio(link,'lightapp.device.AUDIO_TYPE.STOP',recordsuccess,
                             failstring);
                     break;
                 default:
@@ -4053,17 +4058,22 @@ var getPicture = new delegateClass("device","camera","getPicture");
                     media[link][operator](options.volume);
                     options.onsuccess(clouda.STATUS.SUCCESS);
                     break;
-                case "play":
-                case "pause":
+                case "play"://没有callback
+                    media[link][operator]();
+                    break;
                 case "startRecord":
-                case "stopRecord":
                 case "stop":
                     media[link][operator]();
-                    options.onsuccess(clouda.STATUS.SUCCESS);
+                    options.onsuccess();
+                    break;
+                case "pause":
+                case "stopRecord":
+                    media[link][operator]();
+                    options.onsuccess(link);
                     break;
                 case "release":
                     media[link][operator]();
-                    options.onsuccess(clouda.STATUS.SUCCESS);
+                    options.onsuccess(link);
                     delete media[link];
                 
             }
