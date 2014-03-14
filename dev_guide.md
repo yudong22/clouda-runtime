@@ -1,7 +1,6 @@
 #百度轻应用开发指南#
 
 ----------
-更新日期：  2013/12/20 13:57:28       
 
 问题反馈： [clouda-support@baidu.com](mailto:clouda-support@baidu.com)
 
