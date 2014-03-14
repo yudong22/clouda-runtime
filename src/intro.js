@@ -229,16 +229,16 @@
                 });
             });
             
-        }catch(e){
+        }catch(er){
             try{
                 callback(null);
-            }catch(e){
+            }catch(err){
                 if (typeof options === 'object' ){//检查 onfail
                     if (typeof options.onfail === 'function'){
                         options.onfail(clouda.STATUS.SYSTEM_FAILURE);
                     }
                 }
-                console.error(e.stack);
+                console.error(err.stack);
             }
             
         }
