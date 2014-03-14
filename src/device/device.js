@@ -117,21 +117,26 @@ define("device",function(module) {
      * 
      */
     it.getScreenSize = function(options){
-        if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
-            if (window.screen){
-                options.onsuccess(window.screen);
-            }else{
-                lightapp.error(ErrCode.DEVICE_ERR,ErrCode.DEVICE_ERR,options);
-            }
-            return ;
-             // BLightApp.getDeviceInfo(
-                 // "(function(result){("+options.onsuccess.toString()+")(window.screen);})",
-                            // "("+options.onfail.toString()+")");
-             // return false;
+        if (window.screen){
+            options.onsuccess(window.screen);
+        }else{
+            lightapp.error(ErrCode.DEVICE_ERR,ErrCode.DEVICE_ERR,options);
         }
-        getScreenSize(options.onsuccess,function(nativeErr){
-            lightapp.error(ErrCode.DEVICE_ERR,nativeErr,options);
-        },options);
+        // if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+            // if (window.screen){
+                // options.onsuccess(window.screen);
+            // }else{
+                // lightapp.error(ErrCode.DEVICE_ERR,ErrCode.DEVICE_ERR,options);
+            // }
+            // return ;
+             // // BLightApp.getDeviceInfo(
+                 // // "(function(result){("+options.onsuccess.toString()+")(window.screen);})",
+                            // // "("+options.onfail.toString()+")");
+             // // return false;
+        // }
+        // getScreenSize(options.onsuccess,function(nativeErr){
+            // lightapp.error(ErrCode.DEVICE_ERR,nativeErr,options);
+        // },options);
     };
     /**
      * 获取 hostappkey
