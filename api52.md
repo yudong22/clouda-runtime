@@ -45,7 +45,7 @@
 具体格式参考文档，一般来说类型有string,object
 
 ###系统通用的取消码信息
-当用户在使用设备能力api未完成而取消时，触发onfail函数，其中错误码信息如下
+当用户在使用设备能力api未完成而取消时，触发onfail函数，错误码（-2）
 
     {result:-2,error_info:"canceled."}
 
