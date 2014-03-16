@@ -1,4 +1,4 @@
-/*! clouda-runtime - v0.1.0 - 2014-03-14 */
+/*! clouda-runtime - v0.1.0 - 2014-03-16 */
 (function(window){
     // for client js only
     if (typeof window !== 'object')return ;
@@ -72,6 +72,7 @@
         PCS_ERROR:25,
         DEVICE_ERR:26,
         PAY_ERROR:27,
+        APP_ERROR:28
         
     };
     var errorMessage = {
@@ -5656,7 +5657,39 @@ define("mbaas",function( module ) {
     };
     // return module;
     
-});define("mbaas",function(module) {
+});define("mbaas", function(module) {
+    var lightapp = this;
+    //deal with clouda.mbaas
+    var it = module.app = {};
+
+    /**
+     * addShortcut
+     *
+     * @function addShortcut
+     * @memberof clouda.mbaas.app
+     * @instance
+     *
+     * @param appid string 轻应用的id
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调
+     * @param {function} [options.onfail] 失败的回调
+     * @returns null
+     *
+     */
+    it.addShortcut = function(appid, options) {
+        installPlugin("device", function(device) {
+            var info = {
+                type : nuwa.am.SHORTCUT_INFO.TYPE.APP,
+                appId : appid
+            };
+            nuwa.am.addShortcut(info, options.onsuccess, function(err){
+                lightapp.error(ErrCode.APP_ERROR, err, options);
+            });
+        });
+
+    };
+
+}); define("mbaas",function(module) {
     var lightapp = this;
     var it = module.face = {};
     

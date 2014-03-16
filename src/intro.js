@@ -71,6 +71,7 @@
         PCS_ERROR:25,
         DEVICE_ERR:26,
         PAY_ERROR:27,
+        APP_ERROR:28
         
     };
     var errorMessage = {

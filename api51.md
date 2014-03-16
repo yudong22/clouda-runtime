@@ -36,9 +36,22 @@
 	clouda.lightapp(apikey)
 
 ##系统通用的状态码信息
+
     clouda.STATUS.SUCCESS ： 成功(非0)
     clouda.STATUS.SYSTEM_FAILURE ： 系统错误
-    clouda.STATUS.USER_CANCELED ： 用户取消操作
+    clouda.STATUS.USER_CANCELED ： 用户取消操作(-2)
+    
+###系统通用的成功信息
+具体格式参考文档，一般来说类型有string,object
+
+###系统通用的取消码信息
+当用户在使用设备能力api未完成而取消时，触发onfail函数，其中错误码信息如下
+
+    {result:-2,error_info:"canceled."}
+
+###系统通用的错误码信息
+    
+    {result:1,error_info:"some errors readable."}
 
 ## 本地设备能力类API##
     clouda.device
@@ -49,7 +62,6 @@
 - 设备信息（Device）
 - 本地媒体功能（Media）
 - 二维码（QRCode）
-
 
 
 ### Connection ###
@@ -342,7 +354,7 @@ colorDepth | int | 色深
     <tr>
 		<td>onsuccess</td>
 		<td>function(data){}</td>          
-		<td>操作成功，data返回信息，详见前诉 operator 的参数说明</td>  
+		<td>操作成功，data返回信息，详见前述 operator 的参数说明</td>  
 	</tr>
     <tr>
 		<td>onfail</td>
