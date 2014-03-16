@@ -25,6 +25,14 @@
 onsuccess | function(data){} | 操作成功，返回地理信息对象
 onfail | function(err){} | 操作失败，返回错误码信息 
 
+**返回的地理信息对象
+
+参数 | 类型 | 描述 
+------------ | ------------- | ------------
+accuracy | float | 精确度(单位米)
+longitude | float | 经度
+latitude | float | 纬度
+
 
 #### startListen ####
     startListen(options)
