@@ -80,29 +80,22 @@ define("device",function(module) {
      */
     var start_id;
     it.startListen = function(options){
-        if(start_id){
-            clearWatch(start_id);
-        }
-        installPlugin("device", function(device) {
-             if (options.method === module.LOCATION_METHOD ){
-                 options.enableHighAccuracy = false;
-             }else{
-                 options.enableHighAccuracy = true;
-             }
-            start_id = device.geolocation.watchPosition(function(){
-                if ( typeof obj==='object' ){
-                    if (!obj.coords){
-                        lightapp.error(ErrCode.LOC_GET_ERR,obj,options);
-                        return ;
-                    }
-                    options.onsuccess(obj.coords);
-                }else{
-                    lightapp.error(ErrCode.LOC_GET_ERR,ErrCode.UNKNOW_CALLBACK,options);
-                }
-            }, function(error) {
-               lightapp.error(ErrCode.LOC_GET_ERR,error,options);
-            },options);
-        });
+        if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+             Bdbox.invokeApp("BLightApp","startListenLocation",["(function(result){("+options.onsuccess.toString()+")(result.coords);})",
+                            "("+options.onfail.toString()+")"]);   
+             return false;
+         }
+         
+        mapstart(function(obj){
+            if ( typeof obj==='object' ){
+                options.onsuccess(obj);
+            }else{
+                lightapp.error(ErrCode.LOC_GET_ERR,ErrCode.UNKNOW_CALLBACK,options);
+            }
+        },function(nativeErr){
+            lightapp.error(ErrCode.LOC_GET_ERR,nativeErr,options);
+        },options);
+     
     };
     
     /**
@@ -117,7 +110,26 @@ define("device",function(module) {
      * 
      */
     it.stopListen = function(){
-        clearWatch(start_id);
+        
+        if (clouda.RUNTIME === clouda.RUNTIMES.KUANG){
+            var funcs = [];
+            if (options.onsuccess){
+                funcs.push("("+ options.onsuccess.toString() + ")");
+                
+                if (options.onfail){
+                    funcs.push("("+ options.onfail.toString() + ")");
+                }
+            }
+            
+            Bdbox.invokeApp("BLightApp","stopListenLocation",funcs);
+            return;
+        }
+        
+        mapstop(function(obj){
+                options.onsuccess(obj);
+        },function(nativeErr){
+            lightapp.error(ErrCode.LOC_GET_ERR,nativeErr,options);
+        },options);
     };
     
     return module;

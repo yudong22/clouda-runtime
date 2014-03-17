@@ -51,14 +51,24 @@ define("device",function(module) {
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
             try{
                 var info = BLightApp.getGlobalizationInfo();
-                options.onsuccess({"value":info});
+                if (!info.result){
+                    throw new Error(clouda.STATUS.SYSTEM_FAILURE);
+                }
+                options.onsuccess(info.result);
             }catch(e){
                 lightapp.error(ErrCode.GLO_ERR,e.stack,options);
             }
             
-             return false;
+            return false;
          }
-        getLocaleName(options.onsuccess,function(){
+        getLocaleName(function(result){
+            if (typeof result.value === 'string'){
+                options.onsuccess(result.value.replace(/_\w+/,""));//languate_country
+            }else{
+                lightapp.error(ErrCode.GLO_ERR,ErrCode.GLO_ERR,options);
+            }
+            
+        },function(){
             if (options && typeof options.onfail == 'function'){
                 options.onfail(ErrCode.GLO_ERR);
             }else{

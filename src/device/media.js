@@ -291,6 +291,13 @@ var getPicture = new delegateClass("device","camera","getPicture");
                     BLightApp.playAudio(link,'lightapp.device.AUDIO_TYPE.STOP',recordsuccess,
                             failstring);
                     break;
+                case "seekTo":
+                    Bdbox.invokeApp("BLightApp","audioSeekTo",[options.time,successstring,failstring]);
+                    break;
+                case "setVolume":
+                    BLightApp.setVolume(options.volume,successstring,failstring);
+                    break;
+                
                 default:
                     lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
             }

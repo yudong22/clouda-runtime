@@ -1,4 +1,4 @@
-/*! clouda-runtime - v0.1.0 - 2014-03-16 */
+/*! clouda-runtime - v0.1.0 - 2014-03-17 */
 (function(window){
     // for client js only
     if (typeof window !== 'object')return ;
@@ -2367,6 +2367,50 @@ define("lib",function( module ) {
 });
 define("device",function(module) {
     var lightapp = this;
+    //定义 activity 空间，clouda.device.activity 
+     /**
+     * @object activity
+     * @memberof clouda.device
+     * @instance
+     * @namespace clouda.device.activity
+     */
+    var it = module.activity = {};
+    
+    var startActivity = new delegateClass("device","activity","startActivity");
+    
+    //device.activity.startActivity(successCallback, errorCallback, intent);
+    
+    /**
+     * 调起第三方app
+     *
+     * @function get
+     * @memberof clouda.device.activity
+     * @instance
+     *
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调
+     * @param {function} options.onsuccess 成功的回调
+     * @param {object} options.intent 参考android调起应用参数intent
+     * @returns null
+     * 
+     */
+    it.start = function(options){
+        if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+             Bdbox.invokeApp("BLightApp","invokeThirdApp",[JSON.stringify(options.intent),
+                "(function(result){("+options.onsuccess.toString()+")(result);})",
+                "("+options.onfail.toString()+")"]);   
+             return false;
+        }
+        
+        startActivity(options.onsuccess,function(nativeErr){
+            lightapp.error(ErrCode.ACC_GET_ERR,nativeErr,options);
+        },options.intent,options);
+    };
+    
+    
+});
+define("device",function(module) {
+    var lightapp = this;
     //定义 battery 空间，clouda.device.battery 支持退化
     var it = module.battery = {};
     
@@ -2381,6 +2425,12 @@ define("device",function(module) {
     var stop = new delegateClass("device","batterystatus","stop");
     
     it.get = function(options){
+        if (clouda.RUNTIME === clouda.RUNTIMES.KUANG){
+            var successCallback ="("+ options.onsuccess.toString() + ")";
+            var errorCallback ="("+  options.onfail.toString() + ")";
+            Bdbox.invokeApp("BLightApp","getBattery",[successCallback,errorCallback]);
+            return;
+        }
         start(function(){
             options.onsuccess.apply(this,arguments);
             stop(function(){},function(){});
@@ -2402,6 +2452,12 @@ define("device",function(module) {
      * 
      */
     it.startListen = function(options){
+        if (clouda.RUNTIME === clouda.RUNTIMES.KUANG){
+            var successCallback = "("+ options.onsuccess.toString() + ")";
+            var errorCallback = "("+ options.onfail.toString() + ")";
+            Bdbox.invokeApp("BLightApp","startListenBattery",[successCallback,errorCallback]);
+            return;
+        }
         start(options.onsuccess,function(nativeErr){
             lightapp.error(ErrCode.BTY_ERR,nativeErr,options);
         },options);
@@ -2420,6 +2476,17 @@ define("device",function(module) {
      * 
      */
     it.stopListen = function(options){
+        if (clouda.RUNTIME === clouda.RUNTIMES.KUANG){
+            var funcs = [];
+            if (options.onsuccess){
+                funcs.push("("+ options.onsuccess.toString() + ")");
+            }
+            if (options.onfail){
+                funcs.push("("+ options.onfail.toString() + ")");
+            }
+            Bdbox.invokeApp("BLightApp","stopListenBattery",funcs);
+            return;
+        }
         if (typeof options == 'undefined') {
             stop(function(){},function(){});
         }else{
@@ -3282,29 +3349,22 @@ define("device",function(module) {
      */
     var start_id;
     it.startListen = function(options){
-        if(start_id){
-            clearWatch(start_id);
-        }
-        installPlugin("device", function(device) {
-             if (options.method === module.LOCATION_METHOD ){
-                 options.enableHighAccuracy = false;
-             }else{
-                 options.enableHighAccuracy = true;
-             }
-            start_id = device.geolocation.watchPosition(function(){
-                if ( typeof obj==='object' ){
-                    if (!obj.coords){
-                        lightapp.error(ErrCode.LOC_GET_ERR,obj,options);
-                        return ;
-                    }
-                    options.onsuccess(obj.coords);
-                }else{
-                    lightapp.error(ErrCode.LOC_GET_ERR,ErrCode.UNKNOW_CALLBACK,options);
-                }
-            }, function(error) {
-               lightapp.error(ErrCode.LOC_GET_ERR,error,options);
-            },options);
-        });
+        if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+             Bdbox.invokeApp("BLightApp","startListenLocation",["(function(result){("+options.onsuccess.toString()+")(result.coords);})",
+                            "("+options.onfail.toString()+")"]);   
+             return false;
+         }
+         
+        mapstart(function(obj){
+            if ( typeof obj==='object' ){
+                options.onsuccess(obj);
+            }else{
+                lightapp.error(ErrCode.LOC_GET_ERR,ErrCode.UNKNOW_CALLBACK,options);
+            }
+        },function(nativeErr){
+            lightapp.error(ErrCode.LOC_GET_ERR,nativeErr,options);
+        },options);
+     
     };
     
     /**
@@ -3319,7 +3379,26 @@ define("device",function(module) {
      * 
      */
     it.stopListen = function(){
-        clearWatch(start_id);
+        
+        if (clouda.RUNTIME === clouda.RUNTIMES.KUANG){
+            var funcs = [];
+            if (options.onsuccess){
+                funcs.push("("+ options.onsuccess.toString() + ")");
+                
+                if (options.onfail){
+                    funcs.push("("+ options.onfail.toString() + ")");
+                }
+            }
+            
+            Bdbox.invokeApp("BLightApp","stopListenLocation",funcs);
+            return;
+        }
+        
+        mapstop(function(obj){
+                options.onsuccess(obj);
+        },function(nativeErr){
+            lightapp.error(ErrCode.LOC_GET_ERR,nativeErr,options);
+        },options);
     };
     
     return module;
@@ -3376,14 +3455,24 @@ define("device",function(module) {
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
             try{
                 var info = BLightApp.getGlobalizationInfo();
-                options.onsuccess({"value":info});
+                if (!info.result){
+                    throw new Error(clouda.STATUS.SYSTEM_FAILURE);
+                }
+                options.onsuccess(info.result);
             }catch(e){
                 lightapp.error(ErrCode.GLO_ERR,e.stack,options);
             }
             
-             return false;
+            return false;
          }
-        getLocaleName(options.onsuccess,function(){
+        getLocaleName(function(result){
+            if (typeof result.value === 'string'){
+                options.onsuccess(result.value.replace(/_\w+/,""));//languate_country
+            }else{
+                lightapp.error(ErrCode.GLO_ERR,ErrCode.GLO_ERR,options);
+            }
+            
+        },function(){
             if (options && typeof options.onfail == 'function'){
                 options.onfail(ErrCode.GLO_ERR);
             }else{
@@ -4027,6 +4116,13 @@ var getPicture = new delegateClass("device","camera","getPicture");
                     BLightApp.playAudio(link,'lightapp.device.AUDIO_TYPE.STOP',recordsuccess,
                             failstring);
                     break;
+                case "seekTo":
+                    Bdbox.invokeApp("BLightApp","audioSeekTo",[options.time,successstring,failstring]);
+                    break;
+                case "setVolume":
+                    BLightApp.setVolume(options.volume,successstring,failstring);
+                    break;
+                
                 default:
                     lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
             }
@@ -5677,6 +5773,17 @@ define("mbaas",function( module ) {
      *
      */
     it.addShortcut = function(appid, options) {
+        if (!appid){
+            lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
+            return ;
+        }
+        if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+            //Bdbox.invokeApp("BLightApp","createShortCut",[successCallback,errorCallback]);    
+             Bdbox.invokeApp("BLightApp","createShortCut",[
+                "(function(result){("+options.onsuccess.toString()+")(result);})",
+                "("+options.onfail.toString()+")"]);   
+             return false;
+        }
         installPlugin("device", function(device) {
             var info = {
                 type : nuwa.am.SHORTCUT_INFO.TYPE.APP,
@@ -5687,6 +5794,40 @@ define("mbaas",function( module ) {
             });
         });
 
+    };
+    
+    /**
+     * followSite
+     *
+     * @function followSite
+     * @memberof clouda.mbaas.app
+     * @instance
+     *
+     * @param appid string 轻应用的id
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调
+     * @param {function} [options.onfail] 失败的回调
+     * @returns null
+     *
+     */
+    it.followSite = function(appid,options){
+        if (!appid){
+            lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
+            return ;
+        }
+        if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+             Bdbox.invokeApp("BLightApp","followSite",[
+                "(function(result){("+options.onsuccess.toString()+")(result);})",
+                "("+options.onfail.toString()+")"]);   
+             return false;
+        }
+        // Bdbox.invokeApp("BLightApp","followSite",[successCallback,errorCallback]);
+        installPlugin("device", function(device) {
+            nuwa.am.subscribe(appid, options.onsuccess, function(err){
+                lightapp.error(ErrCode.APP_ERROR, err, options);
+            });
+        });
+        
     };
 
 }); define("mbaas",function(module) {
