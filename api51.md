@@ -235,7 +235,7 @@ colorDepth | int | 色深
 
 **功能描述：**
 
-调取本地照相、视频功能；拍摄、录制、拍照及读取本地图片文件。
+调取本地照相、视频功能；拍摄、拍照。
 
 **参数说明：**
 
@@ -264,13 +264,6 @@ colorDepth | int | 色深
 		<td> 媒体类型，其值如下： <br>
 		 - clouda.device.MEDIA_TYPE.IMAGE(默认) <br>
 		 - clouda.device.MEDIA_TYPE.VIDEO</td>  
-	</tr>
-	<tr>
-		<td>source</td>
-		<td>string</td>
-		<td>媒体文件来源，其值如下：：<br>
-		- clouda.device.MEDIA_SOURCE.CAMERA<br>
-		</td>  
 	</tr>
 <tbody>
 </table>
@@ -322,48 +315,20 @@ colorDepth | int | 色深
 
 **参数说明：**
 
-- link : 为 string 类型，本地音频文件路径或 Web 音频文件的 URI
+- link : 为 string 类型，本地音频文件路径， 需要注意的是，在调试工具中则是绝对路径，在框中路径为轻应用id为目录名的相对路径（安全性）。
 - operator ： 为 string 类型，所支持的对音频文件的具体操作类型如下：
-   <table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
-   <tbody>
-    <tr>
-        <th>方法</th>
-        <th>描述</th>
-    </tr>
-    
-    <tr>
-		<td>startRecord</td>
-		<td>开始录制音频文件，操作成功返回SUCCESS状态码；操作失败，则返错误码</td>            
-	</tr>
-    <tr>
-		<td>stopRecord</td>
-		<td>停止录制音频文件，操作成功返回文件的绝对路径；操作失败，则返错误码</td>          
-	</tr>
-	</tbody>
-</table> 
+
+方法 | 描述 
+------------ | -------------
+startRecord | 开始录制音频文件，操作成功返回SUCCESS状态码；操作失败，则返错误码信息
+stopRecord | 停止录制音频文件，操作成功返回文件的绝对路径；操作失败，则返错误码信息 
 
 - options : 为 object 类型，其中包含以下参数：
 
-<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
-   <tbody>
-    <tr>
-        <th>参数</th>
-        <th>类型</th>
-        <th>描述</th>
-    </tr>
-    <tr>
-		<td>onsuccess</td>
-		<td>function(data){}</td>          
-		<td>操作成功，data返回信息，详见前述 operator 的参数说明</td>  
-	</tr>
-    <tr>
-		<td>onfail</td>
-		<td>function(err){}</td>          
-		<td>操作失败，返回错误码</td>  
-	</tr>
-   
-<tbody>
-</table>
+参数 | 类型 | 描述 
+------------ | ------------- | ------------
+onsuccess | function(data){} | 操作成功，data返回信息，详见前述 operator 的参数说明
+onfail | function(err){} | 操作失败，返回错误码信息 
 
 
 ### QRCode ###
