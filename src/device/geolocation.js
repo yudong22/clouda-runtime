@@ -81,8 +81,9 @@ define("device",function(module) {
     var start_id;
     it.startListen = function(options){
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
-             Bdbox.invokeApp("BLightApp","startListenLocation",["(function(result){("+options.onsuccess.toString()+")(result.coords);})",
-                            "("+options.onfail.toString()+")"]);   
+             BLightApp.startListenLocation(
+                "(function(result){("+options.onsuccess.toString()+")(result.coords);})",
+                "("+options.onfail.toString()+")");   
              return false;
          }
          
@@ -109,11 +110,11 @@ define("device",function(module) {
      * @returns null
      * 
      */
-    it.stopListen = function(){
+    it.stopListen = function(options){
         
         if (clouda.RUNTIME === clouda.RUNTIMES.KUANG){
             var funcs = [];
-            if (options.onsuccess){
+            if (options && options.onsuccess){
                 funcs.push("("+ options.onsuccess.toString() + ")");
                 
                 if (options.onfail){
@@ -121,13 +122,11 @@ define("device",function(module) {
                 }
             }
             
-            Bdbox.invokeApp("BLightApp","stopListenLocation",funcs);
+            BLightApp.stopListenLocation.apply(undefined,funcs);   
             return;
         }
         
-        mapstop(function(obj){
-                options.onsuccess(obj);
-        },function(nativeErr){
+        mapstop(options.onsuccess,function(nativeErr){
             lightapp.error(ErrCode.LOC_GET_ERR,nativeErr,options);
         },options);
     };

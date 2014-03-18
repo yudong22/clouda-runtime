@@ -24,9 +24,9 @@ define("mbaas", function(module) {
         }
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
             //Bdbox.invokeApp("BLightApp","createShortCut",[successCallback,errorCallback]);    
-             Bdbox.invokeApp("BLightApp","createShortCut",[
+             BLightApp.createShortCut(
                 "(function(result){("+options.onsuccess.toString()+")(result);})",
-                "("+options.onfail.toString()+")"]);   
+                "("+options.onfail.toString()+")");   
              return false;
         }
         installPlugin("device", function(device) {
@@ -61,12 +61,11 @@ define("mbaas", function(module) {
             return ;
         }
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
-             Bdbox.invokeApp("BLightApp","followSite",[
+             BLightApp.followSite(
                 "(function(result){("+options.onsuccess.toString()+")(result);})",
-                "("+options.onfail.toString()+")"]);   
+                "("+options.onfail.toString()+")");   
              return false;
         }
-        // Bdbox.invokeApp("BLightApp","followSite",[successCallback,errorCallback]);
         installPlugin("device", function(device) {
             nuwa.am.subscribe(appid, options.onsuccess, function(err){
                 lightapp.error(ErrCode.APP_ERROR, err, options);

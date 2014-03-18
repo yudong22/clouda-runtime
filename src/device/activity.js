@@ -29,9 +29,9 @@ define("device",function(module) {
      */
     it.start = function(options){
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
-             Bdbox.invokeApp("BLightApp","invokeThirdApp",[JSON.stringify(options.intent),
+             BLightApp.invokeThirdApp(JSON.stringify(options.intent),
                 "(function(result){("+options.onsuccess.toString()+")(result);})",
-                "("+options.onfail.toString()+")"]);   
+                "("+options.onfail.toString()+")");   
              return false;
         }
         

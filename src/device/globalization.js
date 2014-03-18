@@ -51,10 +51,8 @@ define("device",function(module) {
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
             try{
                 var info = BLightApp.getGlobalizationInfo();
-                if (!info.result){
-                    throw new Error(clouda.STATUS.SYSTEM_FAILURE);
-                }
-                options.onsuccess(info.result);
+                
+                options.onsuccess(info);
             }catch(e){
                 lightapp.error(ErrCode.GLO_ERR,e.stack,options);
             }

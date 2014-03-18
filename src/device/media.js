@@ -292,7 +292,7 @@ var getPicture = new delegateClass("device","camera","getPicture");
                             failstring);
                     break;
                 case "seekTo":
-                    Bdbox.invokeApp("BLightApp","audioSeekTo",[options.time,successstring,failstring]);
+                    BLightApp.audioSeekTo(options.time,successstring,failstring);
                     break;
                 case "setVolume":
                     BLightApp.setVolume(options.volume,successstring,failstring);

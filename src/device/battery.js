@@ -17,7 +17,7 @@ define("device",function(module) {
         if (clouda.RUNTIME === clouda.RUNTIMES.KUANG){
             var successCallback ="("+ options.onsuccess.toString() + ")";
             var errorCallback ="("+  options.onfail.toString() + ")";
-            Bdbox.invokeApp("BLightApp","getBattery",[successCallback,errorCallback]);
+            BLightApp.getBattery(successCallback,errorCallback);
             return;
         }
         start(function(){
@@ -44,7 +44,7 @@ define("device",function(module) {
         if (clouda.RUNTIME === clouda.RUNTIMES.KUANG){
             var successCallback = "("+ options.onsuccess.toString() + ")";
             var errorCallback = "("+ options.onfail.toString() + ")";
-            Bdbox.invokeApp("BLightApp","startListenBattery",[successCallback,errorCallback]);
+            BLightApp.startListenBattery(successCallback,errorCallback);
             return;
         }
         start(options.onsuccess,function(nativeErr){
@@ -73,7 +73,7 @@ define("device",function(module) {
             if (options.onfail){
                 funcs.push("("+ options.onfail.toString() + ")");
             }
-            Bdbox.invokeApp("BLightApp","stopListenBattery",funcs);
+            BLightApp.stopListenBattery.apply(undefined,funcs);
             return;
         }
         if (typeof options == 'undefined') {

@@ -1,4 +1,4 @@
-/*! clouda-runtime - v0.1.0 - 2014-03-17 */
+/*! clouda-runtime - v0.1.0 - 2014-03-18 */
 (function(window){
     // for client js only
     if (typeof window !== 'object')return ;
@@ -2396,9 +2396,9 @@ define("device",function(module) {
      */
     it.start = function(options){
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
-             Bdbox.invokeApp("BLightApp","invokeThirdApp",[JSON.stringify(options.intent),
+             BLightApp.invokeThirdApp(JSON.stringify(options.intent),
                 "(function(result){("+options.onsuccess.toString()+")(result);})",
-                "("+options.onfail.toString()+")"]);   
+                "("+options.onfail.toString()+")");   
              return false;
         }
         
@@ -2428,7 +2428,7 @@ define("device",function(module) {
         if (clouda.RUNTIME === clouda.RUNTIMES.KUANG){
             var successCallback ="("+ options.onsuccess.toString() + ")";
             var errorCallback ="("+  options.onfail.toString() + ")";
-            Bdbox.invokeApp("BLightApp","getBattery",[successCallback,errorCallback]);
+            BLightApp.getBattery(successCallback,errorCallback);
             return;
         }
         start(function(){
@@ -2455,7 +2455,7 @@ define("device",function(module) {
         if (clouda.RUNTIME === clouda.RUNTIMES.KUANG){
             var successCallback = "("+ options.onsuccess.toString() + ")";
             var errorCallback = "("+ options.onfail.toString() + ")";
-            Bdbox.invokeApp("BLightApp","startListenBattery",[successCallback,errorCallback]);
+            BLightApp.startListenBattery(successCallback,errorCallback);
             return;
         }
         start(options.onsuccess,function(nativeErr){
@@ -2484,7 +2484,7 @@ define("device",function(module) {
             if (options.onfail){
                 funcs.push("("+ options.onfail.toString() + ")");
             }
-            Bdbox.invokeApp("BLightApp","stopListenBattery",funcs);
+            BLightApp.stopListenBattery.apply(undefined,funcs);
             return;
         }
         if (typeof options == 'undefined') {
@@ -3350,8 +3350,9 @@ define("device",function(module) {
     var start_id;
     it.startListen = function(options){
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
-             Bdbox.invokeApp("BLightApp","startListenLocation",["(function(result){("+options.onsuccess.toString()+")(result.coords);})",
-                            "("+options.onfail.toString()+")"]);   
+             BLightApp.startListenLocation(
+                "(function(result){("+options.onsuccess.toString()+")(result.coords);})",
+                "("+options.onfail.toString()+")");   
              return false;
          }
          
@@ -3378,11 +3379,11 @@ define("device",function(module) {
      * @returns null
      * 
      */
-    it.stopListen = function(){
+    it.stopListen = function(options){
         
         if (clouda.RUNTIME === clouda.RUNTIMES.KUANG){
             var funcs = [];
-            if (options.onsuccess){
+            if (options && options.onsuccess){
                 funcs.push("("+ options.onsuccess.toString() + ")");
                 
                 if (options.onfail){
@@ -3390,13 +3391,11 @@ define("device",function(module) {
                 }
             }
             
-            Bdbox.invokeApp("BLightApp","stopListenLocation",funcs);
+            BLightApp.stopListenLocation.apply(undefined,funcs);   
             return;
         }
         
-        mapstop(function(obj){
-                options.onsuccess(obj);
-        },function(nativeErr){
+        mapstop(options.onsuccess,function(nativeErr){
             lightapp.error(ErrCode.LOC_GET_ERR,nativeErr,options);
         },options);
     };
@@ -3455,10 +3454,8 @@ define("device",function(module) {
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
             try{
                 var info = BLightApp.getGlobalizationInfo();
-                if (!info.result){
-                    throw new Error(clouda.STATUS.SYSTEM_FAILURE);
-                }
-                options.onsuccess(info.result);
+                
+                options.onsuccess(info);
             }catch(e){
                 lightapp.error(ErrCode.GLO_ERR,e.stack,options);
             }
@@ -4117,7 +4114,7 @@ var getPicture = new delegateClass("device","camera","getPicture");
                             failstring);
                     break;
                 case "seekTo":
-                    Bdbox.invokeApp("BLightApp","audioSeekTo",[options.time,successstring,failstring]);
+                    BLightApp.audioSeekTo(options.time,successstring,failstring);
                     break;
                 case "setVolume":
                     BLightApp.setVolume(options.volume,successstring,failstring);
@@ -5779,9 +5776,9 @@ define("mbaas",function( module ) {
         }
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
             //Bdbox.invokeApp("BLightApp","createShortCut",[successCallback,errorCallback]);    
-             Bdbox.invokeApp("BLightApp","createShortCut",[
+             BLightApp.createShortCut(
                 "(function(result){("+options.onsuccess.toString()+")(result);})",
-                "("+options.onfail.toString()+")"]);   
+                "("+options.onfail.toString()+")");   
              return false;
         }
         installPlugin("device", function(device) {
@@ -5816,12 +5813,11 @@ define("mbaas",function( module ) {
             return ;
         }
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
-             Bdbox.invokeApp("BLightApp","followSite",[
+             BLightApp.followSite(
                 "(function(result){("+options.onsuccess.toString()+")(result);})",
-                "("+options.onfail.toString()+")"]);   
+                "("+options.onfail.toString()+")");   
              return false;
         }
-        // Bdbox.invokeApp("BLightApp","followSite",[successCallback,errorCallback]);
         installPlugin("device", function(device) {
             nuwa.am.subscribe(appid, options.onsuccess, function(err){
                 lightapp.error(ErrCode.APP_ERROR, err, options);
