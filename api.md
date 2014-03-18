@@ -2725,7 +2725,7 @@ PAY接口提供支付功能。
 **方法：**
 
 - init(parter_id,options)
-- pay(options)
+- doPay(options)
 
 #### init####
 	init(parter_id,options)
@@ -2744,8 +2744,8 @@ onsuccess | function(data){} | 操作成功，返回成功信息
 onfail | function(err){} | 操作失败，返回错误码信息
 
 
-#### pay####
-	pay(options)
+#### doPay####
+	doPay(options)
 
 **功能描述：**
 

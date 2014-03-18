@@ -79,7 +79,7 @@ define("mbaas",function( module ) {
      * @returns null
      * 
      */
-     it.pay = function(options){
+     it.doPay = function(options){
          if (!options.hideLoading){
              options.hideLoading = false;
          }
