@@ -90,7 +90,7 @@
 
 参数 | 类型 | 描述 
 ------------ | ------------- | ------------
-onsuccess | function(data){} | 操作成功，返回成功
+onsuccess | function(data){} | 操作成功，返回SUCCESS状态码
 onfail | function(err){} | 操作失败，返回错误码信息 
 intent | object | 参考android调起应用参数[intent](http://developer.android.com/reference/android/content/Intent.html)
 
@@ -163,7 +163,12 @@ isPlugged | boolean | 电池充电状态，默认false，未充电
 
 **参数说明：**
 
-- options 是一个object，同get(options)中的options说明。
+- options是一个object，其中包括以下参数：
+
+参数 | 类型 | 描述 
+------------ | ------------- | ------------
+onsuccess | function(data){} | 操作成功，返回SUCCESS状态码
+onfail | function(err){} | 操作失败，返回错误码信息
 
 
 ### Connection ###
@@ -387,6 +392,16 @@ significant | bool | 是否仅在位置发生大幅变化时进行回调，boole
 
 停止监听地理位置信息。
 
+**参数说明：**
+
+- options是一个object，其中包括以下参数：
+
+参数 | 类型 | 描述 
+------------ | ------------- | ------------
+onsuccess | function(data){} | 操作成功，返回SUCCESS状态码
+onfail | function(err){} | 操作失败，返回错误码信息 
+
+
 ### Globalization ###
     clouda.device.globalization
 
@@ -410,8 +425,9 @@ significant | bool | 是否仅在位置发生大幅变化时进行回调，boole
 
 参数 | 类型 | 描述 
 ------------ | ------------- | ------------
-onsuccess | function(data){} | 操作成功，返回用户语言信息
+onsuccess | function(data){} | 操作成功，返回当前用户语言，字符串格式，具体参见 [语言编码标准](http://zh.wikipedia.org/wiki/ISO_639-1)
 onfail | function(err){} | 操作失败，返回错误码信息 
+
 
 
 ### Media ###
@@ -617,7 +633,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 
 - 轻应用服务（App）
 
-### 轻应用服务（App） ###
+### App ###
     clouda.mbaas.app
 
 调起应用 
@@ -641,7 +657,27 @@ onfail | function(err){} | 操作失败，返回错误码信息
 
 参数 | 类型 | 描述 
 ------------ | ------------- | ------------
-onsuccess | function(data){} | 操作成功，返回成功
+onsuccess | function(data){} | 操作成功，返回SUCCESS状态码
+onfail | function(err){} | 操作失败，返回错误码信息 
+
+- followSite(appid,options)
+
+#### followSite #### 
+  followSite(appid,options)
+
+**功能描述：** 
+
+关注轻应用
+
+**参数说明：** 
+
+- appid：为 string 类型，该轻应用的appid
+- options：为 object 类型，其中包括以下参数： 
+
+
+参数 | 类型 | 描述 
+------------ | ------------- | ------------
+onsuccess | function(data){} | 操作成功，返回SUCCESS状态码
 onfail | function(err){} | 操作失败，返回错误码信息 
 
 
