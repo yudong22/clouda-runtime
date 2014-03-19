@@ -29,8 +29,9 @@ define("device",function(module) {
      */
     it.start = function(options){
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+             var cloudasuccess = "(function(result){("+options.onsuccess.toString()+")(clouda.STATUS.SUCCESS);})";
              BLightApp.invokeThirdApp(JSON.stringify(options.intent),
-                "(function(result){("+options.onsuccess.toString()+")(result);})",
+                cloudasuccess,
                 "("+options.onfail.toString()+")");   
              return false;
         }

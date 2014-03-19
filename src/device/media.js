@@ -273,6 +273,7 @@ var getPicture = new delegateClass("device","camera","getPicture");
             var recordsuccess = "(function(result){("+options.onsuccess.toString()+")(result.fullPath);})";
             var failstring = "(function(result){if (!result.error_info){result.error_info=clouda.device.media.mediamsg[result.result]};("+options.onfail.toString()+")(result);})";
             var emptystring = "(function(){})";
+            var cloudasuccess = "(function(result){("+options.onsuccess.toString()+")(clouda.STATUS.SUCCESS);})";
             switch(operator){
                 case "startRecord":
                     BLightApp.startRecording(link,recordsuccess,
@@ -287,17 +288,17 @@ var getPicture = new delegateClass("device","camera","getPicture");
                             failstring);
                     break;
                 case "stop":
-                    BLightApp.playAudio(link,'lightapp.device.AUDIO_TYPE.STOP',recordsuccess,
+                    BLightApp.playAudio(link,'lightapp.device.AUDIO_TYPE.STOP',cloudasuccess,
                             failstring);
                     break;
                 case "seekTo":
-                    BLightApp.audioSeekTo(options.time,successstring,failstring);
+                    BLightApp.audioSeekTo(options.time,cloudasuccess,failstring);
                     break;
                 case "setVolume":
-                    BLightApp.setVolume(options.volume,successstring,failstring);
+                    BLightApp.setVolume(options.volume,cloudasuccess,failstring);
                     break;
                 case "speedFF":
-                    BLightApp.setVolume(successstring,failstring);
+                    BLightApp.setVolume(cloudasuccess,failstring);
                     break;
                 default:
                     lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);

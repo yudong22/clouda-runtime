@@ -67,4 +67,9 @@ isPlugged | boolean | 电池充电状态，默认false，未充电
 
 **参数说明：**
 
-- options 是一个object，同get(options)中的options说明。
+- options是一个object，其中包括以下参数：
+
+参数 | 类型 | 描述 
+------------ | ------------- | ------------
+onsuccess | function(data){} | 操作成功，返回SUCCESS状态码
+onfail | function(err){} | 操作失败，返回错误码信息

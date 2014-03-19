@@ -23,9 +23,10 @@ define("mbaas", function(module) {
             return ;
         }
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
-            //Bdbox.invokeApp("BLightApp","createShortCut",[successCallback,errorCallback]);    
+            //Bdbox.invokeApp("BLightApp","createShortCut",[successCallback,errorCallback]); 
+             var cloudasuccess = "(function(result){("+options.onsuccess.toString()+")(clouda.STATUS.SUCCESS);})";   
              BLightApp.createShortCut(
-                "(function(result){("+options.onsuccess.toString()+")(result);})",
+                cloudasuccess,
                 "("+options.onfail.toString()+")");   
              return false;
         }
@@ -63,8 +64,9 @@ define("mbaas", function(module) {
             return ;
         }
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+             var cloudasuccess = "(function(result){("+options.onsuccess.toString()+")(clouda.STATUS.SUCCESS);})";
              BLightApp.followSite(
-                "(function(result){("+options.onsuccess.toString()+")(result);})",
+                cloudasuccess,
                 "("+options.onfail.toString()+")");   
              return false;
         }

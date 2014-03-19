@@ -62,3 +62,12 @@ significant | bool | 是否仅在位置发生大幅变化时进行回调，boole
 **功能描述：**
 
 停止监听地理位置信息。
+
+**参数说明：**
+
+- options是一个object，其中包括以下参数：
+
+参数 | 类型 | 描述 
+------------ | ------------- | ------------
+onsuccess | function(data){} | 操作成功，返回SUCCESS状态码
+onfail | function(err){} | 操作失败，返回错误码信息 
