@@ -60,6 +60,7 @@
 
 - 网络连接状态(Connection)
 - 设备信息（Device）
+- 地理位置(Geolocation)
 - 本地媒体功能（Media）
 - 二维码（QRCode）
 
@@ -218,6 +219,38 @@ height | int | 高度
 pixelDepth | int | 颜色分辨率
 colorDepth | int | 色深
 
+### Geolocation ###
+    clouda.device.geolocation
+
+地理位置
+
+**方法：**
+
+- get(options)
+
+#### get ####
+    get(options)
+
+**功能描述：**
+
+获取当前地理位置信息。
+
+**参数说明：**
+
+- options是一个object，其中包括以下参数：
+
+参数 | 类型 | 描述 
+------------ | ------------- | ------------
+onsuccess | function(data){} | 操作成功，返回地理信息对象
+onfail | function(err){} | 操作失败，返回错误码信息 
+
+**返回的地理信息对象
+
+参数 | 类型 | 描述 
+------------ | ------------- | ------------
+accuracy | float | 精确度(单位米)
+longitude | float | 经度
+latitude | float | 纬度
 
 
 ### Media ###
