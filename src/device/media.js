@@ -272,11 +272,11 @@ var getPicture = new delegateClass("device","camera","getPicture");
             var successstring = "(function(result){if(result.lastModified){result.lastModifiedDate=result.lastModified;}("+options.onsuccess.toString()+")(result);})";
             var recordsuccess = "(function(result){("+options.onsuccess.toString()+")(result.fullPath);})";
             var failstring = "(function(result){if (!result.error_info){result.error_info=clouda.device.media.mediamsg[result.result]};("+options.onfail.toString()+")(result);})";
-            var emptystring = "(function(){})";
+            // var emptystring = "(function(){})";
             var cloudasuccess = "(function(result){("+options.onsuccess.toString()+")(clouda.STATUS.SUCCESS);})";
             switch(operator){
                 case "startRecord":
-                    BLightApp.startRecording(link,recordsuccess,
+                    BLightApp.startRecording(link,cloudasuccess,
                             failstring);
                     break;
                 case "stopRecord":
@@ -284,7 +284,7 @@ var getPicture = new delegateClass("device","camera","getPicture");
                             failstring);
                     break;
                 case "play":
-                    BLightApp.playAudio(link,'lightapp.device.AUDIO_TYPE.PLAY',emptystring,
+                    BLightApp.playAudio(link,'lightapp.device.AUDIO_TYPE.PLAY',cloudasuccess,
                             failstring);
                     break;
                 case "stop":
@@ -298,7 +298,7 @@ var getPicture = new delegateClass("device","camera","getPicture");
                     BLightApp.setVolume(options.volume,cloudasuccess,failstring);
                     break;
                 case "speedFF":
-                    BLightApp.setVolume(cloudasuccess,failstring);
+                    BLightApp.audioSpeedFF(cloudasuccess,failstring);
                     break;
                 default:
                     lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
@@ -364,16 +364,17 @@ var getPicture = new delegateClass("device","camera","getPicture");
                 case "speedFF":
                     // console.log(JSON.stringify(media[link].getCurrentPosition()));//getCurrentPosition
                     // var duration = media[link][operator]();
+                    //clouda.STATUS.SUCCESS
                     alert('not ready');
                     break;
-                case "play"://没有callback
-                    media[link][operator]();
+                case "play"://应该添加完成的callback
+                    media[link][operator](options.onsuccess);
                     break;
                 case "startRecord":
                 case "stop":
                 case "pause":
                     media[link][operator]();
-                    options.onsuccess();
+                    options.onsuccess(clouda.STATUS.SUCCESS);
                     break;
                 case "stopRecord":
                     media[link][operator](options.onsuccess,options.onfail);

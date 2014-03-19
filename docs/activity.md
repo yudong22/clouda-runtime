@@ -21,6 +21,6 @@
 
 参数 | 类型 | 描述 
 ------------ | ------------- | ------------
-onsuccess | function(data){} | 操作成功，返回成功
+onsuccess | function(data){} | 操作成功，返回SUCCESS状态码
 onfail | function(err){} | 操作失败，返回错误码信息 
 intent | object | 参考android调起应用参数[intent](http://developer.android.com/reference/android/content/Intent.html)
