@@ -35,7 +35,9 @@ define("device",function(module) {
              return false;
         }
         
-        startActivity(options.onsuccess,function(nativeErr){
+        startActivity(function(){
+            options.onsuccess(clouda.STATUS.SUCCESS);
+        },function(nativeErr){
             lightapp.error(ErrCode.ACC_GET_ERR,nativeErr,options);
         },options.intent,options);
     };

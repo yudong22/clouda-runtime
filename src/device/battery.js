@@ -74,7 +74,9 @@ define("device",function(module) {
         if (typeof options == 'undefined') {
             stop(function(){},function(){});
         }else{
-            stop(options.onsuccess,function(nativeErr){
+            stop(function(){
+                options.onsuccess(clouda.STATUS.SUCCESS);
+            },function(nativeErr){
                 lightapp.error(ErrCode.BTY_ERR,nativeErr,options);
             },options);
         }

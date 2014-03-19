@@ -22,6 +22,9 @@ define("device",function(module) {
         
         lightapp.error(first,err,options);
     };
+    var mediaerror2 = function(error,options){
+        lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
+    };
     // _MediaError.MEDIA_ERR_NONE_ACTIVE = _MediaError.MEDIA_ERR_NONE_ACTIVE || 0, 
     // _MediaError.MEDIA_ERR_ABORTED = _MediaError.MEDIA_ERR_ABORTED || 1, _MediaError.MEDIA_ERR_NETWORK = _MediaError.MEDIA_ERR_NETWORK || 2, 
     // _MediaError.MEDIA_ERR_DECODE = _MediaError.MEDIA_ERR_DECODE || 3, _MediaError.MEDIA_ERR_NONE_SUPPORTED = _MediaError.MEDIA_ERR_NONE_SUPPORTED || 4, 
@@ -329,10 +332,27 @@ var getPicture = new delegateClass("device","camera","getPicture");
                     }
                     break;
                 case "seekTo":
+                    if (typeof options.time !== 'number' || (typeof options.time === 'string' && !options.time.match(/^[\d.-]+$/))){
+                        mediaerror2("options.time should be a number",options);
+                        return ;
+                    }
+                    if(options.time<0){
+                        options.time = 0;
+                    }
                     media[link][operator](options.time);
                     options.onsuccess(clouda.STATUS.SUCCESS);
                     break;
                 case "setVolume":
+                    if (typeof options.volume !== 'number' || (typeof options.volume === 'string' && !options.volume.match(/^[\d.-]+$/))){
+                        mediaerror2("options.volume should be a number between 0.0 to 1.0.",options);
+                        return ;
+                    }
+                    if(options.volume<0){
+                        options.volume = 0;
+                    }
+                    if(options.volume>1){
+                        options.volume = 1;
+                    }
                     media[link][operator](options.volume);
                     options.onsuccess(clouda.STATUS.SUCCESS);
                     break;

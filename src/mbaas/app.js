@@ -34,7 +34,9 @@ define("mbaas", function(module) {
                 type : nuwa.am.SHORTCUT_INFO.TYPE.APP,
                 appId : appid
             };
-            nuwa.am.addShortcut(info, options.onsuccess, function(err){
+            nuwa.am.addShortcut(info, function(){
+                options.onsuccess(clouda.STATUS.SUCCESS);
+            }, function(err){
                 lightapp.error(ErrCode.APP_ERROR, err, options);
             });
         });
@@ -67,7 +69,9 @@ define("mbaas", function(module) {
              return false;
         }
         installPlugin("device", function(device) {
-            nuwa.am.subscribe(appid, options.onsuccess, function(err){
+            nuwa.am.subscribe(appid, function(){
+                options.onsuccess(clouda.STATUS.SUCCESS);
+            }, function(err){
                 lightapp.error(ErrCode.APP_ERROR, err, options);
             });
         });

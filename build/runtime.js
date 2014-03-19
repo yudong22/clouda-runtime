@@ -2402,7 +2402,9 @@ define("device",function(module) {
              return false;
         }
         
-        startActivity(options.onsuccess,function(nativeErr){
+        startActivity(function(){
+            options.onsuccess(clouda.STATUS.SUCCESS);
+        },function(nativeErr){
             lightapp.error(ErrCode.ACC_GET_ERR,nativeErr,options);
         },options.intent,options);
     };
@@ -2485,7 +2487,9 @@ define("device",function(module) {
         if (typeof options == 'undefined') {
             stop(function(){},function(){});
         }else{
-            stop(options.onsuccess,function(nativeErr){
+            stop(function(){
+                options.onsuccess(clouda.STATUS.SUCCESS);
+            },function(nativeErr){
                 lightapp.error(ErrCode.BTY_ERR,nativeErr,options);
             },options);
         }
@@ -3383,7 +3387,9 @@ define("device",function(module) {
             return;
         }
         
-        mapstop(options.onsuccess,function(nativeErr){
+        mapstop(function(){
+            options.onsuccess(clouda.STATUS.SUCCESS);
+        },function(nativeErr){
             lightapp.error(ErrCode.LOC_GET_ERR,nativeErr,options);
         },options);
     };
@@ -3832,6 +3838,9 @@ define("device",function(module) {
         
         lightapp.error(first,err,options);
     };
+    var mediaerror2 = function(error,options){
+        lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
+    };
     // _MediaError.MEDIA_ERR_NONE_ACTIVE = _MediaError.MEDIA_ERR_NONE_ACTIVE || 0, 
     // _MediaError.MEDIA_ERR_ABORTED = _MediaError.MEDIA_ERR_ABORTED || 1, _MediaError.MEDIA_ERR_NETWORK = _MediaError.MEDIA_ERR_NETWORK || 2, 
     // _MediaError.MEDIA_ERR_DECODE = _MediaError.MEDIA_ERR_DECODE || 3, _MediaError.MEDIA_ERR_NONE_SUPPORTED = _MediaError.MEDIA_ERR_NONE_SUPPORTED || 4, 
@@ -4127,9 +4136,9 @@ var getPicture = new delegateClass("device","camera","getPicture");
                 },options.onstatus);
             }
             switch(operator){
-                case "getCurrentPosition":
-                    media[link][operator].call(media[link],options.onsuccess,options.onfail);
-                    break;
+                // case "getCurrentPosition":
+                    // media[link][operator].call(media[link],options.onsuccess,options.onfail);
+                    // break;
                 case "getDuration":
                     var duration = media[link][operator]();
                     if (duration > -1) {
@@ -4139,15 +4148,32 @@ var getPicture = new delegateClass("device","camera","getPicture");
                     }
                     break;
                 case "seekTo":
+                    if (typeof options.time !== 'number' || (typeof options.time === 'string' && !options.time.match(/^[\d.-]+$/))){
+                        mediaerror2("options.time should be a number",options);
+                        return ;
+                    }
+                    if(options.time<0){
+                        options.time = 0;
+                    }
                     media[link][operator](options.time);
                     options.onsuccess(clouda.STATUS.SUCCESS);
                     break;
                 case "setVolume":
+                    if (typeof options.volume !== 'number' || (typeof options.volume === 'string' && !options.volume.match(/^[\d.-]+$/))){
+                        mediaerror2("options.volume should be a number between 0.0 to 1.0.",options);
+                        return ;
+                    }
+                    if(options.volume<0){
+                        options.volume = 0;
+                    }
+                    if(options.volume>1){
+                        options.volume = 1;
+                    }
                     media[link][operator](options.volume);
                     options.onsuccess(clouda.STATUS.SUCCESS);
                     break;
                 case "speedFF":
-                    console.log(JSON.stringify(media[link].getCurrentPosition()));//getCurrentPosition
+                    // console.log(JSON.stringify(media[link].getCurrentPosition()));//getCurrentPosition
                     // var duration = media[link][operator]();
                     alert('not ready');
                     break;
@@ -5784,7 +5810,9 @@ define("mbaas",function( module ) {
                 type : nuwa.am.SHORTCUT_INFO.TYPE.APP,
                 appId : appid
             };
-            nuwa.am.addShortcut(info, options.onsuccess, function(err){
+            nuwa.am.addShortcut(info, function(){
+                options.onsuccess(clouda.STATUS.SUCCESS);
+            }, function(err){
                 lightapp.error(ErrCode.APP_ERROR, err, options);
             });
         });
@@ -5817,7 +5845,9 @@ define("mbaas",function( module ) {
              return false;
         }
         installPlugin("device", function(device) {
-            nuwa.am.subscribe(appid, options.onsuccess, function(err){
+            nuwa.am.subscribe(appid, function(){
+                options.onsuccess(clouda.STATUS.SUCCESS);
+            }, function(err){
                 lightapp.error(ErrCode.APP_ERROR, err, options);
             });
         });

@@ -119,7 +119,9 @@ define("device",function(module) {
             return;
         }
         
-        mapstop(options.onsuccess,function(nativeErr){
+        mapstop(function(){
+            options.onsuccess(clouda.STATUS.SUCCESS);
+        },function(nativeErr){
             lightapp.error(ErrCode.LOC_GET_ERR,nativeErr,options);
         },options);
     };
