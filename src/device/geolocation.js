@@ -113,16 +113,9 @@ define("device",function(module) {
     it.stopListen = function(options){
         
         if (clouda.RUNTIME === clouda.RUNTIMES.KUANG){
-            var funcs = [];
-            if (options && options.onsuccess){
-                funcs.push("("+ options.onsuccess.toString() + ")");
-                
-                if (options.onfail){
-                    funcs.push("("+ options.onfail.toString() + ")");
-                }
-            }
-            
-            BLightApp.stopListenLocation.apply(undefined,funcs);   
+            var successCallback = "("+ options.onsuccess.toString() + ")";
+            var errorCallback = "("+ options.onfail.toString() + ")";
+            BLightApp.stopListenLocation(successCallback,errorCallback);
             return;
         }
         

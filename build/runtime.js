@@ -1,4 +1,4 @@
-/*! clouda-runtime - v0.1.0 - 2014-03-18 */
+/*! clouda-runtime - v0.1.0 - 2014-03-19 */
 (function(window){
     // for client js only
     if (typeof window !== 'object')return ;
@@ -2477,14 +2477,9 @@ define("device",function(module) {
      */
     it.stopListen = function(options){
         if (clouda.RUNTIME === clouda.RUNTIMES.KUANG){
-            var funcs = [];
-            if (options.onsuccess){
-                funcs.push("("+ options.onsuccess.toString() + ")");
-            }
-            if (options.onfail){
-                funcs.push("("+ options.onfail.toString() + ")");
-            }
-            BLightApp.stopListenBattery.apply(undefined,funcs);
+            var successCallback = "("+ options.onsuccess.toString() + ")";
+            var errorCallback = "("+ options.onfail.toString() + ")";
+            BLightApp.stopListenBattery(successCallback,errorCallback);
             return;
         }
         if (typeof options == 'undefined') {
@@ -3382,16 +3377,9 @@ define("device",function(module) {
     it.stopListen = function(options){
         
         if (clouda.RUNTIME === clouda.RUNTIMES.KUANG){
-            var funcs = [];
-            if (options && options.onsuccess){
-                funcs.push("("+ options.onsuccess.toString() + ")");
-                
-                if (options.onfail){
-                    funcs.push("("+ options.onfail.toString() + ")");
-                }
-            }
-            
-            BLightApp.stopListenLocation.apply(undefined,funcs);   
+            var successCallback = "("+ options.onsuccess.toString() + ")";
+            var errorCallback = "("+ options.onfail.toString() + ")";
+            BLightApp.stopListenLocation(successCallback,errorCallback);
             return;
         }
         
@@ -4119,13 +4107,19 @@ var getPicture = new delegateClass("device","camera","getPicture");
                 case "setVolume":
                     BLightApp.setVolume(options.volume,successstring,failstring);
                     break;
-                
+                case "speedFF":
+                    BLightApp.setVolume(successstring,failstring);
+                    break;
                 default:
                     lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
             }
             return false;
         }
         installPlugin("device", function(device) {
+            // if (media[link] && ){
+                // media[link]["release"]();
+                // delete media[link];
+            // }
             if (!media[link]){
                 media[link] = new device.Media(link,function(id){
                 },function(nativeErr){
@@ -4152,18 +4146,22 @@ var getPicture = new delegateClass("device","camera","getPicture");
                     media[link][operator](options.volume);
                     options.onsuccess(clouda.STATUS.SUCCESS);
                     break;
+                case "speedFF":
+                    console.log(JSON.stringify(media[link].getCurrentPosition()));//getCurrentPosition
+                    // var duration = media[link][operator]();
+                    alert('not ready');
+                    break;
                 case "play"://没有callback
                     media[link][operator]();
                     break;
                 case "startRecord":
                 case "stop":
+                case "pause":
                     media[link][operator]();
                     options.onsuccess();
                     break;
-                case "pause":
                 case "stopRecord":
-                    media[link][operator]();
-                    options.onsuccess(link);
+                    media[link][operator](options.onsuccess,options.onfail);
                     break;
                 case "release":
                     media[link][operator]();
@@ -5979,16 +5977,7 @@ define("mbaas",function( module ) {
     
     it.start = function(options){
         
-        start(function(data){
-            //{lng,lat}
-            var gpsPoint = new BMap.Point(data.longitude, data.latitude);
-            it.Convertor.translate(gpsPoint, 2,
-            function(point) {
-                options.onsuccess(point);
-           
-            }); //真实经纬度转成百度坐标
-            
-        },function(nativeErr){
+        start(options.onsuccess,function(nativeErr){
             lightapp.error(ErrCode.MAP_ERROR,nativeErr,options);
         },options);
     };
@@ -6003,16 +5992,7 @@ define("mbaas",function( module ) {
     };
     
     it.locationRequest = function(options){
-        locationRequest(function(data){
-            //{longitude,latitude,loctype:161}
-            var gpsPoint = new BMap.Point(data.longitude, data.latitude);
-            it.Convertor.translate(gpsPoint, 2,
-            function(point) {
-                options.onsuccess(point);
-           
-            }); //真实经纬度转成百度坐标
-            // options.onsuccess(data);
-        },function(nativeErr){
+        locationRequest(options.onsuccess,function(nativeErr){
             lightapp.error(ErrCode.MAP_ERROR,nativeErr,options);
         },options);
     };
@@ -6114,7 +6094,7 @@ define("mbaas",function( module ) {
      * @returns null
      * 
      */
-     it.pay = function(options){
+     it.doPay = function(options){
          if (!options.hideLoading){
              options.hideLoading = false;
          }

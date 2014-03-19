@@ -297,13 +297,19 @@ var getPicture = new delegateClass("device","camera","getPicture");
                 case "setVolume":
                     BLightApp.setVolume(options.volume,successstring,failstring);
                     break;
-                
+                case "speedFF":
+                    BLightApp.setVolume(successstring,failstring);
+                    break;
                 default:
                     lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
             }
             return false;
         }
         installPlugin("device", function(device) {
+            // if (media[link] && ){
+                // media[link]["release"]();
+                // delete media[link];
+            // }
             if (!media[link]){
                 media[link] = new device.Media(link,function(id){
                 },function(nativeErr){
@@ -311,9 +317,9 @@ var getPicture = new delegateClass("device","camera","getPicture");
                 },options.onstatus);
             }
             switch(operator){
-                case "getCurrentPosition":
-                    media[link][operator].call(media[link],options.onsuccess,options.onfail);
-                    break;
+                // case "getCurrentPosition":
+                    // media[link][operator].call(media[link],options.onsuccess,options.onfail);
+                    // break;
                 case "getDuration":
                     var duration = media[link][operator]();
                     if (duration > -1) {
@@ -330,18 +336,22 @@ var getPicture = new delegateClass("device","camera","getPicture");
                     media[link][operator](options.volume);
                     options.onsuccess(clouda.STATUS.SUCCESS);
                     break;
+                case "speedFF":
+                    // console.log(JSON.stringify(media[link].getCurrentPosition()));//getCurrentPosition
+                    // var duration = media[link][operator]();
+                    alert('not ready');
+                    break;
                 case "play"://没有callback
                     media[link][operator]();
                     break;
                 case "startRecord":
                 case "stop":
+                case "pause":
                     media[link][operator]();
                     options.onsuccess();
                     break;
-                case "pause":
                 case "stopRecord":
-                    media[link][operator]();
-                    options.onsuccess(link);
+                    media[link][operator](options.onsuccess,options.onfail);
                     break;
                 case "release":
                     media[link][operator]();

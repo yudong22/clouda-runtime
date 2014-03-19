@@ -53,16 +53,7 @@ define("mbaas",function(module) {
     
     it.start = function(options){
         
-        start(function(data){
-            //{lng,lat}
-            var gpsPoint = new BMap.Point(data.longitude, data.latitude);
-            it.Convertor.translate(gpsPoint, 2,
-            function(point) {
-                options.onsuccess(point);
-           
-            }); //真实经纬度转成百度坐标
-            
-        },function(nativeErr){
+        start(options.onsuccess,function(nativeErr){
             lightapp.error(ErrCode.MAP_ERROR,nativeErr,options);
         },options);
     };
@@ -77,16 +68,7 @@ define("mbaas",function(module) {
     };
     
     it.locationRequest = function(options){
-        locationRequest(function(data){
-            //{longitude,latitude,loctype:161}
-            var gpsPoint = new BMap.Point(data.longitude, data.latitude);
-            it.Convertor.translate(gpsPoint, 2,
-            function(point) {
-                options.onsuccess(point);
-           
-            }); //真实经纬度转成百度坐标
-            // options.onsuccess(data);
-        },function(nativeErr){
+        locationRequest(options.onsuccess,function(nativeErr){
             lightapp.error(ErrCode.MAP_ERROR,nativeErr,options);
         },options);
     };
