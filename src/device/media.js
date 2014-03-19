@@ -12,7 +12,7 @@ define("device",function(module) {
     };
     var mediaerror = function(first,err,options){
         //deal with err
-        if (err.code){
+        if (typeof err.code !== 'undefined'){
             if (module.media.mediamsg[err.code]){
                 err.error_info = module.media.mediamsg[err.code];
             }
@@ -25,11 +25,7 @@ define("device",function(module) {
     var mediaerror2 = function(error,options){
         lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
     };
-    // _MediaError.MEDIA_ERR_NONE_ACTIVE = _MediaError.MEDIA_ERR_NONE_ACTIVE || 0, 
-    // _MediaError.MEDIA_ERR_ABORTED = _MediaError.MEDIA_ERR_ABORTED || 1, _MediaError.MEDIA_ERR_NETWORK = _MediaError.MEDIA_ERR_NETWORK || 2, 
-    // _MediaError.MEDIA_ERR_DECODE = _MediaError.MEDIA_ERR_DECODE || 3, _MediaError.MEDIA_ERR_NONE_SUPPORTED = _MediaError.MEDIA_ERR_NONE_SUPPORTED || 4, 
-    // _MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED = _MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED || 4;
-            
+    
     /**
      * @object media
      * @memberof clouda.device
@@ -309,14 +305,20 @@ var getPicture = new delegateClass("device","camera","getPicture");
             return false;
         }
         installPlugin("device", function(device) {
-            // if (media[link] && ){
-                // media[link]["release"]();
-                // delete media[link];
-            // }
+           
             if (!media[link]){
                 media[link] = new device.Media(link,function(id){
                 },function(nativeErr){
-                    mediaerror(ErrCode.MEDIA_ERR,nativeErr,options);
+                    
+                    try{
+                        media[link].release();
+                    }catch(err){}
+                    if (media[link]){
+                         mediaerror(ErrCode.MEDIA_ERR,nativeErr,options);
+                         delete media[link];
+                    }
+                    
+                   
                 },options.onstatus);
             }
             switch(operator){
@@ -332,7 +334,8 @@ var getPicture = new delegateClass("device","camera","getPicture");
                     }
                     break;
                 case "seekTo":
-                    if (typeof options.time !== 'number' || (typeof options.time === 'string' && !options.time.match(/^[\d.-]+$/))){
+                    options.time =  parseInt(options.time,10);
+                    if (!options.time && options.time !== 0){
                         mediaerror2("options.time should be a number",options);
                         return ;
                     }
@@ -343,7 +346,8 @@ var getPicture = new delegateClass("device","camera","getPicture");
                     options.onsuccess(clouda.STATUS.SUCCESS);
                     break;
                 case "setVolume":
-                    if (typeof options.volume !== 'number' || (typeof options.volume === 'string' && !options.volume.match(/^[\d.-]+$/))){
+                    options.volume =  parseFloat(options.volume);
+                    if (!options.volume && options.volume !== 0){
                         mediaerror2("options.volume should be a number between 0.0 to 1.0.",options);
                         return ;
                     }

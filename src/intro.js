@@ -112,7 +112,7 @@
                 }
                 
             }
-            console.error(word + (apperrno?" app错误号"+apperrno:"")+ stackStr[2].replace(/\s*/,""));
+            console.error(word + (apperrno?" app错误信息"+JSON.stringify(apperrno):"")+ stackStr[2].replace(/\s*/,""));
         }
     };
     
