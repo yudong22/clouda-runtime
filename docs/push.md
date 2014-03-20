@@ -6,19 +6,18 @@
 
 **方法：**
 
-- register(options)
-- unregister(options)
-- checkStatus(options)
-- setTag(tags, options)  
-- removeTag(tags, options)
-- listTag(options)
+- registerUnicast(options)
+- unregisterUnicast(options)
+- registerMulticast(options)
+- unregisterMulticast(options)
 
-#### register ####
-    register(options)
+
+#### registerUnicast ####
+    registerUnicast(options)
 
 **功能描述：**
 
-注册设备
+轻应用单播服务订阅. Push绑定，为当前设备用户添加一个轻应用绑定关系。需要向Push服务端发起绑定，绑定成功后返回给应用channelid和userid，应用用它们来做单播推送。用这个接口，JS层可以给轻应用提供发帖、关注问题等推送。
 
 **参数说明：**
 
@@ -34,12 +33,12 @@ options：为object类型，其中包括以下参数：
         <tr>
 			<td>onsuccess</td>
 			<td>function(data){}</td>            
-			<td>注册成功，返回PushInfo对象</td>  
+			<td>订阅成功，返回PushInfo对象</td>  
 		</tr>
         <tr>
 			<td>onfail</td>
 			<td>function(err){}</td>          
-			<td>注册失败，返回错误码信息</td>  
+			<td>订阅失败，返回错误码信息</td>  
 		</tr>
     </tbody>
 </table>
@@ -53,62 +52,31 @@ options：为object类型，其中包括以下参数：
             <th>描述</th>
         </tr>
         <tr>
-			<td>uid</td>
+			<td>userid</td>
 			<td>string</td>            
 			<td>用户ID信息</td>  
 		</tr>
         <tr>
-			<td>channelID</td>
+			<td>channelid</td>
 			<td>string</td>          
 			<td>channel ID信息</td>  
 		</tr>
         <tr>
-			<td>appID</td>
-			<td>string</td>          
-			<td>应用ID信息</td>  
+			<td>error</td>
+			<td>number</td>          
+			<td>0 - 订阅成功； 3 – 超时；4 – 认证失败，包括轻应用Push能力未通过审核</td>  
 		</tr>
     </tbody>
 </table>
 
-#### unregister ####
 
-    unregister(options)
 
-**功能描述：**
-
-解绑设备
-
-**参数说明：**
-
-- options：为object类型，其中包括以下参数：
-
-<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
-    <tbody>
-        <tr>
-            <th>参数</th>
-            <th>类型</th>
-            <th>描述</th>
-        </tr>
-        <tr>
-			<td>onsuccess</td>
-			<td>function(data){}</td>            
-			<td>解绑成功，返回SUCCESS状态码</td>  
-		</tr>
-        <tr>
-			<td>onfail</td>
-			<td>function(err){}</td>          
-			<td>操作失败，返回错误码信息</td>  
-		</tr>
-    </tbody>
-</table>
-
-#### checkStatus ####
-
-    checkStatus(options)
+#### unregisterUnicast ####
+    unregisterUnicast(options)
 
 **功能描述：**
 
-检查设备绑定状态
+轻应用单播服务取消订阅. Push解绑定，为当前设备用户解除一个轻应用绑定关系。解绑定后，订阅消息、服务订阅消息、话题订阅消息都将收不到。
 
 **参数说明：**
 
@@ -124,28 +92,43 @@ options：为object类型，其中包括以下参数：
         <tr>
 			<td>onsuccess</td>
 			<td>function(data){}</td>            
-			<td>注册成功，返回的data为boolean类型</td>  
+			<td>注册成功，返回info对象</td>
 		</tr>
         <tr>
 			<td>onfail</td>
-			<td>function(err){}</td>          
-			<td>注册失败，返回错误码信息</td>  
+			<td>function(err){}</td>
+			<td>取消订阅失败，返回错误码信息</td>
+		</tr>
+    </tbody>
+</table>
+
+**返回的info对象：**
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>error</td>
+			<td>number</td>          
+			<td>0 - 订阅成功； 3 – 超时；4 – 认证失败，包括轻应用Push能力未通过审核</td>  
 		</tr>
     </tbody>
 </table>
 
 
-#### setTag ####
-    setTag(tags, options)
+#### registerMulticast ####
+    registerMulticast(options)
 
 **功能描述：**
 
-设置一个或多个广播组标签
+轻应用组播服务订阅. 在轻应用内为用户提供相关服务订阅的支持，即给轻应用绑定TAG，如果轻应用没有绑定，Push会自行绑定轻应用。
 
 **参数说明：**
 
-- tags： 广播组标签，为array类型，由广播组标签字符串组成
-- options：为object类型，其中包括以下参数：
+options：为object类型，其中包括以下参数：
 
 <table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
@@ -157,28 +140,55 @@ options：为object类型，其中包括以下参数：
         <tr>
 			<td>onsuccess</td>
 			<td>function(data){}</td>            
-			<td>设置成功，返回的data为设置成功的标签数据</td>  
+			<td>订阅成功，返回PushInfo对象</td>
 		</tr>
         <tr>
 			<td>onfail</td>
 			<td>function(err){}</td>          
-			<td>设置失败，返回错误码信息或设置失败的标签数据</td>  
+			<td>订阅失败，返回错误码信息</td>  
+		</tr>
+		<tr>
+			<td>tag</td>
+			<td>string</td>      
+			<td>tag，订阅的服务所用的tag名称</td>  
 		</tr>
     </tbody>
 </table>
 
-#### removeTag ####
+**返回的info对象：**
+<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+			<td>error</td>
+			<td>number</td>        
+			<td>0 - 订阅成功； 3 – 超时；4 – 认证失败，包括轻应用Push能力未通过审核</td>
+		</tr>
+        <tr>
+			<td>tag</td>
+			<td>string</td>
+			<td>TAG信息</td>
+		</tr>
+    </tbody>
+</table>
 
-    removeTag(tags, options)
+
+
+
+#### unregisterMulticast ####
+    unregisterMulticast(options)
 
 **功能描述：**
 
-删除一个或多个广播组标签
+轻应用组播服务订阅. 在轻应用内为用户提供相关服务订阅的支持，即给轻应用绑定TAG，如果轻应用没有绑定，Push会自行绑定轻应用。
 
 **参数说明：**
 
-- tags： 广播组标签，为array类型，由广播组标签字符串组成
-- options：为object类型，其中包括以下参数：
+options：为object类型，其中包括以下参数：
 
 <table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
@@ -190,28 +200,22 @@ options：为object类型，其中包括以下参数：
         <tr>
 			<td>onsuccess</td>
 			<td>function(data){}</td>            
-			<td>删除成功，返回删除信息</td>  
+			<td>订阅成功，返回PushInfo对象</td>
 		</tr>
         <tr>
 			<td>onfail</td>
 			<td>function(err){}</td>          
-			<td>操作失败，返回错误码信息</td>  
+			<td>订阅失败，返回错误码信息</td>  
+		</tr>
+		<tr>
+			<td>tag</td>
+			<td>string</td>      
+			<td>tag，订阅的服务所用的tag名称</td>  
 		</tr>
     </tbody>
 </table>
 
-#### listTag ####
-
-    listTag(options)
-
-**功能描述：**
-
-获取所有标签
-
-**参数说明：**
-
-- options：为object类型，其中包括以下参数：
-
+**返回的info对象：**
 <table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
     <tbody>
         <tr>
@@ -220,14 +224,14 @@ options：为object类型，其中包括以下参数：
             <th>描述</th>
         </tr>
         <tr>
-			<td>onsuccess</td>
-			<td>function(data){}</td>            
-			<td>获取成功，返回的data为array类型，由广播组标签string类型组成</td>  
+			<td>error</td>
+			<td>number</td>        
+			<td>0 - 订阅成功； 3 – 超时；4 – 认证失败，包括轻应用Push能力未通过审核</td>
 		</tr>
         <tr>
-			<td>onfail</td>
-			<td>function(err){}</td>          
-			<td>获取失败，返回错误码信息</td>  
+			<td>tag</td>
+			<td>string</td>
+			<td>TAG信息</td>
 		</tr>
     </tbody>
 </table>
