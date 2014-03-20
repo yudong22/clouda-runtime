@@ -15,7 +15,9 @@ define("device",function(module) {
     
     it.get = function(options){
         if (clouda.RUNTIME === clouda.RUNTIMES.KUANG){
-            var successCallback ="("+ options.onsuccess.toString() + ")";
+            var successCallback = "(function(result){if(result.level){result.level = result.level*100;}("+options.onsuccess.toString()+")(result);})";
+            
+            // var successCallback ="(function(){"+ options.onsuccess.toString() + "}(result))";
             var errorCallback ="("+  options.onfail.toString() + ")";
             BLightApp.getBattery(successCallback,errorCallback);
             return;
@@ -42,7 +44,9 @@ define("device",function(module) {
      */
     it.startListen = function(options){
         if (clouda.RUNTIME === clouda.RUNTIMES.KUANG){
-            var successCallback = "("+ options.onsuccess.toString() + ")";
+            // var successCallback = "("+ options.onsuccess.toString() + ")";
+            var successCallback = "(function(result){if(result.level){result.level = result.level*100;}("+options.onsuccess.toString()+")(result);})";
+            
             var errorCallback = "("+ options.onfail.toString() + ")";
             BLightApp.startListenBattery(successCallback,errorCallback);
             return;

@@ -368,7 +368,8 @@ var getPicture = new delegateClass("device","camera","getPicture");
                     alert('not ready');
                     break;
                 case "play"://应该添加完成的callback
-                    media[link][operator](options.onsuccess);
+                    // media[link][operator](options.onsuccess);
+                    media[link][operator]();
                     break;
                 case "startRecord":
                 case "stop":
