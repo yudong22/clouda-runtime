@@ -2,6 +2,15 @@ define("mbaas",function(module) {
     var lightapp = this;
     var it = module.push = {};
     
+    var injectScript = function (url,cb){
+        var script = document.createElement('script');
+        script.setAttribute('src', url);
+        document.head.appendChild(script);
+        script.onload = function(){
+            if(cb){cb(script);}
+        };
+    };
+    
     /**
      * @object push
      * @memberof clouda.mbaas
@@ -11,15 +20,12 @@ define("mbaas",function(module) {
     
     var bind = new delegateClass("device","push","bind");
     var unbind = new delegateClass("device","push","unbind");
-    
-    
     var checkBindState = new delegateClass("device","push","checkBindState");
-    
     var setTag = new delegateClass("device","push","setTag");
     var deleteTag = new delegateClass("device","push","deleteTag");
     var listTag = new delegateClass("device","push","listTag");
-    
     var pushMsg = new delegateClass("device","push","pushMsg");
+    
     
     /**
      * 注册
@@ -137,4 +143,162 @@ define("mbaas",function(module) {
         },options.uid,options.channelId,{title:options.title,description:options.description});
        
     };
+    
+    
+    //new push service
+    
+    /**
+     * getPushVersion
+     *
+     * @function register
+     * @memberof clouda.mbaas.push
+     * @instance
+     *
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调
+     * @param {function} [options.onfail] 失败的回调
+     * @returns null
+     */
+    
+    
+    it.getPushVersion = function (options){
+        
+        //jsonp callback
+        window.getPushServiceVersion = function(data){
+            if(!data.error){
+                options.onsuccess(data);
+            } else {
+                options.onfail(data);
+            }
+        };
+        
+        injectScript("http://127.0.0.1:7777/getPushServiceVersion?callback=getPushServiceVersion", function(script){
+            document.head.removeChild(script);
+        });
+        
+    };
+    
+    
+    /**
+     * register unicast
+     *
+     * @function registerUnicast
+     * @memberof clouda.mbaas.push
+     * @instance
+     *
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调
+     * @param {function} [options.onfail] 失败的回调
+     * @returns null
+     * 
+     */
+    it.registerUnicast = function (options){
+        
+        //jsonp callback
+        window.cloudaPushServiceRegisterUnicast = function(data){
+            if(!data.error){
+                options.onsuccess(data);
+            } else {
+                options.onfail(data);
+            }
+        };
+        
+        injectScript("http://127.0.0.1:7777/bindLight?apikey=" + clouda.lightapp.ak + "&callback=cloudaPushServiceRegisterUnicast", function(script){
+            document.head.removeChild(script);
+        });
+        
+    };
+    
+    /**
+     * unregister unicast
+     *
+     * @function unregisterUnicast
+     * @memberof clouda.mbaas.push
+     * @instance
+     *
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {function} options.onsuccess 成功的回调
+     * @param {function} [options.onfail] 失败的回调
+     * @returns null
+     * 
+     */
+    it.unregisterUnicast = function (options){
+        
+        //jsonp callback
+        window.cloudaPushServiceUnregisterUnicast = function(data){
+            if(!data.error){
+                options.onsuccess(data);
+            } else {
+                options.onfail(data);
+            }
+        };
+        
+        injectScript("http://127.0.0.1:7777/unbindLight?apikey=" + clouda.lightapp.ak + "&callback=cloudaPushServiceUnregisterUnicast", function(script){
+            document.head.removeChild(script);
+        });
+        
+    };
+    
+    /**
+     * register multicast
+     *
+     * @function registerMulticast
+     * @memberof clouda.mbaas.push
+     * @instance
+     *
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {string} [options.tag]  订阅的服务所用的tag名称
+     * @param {function} options.onsuccess 成功的回调
+     * @param {function} [options.onfail] 失败的回调
+     * @returns null
+     * 
+     */
+    it.registerMulticast = function (options){
+        
+        //jsonp callback
+        window.cloudaPushServiceRegisteMulticast = function(data){
+            if(!data.error){
+                options.onsuccess(data);
+            } else {
+                options.onfail(data);
+            }
+        };
+        
+        injectScript("http://127.0.0.1:7777/subscribeService?apikey=" + clouda.lightapp.ak + "&tag=" + options.tag + "&callback=cloudaPushServiceRegisteMulticast", function(script){
+            document.head.removeChild(script);
+        });
+        
+    };
+    
+    /**
+     * unregister multicast
+     *
+     * @function unregisterMulticast
+     * @memberof clouda.mbaas.push
+     * @instance
+     *
+     * @param {{}} options 由onsuccess 和 onfail组成
+     * @param {string} [options.tag]  订阅的服务所用的tag名称
+     * @param {function} options.onsuccess 成功的回调
+     * @param {function} [options.onfail] 失败的回调
+     * @returns null
+     * 
+     */
+    it.unregisterMulticast = function (options){
+        
+        //jsonp callback
+        window.cloudaPushServiceUnregisterMulticast = function(data){
+            if(!data.error){
+                options.onsuccess(data);
+            } else {
+                options.onfail(data);
+            }
+        };
+        
+        injectScript("http://127.0.0.1:7777/unsubscribeService?apikey=" + clouda.lightapp.ak + "&tag=" + options.tag + "&callback=cloudaPushServiceUnregisterMulticast", function(script){
+            document.head.removeChild(script);
+        });
+        
+    };
+    
 });
