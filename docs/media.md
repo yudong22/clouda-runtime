@@ -29,7 +29,7 @@
     <tr>
         <td>onsuccess</td>
         <td>function(data){}</td>          
-        <td>操作成功，返回 MediaFile 对象或其组成的数组，如[MediaFile, MediaFile]</td>  
+        <td>操作成功，返回 MediaFile 对象</td>  
     </tr>
     <tr>
         <td>onfail</td>
@@ -48,6 +48,7 @@
         <td>string</td>
         <td>媒体文件来源，其值如下：：<br>
         - clouda.device.MEDIA_SOURCE.CAMERA<br>
+        - clouda.device.MEDIA_SOURCE.ALBUM
         </td>  
     </tr>
 </tbody>
@@ -74,14 +75,14 @@ size | int | 文件大小，单位：字节(bytes)
 
 **参数说明：**
 
-- link : 为 string 类型，本地音频文件路径
+- link : 为 string 类型，本地音频文件路径,需要注意的是，在调试工具中此项为绝对路径，在框中路径则为轻应用id为目录名的相对路径（安全性）。
 - operator ： 为 string 类型，所支持的对音频文件的具体操作类型如下：
 
 方法 | 描述 
 ------------ | -------------
 startRecord | 开始录制音频文件，操作成功返回SUCCESS状态码；操作失败，则返错误码信息
 stopRecord | 停止录制音频文件，操作成功返回文件的绝对路径；操作失败，则返错误码信息 
-play | 开始或继续播放音频文件，操作成功返回SUCCESS状态码；操作失败，则返错误码信息
+play | 开始或继续播放音频文件，操作成功播放完成后返回SUCCESS状态码；操作失败，则返错误码信息
 stop | 停止播放音频文件，操作成功返回SUCCESS状态码；操作失败，则返错误码信息
 seekTo | 移动音频文件的播放位置。此操作类型下，options中需包含以下三个参数：
        | time: int 类型，设置音频文件重放位置，单位：毫秒  
