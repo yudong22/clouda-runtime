@@ -52,19 +52,14 @@ options：为object类型，其中包括以下参数：
             <th>描述</th>
         </tr>
         <tr>
-			<td>userid</td>
+			<td>pushToken</td>
 			<td>string</td>            
-			<td>用户ID信息</td>  
-		</tr>
-        <tr>
-			<td>channelid</td>
-			<td>string</td>          
-			<td>channel ID信息</td>  
+			<td>channelid + userid + cuid的加密串，框用于推送的特定格式</td>  
 		</tr>
         <tr>
 			<td>error</td>
 			<td>number</td>          
-			<td>0 - 订阅成功； 3 – 超时；4 – 认证失败，包括轻应用Push能力未通过审核</td>  
+			<td>0 - 订阅成功；1 - 内部错误 2 - 参数错误 3 – 超时 4 – 认证失败，包括轻应用Push能力未通过审核 5 – sdcard无效</td>  
 		</tr>
     </tbody>
 </table>
@@ -92,7 +87,7 @@ options：为object类型，其中包括以下参数：
         <tr>
 			<td>onsuccess</td>
 			<td>function(data){}</td>            
-			<td>注册成功，返回info对象</td>
+			<td>取消订阅成功，返回info对象</td>
 		</tr>
         <tr>
 			<td>onfail</td>
@@ -113,7 +108,7 @@ options：为object类型，其中包括以下参数：
         <tr>
 			<td>error</td>
 			<td>number</td>          
-			<td>0 - 订阅成功； 3 – 超时；4 – 认证失败，包括轻应用Push能力未通过审核</td>  
+			<td>0 - 取消订阅成功；1 - 内部错误 2 - 参数错误 3 – 超时；4 – 认证失败，包括轻应用Push能力未通过审核 5 – sdcard无效</td>  
 		</tr>
     </tbody>
 </table>
@@ -139,7 +134,7 @@ options：为object类型，其中包括以下参数：
         </tr>
         <tr>
 			<td>onsuccess</td>
-			<td>function(data){}</td>            
+			<td>function(data){}</td>
 			<td>订阅成功，返回PushInfo对象</td>
 		</tr>
         <tr>
@@ -166,7 +161,7 @@ options：为object类型，其中包括以下参数：
         <tr>
 			<td>error</td>
 			<td>number</td>        
-			<td>0 - 订阅成功； 3 – 超时；4 – 认证失败，包括轻应用Push能力未通过审核</td>
+			<td>0 - 订阅成功；1 - 内部错误 2 - 参数错误 3 – 超时；4 – 认证失败，包括轻应用Push能力未通过审核 5 – sdcard无效</td>
 		</tr>
         <tr>
 			<td>tag</td>
@@ -200,12 +195,12 @@ options：为object类型，其中包括以下参数：
         <tr>
 			<td>onsuccess</td>
 			<td>function(data){}</td>            
-			<td>订阅成功，返回PushInfo对象</td>
+			<td>取消订阅成功，返回PushInfo对象</td>
 		</tr>
         <tr>
 			<td>onfail</td>
 			<td>function(err){}</td>          
-			<td>订阅失败，返回错误码信息</td>  
+			<td>取消订阅失败，返回错误码信息</td>  
 		</tr>
 		<tr>
 			<td>tag</td>
@@ -226,7 +221,7 @@ options：为object类型，其中包括以下参数：
         <tr>
 			<td>error</td>
 			<td>number</td>        
-			<td>0 - 订阅成功； 3 – 超时；4 – 认证失败，包括轻应用Push能力未通过审核</td>
+			<td>0 - 取消订阅成功；1 - 内部错误 2 - 参数错误 3 – 超时 4 – 认证失败，包括轻应用Push能力未通过审核  5 – sdcard无效</td>
 		</tr>
         <tr>
 			<td>tag</td>

@@ -6,9 +6,6 @@
 **方法：**
 
 - login(options)
-- getStatus(options)
-- getUserInfo(options)
-- logout(options)
 
 #### login ####
 	login(options)
@@ -62,118 +59,6 @@ scope | string,默认"basic" | 权限以空格分隔，例子：获取个人云�
         "error_code": 1, 
         "error_message": "login canceled"
     }, 
-    "keepCallback": false
-}
-```
-
-
-#### getStatus ####
-	getStatus(options)
-
-**功能描述：**
-
-调起帐号登出功能，成功返回成功状态吗
-
-**参数说明：**
-
-- options：为 object 类型，其中包括以下参数：
-
-参数 | 类型 | 描述
------------- | ------------- | ------------
-onsuccess | function(data){} | 操作成功，返回登录状态
-onfail | function(err){} | 操作失败，返回错误码信息
-
-** getStatus返回对象： **
-
-成功:
-
-```js
-{
-	"status": 1,
-	"message":true,
-	"keepCallback":false
-}
-```
-
-失败:
-
-```js
-{
-    "status": 1, 
-    "message": false, 
-    "keepCallback": false
-}
-```
-
-#### getUserInfo ####
-	getUserInfo(options)
-
-**功能描述：**
-
-获取登录用户个人信息
-
-**参数说明：**
-
-- options：为 object 类型，其中包括以下参数：
-
-参数 | 类型 | 描述
------------- | ------------- | ------------
-onsuccess | function(data){} | 操作成功，返回登录用户信息
-onfail | function(err){} | 操作失败，返回错误码信息
-
-** getUserInfo返回对象： **
-
-成功:
-
-```js
-{
-    "status": 1, 
-    "message": {
-        "uid": "798803966", 
-        "app": "runtime-demo", 
-        "username": "hxhitest", 
-        "displayname": "hxhitest"
-    }, 
-    "keepCallback": false
-}
-```
-
-失败:
-
-```js
-{
-    "status": 9, 
-    "message": {
-        "error_code": -2, 
-        "error_message": "Account is not login"
-    }, 
-    "keepCallback": false
-}
-```
-
-#### logout ####
-	logout(options)
-
-**功能描述：**
-
-调起帐号登出功能，成功返回成功状态吗
-
-**参数说明：**
-
-- options：为 object 类型，其中包括以下参数：
-
-参数 | 类型 | 描述
------------- | ------------- | ------------
-onsuccess | function(data){} | 操作成功，返回成功状态码
-onfail | function(err){} | 操作失败，返回错误码信息
-
-** logout返回对象： **
-
-成功 && 失败:
-```js
-{
-    "status": 1, 
-    "message": "OK", 
     "keepCallback": false
 }
 ```
