@@ -160,7 +160,7 @@ define("mbaas",function(module) {
      * @returns null
      */
     
-    
+    /*
     it.getPushVersion = function (options){
         
         //jsonp callback
@@ -177,6 +177,7 @@ define("mbaas",function(module) {
         });
         
     };
+	*/
     
     
     /**
@@ -194,18 +195,24 @@ define("mbaas",function(module) {
      */
     it.registerUnicast = function (options){
         
-        //jsonp callback
-        window.cloudaPushServiceRegisterUnicast = function(data){
-            if(!data.error){
-                options.onsuccess(data);
-            } else {
-                options.onfail(data);
-            }
-        };
-        
-        injectScript("http://127.0.0.1:7777/bindLight?apikey=" + clouda.lightapp.ak + "&callback=cloudaPushServiceRegisterUnicast", function(script){
-            document.head.removeChild(script);
-        });
+		//优先调用框的getPushToken接口
+		if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ){
+			BLightApp.getPushToken("(function(result){("+options.onsuccess.toString()+")(result);})", "("+options.onfail.toString()+")");
+			return false;
+		} else {
+			//jsonp callback
+			window.cloudaPushServiceRegisterUnicast = function(data){
+				if(!data.error){
+					options.onsuccess(data);
+				} else {
+					options.onfail(data);
+				}
+			};
+			
+			injectScript("http://127.0.0.1:7777/bindLight?apikey=" + clouda.lightapp.ak + "&callback=cloudaPushServiceRegisterUnicast", function(script){
+				document.head.removeChild(script);
+			});
+		}
         
     };
     
@@ -224,18 +231,18 @@ define("mbaas",function(module) {
      */
     it.unregisterUnicast = function (options){
         
-        //jsonp callback
-        window.cloudaPushServiceUnregisterUnicast = function(data){
-            if(!data.error){
-                options.onsuccess(data);
-            } else {
-                options.onfail(data);
-            }
-        };
-        
-        injectScript("http://127.0.0.1:7777/unbindLight?apikey=" + clouda.lightapp.ak + "&callback=cloudaPushServiceUnregisterUnicast", function(script){
-            document.head.removeChild(script);
-        });
+		//jsonp callback
+		window.cloudaPushServiceUnregisterUnicast = function(data){
+			if(!data.error){
+				options.onsuccess(data);
+			} else {
+				options.onfail(data);
+			}
+		};
+		
+		injectScript("http://127.0.0.1:7777/unbindLight?apikey=" + clouda.lightapp.ak + "&callback=cloudaPushServiceUnregisterUnicast", function(script){
+			document.head.removeChild(script);
+		});
         
     };
     
