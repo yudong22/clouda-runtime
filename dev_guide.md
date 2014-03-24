@@ -26,7 +26,7 @@
 
  1. 访问百度开放云[管理控制台](http://developer.baidu.com/console#app/project)，
  2. 创建轻应用或者进入已有轻应用，在手机端能力页面中获取手机端能力的API key。
- 3. 目前只支持Android端
+ 3. 本地设备能力类API目前只支持Android端
 
 ### 开发轻应用 ###
 
