@@ -58,7 +58,7 @@ define("mbaas",function( module ) {
 				}
 			};
 			
-			BLightApp.login(redirect_uri, callback, scope, login_mode, login_type);
+			BLightApp.login(redirect_uri, "(function(result){("+callback.toString()+")(result);})", scope, login_mode, login_type);
 			
 		} else {
 			
