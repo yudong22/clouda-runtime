@@ -107,8 +107,8 @@ Clouda开发框架是一个实时的JavaScript开发框架；使用该框架，�
 
 #### 安装调试环境 ####
 
-1. 点击[这里](http://cloudajs.org/lightapp/docs/api/download)下载.apk或使用移动设备扫描下面的二维码，进入轻应用调试环境安装文件（.apk）下载界面；<br>
-<img style="width: 20%; height:30%; margin-left:20;" src="http://bcscdn.baidu.com/bcs-cdn/clouda-runtime/download-latest.png">
+1. 点击[这里](http://cloudajs.org/lightapp/docs/api/download.apk)下载.apk或使用移动设备扫描下面的二维码，进入轻应用调试环境安装文件（.apk）下载界面；<br>
+<img style="width: 20%; height:30%; margin-left:20;" src="http://bcscdn.baidu.com/bcs-cdn/clouda-runtime/qr-download.png">
 
 
 2. 点击下载界面中的“**直接下载**”，下载apk到开发机（Android系统）；<br>
