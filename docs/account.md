@@ -21,44 +21,15 @@
 
 参数 | 类型 | 描述
 ------------ | ------------- | ------------
+redirect_uri | string | redirect_uri是第三方轻应用提供的授权后回跳地址，其值必须在开发者中心的安全设置中注册。
+scope | (可选)string,默认"basic" | 权限以空格分隔，例子：获取个人云权限"basic netdisk" [更多权限](http://developer.baidu.com/wiki/index.php?title=docs/oauth#.E6.8E.88.E6.9D.83.E6.9D.83.E9.99.90.E5.88.97.E8.A1.A8)
+login_mode | (可选)string | login_mode表示登录策略，为null或0时，表示使用默认策略，即用户如果已登录，则直接使用该用户身份完成登录、授权操作；为1表示需要用户确认下是否用当前登录用户身份来授权，并提供切换账号的入口；为2表示无论如何都要用户重新用百度账号登录一遍。
+login_type | (可选)string | login_type表示OAuth授权页面是否展示为手机号快捷登陆页，login_type=sms展示手机号快捷登陆。默认不传展示为正常页面。
 onsuccess | function(data){} | 操作成功，返回登录用户信息
 onfail | function(err){} | 操作失败，返回错误码信息
-scope | string,默认"basic" | 权限以空格分隔，例子：获取个人云权限"basic netdisk" [更多权限](http://developer.baidu.com/wiki/index.php?title=docs/oauth#.E6.8E.88.E6.9D.83.E6.9D.83.E9.99.90.E5.88.97.E8.A1.A8)
 
 
-**login返回对象：**
+**login返回值：**
 
-成功:
-
-```js
-{
-    "status": 1, 
-    "message": {
-        "account_info": {
-            "uid": "798803966", 
-            "app": "runtime-demo", 
-            "username": "hxhitest", 
-            "displayname": "hxhitest"
-        }, 
-        "expires_in": 2592000, 
-        "scope": "basic", 
-        "session_key": "9mtqBCLwiNr+KWBmSGJm63/ztF+Ln86hG5uGYu81fDUM+seTldu4hrrKo4IDtr9Qj0lQz3Lg54sTnTF2CCPjIoiY8Cb7CZ/RyQ", 
-        "access_token": "23.a1b89d39e9cf222b780125b3f9352dc5.2592000.1397710551.33415291551913594", 
-        "session_secret": "6d14317363e89bf556bd355a10184d91"
-    }, 
-    "keepCallback": false
-}
-```
-
-失败:
-
-```js
-{
-    "status": 9, 
-    "message": {
-        "error_code": 1, 
-        "error_message": "login canceled"
-    }, 
-    "keepCallback": false
-}
-```
+//TODO
+联调后给出...

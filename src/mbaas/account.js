@@ -33,25 +33,50 @@ define("mbaas",function( module ) {
      * @param {function} options.onsuccess 成功的回调
      * @param {function} [options.onfail] 失败的回调
      * @param {string} [options.mediaType] 默认是百度登录
-     * @param {string} [options.scope] 百度登录的scrope
+     * @param {string} [options.scope] 百度登录的scope
      * @returns null
      * 
      */
      it.login = function(options){
-         if (!options.mediaType){
-             login(options.onsuccess,function(nativeErr){
-                if (typeof nativeErr === 'object' && nativeErr.error_code === 1){
-                    options.onfail(clouda.STATUS.USER_CANCELED);
-                }else{
-                    lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
-                }
-             },options.scope?options.scope:"basic",options);
-         }else{
-             sslogin(options.onsuccess,function(nativeErr){
-                lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
-             },options);
-         }
-        
+		
+		if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+			
+			if (!options.onsuccess || !options.onfail || !options.redirect_uri){
+				lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
+				return false;
+			}
+			
+			var scope = options.scope || "basic";
+			var loginMode = options.login_mode || 0;
+			var loginType = options.login_type || void 0;
+			var callback = function(result){
+				if(result === 1) {
+					options.onsuccess(result);
+				} else {
+					options.onfail(result);
+				}
+			};
+			
+			//todo 等框给出接口
+			
+		} else {
+			
+			if (!options.mediaType){
+				login(options.onsuccess,function(nativeErr){
+					if (typeof nativeErr === 'object' && nativeErr.error_code === 1){
+						options.onfail(clouda.STATUS.USER_CANCELED);
+					}else{
+						lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
+					}
+				},options.scope?options.scope:"basic",options);
+			}else{
+				sslogin(options.onsuccess,function(nativeErr){
+					lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
+				},options);
+			}
+	
+		}
+         
      };
     
     /**
@@ -80,7 +105,6 @@ define("mbaas",function( module ) {
                 lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
              },options);
          }
-        
     };
     it.getStatus = function(options){
         if (!options.mediaType){
