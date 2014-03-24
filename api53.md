@@ -27,14 +27,8 @@ redirect_uri | string | redirect_uri是第三方轻应用提供的授权后回�
 scope | (可选)string,默认"basic" | 权限以空格分隔，例子：获取个人云权限"basic netdisk" [更多权限](http://developer.baidu.com/wiki/index.php?title=docs/oauth#.E6.8E.88.E6.9D.83.E6.9D.83.E9.99.90.E5.88.97.E8.A1.A8)
 login_mode | (可选)number, 默认为0 | login_mode表示登录策略，为0时，表示使用默认策略，即用户如果已登录，则直接使用该用户身份完成登录、授权操作；为1表示需要用户确认下是否用当前登录用户身份来授权，并提供切换账号的入口；为2表示无论如何都要用户重新用百度账号登录一遍。
 login_type | (可选)string | login_type表示OAuth授权页面是否展示为手机号快捷登陆页，login_type=sms展示手机号快捷登陆。默认不传展示为正常页面。
-onsuccess | function(data){} | 操作成功，返回登录用户信息
-onfail | function(err){} | 操作失败，返回错误码信息
-
-
-**login返回值：**
-
-//TODO
-稍后给出...
+onsuccess | function(){} | 登录成功的回调函数.
+onfail | function(){} | 登录失败的回调函数.
 
 ### Push ###
 
@@ -97,7 +91,7 @@ options：为object类型，其中包括以下参数：
         <tr>
 			<td>error</td>
 			<td>number</td>          
-			<td>0 - 订阅成功；1 - 内部错误 2 - 参数错误 3 – 超时 4 – 认证失败，包括轻应用Push能力未通过审核 5 – sdcard无效</td>  
+			<td>0 - 订阅成功；1 - 内部错误:功能的处理过程中出现错误, 具体错误信息查看error_msg字段 2 - 参数错误 3 – 超时 4 Referer非法 5 – sdcard无效</td>
 		</tr>
     </tbody>
 </table>
@@ -146,7 +140,7 @@ options：为object类型，其中包括以下参数：
         <tr>
 			<td>error</td>
 			<td>number</td>          
-			<td>0 - 取消订阅成功；1 - 内部错误 2 - 参数错误 3 – 超时；4 – 认证失败，包括轻应用Push能力未通过审核 5 – sdcard无效</td>  
+			<td>0 - 订阅成功；1 - 内部错误:功能的处理过程中出现错误, 具体错误信息查看error_msg字段 2 - 参数错误 3 – 超时 4 Referer非法 5 – sdcard无效</td>
 		</tr>
     </tbody>
 </table>
@@ -199,7 +193,7 @@ options：为object类型，其中包括以下参数：
         <tr>
 			<td>error</td>
 			<td>number</td>        
-			<td>0 - 订阅成功；1 - 内部错误 2 - 参数错误 3 – 超时；4 – 认证失败，包括轻应用Push能力未通过审核 5 – sdcard无效</td>
+			<td>0 - 订阅成功；1 - 内部错误:功能的处理过程中出现错误, 具体错误信息查看error_msg字段 2 - 参数错误 3 – 超时 4 Referer非法 5 – sdcard无效</td>
 		</tr>
         <tr>
 			<td>tag</td>
@@ -259,7 +253,7 @@ options：为object类型，其中包括以下参数：
         <tr>
 			<td>error</td>
 			<td>number</td>        
-			<td>0 - 取消订阅成功；1 - 内部错误 2 - 参数错误 3 – 超时 4 – 认证失败，包括轻应用Push能力未通过审核  5 – sdcard无效</td>
+			<td>0 - 订阅成功；1 - 内部错误:功能的处理过程中出现错误, 具体错误信息查看error_msg字段 2 - 参数错误 3 – 超时 4 Referer非法 5 – sdcard无效</td>
 		</tr>
         <tr>
 			<td>tag</td>

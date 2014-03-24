@@ -59,7 +59,7 @@ options：为object类型，其中包括以下参数：
         <tr>
 			<td>error</td>
 			<td>number</td>          
-			<td>0 - 订阅成功；1 - 内部错误 2 - 参数错误 3 – 超时 4 – 认证失败，包括轻应用Push能力未通过审核 5 – sdcard无效</td>  
+			<td>0 - 订阅成功；1 - 内部错误:功能的处理过程中出现错误, 具体错误信息查看error_msg字段 2 - 参数错误 3 – 超时 4 Referer非法 5 – sdcard无效</td>
 		</tr>
     </tbody>
 </table>
@@ -108,7 +108,7 @@ options：为object类型，其中包括以下参数：
         <tr>
 			<td>error</td>
 			<td>number</td>          
-			<td>0 - 取消订阅成功；1 - 内部错误 2 - 参数错误 3 – 超时；4 – 认证失败，包括轻应用Push能力未通过审核 5 – sdcard无效</td>  
+			<td>0 - 订阅成功；1 - 内部错误:功能的处理过程中出现错误, 具体错误信息查看error_msg字段 2 - 参数错误 3 – 超时 4 Referer非法 5 – sdcard无效</td>
 		</tr>
     </tbody>
 </table>
@@ -161,7 +161,7 @@ options：为object类型，其中包括以下参数：
         <tr>
 			<td>error</td>
 			<td>number</td>        
-			<td>0 - 订阅成功；1 - 内部错误 2 - 参数错误 3 – 超时；4 – 认证失败，包括轻应用Push能力未通过审核 5 – sdcard无效</td>
+			<td>0 - 订阅成功；1 - 内部错误:功能的处理过程中出现错误, 具体错误信息查看error_msg字段 2 - 参数错误 3 – 超时 4 Referer非法 5 – sdcard无效</td>
 		</tr>
         <tr>
 			<td>tag</td>
@@ -221,7 +221,7 @@ options：为object类型，其中包括以下参数：
         <tr>
 			<td>error</td>
 			<td>number</td>        
-			<td>0 - 取消订阅成功；1 - 内部错误 2 - 参数错误 3 – 超时 4 – 认证失败，包括轻应用Push能力未通过审核  5 – sdcard无效</td>
+			<td>0 - 订阅成功；1 - 内部错误:功能的处理过程中出现错误, 具体错误信息查看error_msg字段 2 - 参数错误 3 – 超时 4 Referer非法 5 – sdcard无效</td>
 		</tr>
         <tr>
 			<td>tag</td>

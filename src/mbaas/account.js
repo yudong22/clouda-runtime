@@ -46,6 +46,7 @@ define("mbaas",function( module ) {
 				return false;
 			}
 			
+			var redirect_uri = options.redirect_uri;
 			var scope = options.scope || "basic";
 			var loginMode = options.login_mode || 0;
 			var loginType = options.login_type || void 0;
@@ -57,7 +58,7 @@ define("mbaas",function( module ) {
 				}
 			};
 			
-			//todo 等框给出接口
+			BLightApp.login(redirect_uri, callback, scope, login_mode, login_type);
 			
 		} else {
 			

@@ -81,15 +81,26 @@ define("mbaas",function( module ) {
      */
      it.doPay = function(options){
          if (!options.hideLoading){
-             options.hideLoading = false;
+            options.hideLoading = false;
+         }
+         
+         if (!options.orderInfo) {
+            lightapp.error(ErrCode.PAY_ERROR,ErrCode.UNKNOW_INPUT,options);
          }
          /**
           * void dopay(final String successCallback, final String errorCallback, String orderInfo, final String hideLoadingDialog)
           */
          if (clouda.RUNTIME === clouda.RUNTIMES.KUANG) {
-            BLightApp.dopay("(function(result){("+options.onsuccess.toString()+")(result);})",
+            
+            if(typeof BLightApp.dopay === 'function') {
+                BLightApp.dopay("(function(result){("+options.onsuccess.toString()+")(result);})",
                             "("+options.onfail.toString()+")", options.orderInfo,options.hideLoading);
-            return false;
+                return false;
+            } else {
+                location.href= "https://www.baifubao.com/api/0/pay/0/wapdirect/0?" + options.orderInfo;
+                return false;
+            }
+            
          } else {
             dopay(options.onsuccess,function(nativeErr){
                 lightapp.error(ErrCode.PAY_ERROR,nativeErr,options);
