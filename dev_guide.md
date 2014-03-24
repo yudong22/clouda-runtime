@@ -43,7 +43,7 @@
 
 2. 引用轻应用API地址，通过CDN公共库地址访问示例如下：
 
-		<script type="text/javascript" src="http://bcscdn.baidu.com/bcs-cdn/clouda/api-0.2.7.js"></script>
+		<script type="text/javascript" src="http://bcscdn.baidu.com/bcs-cdn/clouda/api-0.2.8.js"></script>
 
 3. 调用轻应用App信息注册接口；详见[ "《轻应用API参考文档》"](http://cloudajs.org/lightapp/docs/api)。
 
@@ -62,7 +62,7 @@
 	    <head>
 	        <title>轻应用开发JavaScript代码示例</title>
 	        <!-- 引用轻应用API的JS文件 -->
-	        <script type="text/javascript" src="http://bcscdn.baidu.com/bcs-cdn/clouda/api-0.2.7.js"></script>
+	        <script type="text/javascript" src="http://bcscdn.baidu.com/bcs-cdn/clouda/api-0.2.8.js"></script>
 	    </head>
 	    <body>
 	        <script>

@@ -27,7 +27,7 @@
 
 在HTML页面中添加以下代码：
 
-    <script type="text/javascript" src="http://bcscdn.baidu.com/bcs-cdn/clouda/api-0.2.7.js"></script>
+    <script type="text/javascript" src="http://bcscdn.baidu.com/bcs-cdn/clouda/api-0.2.8.js"></script>
 
 ## App信息注册API ##
 
