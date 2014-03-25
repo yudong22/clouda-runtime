@@ -46,19 +46,14 @@ define("mbaas",function( module ) {
 				return false;
 			}
 			
-			var redirect_uri = options.redirect_uri;
-			var scope = options.scope || "basic";
-			var loginMode = options.login_mode || 0;
-			var loginType = options.login_type || void 0;
-			var callback = function(result){
-				if(result === 1) {
-					options.onsuccess();
-				} else {
-					options.onfail();
-				}
+			var opt = {
+				redirect_uri : options.redirect_uri,
+				scope : options.scope || "basic",
+				login_mode : options.login_mode || 0,
+				login_type : options.login_type || void 0,
 			};
 			
-			BLightApp.login(redirect_uri, "(function(result){("+callback.toString()+")(result);})", scope, loginMode, loginType);
+			BLightApp.login(JSON.stringify(opt), "("+options.onsuccess.toString()+")", "("+options.onfail.toString()+")");
 			
 		} else {
 			
