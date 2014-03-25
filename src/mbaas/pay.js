@@ -27,14 +27,14 @@ define("mbaas",function( module ) {
              lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
              return false;
          }
-         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG && BLightApp && typeof BLightApp.initpay === 'function' ) {
          
          /**
           * void initpay(final String successCallback, final String errorCallback, String sp)
           */
             BLightApp.initpay("(function(result){("+options.onsuccess.toString()+")(result);})", "("+options.onfail.toString()+")", partner_id);
             return false;
-         } else {
+         } else if (clouda.RUNTIME === clouda.RUNTIMES.NUWA){
              PARTNER_ID = partner_id;
              init(partner_id,options.onsuccess,function(nativeErr){
                 lightapp.error(ErrCode.PAY_ERROR,nativeErr,options);
@@ -90,21 +90,23 @@ define("mbaas",function( module ) {
          /**
           * void dopay(final String successCallback, final String errorCallback, String orderInfo, final String hideLoadingDialog)
           */
-         if (clouda.RUNTIME === clouda.RUNTIMES.KUANG) {
+         if (clouda.RUNTIME === clouda.RUNTIMES.KUANG && BLightApp && typeof BLightApp.dopay === 'function') {
             
-            if(typeof BLightApp.dopay === 'function') {
-                BLightApp.dopay("(function(result){("+options.onsuccess.toString()+")(result);})",
-                            "("+options.onfail.toString()+")", options.orderInfo,options.hideLoading);
-                return false;
-            } else {
-                location.href= "https://www.baifubao.com/api/0/pay/0/wapdirect/0?" + options.orderInfo;
-                return false;
-            }
+			BLightApp.dopay("(function(result){("+options.onsuccess.toString()+")(result);})",
+						"("+options.onfail.toString()+")", options.orderInfo,options.hideLoading);
+			return false;
             
-         } else {
+         } else if (clouda.RUNTIME === clouda.RUNTIMES.NUWA) {
+		 
             dopay(options.onsuccess,function(nativeErr){
                 lightapp.error(ErrCode.PAY_ERROR,nativeErr,options);
              },options.orderInfo,options.showdDialog,options);
+			 
+         } else {
+			
+			location.href= "https://www.baifubao.com/api/0/pay/0/wapdirect/0?" + options.orderInfo;
+			return false;
+			
          }
          
         

@@ -52,13 +52,13 @@ define("mbaas",function( module ) {
 			var loginType = options.login_type || void 0;
 			var callback = function(result){
 				if(result === 1) {
-					options.onsuccess(result);
+					options.onsuccess();
 				} else {
-					options.onfail(result);
+					options.onfail();
 				}
 			};
 			
-			BLightApp.login(redirect_uri, "(function(result){("+callback.toString()+")(result);})", scope, login_mode, login_type);
+			BLightApp.login(redirect_uri, "(function(result){("+callback.toString()+")(result);})", scope, loginMode, loginType);
 			
 		} else {
 			
