@@ -43,8 +43,8 @@
 
 2. 内嵌如下代码：
 
-		<script name="baidu-tc-cerfication" src="http://apps.bdimg.com/cloudaapi/lightapp.js"></script>
-        
+    <script name="baidu-tc-cerfication" src="http://apps.bdimg.com/cloudaapi/lightapp.js"></script>
+
 3. 调用轻应用App信息注册接口；详见[ "《轻应用API参考文档》"](http://cloudajs.org/lightapp/docs/api)。
 
 4. 选择调用API，实现功能开发；
@@ -68,7 +68,7 @@
 	        <script>
 	           //首先输入轻应用的ak
 	           clouda.lightapp("iUQs1O9pmkIvfZ1zmy8sm7Gk",function(){
-    	           //在callback中，读取本地相机图片
+    	           //加载完api js后，立即执行读取本地相机图片
                    clouda.device.media.captureMedia({
                         mediaType : clouda.device.MEDIA_TYPE.IMAGE,
                         source : clouda.device.MEDIA_SOURCE.CAMERA,
@@ -92,29 +92,30 @@
 
 1. 访问百度开放云[轻应用管理](http://developer.baidu.com/console#app/light)，接入或者编辑轻应用时，可以看到如下代码标识
 
-    <script name="baidu-tc-cerfication" src="http://apps.bdimg.com/cloudaapi/lightapp.js#xxxxxx"></script>
-    <script>
-        window.bd && bd._qdc && bd._qdc.init({
-            app_id : 'yyyyyyy'
-        });
-    </script>
+        <script name="baidu-tc-cerfication" src="http://apps.bdimg.com/cloudaapi/lightapp.js#xxxxxx"></script>
+        <script>
+            window.bd && bd._qdc && bd._qdc.init({
+                app_id : 'yyyyyyy'
+            });
+        </script>
     
 2. 获取其中的 `yyyyyyy` , 使用yyyyy+下划线+自定义页面标识字符串,并将代码嵌入<head>与</head>之间，形如
-
-    <script>
-        window.bd && bd._qdc && bd._qdc.init({
-            app_id : 'yyyyyyy_yourcustomkey'
-        });
-    </script>
     
-3. 监控
+        <script>
+            window.bd && bd._qdc && bd._qdc.init({
+                app_id : 'yyyyyyy_yourcustomkey'
+            });
+        </script>
+    
+3. 统计监控
+
 对于同步加载的应用，提示用户在首屏屏幕高度的大概位置添加如下这句脚本监控首屏
-
-    window._qdc && _qdc.first_screen();
-
+    
+        window._qdc && _qdc.first_screen();
+    
 对于首屏内容为ajax异步渲染的应用，需要在首屏渲染完成后调用接口中标记首屏时间
     
-    _qdc && _qdc.mark("fs");
+        _qdc && _qdc.mark("fs");
     
 #### 使用Clouda开发框架 ####
 
