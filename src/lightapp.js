@@ -25,19 +25,26 @@
         script.src = url;
         head.insertBefore(script, head.firstChild);
         if (callback) {
-            document.addEventListener ? script.addEventListener("load", callback, false) : script.onreadystatechange = function() {
-                if (/loaded|complete/.test(script.readyState)) {
-                    script.onreadystatechange = null;
-                    callback();
-                }
-            };
+            if (document.addEventListener){
+                script.addEventListener("load", callback, false);
+            }else{ 
+                script.onreadystatechange = function() {
+                    if (/loaded|complete/.test(script.readyState)) {
+                        script.onreadystatechange = null;
+                        callback();
+                    }
+                };
+            }
         }
     }
     
     if ( typeof clouda.lightapp !== 'function') {//可能异步加载
         clouda.lightapp = function(ak,callback) {//异步加载
             clouda.lightapp.ak = ak;
-            loadScript("http://cloudaapi.duapp.com/runtime.js",callback);
+            if (!clouda.device){//避免重复加载
+                loadScript("http://bcscdn.baidu.com/bcs-cdn/clouda/api-0.2.8.js",callback);
+            }
+            
         };
     }
     

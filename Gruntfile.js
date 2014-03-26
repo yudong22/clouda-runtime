@@ -11,8 +11,8 @@ module.exports = function(grunt) {
                 '<%= grunt.template.today("yyyy-mm-dd") %> */\n',
             },
             dist: {
-                src: ['src/intro.js', 'src/device/*.js','src/mbaas/*.js', 'src/outro.js'],
-                dest: 'dist/clouda-runtime.js',
+                src: ['src/intro.js','src/lib/*.js', 'src/device/*.js','src/mbaas/*.js', 'src/outro.js'],
+                dest: 'build/runtime.js',
             },
         },
         uglify : {
@@ -20,13 +20,17 @@ module.exports = function(grunt) {
                 // banner : '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
             },
            
-            build : {
-                src : ['dist/clouda-runtime.js'],
-                dest : 'build/<%= pkg.name %>.min.js'
+            builda : {
+                src : ['build/runtime.js'],
+                dest : 'build/api-latest.js'
+            },
+            buildb : {
+                src : ['src/lightapp.js'],
+                dest : 'build/lightapp.js'
             }
         },
         jshint: {
-          files: ['Gruntfile.js', 'src/device/*.js','src/mbaas/*.js','dist/clouda-runtime.js'],
+          files: ['Gruntfile.js','src/lightapp.js','src/lib/*.js', 'src/device/*.js','src/mbaas/*.js','build/runtime.js'],
           options: {
             // options here to override JSHint defaults
             globals: {
@@ -79,9 +83,10 @@ module.exports = function(grunt) {
 		grunt.loadNpmTasks('grunt-contrib-uglify');
 		grunt.loadNpmTasks('grunt-jsdoc');
 		
-		grunt.registerTask('default', ['concat','uglify','jshint']); 
+		grunt.registerTask('default', ['concat','jshint','uglify']); 
 		grunt.registerTask('doc', 'jsdoc');
 		grunt.registerTask('production', 'lint requirejs less copy');
+		grunt.registerTask('light', ['jshint','uglify']); 
 
 
     // Load the plugin that provides the "uglify" task.
