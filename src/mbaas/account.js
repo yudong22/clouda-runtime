@@ -39,14 +39,15 @@ define("mbaas",function( module ) {
      */
      it.login = function(options){
 		
-		if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
-			
-			if (!options.onsuccess || !options.onfail || !options.redirect_uri){
-				lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
-				return false;
-			}
+		if (!options.onsuccess || !options.onfail || !options.redirect_uri){
+			lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
+			return false;
+		}
+		
+		if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG && BLightApp && typeof BLightApp.login === 'function') {
 			
 			var opt = {
+				client_id : clouda.lightapp.ak,
 				redirect_uri : options.redirect_uri,
 				scope : options.scope || "basic",
 				login_mode : options.login_mode || 0,
@@ -55,7 +56,7 @@ define("mbaas",function( module ) {
 			
 			BLightApp.login(JSON.stringify(opt), "("+options.onsuccess.toString()+")", "("+options.onfail.toString()+")");
 			
-		} else {
+		} else if ( clouda.RUNTIME === clouda.RUNTIMES.NUWA ){
 			
 			if (!options.mediaType){
 				login(options.onsuccess,function(nativeErr){
@@ -71,6 +72,9 @@ define("mbaas",function( module ) {
 				},options);
 			}
 	
+		} else {
+			var redirect_url = "https://openapi.baidu.com/oauth/2.0/authorize?response_type=code&client_id=" + clouda.lightapp.ak + "&redirect_uri=" + encodeURIComponent(options.redirect_uri);
+			location.href = redirect_url;
 		}
          
      };
