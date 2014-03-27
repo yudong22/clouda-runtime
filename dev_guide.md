@@ -109,13 +109,18 @@
     
 3. 统计监控
 
-对于同步加载的应用，提示用户在首屏屏幕高度的大概位置添加如下这句脚本监控首屏
+对于同步加载的应用，在首屏屏幕高度的位置添加如下这句脚本监控首屏
     
-        window._qdc && _qdc.first_screen();
-    
-对于首屏内容为ajax异步渲染的应用，需要在首屏渲染完成后调用接口中标记首屏时间
-    
-        _qdc && _qdc.mark("fs");
+        <script>
+            window.bd && bd._qdc && bd._qdc.first_screen && bd._qdc.first_screen();
+        </script>
+        
+对于首屏内容为ajax异步渲染的应用，需要在首屏渲染完成后调用接口中标记首屏时间，代码形如
+        
+        yourcallbackfunction = function(data){
+            window.bd && bd._qdc && bd._qdc.mark && bd._qdc.mark("fs");
+            //deal with data
+        }
     
 #### 使用Clouda开发框架 ####
 

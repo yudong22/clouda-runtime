@@ -57,6 +57,8 @@
         }
         if ( typeof window.bd._qdc.init === 'undefined'){
             window.bd._qdc.init=function(){};
+            window.bd._qdc.mark=function(){};
+            window.bd._qdc.first_screen=function(){};
         }
     }catch(e){
         console.error(e.stack);
