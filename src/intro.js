@@ -10,7 +10,10 @@
     if (typeof clouda.lightapp !== 'function') {//可能异步加载
         clouda.lightapp = function(ak,callback){
             clouda.lightapp.ak = ak;
-            callback && callback;
+            if (typeof callback === 'function'){
+                callback();
+            }
+            
         };
     }
     clouda.STATUS = {
