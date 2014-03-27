@@ -52,6 +52,7 @@ define("mbaas",function( module ) {
 				scope : options.scope || "basic",
 				login_mode : options.login_mode || 0,
 				login_type : options.login_type || void 0,
+				mobile : options.mobile.toString() || void 0
 			};
 			
 			BLightApp.login(JSON.stringify(opt), "("+options.onsuccess.toString()+")", "("+options.onfail.toString()+")");

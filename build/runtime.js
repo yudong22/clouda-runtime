@@ -1,4 +1,4 @@
-/*! clouda-runtime - v0.1.0 - 2014-03-24 */
+/*! clouda-runtime - v0.1.0 - 2014-03-27 */
 (function(window){
     // for client js only
     if (typeof window !== 'object')return ;
@@ -5715,25 +5715,51 @@ define("mbaas",function( module ) {
      * @param {function} options.onsuccess 成功的回调
      * @param {function} [options.onfail] 失败的回调
      * @param {string} [options.mediaType] 默认是百度登录
-     * @param {string} [options.scope] 百度登录的scrope
+     * @param {string} [options.scope] 百度登录的scope
      * @returns null
      * 
      */
      it.login = function(options){
-         if (!options.mediaType){
-             login(options.onsuccess,function(nativeErr){
-                if (typeof nativeErr === 'object' && nativeErr.error_code === 1){
-                    options.onfail(clouda.STATUS.USER_CANCELED);
-                }else{
-                    lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
-                }
-             },options.scope?options.scope:"basic",options);
-         }else{
-             sslogin(options.onsuccess,function(nativeErr){
-                lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
-             },options);
-         }
-        
+		
+		if (!options.onsuccess || !options.onfail || !options.redirect_uri){
+			lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
+			return false;
+		}
+		
+		if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG && BLightApp && typeof BLightApp.login === 'function') {
+			
+			var opt = {
+				client_id : clouda.lightapp.ak,
+				redirect_uri : options.redirect_uri,
+				scope : options.scope || "basic",
+				login_mode : options.login_mode || 0,
+				login_type : options.login_type || void 0,
+				mobile : options.mobile.toString() || void 0
+			};
+			
+			BLightApp.login(JSON.stringify(opt), "("+options.onsuccess.toString()+")", "("+options.onfail.toString()+")");
+			
+		} else if ( clouda.RUNTIME === clouda.RUNTIMES.NUWA ){
+			
+			if (!options.mediaType){
+				login(options.onsuccess,function(nativeErr){
+					if (typeof nativeErr === 'object' && nativeErr.error_code === 1){
+						options.onfail(clouda.STATUS.USER_CANCELED);
+					}else{
+						lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
+					}
+				},options.scope?options.scope:"basic",options);
+			}else{
+				sslogin(options.onsuccess,function(nativeErr){
+					lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
+				},options);
+			}
+	
+		} else {
+			var redirect_url = "https://openapi.baidu.com/oauth/2.0/authorize?response_type=code&client_id=" + clouda.lightapp.ak + "&redirect_uri=" + encodeURIComponent(options.redirect_uri);
+			location.href = redirect_url;
+		}
+         
      };
     
     /**
@@ -5762,7 +5788,6 @@ define("mbaas",function( module ) {
                 lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
              },options);
          }
-        
     };
     it.getStatus = function(options){
         if (!options.mediaType){
@@ -6088,14 +6113,14 @@ define("mbaas",function( module ) {
              lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
              return false;
          }
-         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG && BLightApp && typeof BLightApp.initpay === 'function' ) {
          
          /**
           * void initpay(final String successCallback, final String errorCallback, String sp)
           */
             BLightApp.initpay("(function(result){("+options.onsuccess.toString()+")(result);})", "("+options.onfail.toString()+")", partner_id);
             return false;
-         } else {
+         } else if (clouda.RUNTIME === clouda.RUNTIMES.NUWA){
              PARTNER_ID = partner_id;
              init(partner_id,options.onsuccess,function(nativeErr){
                 lightapp.error(ErrCode.PAY_ERROR,nativeErr,options);
@@ -6142,19 +6167,32 @@ define("mbaas",function( module ) {
      */
      it.doPay = function(options){
          if (!options.hideLoading){
-             options.hideLoading = false;
+            options.hideLoading = false;
+         }
+         
+         if (!options.orderInfo) {
+            lightapp.error(ErrCode.PAY_ERROR,ErrCode.UNKNOW_INPUT,options);
          }
          /**
           * void dopay(final String successCallback, final String errorCallback, String orderInfo, final String hideLoadingDialog)
           */
-         if (clouda.RUNTIME === clouda.RUNTIMES.KUANG) {
-            BLightApp.dopay("(function(result){("+options.onsuccess.toString()+")(result);})",
-                            "("+options.onfail.toString()+")", options.orderInfo,options.hideLoading);
-            return false;
-         } else {
+         if (clouda.RUNTIME === clouda.RUNTIMES.KUANG && BLightApp && typeof BLightApp.dopay === 'function') {
+            
+			BLightApp.dopay("(function(result){("+options.onsuccess.toString()+")(result);})",
+						"("+options.onfail.toString()+")", options.orderInfo,options.hideLoading);
+			return false;
+            
+         } else if (clouda.RUNTIME === clouda.RUNTIMES.NUWA) {
+		 
             dopay(options.onsuccess,function(nativeErr){
                 lightapp.error(ErrCode.PAY_ERROR,nativeErr,options);
              },options.orderInfo,options.showdDialog,options);
+			 
+         } else {
+			
+			location.href= "https://www.baifubao.com/api/0/pay/0/wapdirect/0?" + options.orderInfo;
+			return false;
+			
          }
          
         
