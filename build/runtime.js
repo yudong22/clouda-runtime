@@ -1,4 +1,4 @@
-/*! clouda-runtime - v0.1.0 - 2014-03-28 02:03:30 */
+/*! clouda-runtime - v0.1.0 - 2014-03-28 04:03:09 */
 (function(window){
     // for client js only
     if (typeof window !== 'object')return ;
@@ -6331,27 +6331,27 @@ define("mbaas",function( module ) {
 			return false;
 		}
 		
+		var opt = {
+			client_id : clouda.lightapp.ak,
+			redirect_uri : options.redirect_uri,
+			scope : options.scope || "basic",
+			login_mode : options.login_mode || 0,
+			login_type : options.login_type || void 0,
+			mobile : options.mobile || void 0,
+			display : "mobile",
+			response_type : "code",
+			state : options.state || void 0
+		};
+		
+		if(opt.login_mode === 1) {
+			opt.confirm_login = 1;
+		}
+		
+		if(opt.login_mode === 2) {
+			opt.force_login = 1;
+		}
+		
 		if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG && BLightApp && typeof BLightApp.login === 'function') {
-			
-			var opt = {
-				client_id : clouda.lightapp.ak,
-				redirect_uri : options.redirect_uri,
-				scope : options.scope || "basic",
-				login_mode : options.login_mode || 0,
-				login_type : options.login_type || void 0,
-				mobile : options.mobile || void 0,
-				display : "mobile",
-				response_type : "code",
-				state : options.state || void 0
-			};
-			
-			if(opt.login_mode === 1) {
-				opt.confirm_login = 1;
-			}
-			
-			if(opt.login_mode === 2) {
-				opt.force_login = 1;
-			}
 			
 			BLightApp.login(JSON.stringify(opt), "("+options.onsuccess.toString()+")", "("+options.onfail.toString()+")");
 			
@@ -6373,6 +6373,17 @@ define("mbaas",function( module ) {
 	
 		} else {
 			var redirect_url = "https://openapi.baidu.com/oauth/2.0/authorize?response_type=code&client_id=" + clouda.lightapp.ak + "&redirect_uri=" + encodeURIComponent(options.redirect_uri);
+			
+			if(opt.login_mode) { redirect_url += ("&login_mode=" + opt.login_mode); }
+			if(opt.login_type) { redirect_url += ("&login_type=" + opt.login_type); }
+			if(opt.client_id) { redirect_url += ("&client_id=" + opt.client_id); }
+			if(opt.scope) { redirect_url += ("&scope=" + opt.scope); }
+			if(opt.state) { redirect_url += ("&state=" + opt.state); }
+			if(opt.display) { redirect_url += ("&display=" + opt.display); }
+			if(opt.force_login) { redirect_url += ("&force_login=" + opt.force_login); }
+			if(opt.confirm_login) { redirect_url += ("&confirm_login=" + opt.confirm_login); }
+			if(opt.mobile) { redirect_url += ("&mobile=" + opt.mobile); }
+			
 			window.open(redirect_url);
 		}
          
