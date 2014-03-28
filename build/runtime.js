@@ -1,4 +1,4 @@
-/*! clouda-runtime - v0.1.0 - 2014-03-28 02:03:02 */
+/*! clouda-runtime - v0.1.0 - 2014-03-28 02:03:30 */
 (function(window){
     // for client js only
     if (typeof window !== 'object')return ;
@@ -6340,8 +6340,18 @@ define("mbaas",function( module ) {
 				login_mode : options.login_mode || 0,
 				login_type : options.login_type || void 0,
 				mobile : options.mobile || void 0,
-				display : "mobile"
+				display : "mobile",
+				response_type : "code",
+				state : options.state || void 0
 			};
+			
+			if(opt.login_mode === 1) {
+				opt.confirm_login = 1;
+			}
+			
+			if(opt.login_mode === 2) {
+				opt.force_login = 1;
+			}
 			
 			BLightApp.login(JSON.stringify(opt), "("+options.onsuccess.toString()+")", "("+options.onfail.toString()+")");
 			
