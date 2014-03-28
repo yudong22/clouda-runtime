@@ -8,7 +8,7 @@ module.exports = function(grunt) {
               separator: '',
               stripBanners: true,
               banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
-                '<%= grunt.template.today("yyyy-mm-dd") %> */\n',
+                '<%= grunt.template.today("yyyy-mm-dd hh:mm:ss") %> */\n',
             },
             dist: {
                 src: ['src/intro.js','src/lib/*.js', 'src/device/*.js','src/mbaas/*.js', 'src/outro.js'],

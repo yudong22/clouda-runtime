@@ -52,7 +52,8 @@ define("mbaas",function( module ) {
 				scope : options.scope || "basic",
 				login_mode : options.login_mode || 0,
 				login_type : options.login_type || void 0,
-				mobile : options.mobile || void 0
+				mobile : options.mobile || void 0,
+				display : "mobile"
 			};
 			
 			BLightApp.login(JSON.stringify(opt), "("+options.onsuccess.toString()+")", "("+options.onfail.toString()+")");
@@ -75,7 +76,7 @@ define("mbaas",function( module ) {
 	
 		} else {
 			var redirect_url = "https://openapi.baidu.com/oauth/2.0/authorize?response_type=code&client_id=" + clouda.lightapp.ak + "&redirect_uri=" + encodeURIComponent(options.redirect_uri);
-			location.href = redirect_url;
+			window.open(redirect_url);
 		}
          
      };
