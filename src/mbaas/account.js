@@ -1,3 +1,4 @@
+
 define("mbaas",function( module ) {
     var lightapp = this;
     //deal with clouda.mbaas
@@ -37,7 +38,7 @@ define("mbaas",function( module ) {
      * @returns null
      * 
      */
-     it.login = function(options){
+    it.login = function(options){
 		
 		if (!options.onsuccess || !options.onfail || !options.redirect_uri){
 			lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
@@ -68,24 +69,9 @@ define("mbaas",function( module ) {
 			
 			BLightApp.login(JSON.stringify(opt), "("+options.onsuccess.toString()+")", "("+options.onfail.toString()+")");
 			
-		} else if ( clouda.RUNTIME === clouda.RUNTIMES.NUWA ){
-			
-			if (!options.mediaType){
-				login(options.onsuccess,function(nativeErr){
-					if (typeof nativeErr === 'object' && nativeErr.error_code === 1){
-						options.onfail(clouda.STATUS.USER_CANCELED);
-					}else{
-						lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
-					}
-				},options.scope?options.scope:"basic",options);
-			}else{
-				sslogin(options.onsuccess,function(nativeErr){
-					lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
-				},options);
-			}
-	
 		} else {
-			var redirect_url = "https://openapi.baidu.com/oauth/2.0/authorize?response_type=code&client_id=" + clouda.lightapp.ak + "&redirect_uri=" + encodeURIComponent(options.redirect_uri);
+			
+            var redirect_url = "https://openapi.baidu.com/oauth/2.0/authorize?response_type=code&client_id=" + clouda.lightapp.ak + "&redirect_uri=" + encodeURIComponent(options.redirect_uri);
 			
 			if(opt.login_mode) { redirect_url += ("&login_mode=" + opt.login_mode); }
 			if(opt.login_type) { redirect_url += ("&login_type=" + opt.login_type); }
@@ -96,61 +82,23 @@ define("mbaas",function( module ) {
 			if(opt.force_login) { redirect_url += ("&force_login=" + opt.force_login); }
 			if(opt.confirm_login) { redirect_url += ("&confirm_login=" + opt.confirm_login); }
 			if(opt.mobile) { redirect_url += ("&mobile=" + opt.mobile); }
-			
-			window.open(redirect_url);
+            redirect_url += ("&return_callback=window.parent.clouda.mbaas.account.closeLoginDialog");
+
+            var iframePage = document.createElement("iframe");
+            iframePage.src = redirect_url;
+            iframePage.style.position = "absolute";
+            iframePage.style.width = window.innerWidth + "px";
+            iframePage.style.height = window.innerHeight + "px";
+            iframePage.style.top = "0px";
+            iframePage.scrolling = "no";
+			iframePage.style.border = "none";
+            iframePage.style.backgroundColor = "#fff";
+            document.body.appendChild(iframePage);
+            it.closeLoginDialog = function(){
+                if(iframePage) { document.body.removeChild(iframePage);}
+            };
+
 		}
          
-     };
-    
-    /**
-     * logout
-     *
-     * @function logout
-     * @memberof clouda.mbaas.login
-     * @instance
-     *
-     * @param {{}} options 由onsuccess 和 onfail组成
-     * @param {function} options.onsuccess 成功的回调
-     * @param {function} [options.onfail] 失败的回调
-     * @param {string} [options.mediaType] 默认是百度登陆
-     * @returns null
-     * 
-     */
-    it.logout = function(options){
-        if (!options.mediaType){
-             logout(options.onsuccess,function(nativeErr){
-                lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
-            },options);
-         }else{
-             loginout(function(){
-                 options.onsuccess(clouda.STATUS.SUCCESS);
-             },function(nativeErr){
-                lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
-             },options);
-         }
     };
-    it.getStatus = function(options){
-        if (!options.mediaType){
-             isLogin(options.onsuccess,function(nativeErr){
-                lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
-            },options);
-         }else{
-             getstatus(options.onsuccess,function(nativeErr){
-                lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
-             },options);
-         }
-    };
-    it.getUserInfo = function(options){
-        if (!options.mediaType){
-             getAccountInfo(options.onsuccess,function(nativeErr){
-                lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
-            },options);
-         }else{
-             getuserinfo(options.onsuccess,function(nativeErr){
-                lightapp.error(ErrCode.LOGIN_ERROR,nativeErr,options);
-             },options);
-         }
-    };
-    // return module;
-    
 });
