@@ -1,4 +1,4 @@
-/*! clouda-runtime - v0.1.0 - 2014-03-29 11:03:37 */
+/*! clouda-runtime - v0.1.0 - 2014-03-29 12:03:22 */
 (function(window){
     // for client js only
     if (typeof window !== 'object')return ;
@@ -6292,16 +6292,7 @@ define("mbaas",function( module ) {
     var it = module.account = {};
     
     var login = new delegateClass("device","login","login");
-    var logout = new delegateClass("device","login","logout");
-    
-    var sslogin = new delegateClass("authorization","login");
-    var loginout = new delegateClass("authorization","loginout");
-    var getuserinfo = new delegateClass("authorization","getuserinfo");
-    var getstatus = new delegateClass("authorization","getstatus");
-    var isLogin = new delegateClass("device","login","isLogin");
-    var getAccountInfo = new delegateClass("device","login","getAccountInfo");
-    
-    
+	
     module.LOGIN_TYPE={
         WEIBO : 'sinaweibo',
         QQ:'qqdenglu',
@@ -6358,21 +6349,21 @@ define("mbaas",function( module ) {
 			
 		} else {
 			
-            var redirect_url = "https://openapi.baidu.com/oauth/2.0/authorize?response_type=code&client_id=" + clouda.lightapp.ak + "&redirect_uri=" + encodeURIComponent(options.redirect_uri);
+            var authorize_url = "https://openapi.baidu.com/oauth/2.0/authorize?response_type=code&client_id=" + clouda.lightapp.ak + "&redirect_uri=" + encodeURIComponent(options.redirect_uri);
 			
-			if(opt.login_mode) { redirect_url += ("&login_mode=" + opt.login_mode); }
-			if(opt.login_type) { redirect_url += ("&login_type=" + opt.login_type); }
-			if(opt.client_id) { redirect_url += ("&client_id=" + opt.client_id); }
-			if(opt.scope) { redirect_url += ("&scope=" + opt.scope); }
-			if(opt.state) { redirect_url += ("&state=" + opt.state); }
-			if(opt.display) { redirect_url += ("&display=" + opt.display); }
-			if(opt.force_login) { redirect_url += ("&force_login=" + opt.force_login); }
-			if(opt.confirm_login) { redirect_url += ("&confirm_login=" + opt.confirm_login); }
-			if(opt.mobile) { redirect_url += ("&mobile=" + opt.mobile); }
-            redirect_url += ("&return_callback=window.parent.clouda.mbaas.account.closeLoginDialog");
+			if(opt.login_mode) { authorize_url += ("&login_mode=" + opt.login_mode); }
+			if(opt.login_type) { authorize_url += ("&login_type=" + opt.login_type); }
+			if(opt.client_id) { authorize_url += ("&client_id=" + opt.client_id); }
+			if(opt.scope) { authorize_url += ("&scope=" + opt.scope); }
+			if(opt.state) { authorize_url += ("&state=" + opt.state); }
+			if(opt.display) { authorize_url += ("&display=" + opt.display); }
+			if(opt.force_login) { authorize_url += ("&force_login=" + opt.force_login); }
+			if(opt.confirm_login) { authorize_url += ("&confirm_login=" + opt.confirm_login); }
+			if(opt.mobile) { authorize_url += ("&mobile=" + opt.mobile); }
+            authorize_url += ("&return_callback=window.parent.clouda.mbaas.account.closeLoginDialog");
 
             var iframePage = document.createElement("iframe");
-            iframePage.src = redirect_url;
+            iframePage.src = authorize_url;
             iframePage.style.position = "absolute";
             iframePage.style.width = window.innerWidth + "px";
             iframePage.style.height = window.innerHeight + "px";
