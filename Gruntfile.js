@@ -25,7 +25,7 @@ module.exports = function(grunt) {
                 dest : 'build/api-latest.js'
             },
             buildb : {
-                src : ['src/lightapp.js'],
+                src : ['src/qing.pdc.js','src/lightapp.js'],
                 dest : 'build/lightapp.js'
             }
         },
