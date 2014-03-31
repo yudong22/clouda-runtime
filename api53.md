@@ -353,13 +353,13 @@ extra  | 商户自定义数据 | 不超过255个字符 | 否
 
 ##### 返回值
 支付结束后返回一个对象(onsuccess的data信息)，格式如下
-```
-{
-	statecode : {状态码},
-	order_no : {商户传入的订单号},
-	notify : {订单签名}
-}
-```
+        
+        {
+        	statecode : {状态码},
+        	order_no : {商户传入的订单号},
+        	notify : {订单签名}
+        }
+        
 Statecode为状态码，表示支付结果，如下表
 
 stateCode | 描述 

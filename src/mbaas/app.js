@@ -79,5 +79,26 @@ define("mbaas", function(module) {
         });
         
     };
+    //status 0 未填加，1已添加，2添加中
+    it.checkFollow = function(appid,options){
+        if (!appid){
+            lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
+            return ;
+        }
+        if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
+             var cloudasuccess = "(function(result){("+options.onsuccess.toString()+")(result);})";
+             BLightApp.queryWzStatus(
+                cloudasuccess,
+                "("+options.onfail.toString()+")");   
+             return false;
+        }
+        installPlugin("device", function(device) {
+            nuwa.am.hasSubscribed(appid, function(result){
+                options.onsuccess(result);
+            }, function(err){
+                lightapp.error(ErrCode.APP_ERROR, err, options);
+            });
+        });
+    };
 
 }); 
