@@ -170,6 +170,8 @@
         clouda.STATUS.SUCCESS = 1;
         if (clouda.RUNTIME != clouda.RUNTIMES.KUANG){//高优先级
             clouda.RUNTIME = clouda.RUNTIMES.NUWA;
+        }else if( typeof BLightApp !== 'undefined' ){//BlightApp可能会随着runtimeready注入
+            clouda.RUNTIME = clouda.RUNTIMES.KUANG;
         }
         
         if (beforeRuntimeReadyStack.length){
