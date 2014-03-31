@@ -429,17 +429,6 @@ onsuccess | function(data){} | 操作成功，返回当前用户语言，字符�
 onfail | function(err){} | 操作失败，返回错误码信息 
 
 
-
-### Media ###
-    clouda.device.media
-
-本地媒体功能
-
-**方法：**
-
-- captureMedia(options)
-- operateMedia(link, operator, options)    
-
 ### Media ###
     clouda.device.media
 
