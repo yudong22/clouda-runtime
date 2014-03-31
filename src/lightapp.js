@@ -42,7 +42,7 @@
         clouda.lightapp = function(ak,callback) {//异步加载
             clouda.lightapp.ak = ak;
             if (!clouda.device){//避免重复加载
-                loadScript("http://bcscdn.baidu.com/bcs-cdn/clouda/api-0.3.2.js",callback);
+                loadScript("http://bcscdn.baidu.com/bcs-cdn/clouda/api-0.3.3.js",callback);
             }
             
         };
