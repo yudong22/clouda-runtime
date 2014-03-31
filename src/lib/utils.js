@@ -593,6 +593,11 @@ define("lib",function( module ) {
             }
             return len;
         },
+        wrapfunc :  function(func){
+            
+            console.log(1);
+
+        }
     };
 
     //off by default

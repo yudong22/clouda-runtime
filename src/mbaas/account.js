@@ -78,13 +78,19 @@ define("mbaas",function( module ) {
             var iframePage = document.createElement("iframe");
             iframePage.src = authorize_url;
             iframePage.style.position = "absolute";
-            iframePage.style.width = window.innerWidth + "px";
-            iframePage.style.height = window.innerHeight + "px";
             iframePage.style.top = "0px";
             iframePage.scrolling = "no";
 			iframePage.style.border = "none";
             iframePage.style.backgroundColor = "#fff";
             document.body.appendChild(iframePage);
+            iframePage.style.width = top.innerWidth + "px";
+            iframePage.style.height = top.innerHeight + "px";
+
+            iframePage.onload = function(){
+                iframePage.style.width = top.innerWidth + "px";
+                iframePage.style.height = top.innerHeight + "px";    
+            };
+
             it.closeLoginDialog = function(){
                 if(iframePage) { document.body.removeChild(iframePage);}
             };
