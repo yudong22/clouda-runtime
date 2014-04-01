@@ -86,7 +86,7 @@ define("mbaas", function(module) {
             return ;
         }
         if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG ) {
-             var cloudasuccess = "(function(result){("+options.onsuccess.toString()+")(result.status);})";
+             var cloudasuccess = "(function(result){("+options.onsuccess.toString()+")(parseInt(result.status));})";
              BLightApp.queryWzStatus(
                 cloudasuccess,
                 "("+options.onfail.toString()+")");   

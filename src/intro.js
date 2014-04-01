@@ -168,10 +168,10 @@
     var beforeDownloadReadyStack = [];
     document.addEventListener("runtimeready",function(){
         clouda.STATUS.SUCCESS = 1;
-        if (clouda.RUNTIME != clouda.RUNTIMES.KUANG){//高优先级
-            clouda.RUNTIME = clouda.RUNTIMES.NUWA;
-        }else if( typeof BLightApp !== 'undefined' ){//BlightApp可能会随着runtimeready注入
+        if (typeof BLightApp !== 'undefined'){//BlightApp可能会随着runtimeready注入
             clouda.RUNTIME = clouda.RUNTIMES.KUANG;
+        }else if( clouda.RUNTIME != clouda.RUNTIMES.KUANG ){//框是高优先级
+            clouda.RUNTIME = clouda.RUNTIMES.NUWA;
         }
         
         if (beforeRuntimeReadyStack.length){
@@ -273,3 +273,5 @@
     clouda.mbaas = {};
     clouda.lib = {};
     // clouda.ui={};
+
+})(window);
