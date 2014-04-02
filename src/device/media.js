@@ -365,8 +365,7 @@ var getPicture = new delegateClass("device","camera","getPicture");
                     // console.log(JSON.stringify(media[link].getCurrentPosition()));//getCurrentPosition
                     // var duration = media[link][operator]();
                     //clouda.STATUS.SUCCESS
-                    media[link][operator](5000);
-                    options.onsuccess(clouda.STATUS.SUCCESS);
+                    media[link][operator](5000,options);
                     break;
                 case "play"://应该添加完成的callback
                     // media[link][operator](options.onsuccess);
