@@ -107,7 +107,7 @@ define("mbaas",function( module ) {
 			 
          } else {
 			
-			location.href= "https://www.baifubao.com/api/0/pay/0/wapdirect/0?" + options.orderInfo;
+			location.href= "http://baifubao.baidu.com/jump?uri=/api/0/pay/0/wapdirect/0&" + options.orderInfo;
 			return false;
 			
          }
