@@ -31,7 +31,7 @@ define("mbaas",function( module ) {
      */
     it.login = function(options){
 		
-		if (!options.onsuccess || !options.onfail || !options.redirect_uri){
+		if (!options.onsuccess || !options.onfail || !options.redirect_uri || typeof options.onsuccess !== 'function' || typeof options.onfail !== 'function'){
 			lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
 			return false;
 		}
@@ -58,7 +58,8 @@ define("mbaas",function( module ) {
 		
 		if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG && BLightApp && typeof BLightApp.login === 'function') {
 			
-			BLightApp.login(JSON.stringify(opt), "("+options.onsuccess.toString()+")", "("+options.onfail.toString()+")");
+            var cb = clouda.lib.utils.regcallback(options.onsuccess, options.onfail);
+			BLightApp.login(JSON.stringify(opt), cb.s, cb.f);
 			
 		} else {
 			
@@ -79,6 +80,7 @@ define("mbaas",function( module ) {
             iframePage.src = authorize_url;
             iframePage.style.position = "absolute";
             iframePage.style.top = "0px";
+            iframePage.style.left = "0px";
             iframePage.scrolling = "no";
 			iframePage.style.border = "none";
             iframePage.style.backgroundColor = "#fff";

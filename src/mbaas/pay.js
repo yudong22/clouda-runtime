@@ -23,9 +23,12 @@ define("mbaas",function( module ) {
      var PARTNER_ID,MD5_PRIVATE;
      
      it.init = function(partner_id,options){
-         if (!partner_id || typeof partner_id !='string'){
+         if (!partner_id){
              lightapp.error(ErrCode.UNKNOW_INPUT,ErrCode.UNKNOW_INPUT,options);
              return false;
+         }
+         if (typeof partner_id === "number") {
+            partner_id = partner_id.toString();
          }
          if ( clouda.RUNTIME === clouda.RUNTIMES.KUANG && BLightApp && typeof BLightApp.initpay === 'function' ) {
          

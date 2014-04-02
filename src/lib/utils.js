@@ -8,6 +8,52 @@ define("lib",function( module ) {
         
     };
 
+    var callbackProxy = {
+        successProxy : {},
+        failProxy : {}
+    };
+
+    //kuang调用的proxy函数,会在全局执行, 运行时的作用域非当前静态作用域
+    var cloudaOnsuccessProxy = function (result) {
+        
+        var randomId = result.randomId;
+        
+        var sproxy = clouda.lib.callbackProxy.successProxy[randomId];
+
+        delete result.randomId;
+
+        if(sproxy){
+            
+            sproxy(result);
+
+        }else{
+            
+            lightapp.error(ErrCode.UNKNOW_CALLBACK,randomId,result);
+
+        }
+        
+    };
+
+    //kuang调用的proxy函数,会在全局执行, 运行时的作用域非当前静态作用域
+    var cloudaOnfailProxy = function (result) {
+
+        var randomId = result.randomId;
+
+        var fproxy = clouda.lib.callbackProxy.failProxy[randomId];
+
+        delete result.randomId;
+
+        if(fproxy){
+
+            fproxy(result);    
+
+        }else{
+
+            lightapp.error(ErrCode.UNKNOW_CALLBACK,randomId,result);
+
+        }
+    };
+
     var slientLogger = {
         log : emptyfunc,
         error : emptyfunc,
@@ -89,38 +135,6 @@ define("lib",function( module ) {
 
             return dst;
         },
-        /**
-         * copy the attr keys in props
-         * 
-         * subset([prop1, prop2], src1, src2.....)
-         * 
-         * @param Array|props
-         * @returns
-         */
-        subset : function(props) {
-
-            var sobj = {};
-
-            if (!props || !props.length)
-                return sobj;
-
-            if (!this.isArray(props))
-                props = [ props ];
-
-            Array.prototype.slice.call(arguments, 1).forEach(function(source) {
-
-                if (!source)
-                    return;
-
-                for ( var i = 0, len = props.length; i < len; i++) {
-                    if (source.hasOwnProperty(props[i])) {
-                        sobj[props[i]] = source[props[i]];
-                    }
-                }
-            });
-
-            return sobj;
-        },
 
         isArray : function(obj) {
 
@@ -153,37 +167,7 @@ define("lib",function( module ) {
         isSimpleValue : function(v) {
 
             return !(this.isObject(v) || this.isArray(v) || this.isFunction(v));
-        },
-        isSetter : function(obj, k) {
-
-            if (!Object.getOwnPropertyDescriptor)
-                return false;
-
-            var propd = Object.getOwnPropertyDescriptor(obj, k);
-
-            return !!(propd && propd.set);
-        },
-        defineGetterAndSetter : function(obj, key, getFunc, setFunc) {
-
-            var prop = {};
-
-            if (getFunc)
-                prop.get = getFunc;
-
-            if (setFunc)
-                prop.set = setFunc;
-
-            if (Object.defineProperty) {
-                Object.defineProperty(obj, key, prop);
-                
-            } else if (obj.__defineGetter__) {
-
-                if (prop.get)
-                    obj.__defineGetter__(key, prop.get);
-
-                if (prop.set)
-                    obj.__defineSetter__(key, prop.set);
-            }
+            
         },
         random : function(length) {
 
@@ -218,70 +202,6 @@ define("lib",function( module ) {
             child.__super__ = parent.prototype;
 
             return child;
-        },
-
-        /**
-         * get the dir base of url, e.g.
-         * 
-         * http://www.zz.com/cc/zz.html -> http://www.zz.com/cc/
-         * 
-         * @param url
-         * @returns
-         */
-        getUrlDir : function(url) {
-
-            url = url.split('?')[0];
-
-            url = this.qualifyUrl(url);
-
-            //search begin with the host
-            var startPos = url.indexOf('//') + 2;
-
-            //find the last /
-            var lastSlashPos = url.substr(startPos).lastIndexOf('/');
-
-            if (lastSlashPos == -1)
-                return url + '/';
-
-            return url.substr(0, startPos + lastSlashPos + 1);
-        },
-
-        /**
-         * make the url absolute
-         * 
-         * @param url
-         * @returns
-         */
-        qualifyUrl : function(url, base) {
-
-            if (!base) {
-                var a = document.createElement('a');
-                a.href = url;
-                return a.href;
-            }
-
-            //well, we got a base, use the base tag's magic
-
-            var doc = document, doc_head = doc.head || doc.getElementsByTagName('head')[0];
-
-            var old_base = doc.getElementsByTagName('base')[0], old_href = old_base && old_base.href;
-
-            var our_base = old_base || doc_head.appendChild(doc.createElement('base'));
-
-            var resolver = doc.createElement('a'), resolved_url;
-
-            our_base.href = base;
-            resolver.href = url;
-
-            resolved_url = resolver.href;
-
-            if (old_base) {
-                old_base.href = old_href;
-            } else {
-                doc_head.removeChild(our_base);
-            }
-
-            return resolved_url;
         },
 
         ajaxGet : function(options) {
@@ -353,165 +273,6 @@ define("lib",function( module ) {
             }
             return true;
         },
-
-        /* jshint -W054 */
-        runInGlobal : function(functionBody, argsMap) {
-
-            var argNames = [], argValues = [];
-
-            if (argsMap) {
-                for ( var k in argsMap) {
-
-                    argNames.push(k);
-                    argValues.push(argsMap[k]);
-                }
-            }
-
-            return new Function(argNames.join(','), functionBody).apply(window, argValues);
-        },
-        /**
-         * Read obj attr value via path, e.g. a.b.c[0][1].d
-         */
-        pathValue : function(obj, path, defaultVal, setMode) {
-
-            if (setMode && path.indexOf('[') >= 0) {
-                throw new Error('pathValue setMode not support array for now!!1');
-            }
-
-            var subPs = path.split('.'), cur = obj;
-
-            var arrKeyPtn = /^([^\[]+)((\[\d+\])+)$/;
-
-            var arrIdxPtn = /\[(\d+)\]/g;
-
-            var depth = 0, subPsLen = subPs.length;
-
-            var gotBrokenPath = subPs.some(function(sp, idx) {
-
-                depth++;
-
-                if (cur === null || cur === void (0))
-                    return true;
-
-                if (setMode) {
-
-                    if (!this.isDefined(cur[sp])) {
-                        cur[sp] = {};
-                    }
-
-                    if (idx == subPsLen - 1) {
-                        cur[sp] = defaultVal;
-                    }
-                }
-
-                if (this.isDefined(cur[sp])) {
-                    cur = cur[sp];
-
-                } else {
-
-                    if (sp.indexOf('[') > 0) {
-
-                        var matches = arrKeyPtn.exec(sp);
-
-                        if (matches && matches[1] && this.isDefined(cur[matches[1]])) {
-                            cur = cur[matches[1]];
-
-                            var idxMatches;
-
-                            while ((idxMatches = arrIdxPtn.exec(matches[2])) !== null) {
-
-                                var nIdx = parseInt(idxMatches[1], 10);
-
-                                depth++;
-
-                                if (Array.isArray(cur) && this.isDefined(cur[nIdx])) {
-
-                                    cur = cur[nIdx];
-
-                                } else {
-                                    return true;
-                                }
-                            }
-
-                            return;
-                        }
-                    }
-
-                    return true;
-                }
-
-            }, this);
-
-            if (setMode)
-                return obj;
-
-            if (!gotBrokenPath)
-                return cur;
-
-            return typeof (defaultVal) != 'undefined' ? defaultVal : ''; // (depth > 1 ? '' : path);
-
-        },
-        isSysOwnedFld : function(k) {
-
-            return k.indexOf(consts.sysKeyPre) === 0;
-        },
-        isEqual : function(a, b) {
-
-            if (a === b)
-                return true;
-            if (a === null || b === null)
-                return false;
-            if (a !== a && b !== b)
-                return true;
-
-            var hskey = consts.hashTagKey;
-
-            var t1 = typeof a, t2 = typeof b, length, key = null, keySet;
-
-            if (t1 == t2) {
-                if (t1 == 'object') {
-                    if (this.isArray(a)) {
-                        if (a.length == b.length) {
-                            length = a.length;
-                            for (key = 0; key < length; key++) {
-                                if (!this.isEqual(a[key], b[key]))
-                                    return false;
-                            }
-                            return true;
-                        }
-                    } else {
-
-                        //this is a little trick to improve performace
-                        if ((a[hskey] && b[hskey])) {
-
-                            if (a[hskey] === b[hskey])
-                                return true;
-
-                            //if not match, we can not sure equal or not, so go on..
-                        }
-
-                        keySet = {};
-                        for (key in a) {
-                            if (!a.hasOwnProperty(key) || this.isSysOwnedFld(key))
-                                continue;
-                            if (!this.isEqual(a[key], b[key]))
-                                return false;
-                            keySet[key] = true;
-                        }
-                        for (key in b) {
-                            if (!b.hasOwnProperty(key) || this.isSysOwnedFld(key))
-                                continue;
-                            if (!keySet[key] && b[key] !== undefined && typeof b[key] !== 'function')
-                                return false;
-                        }
-
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        },
         copy : function(obj) {
 
             var out;
@@ -543,13 +304,6 @@ define("lib",function( module ) {
         isBrowserEnv : function() {
 
             return isBrowserEnv;
-        },
-        nextTick : function(f) {
-
-            (typeof process === 'object' && process.nextTick ? process.nextTick : function(task) {
-
-                setTimeout(task, 0);
-            })(f);
         },
         isPlainObject : function(obj) {
 
@@ -593,15 +347,27 @@ define("lib",function( module ) {
             }
             return len;
         },
-        wrapfunc :  function(func){
+        regcallback :  function(successcb, failcb){
             
-            console.log(1);
+            if(!successcb || !failcb || typeof successcb !== "function" || typeof failcb !== "function") {
+                lightapp.error(ErrCode.UNKNOW_INPUT,successcb, failcb);
+                return false;
+            }
 
+            var randomId = this.random(6) + Date.now();
+            callbackProxy.successProxy[randomId] = successcb;
+            callbackProxy.failProxy[randomId] = failcb;
+            var prefix  = "(function(result){ result = result || {}; result.randomid = '" + randomId + "';(";
+            var sufix = ")(result)})";
+            return {
+                s : (prefix + cloudaOnsuccessProxy.toString() + sufix),
+                f : (prefix + cloudaOnfailProxy.toString() + sufix)
+            };
         }
     };
 
     //off by default
     utils.setDebugMode(false);
-
     module.utils = utils;
+    module.callbackProxy = callbackProxy;
 });
