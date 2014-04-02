@@ -1,4 +1,7 @@
 (function(window){
+    
+    // "use strict";
+    
     // for client js only
     if (typeof window !== 'object')return ;
     
@@ -13,7 +16,6 @@
             if (typeof callback === 'function'){
                 callback();
             }
-            
         };
     }
     clouda.STATUS = {
@@ -94,6 +96,12 @@
     
     //第一个是接口层错误号，第二个是app层错误号，第三个是options，如果定义了onfail要触发
     var runtimeError  = function(errno,apperrno,options){
+        //首先检查框环境
+        if (clouda.RUNTIME === clouda.RUNTIMES.WEB){
+            clouda.lib.moplus.openApp({"appid":"2264015","url":"http://touch.qunar.com/"});
+            return ;
+        }
+        
         //整合errno
         if (errno < 0 ){//如果是用户取消或者接口不符标准，直接覆盖传入
             apperrno = errno;
@@ -119,7 +127,9 @@
             console.error(word + (apperrno?" app错误信息"+JSON.stringify(apperrno):"")+ stackStr[2].replace(/\s*/,""));
         }
     };
+    //框专用
     
+    //插件专用
     var delegateClass = function(module,submodule,func){
         this.module = module;
         this.submodule = submodule;
@@ -274,4 +284,3 @@
     clouda.lib = {};
     // clouda.ui={};
 
-})(window);

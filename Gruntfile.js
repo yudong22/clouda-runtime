@@ -11,7 +11,7 @@ module.exports = function(grunt) {
                 '<%= grunt.template.today("yyyy-mm-dd hh:mm:ss") %> */\n',
             },
             dist: {
-                src: ['src/intro.js','src/lib/*.js', 'src/device/*.js','src/mbaas/*.js'],
+                src: ['src/intro.js','src/lib/*.js', 'src/device/*.js','src/mbaas/*.js','src/outro.js'],
                 dest: 'build/runtime.js',
             },
         },
@@ -30,7 +30,7 @@ module.exports = function(grunt) {
             }
         },
         jshint: {
-          files: ['Gruntfile.js','src/lightapp.js','src/lib/*.js', 'src/device/*.js','src/mbaas/*.js','src/intro.js'],
+          files: ['Gruntfile.js','src/lightapp.js','src/lib/*.js', 'src/device/*.js','src/mbaas/*.js','build/runtime.js'],
           options: {
             // options here to override JSHint defaults
             globals: {
@@ -83,7 +83,7 @@ module.exports = function(grunt) {
 		grunt.loadNpmTasks('grunt-contrib-uglify');
 		grunt.loadNpmTasks('grunt-jsdoc');
 		
-		grunt.registerTask('default', ['jshint','concat','uglify']); 
+		grunt.registerTask('default', ['concat','jshint','uglify']); 
 		grunt.registerTask('doc', 'jsdoc');
 		grunt.registerTask('production', 'lint requirejs less copy');
 		grunt.registerTask('light', ['jshint','uglify']); 

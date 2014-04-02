@@ -335,29 +335,29 @@ var getPicture = new delegateClass("device","camera","getPicture");
                     }
                     break;
                 case "seekTo":
-                    options.time =  parseInt(options.time,10);
-                    if (!options.time && options.time !== 0){
-                        mediaerror2("options.time should be a number",options);
-                        return ;
-                    }
-                    if(options.time<0){
-                        options.time = 0;
-                    }
+                    // options.time =  parseInt(options.time,10);
+                    // if (!options.time && options.time !== 0){
+                        // mediaerror2("options.time should be a number",options);
+                        // return ;
+                    // }
+                    // if(options.time<0){
+                        // options.time = 0;
+                    // }
                     media[link][operator](options.time);
                     options.onsuccess(clouda.STATUS.SUCCESS);
                     break;
                 case "setVolume":
                     options.volume =  parseFloat(options.volume);
-                    if (!options.volume && options.volume !== 0){
-                        mediaerror2("options.volume should be a number between 0.0 to 1.0.",options);
-                        return ;
-                    }
-                    if(options.volume<0){
-                        options.volume = 0;
-                    }
-                    if(options.volume>1){
-                        options.volume = 1;
-                    }
+                    // if (!options.volume && options.volume !== 0){
+                        // mediaerror2("options.volume should be a number between 0.0 to 1.0.",options);
+                        // return ;
+                    // }
+                    // if(options.volume<0){
+                        // options.volume = 0;
+                    // }
+                    // if(options.volume>1){
+                        // options.volume = 1;
+                    // }
                     media[link][operator](options.volume);
                     options.onsuccess(clouda.STATUS.SUCCESS);
                     break;
