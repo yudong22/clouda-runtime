@@ -92,6 +92,7 @@ setVolume | 设置播放音量，此操作类型下，options中需包含以下�
        | volume: float 类型，设置音频文件播放音量，取值范围为[0.0, 1.0]
        | onsuccess:  操作成功返回SUCCESS状态码
        | onfail: 操作失败，则返错误码
+speedFF | 快进5s，操作成功返回SUCCESS状态码；操作失败，则返错误码信息
 
 
 - options : 为 object 类型，其中包含以下参数：
