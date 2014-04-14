@@ -24,8 +24,6 @@
     
 ## 引用JS API文件
 
-## 引用JS API文件
-
 在HTML页面中添加以下代码：
 
     <script name="baidu-tc-cerfication" language="utf-8" src="http://apps.bdimg.com/cloudaapi/lightapp.js"></script>
