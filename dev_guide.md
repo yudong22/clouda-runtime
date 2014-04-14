@@ -43,9 +43,10 @@
 
 2. 内嵌如下代码：
 
+
     <script name="baidu-tc-cerfication" language="utf-8" src="http://apps.bdimg.com/cloudaapi/lightapp.js"></script>
 
-		如果页面是使用https加密链接的时，请内嵌如下代码
+如果页面是使用https加密链接的时，请内嵌如下代码
 
     <script name="baidu-tc-cerfication" language="utf-8" src="https://openapi.baidu.com/cloudaapi/lightapp.js"></script>
 
