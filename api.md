@@ -37,13 +37,17 @@
 
 在HTML页面中添加以下代码：
 
-    <script type="text/javascript" src="http://bcscdn.baidu.com/bcs-cdn/clouda/api-latest.js"></script>
+    <script name="baidu-tc-cerfication" language="utf-8" src="http://apps.bdimg.com/cloudaapi/lightapp.js"></script>
+
+如果页面是使用https加密链接的时，请内嵌如下代码
+
+    <script name="baidu-tc-cerfication" language="utf-8" src="https://openapi.baidu.com/cloudaapi/lightapp.js"></script>
 
 ## App信息注册API ##
 
 调用以下接口，注册所要开发的轻应用的 App 信息：
  
-	clouda.lightapp(apikey)
+	clouda.lightapp(apikey,callback)
 
 ##系统通用的状态码信息
     clouda.STATUS.SUCCESS ： 成功(非0)
