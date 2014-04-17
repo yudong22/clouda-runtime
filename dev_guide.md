@@ -44,14 +44,11 @@
 2. 内嵌如下代码：
 
 
-      <script name="baidu-tc-cerfication" type="text/javascript" charset="utf-8" src="http://apps.bdimg.com/cloudaapi/lightapp.js"></script>
-
-
+		<script name="baidu-tc-cerfication" type="text/javascript" charset="utf-8" src="http://apps.bdimg.com/cloudaapi/lightapp.js"></script>
 
 2. 如果页面是使用https加密链接的时，请内嵌如下代码
 
-      <script name="baidu-tc-cerfication" type="text/javascript" charset="utf-8" src="https://openapi.baidu.com/cloudaapi/lightapp.js"></script>
-
+		<script name="baidu-tc-cerfication" type="text/javascript" charset="utf-8" src="https://openapi.baidu.com/cloudaapi/lightapp.js"></script>
 
 3. 调用轻应用App信息注册接口；详见[ "《轻应用API参考文档》"](http://cloudajs.org/lightapp/docs/api)。
 
