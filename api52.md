@@ -54,7 +54,7 @@ apikey | string | 轻应用的APIKEY,获取方法参考[开发指南](http://clo
 参数 | 类型 | 描述 
 ------------ | ------------- | ------------
 apikey | string | 轻应用的APIKEY,获取方法参考[开发指南](http://cloudajs.org/lightapp/docs/dev_guide)
-module | Array | 轻应用的具体模块,获取方法参考[模块化加载](http://http://cloudajs.org/lightapp/api-product)
+module | Array | 轻应用的具体模块,获取方法参考[模块化加载](http://cloudajs.org/lightapp/api-product)
 
 
 ##系统通用的状态码信息
