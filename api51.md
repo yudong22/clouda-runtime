@@ -36,12 +36,11 @@
 
 调用以下接口，注册所要开发的轻应用的 App 信息：
  
-	clouda.lightapp(apikey,callback) //callback是js全部加载完执行的回调函数
+	clouda.lightapp(apikey); 
 
 参数 | 类型 | 描述 
 ------------ | ------------- | ------------
 apikey | string | 轻应用的APIKEY,获取方法参考[开发指南](http://cloudajs.org/lightapp/docs/dev_guide)
-callback | function(){} | 加载完成，执行api方法 
 
 ##系统通用的状态码信息
 
