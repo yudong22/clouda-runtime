@@ -32,6 +32,10 @@ onfail | function(err){} | 操作失败，返回错误码信息
 accuracy | float | 精确度(单位米)
 longitude | float | 经度
 latitude | float | 纬度
+coordtype | string | 坐标类型, 包括
+| | clouda.device.COORDTYPE.BD 百度经纬度坐标
+| | clouda.device.COORDTYPE.GCJ 国测局经纬度坐标
+| | clouda.device.COORDTYPE.GPS GPS经纬度
 
 
 #### startListen ####
