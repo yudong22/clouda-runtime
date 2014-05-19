@@ -7,7 +7,7 @@
 
 - get(options)
 - startListen(options)
-- stopListen()
+- stopListen(options)
 
 #### get ####
     get(options)
@@ -57,7 +57,7 @@ significant | bool | 是否仅在位置发生大幅变化时进行回调，boole
 
 
 #### stopListen ####
-    stopListen()
+    stopListen(options)
 
 **功能描述：**
 
