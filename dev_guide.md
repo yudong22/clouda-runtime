@@ -62,36 +62,46 @@
 示例： 获取本地相机图片
 
 
-	<!DOCTYPE html>     
-	<html>
-	    <head>
-	        <title>轻应用开发JavaScript代码示例</title>
-	        <!-- 引用轻应用API的JS文件 -->
-	        <script name="baidu-tc-cerfication" type="text/javascript" charset="utf-8" src="http://apps.bdimg.com/cloudaapi/lightapp.js"></script>
-	    </head>
-	    <body>
-	        <script>
-	           //首先输入轻应用的ak
-	           clouda.lightInit({
-							 ak:"iUQs1O9pmkIvfZ1zmy8sm7Gk",
-						   module:["media"]
-						 });
-						 //加载完api js后，立即执行读取本地相机图片
-						 clouda.device.media.captureMedia({
-									mediaType : clouda.device.MEDIA_TYPE.IMAGE,
-									source : clouda.device.MEDIA_SOURCE.CAMERA,
-									onfail : function(err){
-											alert(JSON.stringify(err));
-									},
-									onsuccess : function(mediaFile){
-											//返回读取到的图片文件的本地全信息
-											alert(JSON.stringify(mediaFile));
-									} 
-						 });
-	           
-	        </script>
-	    </body>
-	</html>
+        <!DOCTYPE html>
+        <html>
+            <head>
+                <title>轻应用开发JavaScript代码示例</title>
+                <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+                <meta content="width=device-width,initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no" name="viewport" />
+                <!-- 引用轻应用API的JS文件 -->
+                <script type="text/javascript" charset="utf-8" src="http://apps.bdimg.com/cloudaapi/lightapp.js"></script>
+            </head>
+            <body>
+                <script>
+                   //首先输入轻应用的ak
+                   clouda.lightInit({
+                        ak:"iUQs1O9pmkIvfZ1zmy8sm7Gk",
+                        module:["media"]
+                    });
+
+                    //加载完api js后，立即执行读取本地相机图片
+                    var openCamera = function(){
+                        clouda.device.media.captureMedia({
+                                mediaType : 0,//IMAGE
+                                source : 0,//CAMERA
+                                onfail : function(err){
+                                        alert(JSON.stringify(err));
+                                },
+                                onsuccess : function(mediaFile){
+                                        //返回读取到的图片文件的本地全信息
+                                        alert(JSON.stringify(mediaFile));
+                                } 
+                        });
+                    };
+                    openCamera();
+
+                </script>
+                <button onclick = "openCamera()">openCamera</button>
+                <hr/>
+                <h2 id="runtime"></h2>
+            </body>
+        </html>
+
 
 #### 添加统计功能 ####
 
