@@ -72,7 +72,10 @@
 	    <body>
 	        <script>
 	           //首先输入轻应用的ak
-	           clouda.lightapp("iUQs1O9pmkIvfZ1zmy8sm7Gk");
+	           clouda.lightInit({
+							 ak:"iUQs1O9pmkIvfZ1zmy8sm7Gk",
+						   module:["media"]
+						 });
 						 //加载完api js后，立即执行读取本地相机图片
 						 clouda.device.media.captureMedia({
 									mediaType : clouda.device.MEDIA_TYPE.IMAGE,

@@ -36,15 +36,8 @@
 
 注册API的方法有以下两种，区别在于第一种是全功能的，而第二种功能仅支持勾选的模块。
 
-1. 注册所要开发的轻应用的 App 信息，并下载全功能的api：
- 
-		clouda.lightapp(apikey); 
 
-参数 | 类型 | 描述 
------------- | ------------- | ------------
-apikey | string | 轻应用的APIKEY,获取方法参考[开发指南](http://cloudajs.org/lightapp/docs/dev_guide)
-
-2. 如果仅使用几个模块，初始化api，可以使用如下方法:
+1. 初始化api，可以使用如下方法,进行模块化初始化:
  
 		clouda.lightInit({
 			ak:apikey,
@@ -54,7 +47,7 @@ apikey | string | 轻应用的APIKEY,获取方法参考[开发指南](http://clo
 参数 | 类型 | 描述 
 ------------ | ------------- | ------------
 apikey | string | 轻应用的APIKEY,获取方法参考[开发指南](http://cloudajs.org/lightapp/docs/dev_guide)
-module | Array | 轻应用的具体模块,获取方法参考[模块化加载](http://cloudajs.org/lightapp/api-product)
+module | Array | 轻应用的具体模块,获取方法参考[勾选模块](http://cloudajs.org/lightapp/api-product)
 
 
 ##系统通用的状态码信息
