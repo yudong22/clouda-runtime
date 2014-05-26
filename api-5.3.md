@@ -410,6 +410,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
 param | object| 伴随文件上传，传递的POST数据（可选）
 uploadKey | string | 上传表单中的key
 
+
 ### Geolocation ###
     clouda.device.geolocation
 
@@ -419,7 +420,7 @@ uploadKey | string | 上传表单中的key
 
 - get(options)
 - startListen(options)
-- stopListen()
+- stopListen(options)
 
 #### get ####
     get(options)
@@ -444,6 +445,10 @@ onfail | function(err){} | 操作失败，返回错误码信息
 accuracy | float | 精确度(单位米)
 longitude | float | 经度
 latitude | float | 纬度
+coordtype | string | 坐标类型, 包括
+| | clouda.device.COORDTYPE.BD 百度经纬度坐标
+| | clouda.device.COORDTYPE.GCJ 国测局经纬度坐标
+| | clouda.device.COORDTYPE.GPS GPS经纬度
 
 
 #### startListen ####
@@ -469,7 +474,7 @@ significant | bool | 是否仅在位置发生大幅变化时进行回调，boole
 
 
 #### stopListen ####
-    stopListen()
+    stopListen(options)
 
 **功能描述：**
 
