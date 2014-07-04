@@ -152,7 +152,7 @@ Clouda开发框架是一个实时的JavaScript开发框架；使用该框架，�
 1.	安装Clouda
 2.	参考示例进行开发
 3.	API reference （会包含轻应用API），
-详见：[http://cloudajs.org/docs](http://cloudajs.org/docs)
+详见：[Clouda开发框架文档](http://cloudajs.org/docs)
 
 ### 调试轻应用 ###
 
