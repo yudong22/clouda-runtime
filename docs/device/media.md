@@ -19,39 +19,22 @@
 
 - options ：为 object 类型，其中包含以下参数：
 
-<table style="border-style: solid; border-width: 0pt;" border="1" cellspacing="0" cellpadding="5px">
-   <tbody>
-    <tr>
-        <th>参数</th>
-        <th>类型</th>
-        <th>描述</th>
-    </tr>
-    <tr>
-        <td>onsuccess</td>
-        <td>function(data){}</td>          
-        <td>操作成功，返回 MediaFile 对象</td>  
-    </tr>
-    <tr>
-        <td>onfail</td>
-        <td>function(err){}</td>          
-        <td>操作失败，返回错误码</td>  
-    </tr>
-    <tr>
-        <td>mediaType</td>
-        <td>string</td>          
-        <td> 媒体类型，其值如下： <br>
-         - clouda.device.MEDIA_TYPE.IMAGE(默认) <br>
-         - clouda.device.MEDIA_TYPE.VIDEO</td>  
-    </tr>
-    <tr>
-        <td>source</td>
-        <td>string</td>
-        <td>媒体文件来源，其值如下：：<br>
-        - clouda.device.MEDIA_SOURCE.CAMERA<br>
-        </td>  
-    </tr>
-</tbody>
-</table>
+参数 | 类型 | 描述 
+------------ | ------------- | ------------
+onsuccess | function(data){} | 操作成功，返回 MediaFile 对象
+onfail | function(err){} | 操作失败，返回错误码 
+mediaType | string | 媒体类型，其值如下：
+ |  | - clouda.device.MEDIA_TYPE.IMAGE(默认) <br>
+ |  | - clouda.device.MEDIA_TYPE.VIDEO
+source | string | 媒体文件来源，其值如下： 
+ |  | - clouda.device.MEDIA_SOURCE.CAMERA
+ |  | - clouda.device.MEDIA_SOURCE.ALBUM
+quality | number | 媒体文件压缩 取值 (1-100)
+base64 | boolean | 同时返回图片的base64，默认false
+width | number | 图片的最大宽度，大于则压缩，单位像素
+height | number | 图片的最大高度，大于则压缩，单位像素
+
+
 
 **返回的MediaFile对象**
 
@@ -62,6 +45,9 @@ fullPath | string | 文件本地全路径（含文件名）
 type | string | 文件的MIME类型
 lastModifiedDate | timestamp | 文件最后修改时间
 size | int | 文件大小，单位：字节(bytes)
+width | number | 图片的宽度，单位像素
+height | number | 图片的宽度，单位像素
+base64 | string | 图片的base64(base64为true时，显示)
 
 
 
