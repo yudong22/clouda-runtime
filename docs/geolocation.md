@@ -75,3 +75,5 @@ significant | bool | 是否仅在位置发生大幅变化时进行回调，boole
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回SUCCESS状态码
 onfail | function(err){} | 操作失败，返回错误码信息 
+
+

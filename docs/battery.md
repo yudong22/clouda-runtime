@@ -73,3 +73,5 @@ isPlugged | boolean | 电池充电状态，默认false，未充电
 ------------ | ------------- | ------------
 onsuccess | function(data){} | 操作成功，返回SUCCESS状态码
 onfail | function(err){} | 操作失败，返回错误码信息
+
+

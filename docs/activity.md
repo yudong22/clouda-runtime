@@ -60,3 +60,5 @@ intent | object | 参考android调起应用参数[intent](http://developer.andro
             };
             clouda.device.activity.start({onsuccess:onsuccess,onfail:onfail,intent:intent});
         }
+
+
