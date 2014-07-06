@@ -9,7 +9,7 @@
 - closeLoginDialog()
 
 #### login ####
-	login(options)
+    login(options)
 
 **功能描述：**
 
@@ -33,8 +33,10 @@ onsuccess | function(){}  | 登录成功的回调函数. onsuccess函数体中,�
 onfail | function(){}  | 登录失败的回调函数. onfail函数体中,需要开发者手动调用一次`clouda.mbaas.account.closeLoginDialog()`方法
 
 #### closeLoginDialog ####
-	closeLoginDialog()
+    closeLoginDialog()
 
 **功能描述：**
 
 关闭帐号登录的浮层
+
+
