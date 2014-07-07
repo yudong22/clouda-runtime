@@ -31,7 +31,7 @@ quality | number | 媒体文件压缩 取值 (1-100)
 base64 | boolean | 同时返回图片的base64，默认false
 width | number | 图片的最大宽度，大于则压缩，单位像素
 height | number | 图片的最大高度，大于则压缩，单位像素
-
+ 
 
 
 **返回的MediaFile对象**
