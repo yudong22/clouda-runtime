@@ -198,8 +198,8 @@ uploadKey | string | 上传表单中的key
 
 
 
-## Keybord（ps.键盘的端能力实现有风险） ##
-     clouda.device.keybord
+## Keyboard（ps.键盘的端能力实现有风险） ##
+     clouda.device.keyboard
 
 键盘，键盘类
 
