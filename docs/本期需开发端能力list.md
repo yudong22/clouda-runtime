@@ -152,11 +152,9 @@ onfail | function(err){} | 操作失败，返回错误码信息
             <td>语音识别标识的uuid（可选）</td>  
         </tr>
         <tr>
-            <td>sampleRate</td>
-            <td>int</td>            
-            <td>语音识别录音采样率（可选），其参数如下：<br>
-            - clouda.mbaas.VTT_RATE.K8 ： （采样率8k）<br>
-            - clouda.mbaas.VTT_RATE.K16  ：（采样率16k）</td>  
+            <td>enablePower</td>
+            <td>boolen</td>            
+            <td>是否显示语音音量条纹，取值：true（默认）/false</td>  
         </tr>
     </tbody>
 </table>
