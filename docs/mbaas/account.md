@@ -40,3 +40,9 @@ onfail | function(){}  | 登录失败的回调函数. onfail函数体中,需要�
 关闭帐号登录的浮层
 
 
+**注意点说明：**
+
+1.	redirect_uri是登录成功后的回跳地址，不建议在redirec_rui的页面中处理太多逻辑，如果有，在百度App的轻应用环境下要实现回跳页和其他页面的数据通信，请使用localStorage或者cookie来实现。
+2.	为了兼容web版的登陆功能，应该在window上注册全局的成功和失败的回调函数，window.onsuccess=function(data){clouda.mbaas.account.closeLoginDialog();};并且在回调函数中人为地关闭登录浮层，并且在redirect_uri指定的页面中调用父层的全局回调函数。
+
+
