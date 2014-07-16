@@ -205,8 +205,8 @@ uploadKey | string | 上传表单中的key
 
 **方法：**
 
-- startListen(options)
-- stopListen(options)
+- startListenKeyboard(options)
+- stopListenKeyboard(options)
 
 
 #### startListenKeyboard ####
