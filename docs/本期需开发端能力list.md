@@ -207,13 +207,11 @@ uploadKey | string | 上传表单中的key
 
 - startListen(options)
 - stopListen(options)
-- open(options)
-- close(options)
 
 
-#### startListen ####
+#### startListenKeyboard ####
 
-    startListen(options)
+    startListenKeyboard(options)
 
 **功能描述：**
 
@@ -236,9 +234,9 @@ status | number | 0 是从显示到隐藏， 1是从隐藏到显示， 2是键�
 height | number | 键盘的高度，单位像素
 
 
-#### stopListen ####
+#### stopListenKeyboard ####
 
-    stopListen(options)
+    stopListenKeyboard(options)
 
 **功能描述：**
 
@@ -252,34 +250,4 @@ onsuccess | function(data){} | 停止监听成功，返回 success状态码
 onfail | function(err){} | 停止监听失败，返回错误码
 
 
-#### open ####
-
-    open(options)
-
-**功能描述：**
-
-打开键盘
-
-**参数说明：**
-
-参数 | 类型 | 描述 
------------- | ------------- | ------------
-onsuccess | function(data){} | 打开键盘成功，返回 键盘信息对象
-onfail | function(err){} | 打开键盘失败，返回错误码
-
-
-#### close ####
-
-    close(options)
-
-**功能描述：**
-
-关闭键盘
-
-**参数说明：**
-
-参数 | 类型 | 描述 
------------- | ------------- | ------------
-onsuccess | function(data){} | 关闭键盘成功，返回 键盘信息对象
-onfail | function(err){} | 关闭键盘失败，返回错误码
 
