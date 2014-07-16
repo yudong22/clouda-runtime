@@ -123,7 +123,7 @@ onfail | function(err){} | 操作失败，返回错误码信息
         <tr>
             <td>onsuccess</td>
             <td>function(data){}</td>            
-            <td>识别成功，返回语音文字字符串</td>  
+            <td>识别成功，返回语音识别对象，{result:0,voice_result:{record_time:"5",str_result:"xxx"}}</td>  
         </tr>
         <tr>
             <td>onfail</td>
