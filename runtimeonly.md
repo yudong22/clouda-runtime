@@ -14,3 +14,9 @@
 - [docs/mbaas/pcs.md](docs/mbaas/pcs.md)
 - [docs/mbaas/mediaplayer.md](docs/mbaas/mediaplayer.md)
 - [docs/device/notification.md](docs/device/notification.md)
+
+
+
+## 服务导航能力 ##
+
+- [docs/lego/smartBar.md](docs/lego/smartBar.md)
